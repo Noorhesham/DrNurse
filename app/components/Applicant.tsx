@@ -1,0 +1,42 @@
+import React from "react";
+import Container from "./Container";
+import { CalendarIcon, ChevronRight } from "lucide-react";
+import Link from "next/link";
+import FlexWrapper from "./FlexWrapper";
+import FunctionalButton from "./FunctionalButton";
+import MeetingForm from "./forms/MeetingForm";
+import UserCard from "./UserCard";
+import SateChange from "./SateChange";
+const Applicant = ({
+  applicant,
+  show,
+  notification,
+}: {
+  applicant: { image: string; name: string; duration: string; speciality: string; address: string };
+  show?: boolean;
+  notification?: boolean;
+}) => {
+  return (
+    <Container className=" hover:bg-gradient-to-r from-light to-white   duration-150">
+      <FlexWrapper max={false} className=" justify-between">
+        <UserCard notification={notification} show={show} applicant={applicant} />
+        <div className=" flex items-center gap-3">
+          {show ? (
+            <>
+              <FunctionalButton btnText="SCHEDULE MEETING" icon={<CalendarIcon />} content={<MeetingForm />} />
+            </>
+          ) : (
+            <>
+              {!notification && <SateChange />}
+              <Link href="/dashboard/doctor/1" className=" p-1 rounded-xl bg-main2 text-gray-50">
+                <ChevronRight />
+              </Link>
+            </>
+          )}
+        </div>
+      </FlexWrapper>
+    </Container>
+  );
+};
+
+export default Applicant;

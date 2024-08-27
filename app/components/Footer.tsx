@@ -13,7 +13,7 @@ const Footer = () => {
   return (
     <footer className=" relative">
       <Image
-        className=" lg:block hidden w-full  -z-10 absolute left-0 -top-20"
+        className=" lg:block hidden w-full  -z-10 absolute left-0 -top-5"
         width={800}
         height={400}
         alt="footer"

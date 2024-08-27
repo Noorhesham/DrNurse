@@ -12,7 +12,7 @@ import {
   commentSchema,
   emailSchema,
   phoneSchema,
-} from "../schema";
+} from "../../schema";
 import { useTranslations } from "next-intl";
 
 interface FormContainerProps {

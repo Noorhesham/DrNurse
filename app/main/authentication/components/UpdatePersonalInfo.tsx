@@ -7,7 +7,7 @@ import { format } from "date-fns";
 import ModalCustom from "@/app/components/ModalCustom";
 import UpdateCard from "@/app/components/UpdateCard";
 import { GoPeople } from "react-icons/go";
-import FormContainer from "@/app/components/FormContainer";
+import FormContainer from "@/app/components/forms/FormContainer";
 import Activate2fa from "./Activate2fa";
 import { MailIcon, PhoneIcon } from "lucide-react";
 import Spinner from "@/app/components/Spinner";

@@ -29,11 +29,11 @@ const SideNav = ({
     mounted && (
       <Link
         href={link}
-        className={`flex flex-1 flex-grow  font-medium duration-150 cursor-pointer w-fit md:w-full rounded-lg p-1 lg:py-2 lg:px-4   items-center gap-2 self-start ${
+        className={`flex flex-1  text-base flex-grow w-full font-medium duration-150 cursor-pointer md:w-full rounded-lg p-1 lg:py-2 lg:px-4   items-center gap-2 self-start ${
           isActive && !iconsOnly
-            ? " bg-hover  text-main2 hover:bg-gray-100 "
+            ? " bg-hover  border-l-2 rounded-l-none  border-main2 lg:py-3   text-main2 hover:bg-gray-100 "
             : iconsOnly && isActive
-            ? "bg-main2 text-gray-50 text-center mx-auto"
+            ? "bg-main2 w-fit  text-gray-50 text-center mx-auto"
             : ""
         }`}
       >

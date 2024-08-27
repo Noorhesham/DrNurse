@@ -3,7 +3,7 @@ import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessa
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { InputProps } from "./CustomForm";
 
-const FormSelect = ({ name, label, placeholder, description, id, options, selected }: InputProps) => {
+const FormSelect = ({ name, label, placeholder, description, id, options, selected, className }: InputProps) => {
   const form = useFormContext();
   const selectedValue = form.watch(name);
 
@@ -16,7 +16,7 @@ const FormSelect = ({ name, label, placeholder, description, id, options, select
       render={({ field }) => {
         const selected = options?.find((p) => p._id === form.getValues(name)?._id || p._id === selectedValue);
         return (
-          <FormItem  className=' shadow-sm' id={id || ""}>
+          <FormItem className={`${className || ""} w-full shadow-sm`} id={id || ""}>
             <FormLabel>{label}</FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>

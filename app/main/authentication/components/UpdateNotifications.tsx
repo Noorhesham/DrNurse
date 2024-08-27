@@ -1,4 +1,4 @@
-import FormContainer from "@/app/components/FormContainer";
+import FormContainer from "@/app/components/forms/FormContainer";
 import { Notifications } from "@/app/components/Icons";
 import ModalCustom from "@/app/components/ModalCustom";
 import UpdateCard from "@/app/components/UpdateCard";

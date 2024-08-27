@@ -3,21 +3,22 @@ import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import cookies from "js-cookie";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
+import CustomButton from "@/app/components/CustomButton";
+import { Server } from "../../Server";
 import { toast } from "react-toastify";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import FormInput from "@/app/components/FormInput";
+import FormInput from "@/app/components/forms/FormInput";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/app/context/AuthContext";
 import { Suspense, useState, useTransition } from "react";
 import Spinner from "@/app/components/Spinner";
 import { useDevice } from "@/app/context/DeviceContext";
-
+import Timer from "@/app/components/Timer";
 import Paragraph from "@/app/components/Paragraph";
 import { useTranslations } from "next-intl";
-import { Server } from "../../Server";
 
 export function InputOTPPattern({
   handleSend,
@@ -141,14 +142,13 @@ export function InputOTPPattern({
             {forgot && <FormInput name="password" control={form.control} placeholder={t("password")} password />}
             <div className="mt-4 flex items-center gap-2">
               {!activate && (
-                <Button
+                <CustomButton
+                  text={t("resend_code")}
                   onClick={(e: any) => {
                     handleSend(sendType);
                     setTimer(true);
                   }}
-                >
-                  {t("resend_code")}
-                </Button>
+                />
               )}
               <Button disabled={isPending} className=" rounded-full px-8" type="submit">
                 {isPending ? <Spinner /> : "Submit"}

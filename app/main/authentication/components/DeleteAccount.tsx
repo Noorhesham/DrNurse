@@ -1,5 +1,5 @@
 "use client";
-import FormContainer from "@/app/components/FormContainer";
+import FormContainer from "@/app/components/forms/FormContainer";
 import ModalCustom from "@/app/components/ModalCustom";
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
@@ -25,7 +25,7 @@ const DeleteAccount = () => {
     <ModalCustom
       btn={
         <p className=" cursor-pointer z-10  mt-5 ml-3 font-semibold text-red-500 hover:text-red-400 duration-150">
-          {t('deleteAccount')}
+          {t("deleteAccount")}
         </p>
       }
       content={

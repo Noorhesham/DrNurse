@@ -1,4 +1,4 @@
-import FormContainer from "@/app/components/FormContainer";
+import FormContainer from "@/app/components/forms/FormContainer";
 import Head1 from "@/app/components/Head1";
 import MaxWidthWrapper from "@/app/components/MaxWidthWrapper";
 import Section from "@/app/components/Section";

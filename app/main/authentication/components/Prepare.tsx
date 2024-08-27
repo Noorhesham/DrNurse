@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { Server } from "../../Server";
 import { z } from "zod";
 import { toast } from "react-toastify";
-import CustomForm from "@/app/components/CustomForm";
+import CustomForm from "@/app/components/forms/CustomForm";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const Prepare = ({ setMethods, handleParam, setMessage }: { setMethods: any; handleParam: any; setMessage: any }) => {

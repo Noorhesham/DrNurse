@@ -18,15 +18,15 @@ const MiniTitle = ({
   boldness?: "bold" | "normal";
   link?: string;
 }) => {
+  console.log(color);
   return (
-    <div className=" flex justify-between">
+    <div className={`flex justify-between ${color || "text-gray-800"}`}>
       <h2
         className={cn(" ", {
           " text-3xl": size === "3xl",
           "text-2xl": size === "2xl",
           "text-lg": size === "lg",
           "text-base": size === "md",
-          color: color || "text-gray-700",
           className,
           "font-semibold": boldness === "bold",
           "font-normal": boldness === "normal",

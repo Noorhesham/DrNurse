@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import ModalCustom from "@/app/components/ModalCustom";
 import { Lock } from "lucide-react";
 import UpdateCard from "@/app/components/UpdateCard";
-import FormContainer from "@/app/components/FormContainer";
+import FormContainer from "@/app/components/forms/FormContainer";
 import { useTranslations } from "next-intl";
 
 const UpdatePassword = () => {

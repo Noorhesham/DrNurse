@@ -1,7 +1,7 @@
 "use client";
 import Section from "@/app/components/Section";
 import { useState, useTransition } from "react";
-import CustomForm from "@/app/components/CustomForm";
+import CustomForm from "@/app/components/forms/CustomForm";
 import Link from "next/link";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -105,7 +105,7 @@ const Signup = () => {
   return (
     <Section CustomePadding="px-5 py-10 " className=" bg-gray-50 flex flex-1 justify-center  flex-col items-center">
       <div className=" mx-auto flex flex-col items-center justify-center  w-full  ">
-        <Logo  isdark/>
+        <Logo size={{ width: 863, height: 338 }} type="blue" />
         <h1 className=" text-center text-2xl  mt-5 font-bold text-main2">CREATE NEW ACCOUNT</h1>
         <div className=" w-full  px-5 md:px-14 flex flex-col ">
           <CustomForm

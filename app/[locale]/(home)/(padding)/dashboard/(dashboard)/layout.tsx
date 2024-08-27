@@ -10,7 +10,7 @@ export default function RootLayout({
 }>) {
   return (
     <MaxWidthWrapper className="">
-      <GridContainer className=" gap-4" cols={12}>
+      <GridContainer className=" relative gap-8" cols={12}>
         <div className=" col-span-1">
           <SideBar iconsOnly />
         </div>

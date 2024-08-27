@@ -103,23 +103,23 @@ export async function Server({
   img?: boolean;
   entityName?: string;
 }) {
+  // Get the token and device info from cookies
+  const jwt = cookies().get("jwt")?.value;
+  const deviceId = cookies().get("deviceInfo")?.value;
+
+  // Set up headers
+  const combinedHeaders: { [key: string]: string } = {
+    "Content-Type": img ? "multipart/form-data" : "application/json",
+    ...headers,
+  };
+
+  if (jwt && jwt !== "undefined" && !noHeaders) {
+    combinedHeaders.Authorization = `Bearer ${jwt}`;
+  }
+  if (deviceId) {
+    combinedHeaders["device-unique-id"] = JSON.parse(deviceId).device_unique_id;
+  }
   try {
-    // Get the token and device info from cookies
-    const jwt = cookies().get("jwt")?.value;
-    const deviceId = cookies().get("deviceInfo")?.value;
-
-    // Set up headers
-    const combinedHeaders: { [key: string]: string } = {
-      "Content-Type": img ? "multipart/form-data" : "application/json",
-      ...headers,
-    };
-
-    if (jwt && jwt !== "undefined" && !noHeaders) {
-      combinedHeaders.Authorization = `Bearer ${jwt}`;
-    }
-    if (deviceId) {
-      combinedHeaders["device-unique-id"] = JSON.parse(deviceId).device_unique_id;
-    }
 
     // Get the URL and method from the resource name
     const { url, method: resolvedMethod } = getURL(resourceName, id, entityName);

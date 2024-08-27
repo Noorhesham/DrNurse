@@ -7,34 +7,38 @@ import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
-import { CalendarProps } from "./FormInput";
 
-const CalendarInput = ({ control }: CalendarProps) => {
+const CalendarInput = ({ control, name }: { control: any; name: string }) => {
   return (
     <FormField
       control={control}
-      name="birth_day"
+      name={name}
       render={({ field }) => {
         console.log(field.value);
         return (
-          <FormItem className="flex flex-col">
-            <FormLabel>Date of birth</FormLabel>
+          <FormItem className="flex  w-full flex-col">
+            <FormLabel>DATE</FormLabel>
             <Popover>
               <PopoverTrigger asChild>
                 <FormControl>
                   <Button
                     variant={"outline"}
-                    className={cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
+                    className={cn(
+                      "w-full pl-3 flex  justify-between text-left rounded-lg font-normal",
+                      !field.value && "text-muted-foreground"
+                    )}
                   >
-                    {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
-                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    {field.value ? format(field.value, "PPP") : <span>SELECT</span>}
+                    <CalendarIcon className="ml-auto mr-2 h-4 w-4 opacity-50" />
                   </Button>
                 </FormControl>
               </PopoverTrigger>
-              <PopoverContent sideOffset={-40} className="w-auto p-0" align="end">
-                <Calendar
+              <PopoverContent sideOffset={-40} className="w-full p-0" align="end">
+                <Calendar className=" w-full"
                   mode="single"
-                  captionLayout="dropdown-buttons" fromYear={1990} toYear={new Date().getFullYear()}
+                  captionLayout="dropdown-buttons"
+                  fromYear={1990}
+                  toYear={new Date().getFullYear()}
                   selected={field.value}
                   onSelect={field.onChange}
                   disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
@@ -42,7 +46,7 @@ const CalendarInput = ({ control }: CalendarProps) => {
                 />
               </PopoverContent>
             </Popover>
-            <FormDescription>Your date of birth is used to calculate your age.</FormDescription>
+            {/* <FormDescription>Your date of birth is used to calculate your age.</FormDescription> */}
           </FormItem>
         );
       }}

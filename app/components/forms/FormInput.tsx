@@ -3,13 +3,13 @@ import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessa
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { getPasswordStrength } from "../helpers/utils";
+import { getPasswordStrength } from "../../helpers/utils";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { AnimatePresence, motion } from "framer-motion";
-import Spinner from "./Spinner";
+import Spinner from "../Spinner";
 
-import PhotoInput from "./PhotoInput";
+import PhotoInput from "../PhotoInput";
 import { Textarea } from "@/components/ui/textarea";
 import { useTranslations } from "next-intl";
 import cookies from "js-cookie";
@@ -43,6 +43,7 @@ export interface PhoneProps {
 }
 export interface CalendarProps {
   control: any;
+  name: string;
 }
 type PhoneSearchComponentType = React.ComponentType<PhoneProps>;
 type CalendarComponentType = React.ComponentType<CalendarProps>;
@@ -88,14 +89,15 @@ const FormInput = ({
   useEffect(() => {
     if (phone) {
       const loadPhoneSearch = async () => {
-        const { default: PhoneSearch } = await import("./PhoneSearch");
+        const { default: PhoneSearch } = await import("../PhoneSearch");
         setPhoneSearchComponent(() => PhoneSearch);
       };
       loadPhoneSearch();
     }
     if (date) {
       const loadCalendar = async () => {
-        const { default: CalendarInput } = await import("./CalendarInput");
+        const { default: CalendarInput } = await import("../CalendarInput");
+        //@ts-ignore
         setCalendarComponent(() => CalendarInput);
       };
       loadCalendar();
@@ -103,6 +105,14 @@ const FormInput = ({
   }, [phone, date]);
   const t = useTranslations();
   const local = cookies.get("NEXT_LOCALE") || "en";
+  if (date && CalendarComponent)
+    return (
+      <Suspense fallback={<Spinner />}>
+        <div className=" w-full">
+          <CalendarComponent name={name || ""} control={control} />
+        </div>
+      </Suspense>
+    );
   return (
     <>
       <FormField
@@ -134,12 +144,6 @@ const FormInput = ({
                   <Textarea placeholder={t("forms.message")} className="resize-none" {...field} />
                 ) : photo ? (
                   <PhotoInput value={field.value} onChange={field.onChange} />
-                ) : date && CalendarComponent ? (
-                  <Suspense fallback={<Spinner />}>
-                    <div className=" w-full">
-                      <CalendarComponent control={control} />
-                    </div>
-                  </Suspense>
                 ) : switchToggle ? (
                   <div className="flex mx-auto   mt-3 gap-2 items-center ">
                     <Label className=" md:text-sm  text-xs text-muted-foreground" htmlFor="sale">

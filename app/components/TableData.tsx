@@ -10,6 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { CheckCircle } from "lucide-react";
+import Link from "next/link";
 import { MdPeopleOutline } from "react-icons/md";
 
 const jobs = [
@@ -71,7 +72,7 @@ export default function TableData() {
             </TableCell>
 
             <TableCell className=" gap-1 text-sm text-green-500">
-              <div className=" flex items-center gap-2">
+              <div className="  flex items-center gap-2">
                 <CheckCircle className=" text-green-500 w-4 h-4" />
                 <p className=" text-xs font-semibold"> {job.STATUS}</p>
               </div>
@@ -84,8 +85,11 @@ export default function TableData() {
 
             <TableCell className="text-right">
               <div className="flex items-center gap-2">
-                <Button className=" font-semibold bg-light text-main2 hover:bg-main2 hover:text-light duration-150">
-                  VIEW APPLICATIONS
+                <Button
+                  size={"lg"}
+                  className=" font-semibold bg-light text-main2 hover:bg-main2 hover:text-light duration-150"
+                >
+                  <Link href="/dashboard/jobs/applications/1">VIEW APPLICATIONS</Link>
                 </Button>
               </div>
             </TableCell>

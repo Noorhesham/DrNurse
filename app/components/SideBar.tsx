@@ -11,28 +11,30 @@ import {
   Users,
 } from "lucide-react";
 import { MdAddCircle, MdNotifications } from "react-icons/md";
-
+const iconsStyles = "w-5 h-5";
 const navItems = [
-  { link: "/dashboard", text: "OVERVIEW", icon: <House /> },
-  { link: "/dashboard/employees", text: "Find a Employee", icon: <Users /> },
-  { link: "/dashboard/shipping-address", text: "MY JOBS", icon: <BriefcaseBusiness /> },
-  { link: "/dashboard/wishlist", text: "POST A JOB", icon: <MdAddCircle /> },
-  { link: "/dashboard/settings", text: "NOTIFICATIONS", icon: <MdNotifications /> },
-  { link: "/dashboard/settings", text: "METTINGS", icon: <CalendarClock /> },
-  { link: "/dashboard/settings", text: "JOB OFFER", icon: <HandCoins /> },
-  { link: "/dashboard/employees", text: "COMPANY PROFILE", icon: <Users /> },
-  { link: "/dashboard/employees", text: "Invoices & Subscriptions", icon: <BadgeCheck /> },
-  { link: "/dashboard/employees", text: "SETTINGS", icon: <SlidersHorizontal /> },
-  { link: "", text: "LOG-OUT", icon: <LogOutIcon /> },
+  { link: "/dashboard", text: "OVERVIEW", icon: <House className={iconsStyles} /> },
+  { link: "/dashboard/employees", text: "Find a Employee", icon: <Users className={iconsStyles} /> },
+  { link: "/dashboard/jobs", text: "MY JOBS", icon: <BriefcaseBusiness className={iconsStyles} /> },
+  { link: "/dashboard/post-job", text: "POST A JOB", icon: <MdAddCircle className={iconsStyles} /> },
+  { link: "/dashboard/notifications", text: "NOTIFICATIONS", icon: <MdNotifications className={iconsStyles} /> },
+  { link: "/dashboard/meetings", text: "METTINGS", icon: <CalendarClock className={iconsStyles} /> },
+  { link: "/dashboard/add-job-offer", text: "JOB OFFER", icon: <HandCoins className={iconsStyles} /> },
+  { link: "/dashboard/company-profile/1", text: "COMPANY PROFILE", icon: <Users className={iconsStyles} /> },
+  { link: "/dashboard/invoices", text: "Invoices & Subscriptions", icon: <BadgeCheck className={iconsStyles} /> },
+  { link: "/dashboard/settings", text: "SETTINGS", icon: <SlidersHorizontal className={iconsStyles} /> },
+  { link: "", text: "LOG-OUT", icon: <LogOutIcon className={iconsStyles} /> },
 ];
 
 const SideBar = ({ iconsOnly = false }: { iconsOnly?: boolean }) => {
   return (
-    <div className="flex bg-light rounded-xl h-fit pb-5 flex-col  col-span-full lg:col-span-2 gap-3">
-      <h1 className="px-6 py-3 mt-4 text-main2 font-semibold">{!iconsOnly ? "HOSPITAL DASHBOARD" : "HDB"}</h1>
+    <div className="flex items-center sticky top-0 lg bg-light rounded-xl h-fit pb-5 flex-col  col-span-full lg:col-span-2 gap-3">
+      <h1 className="lg:px-6 py-3 mt-4 text-main2 font-semibold">{!iconsOnly ? "HOSPITAL DASHBOARD" : "HDB"}</h1>
       <ul
-        style={iconsOnly ? { alignItems: "center" } : {}}
-        className="text-xs lg:text-sm items-start grid grid-cols-2 md:flex md:flex-col flex-wrap gap-5 mt-3 lg:flex-col text-gray-900 font-semibold"
+        style={iconsOnly ? { alignItems: "center", padding: "15px" } : {}}
+        className={`text-xs :text-sm items-start ${
+          !iconsOnly ? "grid grid-cols-2  w-full  text-base" : "flex flex-col"
+        } md:flex md:flex-col flex-nowrap md:flex-wrap gap-5 mt-3 lg:flex-col text-gray-900 font-semibold`}
       >
         {navItems.map((item, index) => (
           <SideNav iconsOnly={iconsOnly} key={index} link={item.link} text={item.text} icon={item.icon} />
