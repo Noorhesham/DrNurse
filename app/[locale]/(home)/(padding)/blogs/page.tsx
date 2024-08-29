@@ -27,7 +27,7 @@ const page = () => {
           <Image src={"/Image 1 (5).png"} alt={"blog"} fill className={"object-cover rounded-2xl"} />
         </div>
       </GridContainer>
-      <Button className=" self-center mx-auto mt-5">MORE OUR NEWS</Button>
+      <Button size={"lg"} className=" self-center mx-auto mt-5">MORE OUR NEWS</Button>
     </MaxWidthWrapper>
   );
 };

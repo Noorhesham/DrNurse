@@ -18,7 +18,7 @@ const Search = () => {
   }, [search]);
   return (
     <div className=" w-full md:w-[80%] flex flex-col gap-4  ">
-      <div className="bg-white flex-col md:flex-row  py-3 px-6 rounded-xl flex items-center w-full ">
+      <div className="bg-white flex-col gap-4 sm:gap-0 sm:flex-row  py-3 px-6 rounded-xl flex items-center w-full ">
         <div className=" w-full  px-6  py-3 flex items-center gap-2 border-b border-input">
           <SearchIcon />
           <input
@@ -28,7 +28,7 @@ const Search = () => {
             placeholder="JOB TITLE OR KEYWORD"
           />
         </div>
-        <Button >SEARCH MY JOB</Button>
+        <Button  size={'lg'} >SEARCH MY JOB</Button>
       </div>
       <FlexWrapper className=" px-3 w-full items-center gap-3">
         <h3 className=" font-light text-nowrap text-gray-50">POPULAR SEARCH: </h3>

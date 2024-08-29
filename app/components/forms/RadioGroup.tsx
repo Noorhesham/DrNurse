@@ -46,7 +46,7 @@ export function RadioGroupForm({ options, name }: { options?: any; name: string 
                   </FormControl>
                   <FormLabel htmlFor={option.title} className="flex flex-col">
                     <h2 className="font-normal">{option.title}</h2>
-                    <p className=" text-muted-foreground text-sm">{option.desc}</p>
+                    <p className=" text-muted-foreground font-normal text-sm my-2">{option.desc}</p>
                   </FormLabel>
                 </FormItem>
               ))}

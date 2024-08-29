@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ArrowDownIcon } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 const NavLink = ({
   text,
@@ -33,7 +33,7 @@ const NavLink = ({
     return (
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger className={linkStyles}>
-          {text} <ArrowDownIcon />
+          {text} <ChevronDown />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className=" w-full rounded-lg">
           {subLinks.map((link) => (

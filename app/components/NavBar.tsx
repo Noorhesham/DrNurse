@@ -14,6 +14,7 @@ import { useAuth } from "../context/AuthContext";
 
 import PhoneNav from "./PhoneNav";
 import { Button } from "@/components/ui/button";
+import { toast } from "react-toastify";
 const links = [
   {
     text: "BROWSE A JOB",
@@ -59,9 +60,6 @@ const NavBar = () => {
   const isHome = pathName === "/ar" || pathName === "/en" || pathName.includes("hospital");
   return (
     <header className=" w-full">
-      <div className={`z-[999] duration-150 h-full top-0  fixed left-0  lg:hidden block`}>
-        <PhoneNav isHome={isHome} navigation={links} />
-      </div>
       <nav
         className={`${
           isHome
@@ -75,7 +73,7 @@ const NavBar = () => {
           <div className="flex items-center justify-between  ">
             <div className="flex  items-center  gap-20 ">
               <div className="flex items-center   ">
-                <Logo isdark={isHome?false:true} />
+                <Logo isdark={isHome ? false : true} />
               </div>
               <ul className=" hidden lg:flex z-30 relative items-center  gap-4 xl:gap-8 ">
                 {links.map((link) => (
@@ -85,13 +83,39 @@ const NavBar = () => {
               </ul>
             </div>
             <div className="  flex items-center gap-2 ">
-              <Button
-                className="  px-4 lg:px-8  rounded-t-full rounded-bl-sm rounded-br-sm rounded-l-full rounded-r-full"
-                variant={"ghost"}
-              >
-                LOGIN
-              </Button>
-              <Button className="  px-4 lg:px-8 rounded-full">GET STARTED</Button>
+              {user ? (
+                <>
+                  <Link href="/login">
+                    <Button
+                      className="  px-4 lg:px-8  rounded-t-full rounded-bl-sm rounded-br-sm rounded-l-full rounded-r-full"
+                      variant={"ghost"}
+                    >
+                      LOGIN
+                    </Button>
+                  </Link>
+                  <Link href="/signup">
+                    {" "}
+                    <Button className="  px-4 lg:px-8 rounded-full">GET STARTED</Button>
+                  </Link>
+                </>
+              ) : (
+                <Button
+                  onClick={async () => {
+                    const res = await Server({ resourceName: "logout" });
+                    if (res.status) {
+                      toast.success(res.message);
+                      handleLogout();
+                      router.refresh();
+                    }
+                  }}
+                  className="  px-4 lg:px-8 rounded-full"
+                >
+                  LOG OUT
+                </Button>
+              )}
+              <div className={`z-[999] duration-150 h-full  relative lg:hidden block`}>
+                <PhoneNav isHome={isHome} navigation={links} />
+              </div>
             </div>
           </div>
         </MaxWidthWrapper>

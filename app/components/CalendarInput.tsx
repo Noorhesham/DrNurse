@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 
-const CalendarInput = ({ control, name }: { control: any; name: string }) => {
+const CalendarInput = ({ control, name,label}: { control: any; name: string,label?:string }) => {
   return (
     <FormField
       control={control}
@@ -17,7 +17,7 @@ const CalendarInput = ({ control, name }: { control: any; name: string }) => {
         console.log(field.value);
         return (
           <FormItem className="flex  w-full flex-col">
-            <FormLabel>DATE</FormLabel>
+            <FormLabel className=" uppercase">{label||'Date'}</FormLabel>
             <Popover>
               <PopoverTrigger asChild>
                 <FormControl>

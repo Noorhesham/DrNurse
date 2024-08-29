@@ -1,11 +1,10 @@
 "use client";
 import Section from "@/app/components/Section";
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
 import CustomForm from "@/app/components/forms/CustomForm";
 import Link from "next/link";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signupSchema } from "@/app/schema";
 import { Server } from "../../Server";
@@ -14,7 +13,15 @@ import Logo from "@/app/components/Logo";
 import { toast } from "react-toastify";
 import { redirect } from "next/navigation";
 import { useLocalStorageState } from "@/app/hooks/useLocalStorageState";
-const signupArray = [
+import { z } from "zod";
+
+const initialSignupArray = [
+  {
+    name: "role",
+    label: "PERSON",
+    label2: "HOSPITAL",
+    switchToggle: true,
+  },
   {
     name: "phone",
     placeholder: "Add Your Phone...",
@@ -41,7 +48,6 @@ const signupArray = [
     placeholder: "Add Your Email...",
     optional: true,
   },
-
   {
     name: "referealCode",
     optional: true,
@@ -53,21 +59,24 @@ const Signup = () => {
   const form = useForm({
     resolver: zodResolver(signupSchema),
     defaultValues: {
-      useEmail: true,
       email: "",
       name: "",
       password: "",
       referealCode: "",
-      sms: false,
+      role: "person", // Default to person for testing
       phone: "",
+      sms: false,
+      jobTitle: "", // Add jobTitle to default values
     },
     mode: "onChange",
   });
+
+  const [signupArray, setSignupArray] = useState(initialSignupArray);
   const [serverError, setServerError] = useState<string[] | null>(null);
   const { deviceInfo } = useDevice();
   const [isPending, startTransition] = useTransition();
   const [methods, setMethods] = useLocalStorageState([], "methods");
-  console.log(deviceInfo);
+
   const onSubmit = async (data: z.infer<typeof signupSchema>) => {
     startTransition(async () => {
       const res = await Server({
@@ -79,7 +88,6 @@ const Signup = () => {
       });
       if (!res.status) setServerError(res.errors);
       if (res.status) {
-        console.log(deviceInfo, data.phone, data.email, data.password);
         setServerError(null);
         const res = await Server({
           resourceName: "login",
@@ -94,7 +102,6 @@ const Signup = () => {
           },
         });
         if (res.activation_methods) {
-          console.log(res);
           setMethods(res.activation_methods);
           toast.success(`${res.message} ...`);
           redirect(`/login?uuid=${res.activation_uuid}`);
@@ -102,14 +109,38 @@ const Signup = () => {
       }
     });
   };
+
+  const role = form.watch("role");
+  useEffect(() => {
+    if (role) {
+      setSignupArray((prev) => {
+        const jobTitleExists = prev.some((input) => input.name === "jobTitle");
+        if (!jobTitleExists) {
+          return [
+            ...prev,
+            {
+              name: "jobTitle",
+              select: true,
+              options: ["Doctor", "Nurse", "Technician"],
+              placeholder: "Select Your Job Title...",
+            },
+          ];
+        }
+        return prev;
+      });
+    } else {
+      setSignupArray((prev) => prev.filter((input) => input.name !== "jobTitle"));
+    }
+  }, [role]);
+
   return (
-    <Section CustomePadding="px-5 py-10 " className=" bg-gray-50 flex flex-1 justify-center  flex-col items-center">
-      <div className=" mx-auto flex flex-col items-center justify-center  w-full  ">
-        <Logo size={{ width: 863, height: 338 }} type="blue" />
-        <h1 className=" text-center text-2xl  mt-5 font-bold text-main2">CREATE NEW ACCOUNT</h1>
-        <div className=" w-full  px-5 md:px-14 flex flex-col ">
+    <Section CustomePadding="px-5 py-10" className="bg-gray-50 flex flex-1 justify-center flex-col items-center">
+      <div className="mx-auto flex flex-col items-center justify-center w-full">
+        <Logo isdark size="lg" />
+        <h1 className="text-center text-2xl mt-5 font-bold text-main2">CREATE NEW ACCOUNT</h1>
+        <div className="w-full px-5 md:px-14 flex flex-col">
           <CustomForm
-            btnStyles=" w-full"
+            btnStyles="w-full"
             isPending={isPending}
             serverError={serverError}
             btnText="CREATE"
@@ -117,9 +148,9 @@ const Signup = () => {
             inputs={signupArray}
             onSubmit={onSubmit}
           />
-          <div className="  mt-4 text-sm flex items-center">
-            <span className=" font-[400] text-main2 ">ALREADY ON ORIENT ?</span>
-            <Link href={"/login"} className=" hover:underline duration-150 ml-1 text-main font-[700]">
+          <div className="mt-4 text-sm flex items-center">
+            <span className="font-[400] text-main2">ALREADY ON DRNURSE ?</span>
+            <Link href={"/login"} className="hover:underline duration-150 ml-1 text-main font-[700]">
               LOGIN
             </Link>
           </div>

@@ -7,7 +7,6 @@ import Heading from "@/app/components/Heading";
 import { CheckIcon, CloudUploadIcon, PersonAdd, PlayIcon, SearchIcon } from "@/app/components/Icons";
 import InfoCard from "@/app/components/InfoCard";
 import MaxWidthWrapper from "@/app/components/MaxWidthWrapper";
-import MotionContainer from "@/app/components/MotionContainer";
 import Paragraph from "@/app/components/Paragraph";
 import SwiperCards from "@/app/components/SwiperCards";
 import VideoZoom from "@/app/components/VideoZoom";
@@ -31,7 +30,7 @@ export default function Home() {
       >
         <div className="w-full h-screen bg-[#224982] bg-opacity-30 absolute inset-0 z-10"></div>
         <MaxWidthWrapper className=" flex-col items-center justify-center w-full h-full">
-          <div className="   h-full z-10 relative flex gap-4 md:gap-8 lg:gap-12 xl:mt-10 flex-col items-center justify-center">
+          <div className="   h-full z-10 relative flex gap-4 md:gap-8 lg:gap-12 mt-20 lg:mt-10 flex-col items-center justify-center">
             <Heading
               btnText="START HIRING NOW"
               text="HIRE SMARTER , GROW FASTER"
@@ -54,6 +53,7 @@ export default function Home() {
             slidesPerView={5.3}
             className="h-36"
             contain
+            logo
             items={[
               { src: "/logo13.png", left: true },
               { src: "/logo12.png" },

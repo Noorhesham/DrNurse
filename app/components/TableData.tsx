@@ -12,6 +12,7 @@ import {
 import { CheckCircle } from "lucide-react";
 import Link from "next/link";
 import { MdPeopleOutline } from "react-icons/md";
+import Actions from "./Actions";
 
 const jobs = [
   {
@@ -47,14 +48,14 @@ const jobs = [
   },
 ];
 
-export default function TableData() {
+export default function TableData({ offer }: { offer?: boolean }) {
   return (
     <Table>
-      <TableHeader>
+      <TableHeader className=" bg-light">
         <TableRow>
           <TableHead className="w-[40%]">JOBS</TableHead>
           <TableHead>Status</TableHead>
-          <TableHead>APPLICATIONS</TableHead>
+          <TableHead>{offer ? "OFFER DATE" : "APPLICATIONS"}</TableHead>
           <TableHead className="">ACTIONS</TableHead>
         </TableRow>
       </TableHeader>
@@ -78,19 +79,22 @@ export default function TableData() {
               </div>
             </TableCell>
 
-            <TableCell className=" flex items-center gap-2 ">
-              <MdPeopleOutline />
-              {job.applications}
+            <TableCell className="  m-auto self-center  ">
+              <div className="flex  items-center gap-2">
+                <MdPeopleOutline />
+                {job.applications}
+              </div>
             </TableCell>
 
-            <TableCell className="text-right">
-              <div className="flex items-center gap-2">
+            <TableCell className="  text-right">
+              <div className="flex items-center gap-5">
                 <Button
                   size={"lg"}
                   className=" font-semibold bg-light text-main2 hover:bg-main2 hover:text-light duration-150"
                 >
                   <Link href="/dashboard/jobs/applications/1">VIEW APPLICATIONS</Link>
                 </Button>
+                <Actions />
               </div>
             </TableCell>
           </TableRow>

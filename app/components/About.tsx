@@ -1,16 +1,14 @@
 import React from "react";
 import GridContainer from "./GridContainer";
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Paragraph from "./Paragraph";
 import Head1 from "./Head1";
 import MaxWidthWrapper from "./MaxWidthWrapper";
-import FlexWrapper from "./FlexWrapper";
 
 const About = ({ nohead = false }: { nohead?: boolean }) => {
   return (
     <MaxWidthWrapper>
-      <FlexWrapper >
+      <div className="flex-col flex gap-5" >
         {!nohead && (
           <Head1
             paragraph="The argument in favor of using filler text goes something like this: If you use real content in the design process, anytime you reach a review point you’ll end up reviewing and negotiating the content itself and not the design. Aenean tincidunt id mauris id auctor. Donec at ligula lacus. Nulla dignissim mi quis neque interdum, quis porta sem finibus. "
@@ -41,7 +39,7 @@ const About = ({ nohead = false }: { nohead?: boolean }) => {
             <Paragraph description="Facilitating online application processes. Managing and tracking recruitment and selection processes through the platform." />
           </div>
         </GridContainer>
-      </FlexWrapper>
+      </div>
     </MaxWidthWrapper>
   );
 };

@@ -38,14 +38,14 @@ const Devices = () => {
             {filteredResult.map((val, i) => (
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-2" key={i}>
-                  {val.device_type.toLowerCase() === "desktop" && (
+                  {val.device_type?.toLowerCase() === "desktop" && (
                     <HiComputerDesktop className=" mb-auto text-main w-10 h-10 md:w-14 md:h-14" />
                   )}
                   {val.device_type === "mobile" && <FaPhone className=" text-main w-10 h-10 md:w-14 md:h-14" />}
                   <div className=" flex  items-start gap-2">
-                    <h1 className=" font-semibold text-gray-900">{val.device_type}</h1>
-                    <span className="text-muted-foreground">{format(val.created_at, "dd/MM/yyyy")}</span>
-                    <span className="text-muted-foreground">{val.device_id}</span>
+                    <h1 className=" font-semibold text-gray-900">{val?.device_type}</h1>
+                    <span className="text-muted-foreground">{format(val?.created_at, "dd/MM/yyyy")}</span>
+                    <span className="text-muted-foreground">{val?.device_id}</span>
                     <div className=" flex  items-center gap-2">
                       <p>{val.os}</p> <p>{val.version}</p>
                     </div>

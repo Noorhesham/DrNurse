@@ -9,6 +9,8 @@ import FormInput from "./FormInput";
 import FunctionalButton from "../FunctionalButton";
 import { XIcon } from "lucide-react";
 import FormSelect from "./FormSelect";
+import MiniTitle from "../MiniTitle";
+import FormFlexContainer from "./FormFlexContainer";
 
 const offerSchema = z.object({
   employeeName: z.string().min(1, "Name is required"),
@@ -37,7 +39,8 @@ const SendOffer = () => {
 
   const { append, remove, fields } = useFieldArray({
     control: form.control,
-    name: "benefits", // Make sure TypeScript understands this is a string array
+    //@ts-ignore
+    name: "benefits",
   });
 
   const onSubmit = (data: OfferFormValues) => {
@@ -71,8 +74,8 @@ const SendOffer = () => {
 
   return (
     <div className=" px-5 py-2.5">
-      <h3 className="text-lg font-semibold"> {t("addJobOffer")}</h3>
-      <CustomForm btnText={t("addJobOffer")} form={form} inputs={offerArray} btnStyles="w-full" onSubmit={onSubmit}>
+      <MiniTitle text={t("addJobOffer")} boldness="bold" size="lg" />
+      <CustomForm btnText={t("addJobOffer")} form={form} inputs={offerArray} btnStyles="w-fit mr-auto " onSubmit={onSubmit}>
         <div className="mt-4">
           {fields.map((field, index) => (
             <div className="flex mb-5 items-center gap-4 mt-2" key={field.id}>
@@ -85,11 +88,11 @@ const SendOffer = () => {
           <div className="my-4">
             <FunctionalButton size="sm" btnText={t("addBenefit")} onClick={() => append("")} />
           </div>
-          <div className="flex w-full items-center gap-2">
+          <FormFlexContainer>
             <FormSelect label="COUNTRY" name="country" />
             <FormSelect label="THE CITY" name="city" />
             <FormSelect label="THE ARE" name="area" />
-          </div>
+          </FormFlexContainer>
           <FormInput control={form.control} name="address" placeholder="STREET" />
         </div>
       </CustomForm>

@@ -16,19 +16,19 @@ const FormSelect = ({ name, label, placeholder, description, id, options, select
       render={({ field }) => {
         const selected = options?.find((p) => p._id === form.getValues(name)?._id || p._id === selectedValue);
         return (
-          <FormItem className={`${className || ""} w-full shadow-sm`} id={id || ""}>
-            <FormLabel>{label}</FormLabel>
+          <FormItem className={`${className || ""} w-full `} id={id || ""}>
+            <FormLabel className=" uppercase">{label}</FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder={placeholder}>{selected && selected.name}</SelectValue>
+                <SelectTrigger className=" shadow-sm">
+                  <SelectValue placeholder={placeholder || "SELECT"}>{selected && selected.name}</SelectValue>
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
                 {filteredOptions &&
                   filteredOptions.map((option, i) => (
-                    <SelectItem key={i} value={option._id || option}>
-                      {option.name || option}
+                    <SelectItem key={i} value={option._id || option.value || option}>
+                      {option.label || option.name || option}
                     </SelectItem>
                   ))}
               </SelectContent>

@@ -109,7 +109,6 @@ export async function Server({
 
   // Set up headers
   const combinedHeaders: { [key: string]: string } = {
-    "Content-Type": img ? "multipart/form-data" : "application/json",
     ...headers,
   };
 
@@ -120,15 +119,26 @@ export async function Server({
     combinedHeaders["device-unique-id"] = JSON.parse(deviceId).device_unique_id;
   }
   try {
-
     // Get the URL and method from the resource name
     const { url, method: resolvedMethod } = getURL(resourceName, id, entityName);
     // Fetch data from the server
+    let requestBody;
+    if (img) {
+      requestBody = new FormData();
+      for (const key in body) {
+        requestBody.append(key, body[key]);
+      }
+      // Remove Content-Type header for FormData
+      delete combinedHeaders["Content-Type"];
+    } else {
+      requestBody = body ? JSON.stringify(body) : undefined;
+      combinedHeaders["Content-Type"] = "application/json";
+    }
     const response = await fetch(url, {
       method: method || resolvedMethod,
       headers: combinedHeaders,
-      body: body && !img ? JSON.stringify(body) : img ? body : undefined,
-      cache: "no-cache",
+      body: requestBody,
+      cache: cache ? "default" : "no-cache",
     });
 
     if (!response.ok) throw new Error(`Error: ${response.status}`);

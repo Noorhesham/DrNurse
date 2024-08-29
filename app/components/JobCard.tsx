@@ -3,10 +3,11 @@ import Image from "next/image";
 import React from "react";
 import { Location } from "./Icons";
 import FlexWrapper from "./FlexWrapper";
+import Link from "next/link";
 
 const JobCard = ({ heading }: { heading: string }) => {
   return (
-    <div className=" bg-white rounded-xl w-full gap-2   border border-input shadow-md px-10 py-7 flex flex-col">
+    <Link href={'/job/1'} className=" bg-white rounded-xl w-full gap-2   border border-input shadow-md px-10 py-7 flex flex-col">
       <h2 className=" font-semibold text-xl text-gray-900  uppercase">{heading}</h2>
       <div className=" flex  gap-4 items-center ">
         <div className=" text-blue-700 bg-blue-200 uppercase font-medium rounded-2xl text-xs py-1 px-2">InternShip</div>
@@ -28,7 +29,7 @@ const JobCard = ({ heading }: { heading: string }) => {
           <p className=" text-xs text-muted-foreground">25 minutes</p>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

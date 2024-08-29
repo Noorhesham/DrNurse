@@ -21,7 +21,11 @@ const BreadCrumb = () => {
   const links: any = pathName.split("/").filter((link) => !["ar", "en"].includes(link));
   console.log(links);
   const current = links[links.length - 1];
-  const dark = pathName.includes("doctor") || pathName.includes("company-profile");
+  const dark =
+    pathName.includes("doctor") ||
+    pathName.includes("company-profile") ||
+    pathName.includes("profile-settings") ||
+    pathName.includes("my-profile")||pathName.includes("job/");
   return (
     <Breadcrumb className={cn(" py-3 ", dark ? "bg-main2" : " bg-[#F2F5FF]")}>
       <MaxWidthWrapper className="flex justify-between" noPadding>

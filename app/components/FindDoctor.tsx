@@ -20,7 +20,7 @@ const FindDoctor = ({ reverse }: { reverse?: boolean }) => {
 anytime you reach a review point you’ll end up reviewing and negotiating the content itself and not the design. Aenean tincidunt id mauris id auctor. "
             />
           </div>
-          <Button>GET STARTED</Button>
+          <Button size="lg">GET STARTED</Button>
         </div>
         <GridContainer cols={2} className=" w-full h-full flex-1 ">
           <div className="flex flex-col gap-2 col-span-1">

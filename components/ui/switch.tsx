@@ -12,16 +12,19 @@ interface SwitchProps extends React.ComponentPropsWithoutRef<typeof SwitchPrimit
 const Switch = React.forwardRef<React.ElementRef<typeof SwitchPrimitives.Root>, SwitchProps>(
   ({ className, noSwitch, ...props }, ref) => {
     const path = usePathname();
-
     const isRtl = path?.includes("/ar");
+
     return (
       <SwitchPrimitives.Root
         className={cn(
           "peer inline-flex h-5 w-12 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50",
           {
-            "data-[state=checked]:bg-primary data-[state=unchecked]:bg-input": !noSwitch,
-            "data-[state=unchecked]:bg-main": noSwitch,
-            "rtl-switch": isRtl, // Custom class to handle RTL
+            // Always set background to 'main' if noSwitch is true
+            "bg-main": noSwitch,
+            // Otherwise handle the state-based background
+            "data-[state=checked]:bg-main data-[state=unchecked]:bg-gray-200": !noSwitch,
+            // RTL handling
+            "rtl-switch": isRtl,
           },
           className
         )}

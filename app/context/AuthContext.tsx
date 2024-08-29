@@ -94,13 +94,13 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           status: res.general_settings.status,
         });
         updateFn({
-          checker: res.user_settings.data,
+          checker: res.user_settings?.data,
           setState: setUserSettings,
           key: "user_settings",
           dateKey: "last_update_date_user",
           setDates,
           queryClient,
-          status: res.user_settings.status,
+          status: res.user_settings?.status,
         });
         console.log(res.user_settings, res.user2_settings, res.general_settings);
         updateFn({
@@ -110,7 +110,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           dateKey: "last_update_date_user2",
           setDates,
           queryClient,
-          status: res.user2_settings.status,
+          status: res.user2_settings?.status,
         });
       } catch (error) {
         console.error("Error fetching settings:", error);

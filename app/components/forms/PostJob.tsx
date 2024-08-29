@@ -11,6 +11,7 @@ import FormSelect from "./FormSelect";
 import { Form } from "@/components/ui/form";
 import MiniTitle from "../MiniTitle";
 import { RadioGroupForm } from "./RadioGroup";
+import FormFlexContainer from "./FormFlexContainer";
 
 const jobSchema = z.object({
   jobTitle: z.string().min(1, "Job title is required"),
@@ -24,8 +25,8 @@ const jobSchema = z.object({
     message: "Invalid end date",
   }),
   branch: z.string().min(1, "Branch is required"),
-  minSalary: z.number().min(1, "Min Salary is required"),
-  maxSalary: z.number().min(1, "Max Salary is required"),
+  minSalary: z.union([z.string().min(1, "Min Salary is required"), z.number()]),
+  maxSalary: z.union([z.string().min(1, "Max Salary is required"), z.number()]),
   hideSalary: z.string().min(1, "Hide Salary? is required"),
   nationality: z.string().min(1, "Nationality is required"),
   gender: z.string().min(1, "Gender is required"),
@@ -33,7 +34,8 @@ const jobSchema = z.object({
   benefits: z.array(z.string().min(1, "Benefit is required")).optional(),
   description: z.string().min(20, "Description is too short"),
   responsibility: z.string().min(20, "Responsibility is too short"),
-  emailType: z.string().min(1, "Email Type is required"),
+  type: z.string().optional(),
+  email: z.string().optional(),
 });
 
 type JobFormValues = z.infer<typeof jobSchema>;
@@ -64,6 +66,7 @@ const PostJob = () => {
 
   const { append, remove, fields } = useFieldArray({
     control: form.control,
+    //@ts-ignore
     name: "benefits",
   });
 
@@ -72,49 +75,48 @@ const PostJob = () => {
   };
 
   return (
-    <Form  {...form}>
+    <Form {...form}>
       <form className="flex flex-col  px-5 py-2.5 w-full items-stretch gap-2" onSubmit={form.handleSubmit(onSubmit)}>
-        <h3 className="text-lg font-semibold">{t("postJob")}</h3>
-
-        <div>
+        <MiniTitle size="lg" boldness="bold" text={t("postJob")} />
+        <div className=" flex flex-col gap-3 mt-3">
           {/* Job Title and Career Details */}
           <FormInput control={form.control} name="jobTitle" label={t("Job Title")} placeholder={t("Enter Job Title")} />
-          <div className="flex w-full items-center gap-2">
+          <FormFlexContainer>
             <FormSelect label={t("Career Type")} name="careerType" />
             <FormSelect label={t("Specialty")} name="specialty" />
             <FormSelect label={t("Career Level")} name="careerLevel" />
-          </div>
+          </FormFlexContainer>
 
           {/* Experience */}
-          <div className="flex w-full items-center gap-2 mt-4">
-            <FormInput control={form.control} name="experienceFrom" label={t("Experience From")} date />
-            <FormInput control={form.control} name="experienceTo" label={t("Experience To")} date />
-          </div>
+          <FormFlexContainer>
+            <FormInput control={form.control} name="experienceFrom" label={t("ExperienceFrom")} date />
+            <FormInput control={form.control} name="experienceTo" label={t("ExperienceTo")} date />
+          </FormFlexContainer>
 
           {/* Branch */}
           <FormSelect label={t("Choose the Branch")} name="branch" className="mt-4" />
 
           {/* Salary */}
-          <h4 className="mt-4 font-semibold">{t("Salary")}</h4>
-          <div className="flex w-full items-center gap-2">
-            <FormInput control={form.control} name="minSalary" label={t("Min Salary (USD)")} type="number" />
-            <FormInput control={form.control} name="maxSalary" label={t("Max Salary (USD)")} type="number" />
+          <FormFlexContainer title={t("Salary")}>
+            <FormInput control={form.control} name="minSalary" currency label={t("Min Salary (USD)")} type="number" />
+            <FormInput control={form.control} name="maxSalary" currency label={t("Max Salary (USD)")} type="number" />
             <FormSelect label={t("Hide Salary?")} name="hideSalary" />
-          </div>
+          </FormFlexContainer>
 
           {/* Personal Data */}
-          <h4 className="mt-4 font-semibold">{t("Personal Data")}</h4>
-          <div className="flex w-full items-center gap-2">
+
+          <FormFlexContainer title={t("Personal Data")}>
             <FormSelect label={t("Nationality")} name="nationality" />
             <FormSelect label={t("Gender")} name="gender" />
             <FormSelect label={t("Family Status")} name="familyStatus" />
-          </div>
+          </FormFlexContainer>
 
           {/* Benefits */}
-          <h4 className="mt-4 font-semibold">{t("Benefits")}</h4>
-          <div className="mt-4">
+
+          <MiniTitle size="lg" boldness="bold" text={t("Benefits")} />
+          <div className="">
             {fields.map((field, index) => (
-              <div className="flex items-center gap-4 mt-2" key={field.id}>
+              <div className="flex items-center gap-4 " key={field.id}>
                 <FormInput control={form.control} name={`benefits.${index}`} placeholder={t("Add Benefit")} />
                 <button type="button" onClick={() => remove(index)} className="rounded-xl border-2 border-gray-600 p-2">
                   <XIcon />
@@ -127,12 +129,14 @@ const PostJob = () => {
           </div>
 
           {/* Description & Responsibility */}
-          <h4 className="mt-4 font-semibold">{t("Description & Responsibility")}</h4>
+
+          <MiniTitle size="lg" boldness="bold" text={t("Description & Responsibility")} />
+
           <FormInput control={form.control} name="description" placeholder={t("Description")} area />
           <FormInput control={form.control} name="responsibility" placeholder={t("Responsibility")} area />
           <div className=" flex flex-col bg-gray-100  mt-4 rounded-lg p-5">
             <RadioGroupForm
-              name="emailType"
+              name="type"
               options={[
                 {
                   title: "No Send",
@@ -149,6 +153,7 @@ const PostJob = () => {
               ]}
             />
           </div>
+          {form.getValues("type") && <FormInput control={form.control} name="email" placeholder={t("email")} />}
           {/* Submit Button */}
           <div className="mt-4 w-fit ">
             <FunctionalButton

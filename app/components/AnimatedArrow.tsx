@@ -5,7 +5,7 @@ const ArrowDrawingAnimation = () => {
   return (
     <svg className=" z-30" width="227" height="53" viewBox="0 0 227 53" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g opacity="0.4" filter="url(#filter0_d_283_15789)">
-        <motion.path
+        <motion.path viewport={{once:true}}
           initial={{ pathLength: 0, stroke: "#0A65CC" }}
           whileInView={{ pathLength: 1, stroke: ["#0A65CC", "#00CFFF", "#0A65CC"] }}
           transition={{
@@ -22,7 +22,7 @@ const ArrowDrawingAnimation = () => {
         />
         <motion.path
           initial={{ scale: 0 }}
-          whileInView={{ scale: 1.2 }}
+          whileInView={{ scale: 1.2 }} viewport={{once:true}}
           transition={{
             delay: 1,
             duration: 0.3,

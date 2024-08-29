@@ -37,6 +37,7 @@ interface FormInputProps {
   rate?: boolean;
   area?: boolean;
   photo?: boolean;
+  currency?: boolean;
 }
 export interface PhoneProps {
   onChange: any;
@@ -44,6 +45,7 @@ export interface PhoneProps {
 export interface CalendarProps {
   control: any;
   name: string;
+  label?:string
 }
 type PhoneSearchComponentType = React.ComponentType<PhoneProps>;
 type CalendarComponentType = React.ComponentType<CalendarProps>;
@@ -67,6 +69,7 @@ const FormInput = ({
   rate = false,
   photo = false,
   area = false,
+  currency = false,
 }: FormInputProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [PhoneSearchComponent, setPhoneSearchComponent] = useState<PhoneSearchComponentType>();
@@ -109,7 +112,7 @@ const FormInput = ({
     return (
       <Suspense fallback={<Spinner />}>
         <div className=" w-full">
-          <CalendarComponent name={name || ""} control={control} />
+          <CalendarComponent label={label} name={name || ""} control={control} />
         </div>
       </Suspense>
     );
@@ -121,12 +124,12 @@ const FormInput = ({
         render={({ field }) => (
           <FormItem className={`flex w-full flex-col text-left items-start  relative`}>
             {!switchToggle && label !== "" && (
-              <FormLabel>
+              <FormLabel className="uppercase">
                 {label} {icon}
               </FormLabel>
             )}
             <div className={`relative  w-full inline-flex items-center justify-center ${className}`}>
-              {!optional && !switchToggle && (
+              {!optional && !currency && !switchToggle && (
                 <span
                   className={`absolute ${
                     local === "en" ? "right-1 -top-[-13px]" : " top-1 right-1"
@@ -146,7 +149,7 @@ const FormInput = ({
                   <PhotoInput value={field.value} onChange={field.onChange} />
                 ) : switchToggle ? (
                   <div className="flex mx-auto   mt-3 gap-2 items-center ">
-                    <Label className=" md:text-sm  text-xs text-muted-foreground" htmlFor="sale">
+                    <Label className=" uppercase md:text-sm  text-xs text-muted-foreground" htmlFor="sale">
                       {label2 || ""}
                     </Label>
                     <Switch
@@ -157,7 +160,7 @@ const FormInput = ({
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />
-                    <Label className="md:text-sm flex-grow  text-xs  text-muted-foreground" htmlFor="sale">
+                    <Label className="md:text-sm uppercase flex-grow  text-xs  text-muted-foreground" htmlFor="sale">
                       {label || ""}
                     </Label>
                   </div>
@@ -172,7 +175,7 @@ const FormInput = ({
                           ? "text"
                           : type || "text"
                       }
-                      className={`${!phone && "bg-white"} w-full ${password && "pl-8"} `}
+                      className={`${!phone && "bg-white"} shadow-sm w-full ${password && "pl-8"} `}
                       placeholder={placeholder}
                       {...field}
                       onChange={(e) => {
@@ -180,6 +183,11 @@ const FormInput = ({
                         if (password) handlePasswordChange(e.target.value);
                       }}
                     />
+                    {currency && (
+                      <span className=" bg-gray-300 text-gray-800 p-2 rounded-lg rounded-l-none absolute right-0 top-1">
+                        USD
+                      </span>
+                    )}
                     <AnimatePresence>
                       {!noProgress && password && field.value && (
                         <motion.div

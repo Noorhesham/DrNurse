@@ -127,7 +127,7 @@ const Login = () => {
   return (
     <Section CustomePadding="px-5 py-20" className="bg-gray-50 justify-center flex flex-1 flex-col items-center">
       <div className="mx-auto flex flex-col items-center justify-center w-full">
-        <Logo size={{ width: 863, height: 338 }} type="blue" />
+        <Logo isdark size="lg" />
         {!activate && (
           <>
             <h1 className="text-center text-xl md:text-2xl mt-8 font-bold text-main2">{t("login")}</h1>

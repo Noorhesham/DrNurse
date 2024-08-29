@@ -4,9 +4,17 @@ import MiniTitle from "./MiniTitle";
 import { Location } from "./Icons";
 import { cn } from "@/lib/utils";
 
-const UserCard = ({ applicant, show = true ,notification}: { applicant: any; show?: boolean,notification?:boolean }) => {
+const UserCard = ({
+  applicant,
+  show = true,
+  notification,className
+}: {
+  applicant: any;
+  show?: boolean;
+  notification?: boolean;className?:string
+}) => {
   return (
-    <div className=" flex items-center gap-3">
+    <div className={`${className||""} flex items-center gap-3`}>
       <div className={cn("relative", show ? "w-40 h-40" : " w-20 h-20")}>
         <Image alt="image" fill className="object-cover" src={applicant.image} />
       </div>

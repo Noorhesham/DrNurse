@@ -36,7 +36,7 @@ const page = () => {
           </div>
         </MaxWidthWrapper>
       </section>{" "}
-      <MaxWidthWrapper className=" mt-10 flex flex-col gap-20">
+      <MaxWidthWrapper className=" mt-5 flex flex-col gap-20">
         <div className="flex flex-col gap-5">
           <Head1 text="Join Sudia arabic 's Top Hospitals" />
           <SwiperCards
@@ -44,11 +44,12 @@ const page = () => {
             slidesPerView={5.3}
             className="h-36"
             contain
+            logo
             items={[
               { src: "/logo13.png", left: true },
               { src: "/logo12.png" },
               { src: "/logo9.png" },
-              { src: "/logo8.png", cover: true },
+              { src: "/logo8.png" },
               { src: "/logo7.png" },
               { src: "/logo1.png" },
               { src: "/logo5.png" },
@@ -103,7 +104,7 @@ const page = () => {
           </div>
         </FlexWrapper>
       </MaxWidthWrapper>
-      <div className="bg-[#F2F5FF]">
+      <div className="bg-[#F2F5FF] mt-5">
         <MaxWidthWrapper>
           <Head1
             paragraph="We are looking for an outstanding Surgical Nurse to join our medical team. The main role of a surgical nurse is to provide high-quality care to patients before, during and after surgical procedures.s"
@@ -126,23 +127,42 @@ const page = () => {
           according to your specialty"
           headingClasses=" max-w-lg"
         />
-        <GridContainer className=" mt-4" cols={5}>
-          <div className=" w-full h-72 relative">
-            <Image fill alt="image" src={"/ob1.png"} className=" object-contain" />
-          </div>
-          <div className=" w-full h-72 relative">
-            <Image fill alt="image" src={"/ob2.png"} className=" object-contain" />
-          </div>
-          <div className=" w-full h-72 relative">
-            <Image fill alt="image" src={"/ob3.png"} className=" object-contain" />
-          </div>
-          <div className=" w-full h-72 relative">
-            <Image fill alt="image" src={"/ob4.png"} className=" object-contain" />
-          </div>
-          <div className=" w-full h-72 relative">
-            <Image fill alt="image" src={"/ob5.png"} className=" object-contain" />
-          </div>
-        </GridContainer>
+        <div className=" hidden lg:grid">
+          <GridContainer className=" mt-4" cols={5}>
+            <div className=" w-full h-72 relative">
+              <Image fill alt="image" src={"/ob1.png"} className=" object-contain" />
+            </div>
+            <div className=" w-full h-72 relative">
+              <Image fill alt="image" src={"/ob2.png"} className=" object-contain" />
+            </div>
+            <div className=" w-full h-72 relative">
+              <Image fill alt="image" src={"/ob3.png"} className=" object-contain" />
+            </div>
+            <div className=" w-full h-72 relative">
+              <Image fill alt="image" src={"/ob4.png"} className=" object-contain" />
+            </div>
+            <div className=" w-full h-72 relative">
+              <Image fill alt="image" src={"/ob5.png"} className=" object-contain" />
+            </div>
+          </GridContainer>
+        </div>
+        <div className=" lg:hidden block">
+          <SwiperCards
+            autoplay={true}
+            slidesPerView={2.1}
+            samePhone
+            className="h-72"
+            contain
+            logo
+            items={[
+              { src: "/ob1.png" },
+              { src: "/ob2.png" },
+              { src: "/ob3.png" },
+              { src: "/ob4.png" },
+              { src: "/ob5.png" },
+            ]}
+          />
+        </div>
       </MaxWidthWrapper>
       <MaxWidthWrapper>
         <Head1 text="IMPORTANT KEYWORDS" />
@@ -159,14 +179,19 @@ const page = () => {
             <Image alt="image" fill className="object-contain" src={"/phone.png"} />
           </div>
           <div className="w-full   relative h-full lg:h-[430px] flex justify-center items-center">
-            <Image alt="image" fill className=" object-cover lg:object-contain rounded-[2.5rem]   object-right-top" src={"/bg.jpg"} />
-            <div className="flex p-4 max-w-xl relative lg:top-24 lg:left-[40%]  lg:absolute z-30 flex-col gap-5">
-              <h1 className=" text-white text-3xl font-semibold">DOWNLOAD THE APP</h1>
+            <Image
+              alt="image"
+              fill
+              className=" object-cover lg:object-contain rounded-[2.5rem]   object-right-top"
+              src={"/bg.jpg"}
+            />
+            <div className="flex p-4 max-w-xl relative lg:top-24 lg:left-[40%]  lg:absolute z-30 flex-col gap-2 lg:gap-5">
+              <h1 className=" text-white text-xl lg:text-3xl font-semibold">DOWNLOAD THE APP</h1>
               <p className=" text-gray-50">
                 Download the application and enjoy the best services and features Download the application and enjoy the
                 best services and features
               </p>
-              <div className=" flex items-center">
+              <div className=" flex gap-2 items-center">
                 <DownloadButtons />
               </div>
             </div>
@@ -189,7 +214,7 @@ const page = () => {
                 description="The argument in favor of using filler text goes something like this: If you use real content in the design process, anytime you reach a review point you’ll end up reviewing and negotiating the content itself and not the design. Aenean tincidunt id mauris id auctor. Donec at ligula lacus. Nulla dignissim mi quis neque interdum, quis porta sem finibus. 
 anytime you reach a review point you’ll end up reviewing and negotiating the content itself and not the design. Aenean tincidunt id mauris id auctor. Donec at ligula lacus. Nulla dignissim mi quis neque interdum, quis porta sem finibus."
               />
-              <Button className=" mt-2">
+              <Button size={"lg"} className=" mt-2">
                 <Link href={"/hospital"}>GET STARTED</Link>
               </Button>
             </div>

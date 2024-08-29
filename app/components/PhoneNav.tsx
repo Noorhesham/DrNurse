@@ -7,6 +7,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
+import { cn } from "@/lib/utils";
 
 const container = {
   hidden: { opacity: 1, scale: 0 },
@@ -51,6 +52,7 @@ const PhoneNav = ({ navigation, isHome }: { navigation: any; isHome?: boolean })
       disablePageScroll();
     }
   };
+  const locale = pathName?.split("/")[1];
 
   return (
     <div ref={ref} className="overflow-y-scroll">
@@ -61,12 +63,11 @@ const PhoneNav = ({ navigation, isHome }: { navigation: any; isHome?: boolean })
             initial="hidden"
             animate="visible"
             exit="exit"
-            className={`${
-              openNavigation ? "flex" : "hidden"
-            } fixed top-0 left-0 bg-black/40 backdrop-blur-lg bottom-0 right-0 z-50 bg-n-8 lg:static lg:flex lg:mx-auto lg:bg-transparent`}
+            className={`${openNavigation ? "flex" : "hidden"} fixed top-0 left-0 bg-black/40 w-full h-screen
+             backdrop-blur-lg bottom-0 right-0 z-[999] bg-n-8 lg:static lg:flex lg:mx-auto lg:bg-transparent`}
             onClick={handleClickOutside}
           >
-            <MaxWidthWrapper className="relative z-50 mt-20 my-auto h-full w-full flex flex-col items-center justify-start mx-auto lg:flex-row">
+            <MaxWidthWrapper className="relative z-[999] mt-20 my-auto h-full w-full flex flex-col items-center justify-start mx-auto lg:flex-row">
               {navigation.map((link: any, i: number) =>
                 link.subLinks ? (
                   <Accordion key={i} className={`text-gray-50 z-[999] w-full ml-3`} type="single" collapsible>
@@ -84,7 +85,7 @@ const PhoneNav = ({ navigation, isHome }: { navigation: any; isHome?: boolean })
                 ) : (
                   <motion.div key={i} variants={item} className="w-full">
                     <Link
-                      href={link.href||""}
+                      href={link.href || ""}
                       className={`text-balance my-2 z-50 w-full text-left text-gray-50 font-medium ${
                         pathName === link.url ? "text-main" : ""
                       }`}
@@ -102,7 +103,13 @@ const PhoneNav = ({ navigation, isHome }: { navigation: any; isHome?: boolean })
           </motion.nav>
         )}
       </AnimatePresence>
-      <button className="ml-auto z-50 right-2 fixed top-7 lg:hidden" onClick={toggleNavigation}>
+      <button
+        className={cn(
+          " z-[999999] relative",
+          openNavigation && locale === "en" ? " fixed right-2" : openNavigation && locale !== "ar" ? "fixed left-0" : ""
+        )}
+        onClick={toggleNavigation}
+      >
         <MenuSvg isHome={isHome} openNavigation={openNavigation} />
       </button>
     </div>
@@ -113,23 +120,31 @@ export default PhoneNav;
 
 const MenuSvg = ({ openNavigation, isHome }: { openNavigation: any; isHome?: boolean }) => {
   return (
-    <svg className="overflow-visible" width="20" height="12" viewBox="0 0 20 12">
+    <svg className="overflow-visible" width="20" height="14" viewBox="0 0 20 14">
       <rect
         className="transition-all origin-center"
         y={openNavigation ? "5" : "0"}
         width="20"
         height="2"
         rx="1"
-        fill={isHome ? "#0D3B6F" : "#E6007E"}
+        fill={isHome ? "white" : "#E6007E"}
         transform={`rotate(${openNavigation ? "45" : "0"})`}
       />
       <rect
-        className="transition-all origin-center"
-        y={openNavigation ? "5" : "10"}
+        className={`${openNavigation ? " opacity-0" : "transition-all opacity-100"} origin-center`}
+        y={openNavigation ? "5" : "8"}
         width="20"
         height="2"
         rx="1"
-        fill={isHome ? "#0D3B6F" : "#E6007E"}
+        fill={isHome ? "white" : "#E6007E"}
+      />
+      <rect
+        className="transition-all origin-center"
+        y={openNavigation ? "5" : "16"}
+        width="20"
+        height="2"
+        rx="1"
+        fill={isHome ? "white" : "#E6007E"}
         transform={`rotate(${openNavigation ? "-45" : "0"})`}
       />
     </svg>

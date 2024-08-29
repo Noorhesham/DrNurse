@@ -39,7 +39,7 @@ export function PaginationDemo({ totalPages = 5 }: { totalPages?: number }) {
             className={
               currentPage >= (totalPages || 5)
                 ? " cursor-not-allowed text-main   opacity-80"
-                : "rounded-full flex mr-1 md:mr-3 p-1 items-center text-main2  bg-light duration-150 hover:text-white hover:bg-main"
+                : "rounded-full flex mr-1 md:mr-3 p-1 items-center text-main2  bg-light duration-150 hover:text-white hover:bg-main2"
             }
             onClick={(e) => {
               e.preventDefault();
@@ -56,7 +56,7 @@ export function PaginationDemo({ totalPages = 5 }: { totalPages?: number }) {
             <PaginationItem key={page}>
               <PaginationLink
                 className={
-                  currentPage === page ? "bg-main   text-gray-50 rounded-full text-primary-foreground" : "rounded-full"
+                  currentPage === page ? "bg-main2   text-gray-50 rounded-full text-primary-foreground" : "rounded-full"
                 }
                 href="#"
                 isActive={currentPage === page}
@@ -79,7 +79,7 @@ export function PaginationDemo({ totalPages = 5 }: { totalPages?: number }) {
             className={
               currentPage >= totalPages
                 ? " cursor-not-allowed text-main  opacity-80"
-                : "rounded-full bg-light text-main2 ml-1 md:ml-3 p-1 flex  1items-center duration-150 hover:text-white hover:bg-main"
+                : "rounded-full bg-light text-main2 ml-1 md:ml-3 p-1 flex  1items-center duration-150 hover:text-white hover:bg-main2"
             }
             onClick={(e) => {
               e.preventDefault();

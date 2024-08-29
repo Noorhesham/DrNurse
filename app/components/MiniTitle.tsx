@@ -20,7 +20,7 @@ const MiniTitle = ({
 }) => {
   console.log(color);
   return (
-    <div className={`flex justify-between ${color || "text-gray-800"}`}>
+    <div className={`flex uppercase justify-between ${color || "text-gray-800"}`}>
       <h2
         className={cn(" ", {
           " text-3xl": size === "3xl",

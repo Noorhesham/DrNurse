@@ -8,12 +8,11 @@ import ModalCustom from "@/app/components/ModalCustom";
 import UpdateCard from "@/app/components/UpdateCard";
 import { GoPeople } from "react-icons/go";
 import FormContainer from "@/app/components/forms/FormContainer";
-import Activate2fa from "./Activate2fa";
 import { MailIcon, PhoneIcon } from "lucide-react";
 import Spinner from "@/app/components/Spinner";
 import { InputOTPPattern } from "./OTP";
 import { useTranslations } from "next-intl";
-
+import cookies from "js-cookie";
 const UpdatePersonalInfo = () => {
   const t = useTranslations();
   const router = useRouter();
@@ -26,22 +25,47 @@ const UpdatePersonalInfo = () => {
   const phone = [{ name: "phone", placeholder: t("phone"), phone: true }];
   const searchParams = useSearchParams();
   const { setLogin, userSettings: user, loading } = useAuth();
+  const formData = new FormData();
   const updatePersonalInfro = async (data: any, setError: any) => {
     const formData = new FormData();
-    if (data.name) formData.append("name", data.name);
-    if (data.birth_day) formData.append("birth_day", format(data.birth_day, "yyyy-MM-dd"));
-    if (data.avatar) formData.append("avatar", data.avatar[0]);
-    console.log(data);
-    const res = await Server({
-      resourceName: "update_profile",
-      body: formData,
-      img: true,
+
+    // Correctly append all fields to FormData
+    Object.keys(data).forEach((key) => {
+      // Check if the key is "avatar" to append the file properly
+      if (key === "avatar") {
+        if (data[key] instanceof FileList && data[key].length > 0) {
+          formData.append(key, data[key][0]); // Append only the first file if it's a single image upload
+        }
+        // If avatar is not a file, do not append it
+      } else if (data[key] !== undefined) {
+        formData.append(key, data[key]); // Append other fields directly
+      }
     });
-    if (!res.status) setError(Array.isArray(res.errors) ? res.errors : res.errors.password || res.message);
-    if (res.status === true) {
+
+    const deviceId = cookies.get("deviceInfo");
+    const token = cookies.get("jwt");
+    try {
+      // Send FormData using the Server function
+      const re = await fetch(`https://lab.r-m.dev/api/rm_users/v1/update_profile`, {
+        method: "POST",
+        body: formData,
+        headers: { "device-unique-id": JSON.parse(deviceId || "").device_unique_id, Authorization: `Bearer ${token}` },
+      });
+      const res = await re.json();
+      console.log(res);
+      // Handle response errors
+      if (!res.status) {
+        setError(Array.isArray(res.errors) ? res.errors : res.errors.password || res.message);
+        return;
+      }
+
+      // Handle successful response
       toast.success(res.message);
       setError(null);
       setLogin((l: any) => !l);
+    } catch (error) {
+      console.error("Error in updating personal info:", error);
+      setError("An error occurred while updating personal information.");
     }
   };
 
@@ -189,3 +213,20 @@ export default UpdatePersonalInfo;
 //   });
 // }
 // console.log(avatarBase64)
+// const updatePersonalInfro = async (data: any, setError: any) => {
+//   const formData = new FormData();
+//   if (data.name) formData.append("name", data.name);
+//   if (data.birth_day) formData.append("birth_day", format(data.birth_day, "yyyy-MM-dd"));
+//   if (data.avatar) formData.append("avatar", data.avatar[0]);
+//   console.log(data);
+//   const res = await axios.post("https://lab.r-m.dev/api/rm_users/1/update_profile", formData, {
+//     headers: { "Content-Type": "multipart/form-data", "device-unique-id": user.device_unique_id },
+//   });
+//   console.log(res);
+//   // if (!res.status) setError(Array.isArray(res.errors) ? res.errors : res.errors.password || res.message);
+//   // if (res.status === true) {
+//   //   toast.success(res.message);
+//   //   setError(null);
+//   //   setLogin((l: any) => !l);
+//   // }
+// };

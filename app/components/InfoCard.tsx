@@ -28,7 +28,7 @@ const InfoCard = ({
       {arrow && (
         <div
           style={reverse ? { transform: "rotate(180deg) scaleX(-1)", top: "70px", zIndex: 20 } : {}}
-          className=" left-[62%] top-0 z-20 absolute w-full h-10"
+          className=" left-[62%] lg:block hidden top-0 z-20 absolute w-full h-10"
         >
           <ArrowDrawingAnimation />
         </div>

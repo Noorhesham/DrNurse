@@ -5,6 +5,7 @@ import MaxWidthWrapper from "@/app/components/MaxWidthWrapper";
 import Meet from "@/app/components/Meet";
 import MiniTitle from "@/app/components/MiniTitle";
 import SideBar from "@/app/components/SideBar";
+import SwiperCards from "@/app/components/SwiperCards";
 import TableData from "@/app/components/TableData";
 import React from "react";
 const doctors = [
@@ -24,12 +25,12 @@ const doctors = [
 const page = () => {
   return (
     <MaxWidthWrapper>
-      <div className="  flex flex-col lg:grid lg:grid-cols-8 gap-5" >
+      <div className="  flex flex-col lg:grid lg:grid-cols-8 gap-5">
         <SideBar />
         <section className=" col-span-6">
           <div className=" flex justify-between">
             <div className="flex text-main2 font-semibold flex-col ">
-              <span className=" tracking-widest">HELLO,</span>
+              <span className=" text-xl tracking-widest">HELLO,</span>
               <MiniTitle
                 boldness="bold"
                 size="lg"
@@ -52,7 +53,7 @@ const page = () => {
             />
           </div>
           <TableData />
-          <div className=" grid grid-cols-1 sm:grid-cols-2 my-4 gap-5">
+          <div className=" grid grid-cols-1 md:grid-cols-2 my-4 gap-5">
             <div className=" flex flex-col gap-4 bg-[#F7F9FB] px-5 py-5 rounded-lg">
               <MiniTitle boldness="bold" text="RECENTLY MEETINGS" />
               <Meet />
@@ -62,11 +63,24 @@ const page = () => {
             </div>
             <div className=" flex flex-col gap-4 bg-[#F7F9FB] px-5 py-5 rounded-lg">
               <MiniTitle link="#" boldness="bold" text="Recently Proposed persons" />
-              <GridContainer cols={3}>
-                {doctors.map((doctor) => (
-                  <Doctor doctor={doctor} />
-                ))}
-              </GridContainer>
+              <div className=" md:block hidden">
+                <GridContainer cols={3}>
+                  {doctors.map((doctor) => (
+                    <Doctor doctor={doctor} />
+                  ))}
+                </GridContainer>
+              </div>
+              <div className=" block md:hidden ">
+                <SwiperCards
+                  autoplay
+                  className=" w-full h-full"
+                  slidesPerView={2}
+                  samePhone
+                  items={doctors.map((doctor, i) => ({
+                    card: <Doctor key={i} doctor={doctor} />,
+                  }))}
+                />
+              </div>
             </div>
           </div>
         </section>

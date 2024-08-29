@@ -1,8 +1,9 @@
 import FormContainer from "@/app/components/forms/FormContainer";
-import { Notifications } from "@/app/components/Icons";
+
 import ModalCustom from "@/app/components/ModalCustom";
 import UpdateCard from "@/app/components/UpdateCard";
 import React from "react";
+import { MdNotifications } from "react-icons/md";
 const notifications = [{ name: "active", label: "DEACTIVATE", label2: "ACTIVATE", switchToggle: true }];
 
 const UpdateNotifications = () => {
@@ -13,7 +14,7 @@ const UpdateNotifications = () => {
           <UpdateCard
             text="CUSTOMIZE NOTIFICATIONS"
             desc="CONFIGURE CUSTOM SETTINGS"
-            icon={<Notifications color="#E6007E" />}
+            icon={<MdNotifications />}
           />
         </div>
       }

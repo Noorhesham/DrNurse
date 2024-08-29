@@ -3,8 +3,8 @@ import React from "react";
 import ModalCustom from "./ModalCustom";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 const FunctionalButton = ({
   btnText,
@@ -21,25 +21,46 @@ const FunctionalButton = ({
   content?: React.ReactNode;
   icon?: React.ReactNode;
   link?: string;
-  onClick?: any;
+  onClick?: () => void;
   size?: "lg" | "icon" | "sm" | "default" | null | undefined;
   className?: string;
   type?: "button" | "reset" | "submit" | undefined;
-  variant?: any;
+  variant?: "default" | "link" | "destructive" | "outline" | "secondary" | "ghost";
 }) => {
-  return link || onClick ? (
+  const buttonContent = (
+    <>
+      {icon ? icon : <PlusCircle />}
+      {btnText}
+    </>
+  );
+
+  if (link) {
+    return (
+      <Link className={className || ""} href={link} passHref>
+        <Button
+          variant={variant || "default"}
+          size={size || "lg"}
+          className={cn("flex  items-center gap-2 bg-main2 text-gray-50 hover:bg-main2/80", className)}
+          type={type || "button"}
+        >
+          {buttonContent}
+        </Button>
+      </Link>
+    );
+  }
+
+  return onClick ? (
     <Button
       variant={variant || "default"}
-      onClick={(e) => {
-        e.preventDefault();
-        onClick && onClick();
-      }}
+      onClick={onClick}
       type={type || "button"}
       size={size || "lg"}
-      className={cn(" flex items-cetner gap-2 bg-main2 text-gray-50 hover:bg-main2/80", className)}
+      className={cn(
+        variant !== "destructive" && "flex items-center gap-2 bg-main2 text-gray-50 hover:bg-main2/80",
+        className
+      )}
     >
-      {icon ? icon : <PlusCircle />}
-      {link ? <Link href={link}>{btnText}</Link> : btnText}
+      {buttonContent}
     </Button>
   ) : (
     <ModalCustom
