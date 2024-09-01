@@ -181,7 +181,7 @@ const Login = () => {
         )}{" "}
         <Suspense>
           {activate && !isCode && (
-            <Methods tfa={searchParams.get("tfa") || ""} handleSend={handleSend} message={message} methods={methods} />
+            <Methods setActivate={setActivate} tfa={searchParams.get("tfa") || ""} handleSend={handleSend} message={message} methods={methods} />
           )}
           {isCode !== "" && activate && (
             <InputOTPPattern
@@ -193,7 +193,7 @@ const Login = () => {
             />
           )}
         </Suspense>
-        {serverError && <p className="text-red-500 text-center mt-3 text-sm font-semibold">{serverError}</p>}
+        {/* {serverError && <p className="text-red-500 text-center mt-3 text-sm font-semibold">{serverError}</p>} */}
       </div>
     </Section>
   );

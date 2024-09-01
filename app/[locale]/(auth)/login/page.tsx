@@ -9,7 +9,7 @@ const Page = () => {
   const loginMethods = generalSettings?.data?.login_types;
   return (
     <section className="min-h-screen  flex items-stretch ">
-      <div className=" hidden md:block md:w-[40%] lg:w-[60%]  min-h-full relative">
+      <div  className=" hidden md:block md:w-[40%] lg:w-[60%]  min-h-full relative">
         <Image src="/login.jpg" alt="login" className=" object-cover" fill />
       </div>
       <Login />

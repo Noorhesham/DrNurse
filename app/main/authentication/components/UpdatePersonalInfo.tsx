@@ -3,7 +3,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Server } from "../../Server";
 import { toast } from "react-toastify";
 import { useAuth } from "@/app/context/AuthContext";
-import { format } from "date-fns";
 import ModalCustom from "@/app/components/ModalCustom";
 import UpdateCard from "@/app/components/UpdateCard";
 import { GoPeople } from "react-icons/go";
@@ -25,10 +24,8 @@ const UpdatePersonalInfo = () => {
   const phone = [{ name: "phone", placeholder: t("phone"), phone: true }];
   const searchParams = useSearchParams();
   const { setLogin, userSettings: user, loading } = useAuth();
-  const formData = new FormData();
   const updatePersonalInfro = async (data: any, setError: any) => {
     const formData = new FormData();
-
     // Correctly append all fields to FormData
     Object.keys(data).forEach((key) => {
       // Check if the key is "avatar" to append the file properly
@@ -134,7 +131,7 @@ const UpdatePersonalInfo = () => {
           <div>
             <UpdateCard
               text={t("updatePhone")}
-              desc={`+${user?.country_key} ${user?.phone}`}
+              desc={loading ? "" : `+${user?.country_key} ${user?.phone}`}
               icon={<PhoneIcon className=" text-main w-10 h-10" />}
             />
           </div>

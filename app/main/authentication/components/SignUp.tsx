@@ -134,7 +134,7 @@ const Signup = () => {
   }, [role]);
 
   return (
-    <Section CustomePadding="px-5 py-10" className="bg-gray-50 flex flex-1 justify-center flex-col items-center">
+    <Section CustomePadding="px-5  py-10" className=" flex flex-1 justify-center flex-col items-center">
       <div className="mx-auto flex flex-col items-center justify-center w-full">
         <Logo isdark size="lg" />
         <h1 className="text-center text-2xl mt-5 font-bold text-main2">CREATE NEW ACCOUNT</h1>
@@ -148,7 +148,7 @@ const Signup = () => {
             inputs={signupArray}
             onSubmit={onSubmit}
           />
-          <div className="mt-4 text-sm flex items-center">
+          <div className="my-4 text-sm flex items-center">
             <span className="font-[400] text-main2">ALREADY ON DRNURSE ?</span>
             <Link href={"/login"} className="hover:underline duration-150 ml-1 text-main font-[700]">
               LOGIN

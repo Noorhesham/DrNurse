@@ -1,5 +1,5 @@
 import Head1 from "@/app/components/Head1";
-import { ArrowRight } from "@/app/components/Icons";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import React, { Suspense } from "react";
 
@@ -8,11 +8,13 @@ const Methods = ({
   message,
   methods,
   tfa,
+  setActivate,
 }: {
   handleSend: (type: string) => void;
   message: string;
   methods: { email: string; sms: string; apps: any; auth_app: any };
   tfa?: string;
+  setActivate?: any;
 }) => {
   return (
     <Suspense>
@@ -23,7 +25,7 @@ const Methods = ({
             onClick={() => handleSend("email")}
             className=" flex cursor-pointer hover:border-main  hover:bg-gray-50 duration-100 flex-col gap-3 bg-white py-4 px-8 rounded-2xl border border-input items-center mt-5"
           >
-            <Head1 text={tfa === "true" ? "SEND TFA CODE TO " : "SEND PASSWORD RESET EMAIL TO :"} />
+            <Head1 size="sm" text={tfa === "true" ? "SEND TFA CODE TO " : "SEND PASSWORD RESET EMAIL TO :"} />
             <p className=" text-main2 font-medium text-base">{methods.email}</p>
           </div>
         )}
@@ -32,7 +34,7 @@ const Methods = ({
             onClick={() => handleSend("sms")}
             className=" flex cursor-pointer hover:border-main  hover:bg-gray-50 duration-100 flex-col gap-3 bg-white py-4 px-8 rounded-2xl border border-input items-center mt-5"
           >
-            <Head1 text={tfa === "true" ? "SEND TFA CODE TO " : "SEND PASSWORD RESET SMS TO :"} />
+            <Head1 size="sm" text={tfa === "true" ? "SEND TFA CODE TO " : "SEND PASSWORD RESET SMS TO :"} />
             <p className=" text-main2 font-medium text-base">{methods.sms}</p>
           </div>
         )}
@@ -41,12 +43,15 @@ const Methods = ({
             onClick={() => handleSend("auth_app")}
             className=" flex cursor-pointer hover:border-main  hover:bg-gray-50 duration-100 flex-col gap-3 bg-white py-4 px-8 rounded-2xl border border-input items-center mt-5"
           >
-            <Head1 text={tfa === "true" ? "SEND TFA CODE TO " : "SEND PASSWORD RESET SMS TO :"} />
+            <Head1 size="sm" text={tfa === "true" ? "SEND TFA CODE TO " : "SEND PASSWORD RESET SMS TO :"} />
             <p className=" text-main2 font-medium text-base">Auth app</p>
           </div>
         )}
         <div className="  mt-8 text-sm flex items-center">
           <Link
+            onClick={() => {
+              setActivate(false);
+            }}
             href={"/login"}
             className="flex text-center items-center gap-2 hover:underline duration-150 ml-1 text-main font-[700]"
           >

@@ -14,7 +14,7 @@ const UpdateNotifications = () => {
           <UpdateCard
             text="CUSTOMIZE NOTIFICATIONS"
             desc="CONFIGURE CUSTOM SETTINGS"
-            icon={<MdNotifications />}
+            icon={<MdNotifications className=" text-main h-10 w-10" />}
           />
         </div>
       }

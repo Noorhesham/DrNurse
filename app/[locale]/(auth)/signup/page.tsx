@@ -7,9 +7,17 @@ const page = async () => {
   const res = Server({ method: "POST", resourceName: "MGS", body: { needed: ["general_settings"] }, cache: true });
   return (
     <section className="min-h-screen  flex items-stretch ">
-      <div className=" hidden md:block md:w-[40%] lg:w-[60%]  min-h-full relative">
-        <Image src="/signup.jpg" alt="login" className=" object-cover" fill />
-      </div>
+      <div
+        style={{
+          backgroundImage: "url(/signup.jpg)",
+          backgroundSize: "contain",
+          backgroundPosition: "left",
+          backgroundRepeat: "no-repeat",
+          backgroundAttachment: "fixed",
+        }}
+        className=" hidden md:block md:w-[40%] lg:w-[60%]  min-h-full relative"
+      />
+
       <Signup />
     </section>
   );

@@ -3,13 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import { getToken, onMessage, Unsubscribe } from "firebase/messaging";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { fetchToken, messaging } from "@/firebase";
+import { toast } from "react-toastify";
 
 async function getNotificationPermissionAndToken() {
   // Step 1: Check if Notifications are supported in the browser.
   if (!("Notification" in window)) {
-    console.info("This browser does not support desktop notification");
+    console.info("This browser does not support desktop notifications");
     return null;
   }
 
@@ -56,7 +56,6 @@ const useFcmToken = () => {
     }
 
     // Step 6: Retry fetching the token if necessary. (up to 3 times)
-    // This step is typical initially as the service worker may not be ready/installed yet.
     if (!token) {
       if (retryLoadToken.current >= 3) {
         alert("Unable to load token, refresh the browser");
@@ -71,7 +70,7 @@ const useFcmToken = () => {
       retryLoadToken.current += 1;
       console.error("An error occurred while retrieving token. Retrying...");
       isLoading.current = false;
-      await loadToken();
+      await loadToken(); // Recursive call to retry fetching token.
       return;
     }
 
@@ -98,29 +97,11 @@ const useFcmToken = () => {
 
       // Step 9: Register a listener for incoming FCM messages.
       const unsubscribe = onMessage(m, (payload) => {
+        console.log(Notification.permission);
         if (Notification.permission !== "granted") return;
 
-        console.log("Foreground push notification received:", payload);
+        console.log("Foreground push notification received:", Notification);
         const link = payload.fcmOptions?.link || payload.data?.link;
-
-        if (link) {
-          toast.info(`${payload.notification?.title}: ${payload.notification?.body}`, {
-            action: {
-              label: "Visit",
-              onClick: () => {
-                const link = payload.fcmOptions?.link || payload.data?.link;
-                if (link) {
-                  router.push(link);
-                }
-              },
-            },
-          });
-        } else {
-          toast.info(`${payload.notification?.title}: ${payload.notification?.body}`);
-        }
-
-        // --------------------------------------------
-        // Disable this if you only want toast notifications.
         const n = new Notification(payload.notification?.title || "New message", {
           body: payload.notification?.body || "This is a new message",
           data: link ? { url: link } : undefined,
@@ -136,6 +117,26 @@ const useFcmToken = () => {
             console.log("No link found in the notification payload");
           }
         };
+        if (link) {
+          toast(
+            `${payload.notification?.title || "New message"}: ${payload.notification?.body || "This is a new message"}`,
+            {
+              onClick: () => {
+                if (link) {
+                  router.push(link);
+                }
+              },
+              autoClose: false, // Keeps the toast open until the user interacts with it
+              closeOnClick: true, // Closes the toast when clicked
+            }
+          );
+        } else {
+          toast.info(`${payload.notification?.title}: ${payload.notification?.body}`);
+        }
+
+        // --------------------------------------------
+        // Disable this if you only want toast notifications.
+
         // --------------------------------------------
       });
 
@@ -152,7 +153,7 @@ const useFcmToken = () => {
 
     // Step 11: Cleanup the listener when the component unmounts.
     return () => unsubscribe?.();
-  }, [token, router, toast]);
+  }, [token, router]);
 
   return { token, notificationPermissionStatus }; // Return the token and permission status.
 };

@@ -8,6 +8,7 @@ import QueryProvider from "../../lib/QueryProvider";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { AuthProvider } from "../context/AuthContext";
+import Notifications from "../components/Notificationts";
 
 const inter = Bai_Jamjuree({ subsets: ["latin"], weight: ["400", "600", "700", "200", "300", "500"] });
 const locales = ["en", "ar"];
@@ -36,6 +37,7 @@ export default async function RootLayout({
         <QueryProvider>
           <DeviceProvider>
             <AuthProvider>
+              <Notifications/>
               <ToastContainer
                 position="top-center"
                 autoClose={3500}

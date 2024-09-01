@@ -12,7 +12,8 @@ export const loginSchema = z
   .refine(
     (data) => {
       if (data.useEmail) {
-        return z.string().email({ message: "Invalid email address" }).safeParse(data.username).success;
+        return z.string().email({ message: "Invalid email address" }).max(30, "Too Long ! ").safeParse(data.username)
+          .success;
       } else {
         return phoneRegex.test(data.username);
       }
@@ -33,7 +34,6 @@ export const signupSchema = z.object({
     .regex(/[0-9]/, "Password must contain at least one number")
     .regex(/[^A-Za-z0-9]/, "Password must contain at least one special character"),
   referealCode: z.string(),
-  
 });
 
 export const resetPasswordSchemaPrepare = z

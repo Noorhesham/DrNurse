@@ -4,10 +4,10 @@ import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import MiniTitle from "../MiniTitle";
 
-const FileUpload = ({ label, name, multiple = false }) => {
+const FileUpload = ({ label, name, multiple = false }: { label: string; name: string; multiple?: boolean }) => {
   const form = useFormContext();
   const [preview, setPreview] = useState(null); // State to store file preview URL
-  const handleFileChange = (e) => {
+  const handleFileChange = (e: any) => {
     const files = e.target.files;
     form.setValue(name, multiple ? files : files[0]);
 

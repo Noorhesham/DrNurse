@@ -41,6 +41,7 @@ const NavBar = () => {
   const pathName = usePathname();
   const { userSettings, handleLogout, generalSettings } = useAuth();
   const user = userSettings;
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY < 50) {
@@ -83,7 +84,7 @@ const NavBar = () => {
               </ul>
             </div>
             <div className="  flex items-center gap-2 ">
-              {user ? (
+              {!user ? (
                 <>
                   <Link href="/login">
                     <Button
