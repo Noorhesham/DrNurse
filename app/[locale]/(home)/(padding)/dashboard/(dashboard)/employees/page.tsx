@@ -1,17 +1,10 @@
 import Applicant from "@/app/components/Applicant";
-import Container from "@/app/components/Container";
 import Filters from "@/app/components/Filters";
-import FlexWrapper from "@/app/components/FlexWrapper";
-import FunctionalButton from "@/app/components/FunctionalButton";
 import GridContainer from "@/app/components/GridContainer";
-import Head1 from "@/app/components/Head1";
-import { Location } from "@/app/components/Icons";
 import MiniTitle from "@/app/components/MiniTitle";
 import { PaginationDemo } from "@/app/components/Pagination";
 import Sort from "@/app/components/Sort";
-import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
-import { EditIcon, FolderSync, Lock } from "lucide-react";
-import React from "react";
+import React, { Suspense } from "react";
 const doctors = [
   {
     name: "Mohamed M.",
@@ -39,7 +32,9 @@ const page = () => {
     <div className="flex flex-col">
       <GridContainer className="gap-4" cols={9}>
         <div className=" col-span-2 lg:col-span-3">
-          <Filters />
+          <Suspense>
+            <Filters />
+          </Suspense>
         </div>
         <div className="flex flex-col gap-3 col-span-2 lg:col-span-6">
           <div className="flex items-start justify-between">
