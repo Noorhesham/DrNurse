@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -12,32 +13,48 @@ interface Filters {
 const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; filter: string; btn?: boolean }) => {
   const router = useRouter();
   const [filters, setFilters] = useState<Filters>({});
-  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  // Initialize state based on client-side window object
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsMobile(window.innerWidth < 768);
+
+      const handleResize = () => setIsMobile(window.innerWidth < 768);
+      window.addEventListener("resize", handleResize);
+
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
 
   // Parse the existing filters from the URL when the component mounts
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const newFilters: Filters = {};
-    params.forEach((value, key) => {
-      newFilters[key] = value.split(",");
-    });
-    setFilters(newFilters);
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const newFilters: Filters = {};
+      params.forEach((value, key) => {
+        newFilters[key] = value.split(",");
+      });
+      setFilters(newFilters);
+    }
   }, []);
 
   // Update URL when filters change
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
 
-    // Update the params with the current filters state
-    Object.entries(filters).forEach(([key, values]) => {
-      if (values.length > 0) {
-        params.set(key, values.join(",")); // Set the new values for each filter
-      } else {
-        params.delete(key); // Remove the filter if no values are selected
-      }
-    });
+      // Update the params with the current filters state
+      Object.entries(filters).forEach(([key, values]) => {
+        if (values.length > 0) {
+          params.set(key, values.join(",")); // Set the new values for each filter
+        } else {
+          params.delete(key); // Remove the filter if no values are selected
+        }
+      });
 
-    router.push(`?${params.toString()}`, { scroll: false });
+      router.push(`?${params.toString()}`, { scroll: false });
+    }
   }, [filters, router]);
 
   const handleFilter = (filterValue: string, filterName: string) => {
@@ -57,13 +74,6 @@ const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; fi
     });
   };
 
-  // Set default accordion state based on screen size
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    handleResize(); // Initial check
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
   const defaultAccordionValue = useMemo(() => (isMobile ? null : "item-1"), [isMobile]);
 
   return (
