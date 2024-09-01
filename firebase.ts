@@ -3,15 +3,14 @@ import { getMessaging, getToken, isSupported } from "firebase/messaging";
 
 // Replace the following with your app's Firebase project configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAL3AouHec0aKu3SzgtQ2YjtTtNvAaJudA",
-  authDomain: "react-6bd52.firebaseapp.com",
-  projectId: "react-6bd52",
-  storageBucket: "react-6bd52.appspot.com",
-  messagingSenderId: "453925556171",
-  appId: "1:453925556171:web:a3801d8bd6e7283593304e",
-  measurementId: "G-EK136EZXQV",
+  apiKey: "AIzaSyAp-Tn74eshiw5wCVNfksVFM96_bW0TWOg",
+  authDomain: "drnurse-817f4.firebaseapp.com",
+  projectId: "drnurse-817f4",
+  storageBucket: "drnurse-817f4.appspot.com",
+  messagingSenderId: "651306014180",
+  appId: "1:651306014180:web:8c5bd34ee57f0a6dac63f1",
+  measurementId: "G-8YVP1MFJNN"
 };
-
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
 const messaging = async () => {
@@ -24,7 +23,7 @@ export const fetchToken = async () => {
     const fcmMessaging = await messaging();
     if (fcmMessaging) {
       const token = await getToken(fcmMessaging, {
-        vapidKey: "BN6WAOKbpbGGnhCHXisFDt8AIBUDRldWnK6jMegDHkjwTtK7W2fRZEf843QFKLmxjX4-BmZZ5XvERKuwEDt2qXM",
+        vapidKey: "BJWt4xgb5PoOM9hapBj-yIkgaMK8leQxEGMvtn_bOomMGuX1LLHvHUg6eWRuhuh-RyzF5Lnk6WOnTZjKU6hNdrw",
       });
       return token;
     }
