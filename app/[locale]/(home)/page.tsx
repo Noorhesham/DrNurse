@@ -105,7 +105,7 @@ const page = () => {
           </div>
         </FlexWrapper>
       </MaxWidthWrapper>
-      <div className="bg-[#F2F5FF] mt-5">
+      <div className="bg-[#F2F5FF] my-4 lg:my-10">
         <MaxWidthWrapper>
           <Head1
             paragraph="We are looking for an outstanding Surgical Nurse to join our medical team. The main role of a surgical nurse is to provide high-quality care to patients before, during and after surgical procedures.s"
