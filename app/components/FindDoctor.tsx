@@ -23,7 +23,7 @@ anytime you reach a review point you’ll end up reviewing and negotiating the c
           <Button size="lg">GET STARTED</Button>
         </div>
         <GridContainer cols={2} className=" w-full h-full flex-1 ">
-          <div className="flex flex-col gap-2 col-span-1">
+          <div className="flex flex-col gap-x-2  col-span-1">
             <div className=" rounded-2xl overflow-hidden aspect-square relative w-full h-full">
               <Image alt="image" fill className="object-contain " src={"/grid1.jpg"} />
             </div>

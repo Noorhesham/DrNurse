@@ -45,7 +45,7 @@ export default function Home() {
           </div>
         </MaxWidthWrapper>
       </section>
-      <MaxWidthWrapper className=" mt-10 flex flex-col gap-20">
+      <MaxWidthWrapper className=" my-4 lg:my-10 flex flex-col gap-20">
         <div className="flex flex-col gap-5">
           <Head1 text="Join Sudia arabic 's Top Hospitals" />
           <SwiperCards
@@ -115,9 +115,9 @@ export default function Home() {
       </MaxWidthWrapper>
       <FindDoctor />
       <About />
-      <div className="bg-[#F2F5FF]">
+      <div className="my-4 lg:my-10 bg-[#F2F5FF]">
         <MaxWidthWrapper>
-          <div className=" flex flex-col gap-5 my-10">
+          <div className=" flex flex-col gap-5 my-4 lg:my-10">
             <Head1 text="HOW DOCTOR NURSE WORK" />
             <GridContainer motion className=" relative mt-5" cols={4}>
               <InfoCard
