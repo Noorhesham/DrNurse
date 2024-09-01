@@ -2,6 +2,7 @@ import React from "react";
 import Heading from "@/app/components/Heading";
 import MaxWidthWrapper from "@/app/components/MaxWidthWrapper";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+import Paragraph from "@/app/components/Paragraph";
 
 const faqItems = [
   {
@@ -40,7 +41,7 @@ const FAQPage = () => {
                   <h2 className="text-base font-semibold text-main2">{item.question}</h2>
                 </AccordionTrigger>
                 <AccordionContent>
-                  <p className="text-sm text-gray-600">{item.answer}</p>
+                  <Paragraph description={item.answer} />
                 </AccordionContent>
               </AccordionItem>
             ))}
