@@ -25,7 +25,9 @@ const BreadCrumb = () => {
     pathName.includes("doctor") ||
     pathName.includes("company-profile") ||
     pathName.includes("profile-settings") ||
-    pathName.includes("my-profile")||pathName.includes("job/");
+    pathName.includes("my-profile") ||
+    pathName.includes("job/") ||
+    pathName.includes("applications");
   return (
     <Breadcrumb className={cn(" py-3 ", dark ? "bg-main2" : " bg-[#F2F5FF]")}>
       <MaxWidthWrapper className="flex justify-between" noPadding>

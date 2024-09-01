@@ -4,10 +4,10 @@ import FlexWrapper from "./FlexWrapper";
 
 const MainProfile = ({ user, children }: { user: any; children?: ReactNode }) => {
   return (
-    <FlexWrapper max={false} className="   justify-between">
-      <UserCard className="flex-[60%]" applicant={user} show={true} />
+    <div className=" flex lg:flex-row gap-3 items-center flex-col justify-between">
+      <UserCard className="" applicant={user} show={true} />
       {children}
-    </FlexWrapper>
+    </div>
   );
 };
 

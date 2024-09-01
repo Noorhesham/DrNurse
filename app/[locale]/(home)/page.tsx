@@ -7,6 +7,7 @@ import Heading from "@/app/components/Heading";
 import { PlayIcon } from "@/app/components/Icons";
 import JobCard from "@/app/components/JobCard";
 import MaxWidthWrapper from "@/app/components/MaxWidthWrapper";
+import MotionContainer from "@/app/components/MotionContainer";
 import Paragraph from "@/app/components/Paragraph";
 import Search from "@/app/components/Search";
 import SwiperCards from "@/app/components/SwiperCards";
@@ -110,14 +111,14 @@ const page = () => {
             paragraph="We are looking for an outstanding Surgical Nurse to join our medical team. The main role of a surgical nurse is to provide high-quality care to patients before, during and after surgical procedures.s"
             text="CURRENT JOB UPDATES"
           />
-          <div className=" grid-cols-1 grid gap-5 lg:grid-cols-2 mt-3">
+          <MotionContainer className=" grid-cols-1 grid gap-5 lg:grid-cols-2 mt-3">
             <JobCard heading="Junior Nurse in AL Madinahs" />
             <JobCard heading="Junior Nurse in AL Madinahs" />
             <JobCard heading="Junior Nurse in AL Madinahs" />
             <JobCard heading="Junior Nurse in AL Madinahs" />
             <JobCard heading="Junior Nurse in AL Madinahs" />
             <JobCard heading="Junior Nurse in AL Madinahs" />
-          </div>
+          </MotionContainer>
         </MaxWidthWrapper>
       </div>
       <MaxWidthWrapper>

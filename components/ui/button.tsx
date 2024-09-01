@@ -18,8 +18,8 @@ const buttonVariants = cva(
       },
       size: {
         default: "h-10 ",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-full px-4 md:py-4 md:px-8",
+        sm: "h-9 rounded-md px-3 md:text-base sm:text-sm text-xs",
+        lg: "h-11 rounded-full px-2 text-xs sm:text-sm  md:px-4 md:py-4 md:px-8",
         icon: "h-10 w-10",
       },
     },
@@ -40,11 +40,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
     return (
-      <Comp
-        className={cn(buttonVariants({ variant, size, className }), " font-normal py-2 ")}
-        ref={ref}
-        {...props}
-      />
+      <Comp className={cn(buttonVariants({ variant, size, className }), " font-normal py-2 ")} ref={ref} {...props} />
     );
   }
 );

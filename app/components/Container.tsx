@@ -4,19 +4,19 @@ const Container = ({
   className,
   children,
   CustomePadding,
-  onClick,
+  onClick,href
 }: {
   className?: string;
   children: React.ReactNode;
   CustomePadding?: string;
-  onClick?: any;
+  onClick?: any;href?:string
 }) => {
   return (
     <div
       onClick={onClick}
       className={`${className || ""} ${
         onClick && "cursor-pointer"
-      }  border border-input rounded-2xl shadow-md ${CustomePadding || "py-5 px-8"}`}
+      }  border border-input rounded-2xl shadow-sm ${CustomePadding || "py-5 px-8"}`}
     >
       {children}
     </div>

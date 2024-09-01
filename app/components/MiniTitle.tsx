@@ -15,21 +15,22 @@ const MiniTitle = ({
   size?: "lg" | "md" | "2xl" | "3xl";
   color?: string;
   className?: string;
-  boldness?: "bold" | "normal";
+  boldness?: "bold" | "normal" | "extraBold";
   link?: string;
 }) => {
   console.log(color);
   return (
-    <div className={`flex uppercase justify-between ${color || "text-gray-800"}`}>
+    <div className={`flex  uppercase items-center justify-between ${color || "text-gray-800"}`}>
       <h2
         className={cn(" ", {
           " text-3xl": size === "3xl",
           "text-2xl": size === "2xl",
-          "text-lg": size === "lg",
-          "text-base": size === "md",
+          " text-sm sm:text-lg": size === "lg",
+          " text-xs sm:text-sm md:text-base": size === "md",
           className,
           "font-semibold": boldness === "bold",
           "font-normal": boldness === "normal",
+          "font-bold": boldness === "extraBold",
           "font-medium": !boldness,
         })}
       >

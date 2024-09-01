@@ -1,6 +1,6 @@
 import React, { ReactNode, useTransition } from "react";
-import FormSelect from "./FormSelect";
-import FormInput from "./FormInput";
+import FormSelect from "../inputsForm/FormSelect";
+import FormInput from "../inputsForm/FormInput";
 import { Form } from "@/components/ui/form";
 import SubmitButton from "../SubmitButton";
 import MyLink from "../MyLink";
@@ -9,6 +9,8 @@ import Head1 from "../Head1";
 import { DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
+import MiniTitle from "../MiniTitle";
+import FormFlexContainer from "./FormFlexContainer";
 export interface CustomFormProps {
   inputs?: InputProps[];
   src?: string;
@@ -51,6 +53,8 @@ export interface InputProps {
   children?: ReactNode;
   noProgress?: boolean;
   area?: boolean;
+  title?: string;
+  flex?: boolean;
 }
 const CustomForm = ({
   inputs,
@@ -73,21 +77,44 @@ const CustomForm = ({
       <form className="flex w-full items-stretch gap-2" onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex flex-1 flex-col">
           {title && <Head1 className=" text-lg text-center" text={title} />}
-          <div className="flex pt-4 flex-col  gap-4">
-            {inputs?.map((input) =>
-              input.select ? (
-                <FormSelect placeholder={input.placeholder} key={input.name} {...input} />
-              ) : (
-                <FormInput
-                  disabled={disabled}
-                  label2={input.label2 || ""}
-                  switchToggle={input.switchToggle}
-                  phone={input.phone || false}
-                  key={input.name}
-                  {...input}
-                />
-              )
-            )}
+          <div className="flex pt-4 w-full flex-col  gap-4">
+            <FormFlexContainer title={inputs?.filter((i) => i.title !== "")?.[0].title} className="w-full">
+              {inputs
+                ?.filter((i) => i.flex)
+                .map((input) =>
+                  input.select ? (
+                    <FormSelect placeholder={input.placeholder} key={input.name} {...input} />
+                  ) : (
+                    <FormInput
+                      disabled={disabled}
+                      label2={input.label2 || ""}
+                      switchToggle={input.switchToggle}
+                      phone={input.phone || false}
+                      key={input.name}
+                      {...input}
+                    />
+                  )
+                )}
+            </FormFlexContainer>
+            {inputs
+              ?.filter((i) => !i.flex)
+              .map((input) => (
+                <>
+                  {input.title && <MiniTitle boldness="bold" size="lg" className="   uppercase" text={input.title} />}
+                  {input.select ? (
+                    <FormSelect placeholder={input.placeholder} key={input.name} {...input} />
+                  ) : (
+                    <FormInput
+                      disabled={disabled}
+                      label2={input.label2 || ""}
+                      switchToggle={input.switchToggle}
+                      phone={input.phone || false}
+                      key={input.name}
+                      {...input}
+                    />
+                  )}
+                </>
+              ))}{" "}
           </div>
           {children}
           <div className={cn("flex gap-2 mt-5 items-center", { "self-center w-[60%]": cancel })}>

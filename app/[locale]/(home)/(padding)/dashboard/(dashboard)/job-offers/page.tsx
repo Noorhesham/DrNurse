@@ -65,15 +65,15 @@ import { PaginationDemo } from "@/app/components/Pagination";
 
 const page = () => {
   return (
-    <div className="">
-      <div className=" flex items-center justify-between">
-        <MiniTitle boldness="bold" size="lg" className=" -mt-2  uppercase" text="RECENTLY POSTED JOB OFFERS" />
+    <div className=" flex flex-col gap-4">
+      <div className=" flex items-start justify-between">
+        <MiniTitle boldness="bold" size="lg" className="   uppercase" text="RECENTLY POSTED JOB OFFERS" />
         <FunctionalButton link="/dashboard/add-job-offer" btnText="ADD JOB OFFER" />
       </div>
-      <Table>
-        <TableHeader>
+      <Table className=" lg:table flex flex-col w-full">
+        <TableHeader className=" w-full  rounded-xl bg-light">
           <TableRow>
-            <TableHead className="w-[35%]">JOBS</TableHead>
+            <TableHead className="  w-[35%]">JOBS</TableHead>
             <TableHead>Status</TableHead>
             <TableHead className="w-[25%]">OFFER DATE</TableHead>
             <TableHead className="">ACTIONS</TableHead>
@@ -81,8 +81,8 @@ const page = () => {
         </TableHeader>
         <TableBody>
           {jobs.map((job, i) => (
-            <TableRow key={i}>
-              <TableCell className="font-medium">
+            <TableRow className="  lg:table-row w-full flex items-start  flex-wrap " key={i}>
+              <TableCell className="font-medium w-full lg:w-fit">
                 <div className=" flex flex-col items-start">
                   <h1 className=" text-gray-900 font-semibold">{job.title}</h1>
                   <div className=" flex items-center gap-3 text-muted-foreground">
@@ -91,16 +91,17 @@ const page = () => {
                 </div>
               </TableCell>
 
-              <TableCell className=" gap-1 text-sm text-green-500">
-                <div className="  flex items-center gap-2">
+              <TableCell className="  gap-1  my-auto  text-sm text-green-500">
+                <div className="  flex items-center  justify-center gap-2">
                   <CheckCircle className=" text-green-500 w-4 h-4" />
                   <p className=" text-xs font-semibold"> {job.STATUS}</p>
                 </div>
               </TableCell>
 
-              <TableCell className=" flex items-center gap-2 ">
-                <Calendar />
-                {job.date}
+              <TableCell className="  gap-1 mr-auto my-auto  text-sm ">
+                <div className="  flex  gap-2">
+                  <Calendar className=" w-4 h-4" /> <p className=" text-xs font-semibold"> {job.date}</p>
+                </div>
               </TableCell>
 
               <TableCell className="text-right">

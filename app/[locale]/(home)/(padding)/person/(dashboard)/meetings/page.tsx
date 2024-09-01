@@ -1,7 +1,7 @@
 import CompanyInfo from "@/app/components/CompanyInfo";
 import Container from "@/app/components/Container";
 import FlexWrapper from "@/app/components/FlexWrapper";
-import SelectDate from "@/app/components/forms/SelectDate";
+import SelectDate from "@/app/components/inputsForm/SelectDate";
 import MainProfile from "@/app/components/MainProfile";
 import Meet from "@/app/components/Meet";
 import MiniTitle from "@/app/components/MiniTitle";
@@ -27,7 +27,7 @@ const page = () => {
               <Meet img />
               <div className=" flex items-center gap-3">
                 <ModalCustom
-                  content={<SelectDate/>}
+                  content={<SelectDate />}
                   btn={
                     <Button size={"lg"} className=" rounded-full">
                       SET DATE

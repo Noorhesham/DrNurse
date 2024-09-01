@@ -3,7 +3,7 @@ import Box from "./Box";
 
 const Filters = ({ colseBtn }: { colseBtn?: ReactNode }) => {
   return (
-    <div className="  max-h-screen   rounded-2xl border bg-white shadow-md border-gray-400 overflow-y-auto lg:max-h-full col-span-full ">
+    <div className="  max-h-screen   rounded-2xl border bg-white shadow-sm border-gray-400 overflow-y-auto lg:max-h-full col-span-full ">
       <div className="   flex flex-col py-4  px-3">
         {colseBtn}
         <Box

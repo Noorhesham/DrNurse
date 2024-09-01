@@ -25,7 +25,7 @@ const page = () => {
       <div className=" bg-light ">
         <MaxWidthWrapper>
           <MainProfile user={doctor}>
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex  justify-end  items-center gap-2">
               <FunctionalButton btnText="SCHEDULE MEETING" icon={<CalendarIcon />} content={<MeetingForm />} />
               <FunctionalButton btnText="SEND INITIAL OFFER" icon={<Briefcase />} link="/dashboard/add-job-offer" />
             </div>
@@ -41,7 +41,7 @@ const page = () => {
                 {
                   href: "about-me",
                   label: "About Me",
-                  content: <AboutDoctor/>,
+                  content: <AboutDoctor />,
                 },
                 {
                   href: "education",

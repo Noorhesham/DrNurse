@@ -1,7 +1,7 @@
 import { useFormContext } from "react-hook-form";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { InputProps } from "./CustomForm";
+import { InputProps } from "../forms/CustomForm";
 
 const FormSelect = ({ name, label, placeholder, description, id, options, selected, className }: InputProps) => {
   const form = useFormContext();
@@ -16,11 +16,11 @@ const FormSelect = ({ name, label, placeholder, description, id, options, select
       render={({ field }) => {
         const selected = options?.find((p) => p._id === form.getValues(name)?._id || p._id === selectedValue);
         return (
-          <FormItem className={`${className || ""} w-full `} id={id || ""}>
+          <FormItem className={`${className || ""}  w-full `} id={id || ""}>
             <FormLabel className=" uppercase">{label}</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <Select  onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
-                <SelectTrigger className=" shadow-sm">
+                <SelectTrigger className="  shadow-sm">
                   <SelectValue placeholder={placeholder || "SELECT"}>{selected && selected.name}</SelectValue>
                 </SelectTrigger>
               </FormControl>

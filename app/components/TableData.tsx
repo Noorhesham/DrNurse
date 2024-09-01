@@ -51,9 +51,9 @@ const jobs = [
 export default function TableData({ offer }: { offer?: boolean }) {
   return (
     <Table>
-      <TableHeader className=" bg-light">
+      <TableHeader>
         <TableRow>
-          <TableHead className="w-[40%]">JOBS</TableHead>
+          <TableHead className="  w-[35%]">JOBS</TableHead>
           <TableHead>Status</TableHead>
           <TableHead>{offer ? "OFFER DATE" : "APPLICATIONS"}</TableHead>
           <TableHead className="">ACTIONS</TableHead>
@@ -62,32 +62,30 @@ export default function TableData({ offer }: { offer?: boolean }) {
       <TableBody>
         {jobs.map((job, i) => (
           <TableRow key={i}>
-            <TableCell className="font-medium">
+            <TableCell className="font-medium text-sm md:text-base lg:w-fit w-full">
               <div className=" flex flex-col items-start">
-                <h1 className=" text-gray-900 font-semibold">{job.title}</h1>
-                <div className=" flex items-center gap-3 text-muted-foreground">
+                <h1 className=" text-gray-900  font-semibold">{job.title}</h1>
+                <div className="  flex items-center gap-3 text-muted-foreground">
                   <p>{job.type}</p>
                   <span>{job.duration}</span>
                 </div>
               </div>
             </TableCell>
-
-            <TableCell className=" gap-1 text-sm text-green-500">
-              <div className="  flex items-center gap-2">
-                <CheckCircle className=" text-green-500 w-4 h-4" />
+            <TableCell className="  gap-1  my-auto  text-xs md:text-sm text-green-500">
+              <div className="  flex items-center  justify-center gap-2">
+                <CheckCircle className=" text-green-500  md:w-4 w-2 h-2 md:h-4" />
                 <p className=" text-xs font-semibold"> {job.STATUS}</p>
               </div>
             </TableCell>
-
-            <TableCell className="  m-auto self-center  ">
-              <div className="flex  items-center gap-2">
+            <TableCell className="  gap-1 mr-auto my-auto  text-xs md:text-sm ">
+              <div className="  flex  md:gap-2">
                 <MdPeopleOutline />
                 {job.applications}
               </div>
             </TableCell>
 
             <TableCell className="  text-right">
-              <div className="flex items-center gap-5">
+              <div className="flex items-center gap-2  md:gap-5">
                 <Button
                   size={"lg"}
                   className=" font-semibold bg-light text-main2 hover:bg-main2 hover:text-light duration-150"

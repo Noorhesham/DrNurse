@@ -5,12 +5,13 @@ import React from "react";
 import { z } from "zod";
 import { useFieldArray } from "react-hook-form";
 import CustomForm from "./CustomForm";
-import FormInput from "./FormInput";
+import FormInput from "../inputsForm/FormInput";
 import FunctionalButton from "../FunctionalButton";
 import { XIcon } from "lucide-react";
-import FormSelect from "./FormSelect";
+import FormSelect from "../inputsForm/FormSelect";
 import MiniTitle from "../MiniTitle";
 import FormFlexContainer from "./FormFlexContainer";
+import { CURRENCY_OPTIONS } from "@/app/constants";
 
 const offerSchema = z.object({
   employeeName: z.string().min(1, "Name is required"),
@@ -20,6 +21,7 @@ const offerSchema = z.object({
   }),
   salary: z.union([z.number().min(1, "Salary is required"), z.string().min(1, "Salary is required")]),
   benefits: z.array(z.string().min(1, "Benefit is required")).optional(),
+  currency: z.string().min(1, "Currency is required"),
 });
 
 type OfferFormValues = z.infer<typeof offerSchema>;
@@ -34,6 +36,7 @@ const SendOffer = () => {
       startDate: new Date(),
       salary: 0,
       benefits: [" "],
+      currency: "USD",
     },
   });
 
@@ -68,14 +71,29 @@ const SendOffer = () => {
       name: "salary",
       type: "number",
       placeholder: t("salaryPlaceholder"),
-      label: t("salary"),
+      label: `${t("salary")} ${form.getValues("currency")}`,
+      title: t("salary"),
+      flex: true,
+    },
+    {
+      name: "currency",
+      label: t("currency"),
+      select: true,
+      options: CURRENCY_OPTIONS,
+      flex: true,
     },
   ];
 
   return (
     <div className=" px-5 py-2.5">
       <MiniTitle text={t("addJobOffer")} boldness="bold" size="lg" />
-      <CustomForm btnText={t("addJobOffer")} form={form} inputs={offerArray} btnStyles="w-fit mr-auto " onSubmit={onSubmit}>
+      <CustomForm
+        btnText={t("addJobOffer")}
+        form={form}
+        inputs={offerArray}
+        btnStyles="w-fit mr-auto "
+        onSubmit={onSubmit}
+      >
         <div className="mt-4">
           {fields.map((field, index) => (
             <div className="flex mb-5 items-center gap-4 mt-2" key={field.id}>
@@ -88,10 +106,11 @@ const SendOffer = () => {
           <div className="my-4">
             <FunctionalButton size="sm" btnText={t("addBenefit")} onClick={() => append("")} />
           </div>
-          <FormFlexContainer>
+
+          <FormFlexContainer className=" mt-8" title="ADDRESS">
             <FormSelect label="COUNTRY" name="country" />
             <FormSelect label="THE CITY" name="city" />
-            <FormSelect label="THE ARE" name="area" />
+            <FormSelect label="AREA" name="area" />
           </FormFlexContainer>
           <FormInput control={form.control} name="address" placeholder="STREET" />
         </div>

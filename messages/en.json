@@ -80,7 +80,7 @@
   "employeeNameplaceholder": "ADD JOB TITLE, role,vacancies etc",
   "jobtitle": "JOB TITLE(POSITION)",
   "startdate": "START DATE",
-  "salary": "MIN SALARY (USD)",
+  "salary": "MIN SALARY",
   "salaryPlaceholder": "MINIMUM SALARY",
   "benefits": "BENEFITS",
   "write": "WRITE",
@@ -150,5 +150,6 @@
   "Upload Practice license ": "Upload Practice license ",
   "Upload CV/Resume": "Upload CV/Resume",
   "Upload Identification card": "Upload Identification card",
-  "phone": "PHONE NUMBER"
+  "phone": "PHONE NUMBER",
+  "Choose Nationality": "Choose Nationality"
 }

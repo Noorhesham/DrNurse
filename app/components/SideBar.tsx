@@ -32,7 +32,15 @@ const SideBar = ({ iconsOnly = false, person }: { iconsOnly?: boolean; person?: 
     ...(person
       ? [{ link: `${origin}/my-profile`, text: "MY PROFILE", icon: <User className={iconsStyles} /> }]
       : [{ link: `${origin}/company-profile/1`, text: "COMPANY PROFILE", icon: <Users className={iconsStyles} /> }]),
-    { link: `${origin}/invoices`, text: "Invoices & Subscriptions", icon: <BadgeCheck className={iconsStyles} /> },
+    ...(person
+      ? [{ link: `${origin}/points`, text: "Invoices & Subscriptions", icon: <BadgeCheck className={iconsStyles} /> }]
+      : [
+          {
+            link: `${origin}/invoices`,
+            text: "Invoices & Subscriptions",
+            icon: <BadgeCheck className={iconsStyles} />,
+          },
+        ]),
     { link: `${origin}/settings`, text: "SETTINGS", icon: <SlidersHorizontal className={iconsStyles} /> },
     { link: "", text: "LOG-OUT", icon: <LogOutIcon className={iconsStyles} /> },
   ];

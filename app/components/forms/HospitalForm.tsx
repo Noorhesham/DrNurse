@@ -4,13 +4,14 @@ import { useTranslations } from "next-intl";
 import React from "react";
 import { z } from "zod";
 import { useFieldArray } from "react-hook-form";
-import FormInput from "./FormInput";
+import FormInput from "../inputsForm/FormInput";
 import FunctionalButton from "../FunctionalButton";
 import { XIcon, CloudIcon } from "lucide-react";
-import FormSelect from "./FormSelect";
+import FormSelect from "../inputsForm/FormSelect";
 import { Form } from "@/components/ui/form";
 import MiniTitle from "../MiniTitle";
-import FileUpload from "./FileUpload";
+import FileUpload from "../inputsForm/FileUpload";
+import FlexWrapper from "../FlexWrapper";
 
 const hospitalSchema = z.object({
   hospitalType: z.string().min(1, "Hospital Type is required"),
@@ -97,26 +98,25 @@ const HospitalProfileSettings = () => {
 
   return (
     <Form {...form}>
-      <form className="flex flex-col px-5 py-2.5 w-full items-stretch gap-2" onSubmit={form.handleSubmit(onSubmit)}>
+      <form className="flex flex-col px-5 py-2.5 w-full items-stretch gap-6" onSubmit={form.handleSubmit(onSubmit)}>
         <MiniTitle className=" uppercase" boldness="bold" color={"text-black"} text={t("hospitalprofilesettings")} />
         {/* Hospital Info */}
-        <FormSelect label={t("Hospital Type")} name="hospitalType" />
-        <FormInput control={form.control} name="healthServiceProvider" label={t("Health Service Provider")} />
+        <FlexWrapper max={false}>
+          <FormSelect label={t("Hospital Type")} name="hospitalType" />
+          <FormInput control={form.control} name="healthServiceProvider" label={t("Health Service Provider")} />
+        </FlexWrapper>
 
-        <div className="flex w-full items-center gap-2">
-          <FormInput control={form.control} name="specialities" label={t("Specialities")} />
-          <FormInput control={form.control} name="jobKeywords" label={t("Job Keywords")} />
-        </div>
+        <FormInput control={form.control} name="specialities" label={t("Specialities")} />
 
-        <div className="flex w-full items-center gap-2">
+        <FlexWrapper max={false}>
           <FormSelect label={t("You Founded")} name="youFounded" />
           <FormSelect label={t("Hospital Size")} name="hospitalSize" />
-        </div>
+        </FlexWrapper>
 
         {/* Branches */}
-        <h4 className="mt-4 font-semibold">{t("Branches")}</h4>
+        <MiniTitle size="md" boldness="bold" text={t("Branches")} />
         {fields.map((field, index) => (
-          <div key={field.id} className="flex items-center gap-2 mt-2">
+          <div key={field.id} className="flex items-center gap-2 ">
             <FormInput control={form.control} name={`branches.${index}.branchName`} label={t("Branch Name")} />
             <FormSelect label={t("Country")} name={`branches.${index}.country`} />
             <FormSelect label={t("City")} name={`branches.${index}.city`} />
@@ -141,22 +141,24 @@ const HospitalProfileSettings = () => {
 
         {/* Contact Info */}
 
-        <MiniTitle className=" uppercase" boldness="bold" color={"text-black"} text={t("Contact Info")} />
+        <div className="  flex flex-col gap-4">
+          <MiniTitle className=" uppercase" boldness="bold" color={"text-black"} text={t("Contact Info")} />
 
-        <div className="flex items-center gap-2">
-          <FormInput control={form.control} name="hospitalPhoneNumber" label={t("Hospital Phone Number")} />
-          <FormInput control={form.control} name="hospitalEmail" label={t("Hospital Email")} type="email" />
+          <FlexWrapper max={false}>
+            <FormInput control={form.control} name="hospitalPhoneNumber" label={t("Hospital Phone Number")} />
+            <FormInput control={form.control} name="hospitalEmail" label={t("Hospital Email")} type="email" />
+          </FlexWrapper>
         </div>
 
         {/* Social Media */}
-
-        <MiniTitle className=" uppercase" boldness="bold" color={"text-black"} text={t("Social Media")} />
-        {["facebook", "instagram", "twitter", "linkedin"].map((platform) => (
-          <FormInput key={platform} control={form.control} name={`socialMedia.${platform}`} label={t(platform)} />
-        ))}
-
+        <div className="  flex flex-col gap-4">
+          <MiniTitle className=" uppercase" boldness="bold" color={"text-black"} text={t("Social Media")} />
+          {["facebook", "instagram", "twitter", "linkedin"].map((platform) => (
+            <FormInput key={platform} control={form.control} name={`socialMedia.${platform}`} label={t(platform)} />
+          ))}
+        </div>
         {/* Logo, Banner, Video */}
-        <h4 className="mt-4 font-semibold">{t("Media")}</h4>
+        <h4 className=" font-semibold">{t("Media")}</h4>
         <div className="grid grid-cols-3 gap-4">
           <div className=" col-span-1">
             <FileUpload label={t("Upload Logo")} name="logo" />
@@ -169,21 +171,16 @@ const HospitalProfileSettings = () => {
 
         {/* Hospital Description */}
 
-        <MiniTitle className=" uppercase" boldness="bold" color={"text-black"} text={t("Description")} />
-
         <FormInput control={form.control} name="hospitalDescription" label={t("Description about Hospital")} area />
 
         {/* Document Upload */}
-        <MiniTitle className=" uppercase" boldness="bold" color={"text-black"} text={t("Upload Documents")} />
 
         <div className=" w-[40%]">
           <FileUpload label={t("Upload Documents")} name="documents" multiple />
         </div>
 
-        <span className="text-xs text-gray-500">{t("browseOrDropDocuments")}</span>
-
         {/* Submit Button */}
-        <div className="mt-4 w-fit">
+        <div className=" w-fit">
           <FunctionalButton
             onClick={form.handleSubmit(onSubmit)}
             size="lg"

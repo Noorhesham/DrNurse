@@ -6,23 +6,17 @@ import FunctionalButton from "./FunctionalButton";
 import MeetingForm from "./forms/MeetingForm";
 import UserCard from "./UserCard";
 import SateChange from "./SateChange";
-const Applicant = ({
-  applicant,
-  show,
+const Notification = ({
   notification,
+  show,
 }: {
-  applicant: { image: string; name: string; duration: string; speciality: string; address: string };
+  notification: { image: string; name: string; duration: string; speciality: string; address: string };
   show?: boolean;
-  notification?: boolean;
 }) => {
   return (
     <Container className=" hover:bg-gradient-to-r from-light to-white   duration-150">
-      <div
-        className={` flex ${
-          show ? "flex-col sm:flex-row " : ""
-        } justify-between flex-col sm:flex-row  gap-5 items-center sm:justify-between`}
-      >
-        <UserCard notification={notification} show={show} applicant={applicant} />
+      <div className={` flex  justify-between flex-row  gap-5 items-center sm:justify-between`}>
+        <UserCard applicant={notification} show={show} />
         <div className=" flex items-center gap-3">
           {show ? (
             <>
@@ -42,4 +36,4 @@ const Applicant = ({
   );
 };
 
-export default Applicant;
+export default Notification;

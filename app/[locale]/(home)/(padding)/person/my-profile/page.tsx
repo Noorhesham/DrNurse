@@ -25,14 +25,9 @@ const page = () => {
       <div className=" bg-light ">
         <MaxWidthWrapper>
           <MainProfile user={doctor}>
-            <div className="flex  flex-[40%] md:flex-row flex-col items-center gap-2">
+            <div className="flex  justify-end  items-center gap-2">
               <FunctionalButton className=" w-full" btnText="DOWNLOAD CV" icon={<Paperclip />} link={"#"} />
-              <FunctionalButton
-                className=" w-full"
-                btnText="EDIT"
-                icon={<EditIcon />}
-                link="/person/edit-my-profile"
-              />
+              <FunctionalButton className=" w-full" btnText="EDIT" icon={<EditIcon />} link="/person/edit-my-profile" />
             </div>
           </MainProfile>
         </MaxWidthWrapper>

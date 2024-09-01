@@ -19,7 +19,7 @@ const JobsTable: React.FC<JobsTableProps> = ({ jobs }) => {
     <Table>
       <TableHeader>
         <TableRow className=" bg-light">
-          <TableHead className="w-[40%]">JOBS</TableHead>
+          <TableHead className="lg:w-[40%]">JOBS</TableHead>
           <TableHead>SALARY</TableHead>
           <TableHead>Address</TableHead>
           <TableHead className="">ACTIONS</TableHead>
@@ -34,15 +34,15 @@ const JobsTable: React.FC<JobsTableProps> = ({ jobs }) => {
                 <p className="text-muted-foreground">{job.hospital}</p>
               </div>
             </TableCell>
-            <TableCell className="gap-1   text-sm text-green-500">
+            <TableCell className="gap-1 my-auto  text-sm text-green-500">
               <div className="flex items-center gap-2">
                 <p className="text-xs font-semibold">{job.salary}</p>
               </div>
             </TableCell>
-            <TableCell className="flex items-center  gap-2">
+            <TableCell className="flex items-center  my-auto  gap-2">
               <p>{job.address}</p>
             </TableCell>
-            <TableCell className="text-right">
+            <TableCell className="text-right lg:ml-0 ml-auto">
               <div className="flex items-center gap-2">
                 <Button
                   size={"lg"}

@@ -4,11 +4,11 @@ import React from "react";
 import { useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import MiniTitle from "../MiniTitle";
-import CalendarInput from "../CalendarInput";
+import CalendarInput from "../inputsForm/CalendarInput";
 import { Form } from "@/components/ui/form";
 import { XIcon } from "lucide-react";
 import FunctionalButton from "../FunctionalButton";
-import FormInput from "./FormInput";
+import FormInput from "../inputsForm/FormInput";
 
 const meetingsSchema = z.object({
   meetings: z.array(

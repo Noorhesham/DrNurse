@@ -25,16 +25,17 @@ const doctors = [
 const page = () => {
   return (
     <MaxWidthWrapper>
-      <div className="  flex flex-col lg:grid lg:grid-cols-8 gap-5">
+      <div className="  flex flex-col lg:grid lg:grid-cols-9 gap-4 lg:gap-8">
         <SideBar />
-        <section className=" col-span-6">
+        <section className=" col-span-7">
           <div className=" flex justify-between">
             <div className="flex text-main2 font-semibold flex-col ">
               <span className=" text-xl tracking-widest">HELLO,</span>
               <MiniTitle
-                boldness="bold"
+                boldness="extraBold"
                 size="lg"
-                className=" -mt-2  uppercase"
+                color=" text-main2"
+                className=" -mt-2 text-main2  uppercase"
                 text="National university health system"
               />
               <p className=" text-gray-700 font-normal capitalize tracking-wider">
@@ -43,7 +44,7 @@ const page = () => {
             </div>
             <FunctionalButton btnText="POST A JOB" link="/dashboard/1/post-job" />
           </div>
-          <div className=" flex flex-col">
+          <div className=" mt-2 gap-2 flex flex-col">
             <MiniTitle
               link="#"
               className=" capitalizes"
@@ -51,8 +52,8 @@ const page = () => {
               color=" text-gray-900"
               text="Recently Posted Jobs"
             />
+            <TableData />
           </div>
-          <TableData />
           <div className=" grid grid-cols-1 md:grid-cols-2 my-4 gap-5">
             <div className=" flex flex-col gap-4 bg-[#F7F9FB] px-5 py-5 rounded-lg">
               <MiniTitle boldness="bold" text="RECENTLY MEETINGS" />

@@ -3,18 +3,22 @@ import React from "react";
 import MiniTitle from "./MiniTitle";
 import { Location } from "./Icons";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 const UserCard = ({
   applicant,
   show = true,
-  notification,className
+  notification,
+  className,
+  id
 }: {
   applicant: any;
   show?: boolean;
-  notification?: boolean;className?:string
+  notification?: boolean;
+  className?: string;id?:string
 }) => {
   return (
-    <div className={`${className||""} flex items-center gap-3`}>
+    <Link href={"/dashboard/doctor/1"} className={`${className || ""} flex items-center gap-3`}>
       <div className={cn("relative", show ? "w-40 h-40" : " w-20 h-20")}>
         <Image alt="image" fill className="object-cover" src={applicant.image} />
       </div>
@@ -31,7 +35,7 @@ const UserCard = ({
           <p className={cn(" text-muted-foreground uppercase", show ? "text-base" : "text-xs")}>{applicant.address}</p>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

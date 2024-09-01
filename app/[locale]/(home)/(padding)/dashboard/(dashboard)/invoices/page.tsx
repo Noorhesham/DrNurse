@@ -1,12 +1,9 @@
-import MeetingForm from "@/app/components/forms/MeetingForm";
 import FunctionalButton from "@/app/components/FunctionalButton";
 import MiniTitle from "@/app/components/MiniTitle";
-import ModalCustom from "@/app/components/ModalCustom";
-import { Button } from "@/components/ui/button";
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { cn } from "@/lib/utils";
+
 import { CheckCircle, XCircle } from "lucide-react";
-import Link from "next/link";
 import React from "react";
 const jobs = [
   {
@@ -94,17 +91,17 @@ const page = () => {
                 <MiniTitle boldness="bold" size="lg" color=" text-black" text={job.title} />
                 <p className=" text-muted-foreground">{job.speciality}</p>
               </TableCell>
-              <TableCell className="font-medium ">
+              <TableCell className="mr-auto md:ml-0 font-medium ">
                 <p className=" text-muted-foreground">{job.date}</p>
               </TableCell>
 
-              <TableCell className=" gap-1 text-sm">
+              <TableCell className=" gap-1   text-sm">
                 <div className="  flex  uppercase items-center gap-2">
                   {job.status === "completed" ? (
-                    <>
-                      <CheckCircle className=" text-green-500 w-4 h-4" />
-                      <p className=" text-xs  text-green-500 font-semibold"> {job.status}</p>
-                    </>
+                    <div className="  flex items-center  justify-center gap-2">
+                      <CheckCircle className=" text-green-500  md:w-4 w-2 h-2 md:h-4" />
+                      <p className=" text-xs font-semibold"> {job.status}</p>
+                    </div>
                   ) : (
                     <>
                       <XCircle className=" text-red-500 w-4 h-4" />
@@ -121,8 +118,8 @@ const page = () => {
           ))}
         </TableBody>
       </Table>
-      <div className=" mt-10">
-        <div className=" justify-between flex w-full">
+      <div className=" flex flex-col gap-4 mt-10">
+        <div className=" justify-between flex flex-wrap sm:flex-nowrap w-full">
           <MiniTitle boldness="bold" size="lg" color=" text-main2" text="SUBSCRIPTIONS" />
           <FunctionalButton link="/dashboard/invoices/subscriptions" btnText="Add Subscription" />
         </div>

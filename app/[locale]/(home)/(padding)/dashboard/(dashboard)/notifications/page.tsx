@@ -1,5 +1,6 @@
 import Applicant from "@/app/components/Applicant";
 import MiniTitle from "@/app/components/MiniTitle";
+import Notification from "@/app/components/Notification";
 import React from "react";
 const doctors = [
   {
@@ -20,7 +21,7 @@ const page = () => {
     <div className=" flex  flex-col gap-8">
       <MiniTitle size="2xl" boldness="bold" color=" text-main2" text="Notifications" />
       {doctors.map((doc) => (
-        <Applicant notification show={false} key={doc.name} applicant={doc} />
+        <Notification notification={doc} show={false} key={doc.name} />
       ))}
     </div>
   );

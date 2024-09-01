@@ -5,13 +5,14 @@ import { z } from "zod";
 import { useZodForm } from "@/app/hooks/useZodForm";
 import { useFieldArray } from "react-hook-form";
 import { Form } from "@/components/ui/form";
-import FormInput from "./FormInput";
-import FormSelect from "./FormSelect";
+import FormInput from "../inputsForm/FormInput";
+import FormSelect from "../inputsForm/FormSelect";
 import FormFlexContainer from "./FormFlexContainer";
 import FunctionalButton from "../FunctionalButton";
 import MiniTitle from "../MiniTitle";
 import { MultiSelect } from "../MultiSelect";
 import { XIcon } from "lucide-react";
+import FlexWrapper from "../FlexWrapper";
 
 // Schema for a single manager
 const managerSchema = z.object({
@@ -48,37 +49,40 @@ const AddNewManager = () => {
   return (
     <Form {...form}>
       <form className="flex flex-col px-5 py-2.5 w-full items-stretch gap-4" onSubmit={form.handleSubmit(onSubmit)}>
-        <MiniTitle size="lg" boldness="bold" text="Add New Managers" />
-
         {fields.map((field, index) => (
-          <FormFlexContainer className="items-stretch gap-4" key={field.id}>
+          <div className=" flex  items-start gap-4" key={field.id}>
             {/* Email Input */}
-            <FormInput
-              control={form.control}
-              name={`managers.${index}.email`}
-              label={`Manager ${index + 1} Email`}
-              placeholder="Enter Manager's Email"
-              type="email"
-            />
+            <FlexWrapper className="  w-full" max={false}>
+              <FormInput
+                control={form.control}
+                name={`managers.${index}.email`}
+                label={`Manager ${index + 1} Email`}
+                placeholder="Enter Manager's Email"
+                type="email"
+              />
 
-            {/* Multi-Select for Controls */}
-            <MultiSelect
-              name={`managers.${index}.controls`}
-              options={[
-                { value: "controlPosts", label: "Control Posts" },
-                { value: "controlManagers", label: "Control Managers" },
-              ]}
-              onValueChange={(val) => form.setValue(`managers.${index}.controls`, val)}
-              defaultValue={field.controls || []}
-            />
-
+              {/* Multi-Select for Controls */}
+              <MultiSelect
+                name={`managers.${index}.controls`}
+                options={[
+                  { value: "controlPosts", label: "Control Posts" },
+                  { value: "controlManagers", label: "Control Managers" },
+                ]}
+                onValueChange={(val) => form.setValue(`managers.${index}.controls`, val)}
+                defaultValue={field.controls || []}
+              />
+            </FlexWrapper>
             {/* Remove Manager Button */}
             {fields.length > 1 && (
-              <button type="button" onClick={() => remove(index)} className="rounded-xl border-2 border-gray-600 p-2">
+              <button
+                type="button"
+                onClick={() => remove(index)}
+                className="rounded-xl self-center border-2 border-gray-600 p-2"
+              >
                 <XIcon />
               </button>
             )}
-          </FormFlexContainer>
+          </div>
         ))}
 
         {/* Add Manager Button */}

@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import FormInput from "@/app/components/forms/FormInput";
+import FormInput from "@/app/components/inputsForm/FormInput";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/app/context/AuthContext";

@@ -27,8 +27,8 @@ const OffersTable: React.FC<OffersTableProps> = ({ offers }) => {
       </TableHeader>
       <TableBody>
         {offers.map((offer, i) => (
-          <TableRow key={i}>
-            <TableCell className="font-medium">
+          <TableRow className=" w-full" key={i}>
+            <TableCell className=" w-fit md:w-[30%] lg:w-full font-medium">
               <div className="flex flex-col items-start">
                 <h1 className="text-gray-900 text-base font-semibold">{offer.title}</h1>
                 <div className="flex items-center gap-3 text-muted-foreground">
@@ -36,17 +36,29 @@ const OffersTable: React.FC<OffersTableProps> = ({ offers }) => {
                 </div>
               </div>
             </TableCell>
-            <TableCell className="gap-1 text-sm text-green-500">
+            <TableCell className=" ml-auto text-nowrap  gap-2">
               <div className="flex items-center gap-2">
-                <CheckCircle className="text-green-500 w-4 h-4" />
-                <p className="text-xs font-semibold">{offer.STATUS}</p>
+                <div className=" lg:hidden flex items-center gap-2">
+                  {" "}
+                  <Calendar />
+                  {offer.date}
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="text-green-500 w-4 h-4" />
+                  <p className="text-xs font-semibold">{offer.STATUS}</p>
+                </div>
               </div>
             </TableCell>
-            <TableCell className="flex text-nowrap items-center gap-2">
-              <Calendar />
-              {offer.date}
+            <TableCell className=" lg:table-cell hidden text-nowrap  gap-2">
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2">
+                  {" "}
+                  <Calendar />
+                  {offer.date}
+                </div>
+              </div>
             </TableCell>
-            <TableCell className="text-right">
+            <TableCell className="text-right self-end lg:mr-0 ml-auto ">
               <div className="flex items-center gap-2">
                 <Button
                   size={"lg"}

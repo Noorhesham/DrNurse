@@ -61,12 +61,12 @@ import MeetingActions from "@/app/components/forms/MeetingActions";
 const page = () => {
   return (
     <div className="">
-      <div className=" flex items-center justify-between">
+      <div className="  flex items-center justify-between">
         <MiniTitle boldness="bold" size="lg" className=" -mt-2  uppercase" text="RECENTLY POSTED JOB OFFERS" />
         <FunctionalButton link="/dashboard/add-job-offer" btnText="ADD JOB OFFER" />
       </div>
-      <Table>
-        <TableHeader>
+      <Table className=" mt-5">
+        <TableHeader className=" bg-light">
           <TableRow>
             <TableHead className="w-[35%]">JOBS</TableHead>
             <TableHead>Status</TableHead>

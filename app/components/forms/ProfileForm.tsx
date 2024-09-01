@@ -4,14 +4,16 @@ import { useTranslations } from "next-intl";
 import React from "react";
 import { z } from "zod";
 import { useFieldArray } from "react-hook-form";
-import FormInput from "./FormInput";
+import FormInput from "../inputsForm/FormInput";
 import FunctionalButton from "../FunctionalButton";
 import { MessageCircleWarningIcon, XIcon } from "lucide-react";
-import FormSelect from "./FormSelect";
+import FormSelect from "../inputsForm/FormSelect";
 import { Form } from "@/components/ui/form";
 import MiniTitle from "../MiniTitle";
-import { RadioGroupForm } from "./RadioGroup";
-import FileUpload from "./FileUpload";
+import { RadioGroupForm } from "../inputsForm/RadioGroup";
+import FileUpload from "../inputsForm/FileUpload";
+import FlexWrapper from "../FlexWrapper";
+import { CURRENCY_OPTIONS } from "@/app/constants";
 
 const jobSchema = z.object({
   jobTitle: z.string().min(1, "Job title is required"),
@@ -42,11 +44,11 @@ const jobSchema = z.object({
   benefits: z.array(z.string().min(1, "Benefit is required")).optional(),
   description: z.string().min(20, "Description is too short"),
   responsibility: z.string().min(20, "Responsibility is too short"),
+  university: z.string().min(1, "University Name is required"), // Moved outside the array
+  degree: z.string().min(1, "Degree is required"), // Moved outside the array
   education: z
     .array(
       z.object({
-        university: z.string().min(1, "University Name is required"),
-        degree: z.string().min(1, "Degree is required"),
         country: z.string().min(1, "Country is required"),
         specialty: z.string().min(1, "Specialty is required"),
         date: z.date().refine((date) => !isNaN(date.getTime()), {
@@ -72,6 +74,7 @@ const jobSchema = z.object({
       })
     )
     .optional(),
+  currency: z.string().min(1, "Currency is required"),
 });
 
 type JobFormValues = z.infer<typeof jobSchema>;
@@ -104,8 +107,11 @@ const ProfileForm = () => {
       licenseNumber: "",
       description: "",
       responsibility: "",
-      education: [{ university: "", degree: "", country: "", specialty: "", date: new Date(), certificate: "" }],
+      university: "",
+      degree: "",
+      education: [{ country: "", specialty: "", date: new Date(), certificate: "" }],
       experience: [{ hospital: "", country: "", specialty: "", dateFrom: new Date(), dateTo: new Date(), about: "" }],
+      currency: "USD",
     },
   });
 
@@ -134,32 +140,32 @@ const ProfileForm = () => {
   return (
     <Form {...form}>
       <form className="flex flex-col px-5 py-2.5 w-full items-stretch gap-2" onSubmit={form.handleSubmit(onSubmit)}>
-        <MiniTitle text={t("ProfileForm")} />
+        <MiniTitle size="md" boldness="bold" text={t("ProfileForm")} />
         {/* Career Details */}
-        <div className="flex md:flex-col lg:flex-row w-full items-center gap-2">
+        <FlexWrapper max={false}>
           <FormSelect label={t("Career Type")} name="careerType" />
           <FormSelect label={t("Specialty")} name="specialty" />
           <FormSelect label={t("Career Level")} name="careerLevel" />
-        </div>
+        </FlexWrapper>
         {/* Job Title */}
         <FormInput control={form.control} name="jobTitle" label={t("Job Title")} placeholder={t("Enter Job Title")} />
         {/* Personal Data */}
-        <div className="flex md:flex-col  lg:flex-row w-full items-center gap-2">
+        <FlexWrapper max={false}>
           <FormSelect label={t("Family Status")} name="familyStatus" />
           <FormSelect label={t("Gender")} name="gender" />
           <FormSelect label={t("nationality")} name="nationality" />
-        </div>
+        </FlexWrapper>
         {/* Address */}
         <h4 className="mt-4 font-semibold">{t("Current Address")}</h4>
-        <div className="flex md:flex-col lg:flex-row w-full items-center gap-2">
+        <FlexWrapper max={false}>
           <FormSelect label={t("Country")} name="country" />
           <FormSelect label={t("City")} name="city" />
           <FormSelect label={t("Area")} name="area" />
-        </div>
+        </FlexWrapper>
         <FormInput control={form.control} name="currentAddress" label={t("Address")} placeholder={t("Enter Address")} />
         {/* Employment Availability */}
-        <h4 className="mt-4 font-semibold">{t("Available for Employment")}</h4>
-        <div className="flex md:flex-col lg:flex-row w-full items-center gap-2">
+        <MiniTitle size="md" boldness="bold" text={t("Available for Employment")} />
+        <FlexWrapper className=" items-center" max={false}>
           <FormSelect
             label={t("Are you available for employment now?")}
             name="employmentAvailability"
@@ -170,10 +176,10 @@ const ProfileForm = () => {
           />
           <FormInput control={form.control} name="employmentStart" label={t("Start From")} date />
           <FormInput control={form.control} name="employmentEnd" label={t("End Date")} date />
-        </div>
+        </FlexWrapper>
         {/* License */}
         <h4 className="mt-4 font-semibold">{t("Active License")}</h4>
-        <div className="flex md:flex-col lg:flex-row w-full items-center gap-2">
+        <FlexWrapper max={false}>
           <FormSelect
             label={t("Do you have an active license?")}
             name="licenseActive"
@@ -188,10 +194,10 @@ const ProfileForm = () => {
             label={t("License Number")}
             placeholder={t("Enter License Number")}
           />
-        </div>
+        </FlexWrapper>
         {/* Salary */}
-        <h4 className="mt-4 font-semibold">{t("Salary")}</h4>
-        <div className="flex md:flex-col lg:flex-row w-full items-center gap-2">
+        <MiniTitle size="md" boldness="bold" text={t("Salary")} />
+        <FlexWrapper max={false}>
           <FormInput control={form.control} name="minSalary" currency label={t("Min Salary (USD)")} type="number" />
           <FormInput control={form.control} name="maxSalary" currency label={t("Max Salary (USD)")} type="number" />
           <FormInput
@@ -201,8 +207,9 @@ const ProfileForm = () => {
             label={t("Expected Salary (USD)")}
             type="number"
           />
-        </div>
-        <p className=" text-red-500 text-sm font-semibold flex gap-1 items-center">
+          <FormSelect label={t("Currency")} name="currency" options={CURRENCY_OPTIONS} />
+        </FlexWrapper>
+        <p className=" text-red-500 mb-4 text-sm font-semibold flex gap-1 items-center">
           <MessageCircleWarningIcon />A misleading salary will cause you to lose exposure in many jobs.
         </p>
         {/* Description */}
@@ -214,14 +221,22 @@ const ProfileForm = () => {
           placeholder={t("Enter Description")}
         />
         {/* Education */}
-        <h4 className="mt-4 font-semibold">{t("Education")}</h4>
-        {educationFields.map((field, index) => (
-          <div>
-            <div className="flex md:flex-col lg:flex-row w-full items-center gap-2">
-              <FormInput control={form.control} name={`education.${index}.university`} label={t("University")} />
-              <FormInput control={form.control} name={`education.${index}.degree`} label={t("Degree")} />
-            </div>
-            <div key={field.id} className="border flex items-center gap-2  bg-gray-100 rounded p-2 mb-2">
+        <div className=" flex flex-col gap-2 mt-4">
+          <MiniTitle size="md" boldness="bold" text={t("Education")} />
+          <FormInput
+            control={form.control}
+            name="university"
+            label={t("University")}
+            placeholder={t("Enter University Name")}
+          />
+          <FormInput control={form.control} name="degree" label={t("Degree")} placeholder={t("Enter Degree")} />
+          {/* Career Details */}
+          {educationFields.map((field, index) => (
+            <FlexWrapper
+              max={false}
+              key={field.id}
+              className="border flex items-center gap-2  bg-gray-100 rounded p-2 mb-2"
+            >
               <FormInput control={form.control} name={`education.${index}.country`} select label={t("Country")} />
               <FormInput control={form.control} name={`education.${index}.specialty`} select label={t("Specialty")} />
               <FormInput control={form.control} name={`education.${index}.date`} label={t("Date")} date />
@@ -229,17 +244,15 @@ const ProfileForm = () => {
               <button type="button" onClick={() => removeEducation(index)}>
                 {t("Remove")}
               </button>
-            </div>
-          </div>
-        ))}
+            </FlexWrapper>
+          ))}
+        </div>
         <div className="my-4">
           <FunctionalButton
             size="sm"
             btnText={t("Add Education")}
             onClick={() =>
               appendEducation({
-                university: "",
-                degree: "",
                 country: "",
                 specialty: "",
                 date: new Date(),
@@ -249,14 +262,14 @@ const ProfileForm = () => {
           />
         </div>
         {/* Experience */}
-        <h4 className="mt-4 font-semibold">{t("Experience")}</h4>
+        <MiniTitle size="md" boldness="bold" text={t("Experience")} />
         {experienceFields.map((field, index) => (
-          <div>
-            <div className="flex md:flex-col lg:flex-row w-full items-center gap-2">
+          <div className=" flex flex-col gap-2">
+            <FlexWrapper max={false}>
               <FormInput control={form.control} name={`experience.${index}.hospital`} label={t("Hospital")} />
               <FormInput control={form.control} name={`experience.${index}.country`} label={t("Country")} />
               <FormInput control={form.control} name={`experience.${index}.specialty`} label={t("Specialty")} />
-            </div>
+            </FlexWrapper>
             <div key={field.id} className="border  bg-gray-100 rounded p-2 mb-2">
               <FormInput control={form.control} name={`experience.${index}.dateFrom`} label={t("Start Date")} date />
               <FormInput control={form.control} name={`experience.${index}.about`} label={t("Description")} />

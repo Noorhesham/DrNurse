@@ -20,10 +20,11 @@ const GridContainer: React.FC<GridContainerProps> = ({ children, cols = 4, class
       6: "grid-cols-6",
       7: "grid-cols-7",
       8: " grid-cols-2 lg:grid-cols-8",
-      9: "grid-cols-9",
+      9: "grid-cols-2 lg:grid-cols-9",
       10: "grid-cols-10",
       11: " grid-cols-4 lg:grid-cols-11",
       12: "grid-cols-12",
+      13: "grid-cols-1 lg:grid-cols-13",
     }[cols] || "grid-cols-4";
 
   return motion ? (
