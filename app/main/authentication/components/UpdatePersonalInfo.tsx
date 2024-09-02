@@ -39,7 +39,7 @@ const UpdatePersonalInfo = () => {
       }
     });
 
-    const deviceId = cookies.get("deviceInfo");
+    const deviceId = cookies.get("device_info");
     const token = cookies.get("jwt");
     try {
       // Send FormData using the Server function

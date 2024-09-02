@@ -10,7 +10,7 @@ const useGetGeneralSettings = (needed: string[]) => {
         body: {
           needed,
           token: cookies.get("jwt"),
-          device_id: JSON.parse(cookies.get("deviceInfo") || "{}")?.device_unique_id,
+          device_id: JSON.parse(cookies.get("device_info") || "{}")?.device_unique_id,
         },
       }),
   });

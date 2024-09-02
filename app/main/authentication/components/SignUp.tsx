@@ -73,7 +73,7 @@ const Signup = () => {
 
   const [signupArray, setSignupArray] = useState(initialSignupArray);
   const [serverError, setServerError] = useState<string[] | null>(null);
-  const { deviceInfo } = useDevice();
+  const { device_info } = useDevice();
   const [isPending, startTransition] = useTransition();
   const [methods, setMethods] = useLocalStorageState([], "methods");
 
@@ -83,7 +83,7 @@ const Signup = () => {
         resourceName: "signup",
         body: {
           ...data,
-          device_info: deviceInfo,
+          device_info,
         },
       });
       if (!res.status) setServerError(res.errors);
@@ -94,10 +94,10 @@ const Signup = () => {
           body: {
             username: data.phone || data.email,
             password: data.password,
-            device_info: deviceInfo,
+            device_info,
           },
           headers: {
-            "device-unique-id": deviceInfo.device_unique_id,
+            "device-unique-id": device_info.device_unique_id,
             Accept: "application/json",
           },
         });

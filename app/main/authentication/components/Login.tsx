@@ -42,7 +42,7 @@ const Login = () => {
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect");
   const router = useRouter();
-  const { deviceInfo } = useDevice();
+  const { device_info } = useDevice();
   const [serverError, setServerError] = useState<string[] | string | null>(null);
   const [isPending, startTransition] = useTransition();
   const { setLogin } = useAuth();
@@ -56,10 +56,10 @@ const Login = () => {
           resourceName: "login",
           body: {
             ...data,
-            device_info: deviceInfo,
+            device_info,
           },
           headers: {
-            "device-unique-id": deviceInfo.device_unique_id,
+            "device-unique-id": device_info.device_unique_id,
             Accept: "application/json",
           },
         });

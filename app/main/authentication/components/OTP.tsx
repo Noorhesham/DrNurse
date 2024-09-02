@@ -58,7 +58,7 @@ export function InputOTPPattern({
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
-  const { deviceInfo } = useDevice();
+  const { device_info } = useDevice();
   const t = useTranslations();
   const onSubmit = async (data: z.infer<typeof otpSchema>) => {
     startTransition(async () => {
@@ -85,7 +85,7 @@ export function InputOTPPattern({
           tfa: activate && "1",
           email_uuid: email && searchParams.get("uuid"),
           email: email && searchParams.get("email"),
-          device_info: deviceInfo,
+          device_info,
           phone: phone && searchParams.get("phone"),
           phone_uuid: phone && searchParams.get("uuid"),
           phone_code: phone && data.code,

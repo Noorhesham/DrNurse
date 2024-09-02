@@ -105,13 +105,13 @@ const page = () => {
           </div>
         </FlexWrapper>
       </MaxWidthWrapper>
-      <div className="bg-[#F2F5FF] my-4 lg:my-10">
-        <MaxWidthWrapper>
+      <div className="bg-[#F2F5FF] mt-4 lg:mt-10">
+        <MaxWidthWrapper className="  lg:py-16">
           <Head1
             paragraph="We are looking for an outstanding Surgical Nurse to join our medical team. The main role of a surgical nurse is to provide high-quality care to patients before, during and after surgical procedures.s"
             text="CURRENT JOB UPDATES"
           />
-          <MotionContainer className=" grid-cols-1 grid gap-5 lg:grid-cols-2 mt-3">
+          <MotionContainer className="  grid-cols-1 grid gap-5 lg:grid-cols-2 mt-3">
             <JobCard heading="Junior Nurse in AL Madinahs" />
             <JobCard heading="Junior Nurse in AL Madinahs" />
             <JobCard heading="Junior Nurse in AL Madinahs" />

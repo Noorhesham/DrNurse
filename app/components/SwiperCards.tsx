@@ -52,7 +52,6 @@ const SwiperCards = ({
     });
   }, [swiper, items]);
   const local = cookies.get("NEXT_LOCALE");
-  console.log(local);
   const t = useTranslations();
   return (
     <div className="relative h-full gap-3 w-full flex flex-col">
@@ -91,6 +90,7 @@ const SwiperCards = ({
                 <>
                   <Image
                     fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     loading="eager"
                     src={src}
                     alt="product image"

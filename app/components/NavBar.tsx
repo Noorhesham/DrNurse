@@ -7,7 +7,6 @@ import MaxWidthWrapper from "./MaxWidthWrapper";
 import { JOB_LINKS } from "../constants";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import { LogOutIcon } from "lucide-react";
 import { Server } from "../main/Server";
 
 import { useAuth } from "../context/AuthContext";
