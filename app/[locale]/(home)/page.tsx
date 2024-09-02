@@ -106,7 +106,7 @@ const page = () => {
         </FlexWrapper>
       </MaxWidthWrapper>
       <div className="bg-[#F2F5FF] mt-4 lg:mt-10">
-        <MaxWidthWrapper className="  lg:py-16">
+        <MaxWidthWrapper className="  py-8 lg:py-16">
           <Head1
             paragraph="We are looking for an outstanding Surgical Nurse to join our medical team. The main role of a surgical nurse is to provide high-quality care to patients before, during and after surgical procedures.s"
             text="CURRENT JOB UPDATES"
@@ -121,7 +121,7 @@ const page = () => {
           </MotionContainer>
         </MaxWidthWrapper>
       </div>
-      <MaxWidthWrapper>
+      <MaxWidthWrapper className="  py-8 lg:py-16">
         <Head1
           paragraph="We are looking for an outstanding Surgical Nurse to join our medical team. The main role of a surgical nurse is to provide high-quality care to patients before, during and after surgical procedures."
           text="Find your job
@@ -152,7 +152,7 @@ const page = () => {
             autoplay={true}
             slidesPerView={2.1}
             samePhone
-            className="h-72"
+            className=" h-40"
             contain
             logo
             items={[
@@ -175,7 +175,7 @@ const page = () => {
             </CardContainer>
           ))}
         </GridContainer>
-        <div className=" relative mt-20">
+        <div className=" relative mt-10 lg:mt-20">
           <div className="  hidden lg:block lg:w-[34rem] aspect-square absolute -left-10 lg:-left-20 z-20 -top-10">
             <Image alt="image" fill className="object-contain" src={"/phone.png"} />
           </div>
@@ -188,7 +188,7 @@ const page = () => {
             />
             <div className="flex p-4 max-w-xl relative lg:top-24 lg:left-[40%]  lg:absolute z-30 flex-col gap-2 lg:gap-5">
               <h1 className=" text-white text-xl lg:text-3xl font-semibold">DOWNLOAD THE APP</h1>
-              <p className=" text-gray-50">
+              <p className=" text-sm lg:text-base text-gray-50">
                 Download the application and enjoy the best services and features Download the application and enjoy the
                 best services and features
               </p>
