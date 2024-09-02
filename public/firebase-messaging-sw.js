@@ -1,5 +1,5 @@
-importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js');
-importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js');
+importScripts("https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js");
+importScripts("https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js");
 
 firebase.initializeApp({
   apiKey: "AIzaSyAp-Tn74eshiw5wCVNfksVFM96_bW0TWOg",
@@ -8,7 +8,7 @@ firebase.initializeApp({
   storageBucket: "drnurse-817f4.appspot.com",
   messagingSenderId: "651306014180",
   appId: "1:651306014180:web:8c5bd34ee57f0a6dac63f1",
-  measurementId: "G-8YVP1MFJNN"
+  measurementId: "G-8YVP1MFJNN",
 });
 
 const messaging = firebase.messaging();

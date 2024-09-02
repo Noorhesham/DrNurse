@@ -7,7 +7,7 @@ export const loginSchema = z
   .object({
     useEmail: z.boolean(),
     username: z.string(),
-    password: z.string().min(4, "Password must be at least 4 characters"),
+    password: z.string().min(4, "Password must be at least 4 characters").max(30, "Too Long ! "),
   })
   .refine(
     (data) => {
@@ -32,7 +32,7 @@ export const signupSchema = z.object({
     .min(8, "Password must be at least 8 characters")
     .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
     .regex(/[0-9]/, "Password must contain at least one number")
-    .regex(/[^A-Za-z0-9]/, "Password must contain at least one special character"),
+    .regex(/[^A-Za-z0-9]/, "Password must contain at least one special character").max(30, "Too Long ! "),
   referealCode: z.string(),
 });
 
@@ -70,7 +70,7 @@ export const forgotPasswordSchema2 = z.object({
     .min(6, "Password must be at least 6 characters")
     .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
     .regex(/[0-9]/, "Password must contain at least one number")
-    .regex(/[^A-Za-z0-9]/, "Password must contain at least one special character"),
+    .regex(/[^A-Za-z0-9]/, "Password must contain at least one special character").max(30, "Too Long ! "),
   // password:z.string().min(6, "Password must be at least 6 characters long"),
 });
 

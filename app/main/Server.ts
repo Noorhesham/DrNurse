@@ -79,7 +79,7 @@ const getURL = (resourceName: ResourceNameProps, id?: string, entityName?: strin
       return { url: `${url}/${entityName}/entities-operations/${id}`, method: "GET" };
     case "notificationToken":
       return { url: `${url}/rm_users/${VERSION}/device_sys`, method: "POST" };
-
+    
     default:
       return { url, method: "GET" as MethodProps };
   }
@@ -157,3 +157,18 @@ export async function Server({
     throw new Error(`Error: ${error.message}`);
   }
 }
+export const updatePhoto = async (formData: any) => {
+  const jwt = cookies().get("jwt")?.value;
+  const deviceId = cookies().get("device_info")?.value;
+  const res = await fetch("https://lab.r-m.dev/api/rm_users/v1/update_profile", {
+    method: "POST",
+    body: formData,
+    headers: {
+      "device-unique-id": JSON.parse(deviceId||"{}").device_unique_id,
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+  const data = await res.json();
+  console.log(data);
+  return data;
+};

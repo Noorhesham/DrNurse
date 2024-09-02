@@ -1,6 +1,6 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Server } from "../../Server";
+import { Server, updatePhoto } from "../../Server";
 import { toast } from "react-toastify";
 import { useAuth } from "@/app/context/AuthContext";
 import ModalCustom from "@/app/components/ModalCustom";
@@ -27,54 +27,34 @@ const UpdatePersonalInfo = () => {
   const searchParams = useSearchParams();
   const { setLogin, userSettings: user, loading } = useAuth();
   const { device_info } = useDevice();
-  console.log(device_info);
+  const token = cookies.get("jwt");
+
   const updatePersonalInfro = async (data: any, setError: any) => {
     const formData = new FormData();
     // Correctly append all fields to FormData
     Object.keys(data).forEach((key) => {
-      // Format the "birthday" field
-      if (key === "birthday" && data[key] instanceof Date) {
+      if (key === "birth_day" && data[key] instanceof Date) {
         const formattedDate = format(data[key], "yyyy-MM-dd");
         formData.append(key, formattedDate);
       } else if (key === "avatar") {
         if (data[key] instanceof FileList && data[key].length > 0) {
-          formData.append(key, data[key][0]); // Append only the first file
+          formData.append(key, data[key][0]);
         }
       } else if (data[key] !== undefined) {
-        formData.append(key, data[key]); // Append other fields directly
+        formData.append(key, data[key]);
       }
     });
 
-    const token = cookies.get("jwt");
-    console.log(formData, device_info.device_unique_id, token);
-    try {
-      // Send FormData using the Server function
-      const res = await fetch("https://lab.r-m.dev/api/rm_users/v1/update_profile", {
-        method: "POST",
-        body: formData,
-        headers: {
-          "device-unique-id": device_info.device_unique_id,
-          Authorization: `Bearer ${token}`,
-          // 'X-CSRF-TOKEN': csrfToken, // Include if required
-        },
-        credentials: "include", // Ensure cookies are sent
-      });
-      const data = await res.json();
-      console.log(data);
-      // Handle response errors
-      if (!data.status) {
-        setError(Array.isArray(data.errors) ? data.errors : data.errors.password || data.message);
-        return;
-      }
+    const res = await updatePhoto(formData);
+    console.log(res);
 
-      // Handle successful dataponse
-      toast.success(data.message);
-      setError(null);
-      setLogin((l: any) => !l);
-    } catch (error) {
-      console.error("Error in updating personal info:", error);
-      setError("An error occurred while updating personal information.");
+    if (!res.status) {
+      setError(Array.isArray(res.errors) ? res.errors : res.errors.passworres || res.message);
+      return;
     }
+    toast.success(res.message);
+    setError(null);
+    setLogin((l: any) => !l);
   };
 
   const updateEmailInfo = async (data: any, setError: any) => {
