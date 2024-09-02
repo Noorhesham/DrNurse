@@ -35,7 +35,7 @@ const Devices = () => {
           <Spinner />
         ) : (
           <div className=" px-5 lg:px-20 py-5">
-            {filteredResult.map((val, i) => (
+            {filteredResult?.flat()?.map((val, i) => (
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-2" key={i}>
                   {val.device_type?.toLowerCase() === "desktop" && (

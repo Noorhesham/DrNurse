@@ -122,6 +122,7 @@ export async function Server({
   if (deviceId) {
     combinedHeaders["device-unique-id"] = JSON.parse(deviceId).device_unique_id;
   }
+
   try {
     // Get the URL and method from the resource name
     const { url, method: resolvedMethod } = getURL(resourceName, id, entityName);
@@ -138,6 +139,7 @@ export async function Server({
       requestBody = body ? JSON.stringify(body) : undefined;
       combinedHeaders["Content-Type"] = "application/json";
     }
+    console.log(combinedHeaders, requestBody);
     const response = await fetch(url, {
       method: method || resolvedMethod,
       headers: combinedHeaders,

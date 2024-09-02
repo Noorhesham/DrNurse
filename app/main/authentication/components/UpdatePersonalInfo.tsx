@@ -12,6 +12,8 @@ import Spinner from "@/app/components/Spinner";
 import { InputOTPPattern } from "./OTP";
 import { useTranslations } from "next-intl";
 import cookies from "js-cookie";
+import { useDevice } from "@/app/context/DeviceContext";
+import { format } from "date-fns";
 const UpdatePersonalInfo = () => {
   const t = useTranslations();
   const router = useRouter();
@@ -24,40 +26,49 @@ const UpdatePersonalInfo = () => {
   const phone = [{ name: "phone", placeholder: t("phone"), phone: true }];
   const searchParams = useSearchParams();
   const { setLogin, userSettings: user, loading } = useAuth();
+  const { device_info } = useDevice();
+  console.log(device_info);
   const updatePersonalInfro = async (data: any, setError: any) => {
     const formData = new FormData();
     // Correctly append all fields to FormData
     Object.keys(data).forEach((key) => {
-      // Check if the key is "avatar" to append the file properly
-      if (key === "avatar") {
+      // Format the "birthday" field
+      if (key === "birthday" && data[key] instanceof Date) {
+        const formattedDate = format(data[key], "yyyy-MM-dd");
+        formData.append(key, formattedDate);
+      } else if (key === "avatar") {
         if (data[key] instanceof FileList && data[key].length > 0) {
-          formData.append(key, data[key][0]); // Append only the first file if it's a single image upload
+          formData.append(key, data[key][0]); // Append only the first file
         }
-        // If avatar is not a file, do not append it
       } else if (data[key] !== undefined) {
         formData.append(key, data[key]); // Append other fields directly
       }
     });
 
-    const deviceId = cookies.get("device_info");
     const token = cookies.get("jwt");
+    console.log(formData, device_info.device_unique_id, token);
     try {
       // Send FormData using the Server function
-      const re = await fetch(`https://lab.r-m.dev/api/rm_users/v1/update_profile`, {
+      const res = await fetch("https://lab.r-m.dev/api/rm_users/v1/update_profile", {
         method: "POST",
         body: formData,
-        headers: { "device-unique-id": JSON.parse(deviceId || "").device_unique_id, Authorization: `Bearer ${token}` },
+        headers: {
+          "device-unique-id": device_info.device_unique_id,
+          Authorization: `Bearer ${token}`,
+          // 'X-CSRF-TOKEN': csrfToken, // Include if required
+        },
+        credentials: "include", // Ensure cookies are sent
       });
-      const res = await re.json();
-      console.log(res);
+      const data = await res.json();
+      console.log(data);
       // Handle response errors
-      if (!res.status) {
-        setError(Array.isArray(res.errors) ? res.errors : res.errors.password || res.message);
+      if (!data.status) {
+        setError(Array.isArray(data.errors) ? data.errors : data.errors.password || data.message);
         return;
       }
 
-      // Handle successful response
-      toast.success(res.message);
+      // Handle successful dataponse
+      toast.success(data.message);
       setError(null);
       setLogin((l: any) => !l);
     } catch (error) {

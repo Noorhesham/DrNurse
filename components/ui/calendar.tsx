@@ -3,13 +3,68 @@
 import * as React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DayPicker, useDayPicker, useNavigation } from "react-day-picker";
-
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
-import { format, setMonth, toDate } from "date-fns";
+import { format, setMonth } from "date-fns";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "./select";
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
+
+// Separate Component for Month Dropdown
+const MonthDropdown: React.FC = () => {
+  const { goToMonth, currentMonth } = useNavigation();
+  const selectItems = Array.from({ length: 12 }, (_, i) => ({
+    value: i.toString(),
+    label: format(setMonth(new Date(), i), "MMMM"),
+  }));
+
+  return (
+    <Select
+      onValueChange={(newval) => goToMonth(setMonth(currentMonth, parseInt(newval)))}
+      value={currentMonth.getMonth().toString()}
+    >
+      <SelectTrigger>{format(currentMonth, "MMMM")}</SelectTrigger>
+      <SelectContent>
+        {selectItems.map((item) => (
+          <SelectItem key={item.value} value={item.value}>
+            {item.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
+};
+
+// Separate Component for Year Dropdown
+const YearDropdown: React.FC = () => {
+  const { goToMonth, currentMonth } = useNavigation();
+  const { fromYear, toYear } = useDayPicker();
+  const selectItems = React.useMemo(() => {
+    if (fromYear && toYear) {
+      return Array.from({ length: toYear - fromYear + 1 }, (_, i) => {
+        const year = fromYear + i;
+        return { label: year.toString(), value: year.toString() };
+      });
+    }
+    return [];
+  }, [fromYear, toYear]);
+
+  return (
+    <Select
+      onValueChange={(newval) => goToMonth(new Date(parseInt(newval), currentMonth.getMonth()))}
+      value={currentMonth.getFullYear().toString()}
+    >
+      <SelectTrigger className="mt-2">Years</SelectTrigger>
+      <SelectContent>
+        {selectItems.map((item) => (
+          <SelectItem key={item.value} value={item.value}>
+            {item.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
+};
 
 function Calendar({ className, classNames, showOutsideDays = true, ...props }: CalendarProps) {
   return (
@@ -32,87 +87,21 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
         head_row: "flex",
         head_cell: "text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]",
         row: "flex w-full mt-2",
-        cell: "h-9 w-9 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+        cell: "h-9 w-9 text-center text-sm p-0 relative",
         day: cn(buttonVariants({ variant: "ghost" }), "h-9 w-9 p-0 font-normal aria-selected:opacity-100"),
-        day_range_end: "day-range-end",
-        day_selected:
-          "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
-        day_today: "bg-accent text-accent-foreground",
-        day_outside:
-          "day-outside text-muted-foreground opacity-50 aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30",
-        day_disabled: "text-muted-foreground opacity-50",
-        day_range_middle: "aria-selected:bg-accent aria-selected:text-accent-foreground",
-        day_hidden: "invisible",
         ...classNames,
       }}
       components={{
-        IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" />,
-        IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" />,
-        Dropdown: (props) => {
-          const { fromDate, fromMonth, fromYear, toMonth, toYear, toDate } = useDayPicker();
-          const { goToMonth, currentMonth } = useNavigation();
-          if (props.name === "months") {
-            const selectItems = Array.from({ length: 12 }, (_, i) => ({
-              value: i.toString(),
-              label: format(setMonth(new Date(), i), "MMMM"),
-            }));
-            return (
-              <Select
-                onValueChange={(newval) => {
-                  const newDate = new Date(currentMonth);
-                  newDate.setFullYear(parseInt(newval));
-                  goToMonth(newDate);
-                }}
-                value={props.value?.toString()}
-              >
-                <SelectTrigger>{format(currentMonth.getFullYear(), "MMMM")}</SelectTrigger>
-                <SelectContent>
-                  {selectItems.map((item) => (
-                    <SelectItem key={item.value} value={item.value}>
-                      {item.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            );
-          } else if (props.name === "years") {
-            const earliestYear = fromYear || fromMonth?.getFullYear() || fromDate?.getFullYear();
-            const latestYear = toYear || toMonth?.getFullYear() || toDate?.getFullYear();
-            let selectItems: any[] = [];
-            if (earliestYear && latestYear) {
-              const yearsLength = latestYear - earliestYear + 1;
-              selectItems = Array.from({ length: yearsLength }, (_, i) => ({
-                label: (earliestYear + i).toString(),
-                value: (earliestYear + i).toString(),
-              }));
-            }
-            return (
-              <Select
-                onValueChange={(newval) => {
-                  const newDate = new Date(currentMonth);
-                  newDate.setFullYear(parseInt(newval));
-                  goToMonth(newDate);
-                }}
-                value={props.value?.toString()}
-              >
-                <SelectTrigger className=" mt-2">years</SelectTrigger>
-                <SelectContent>
-                  {selectItems.map((item) => (
-                    <SelectItem key={item.value} value={item.value}>
-                      {item.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            );
-          }
-          return null;
-        },
+        IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" {...props} />,
+        IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" {...props} />,
+        Dropdown: (props) =>
+          props.name === "months" ? <MonthDropdown /> : props.name === "years" ? <YearDropdown /> : null,
       }}
       {...props}
     />
   );
 }
+
 Calendar.displayName = "Calendar";
 
 export { Calendar };

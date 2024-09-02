@@ -14,7 +14,7 @@ const DeleteAccount = () => {
   const { handleLogout } = useAuth();
   const removeAccount = async (data: any, setError: any) => {
     const res = await Server({ resourceName: "remove_account", body: data });
-    if (!res.status) setError(res.errors?.length > 0 ? res.errors : res.message)();
+    if (!res.status) setError(res.errors?.length > 0 ? res.errors : res.message);
     if (res.status) {
       toast.success(res.message);
       router.push("/");
