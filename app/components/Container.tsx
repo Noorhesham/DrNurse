@@ -16,7 +16,7 @@ const Container = ({
       onClick={onClick}
       className={`${className || ""} ${
         onClick && "cursor-pointer"
-      }  border border-input rounded-2xl shadow-sm ${CustomePadding || "py-5 px-8"}`}
+      }  border border-input rounded-2xl shadow-sm ${CustomePadding || "md:py-5 px-3 py-1.5 md:px-8"}`}
     >
       {children}
     </div>

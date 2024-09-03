@@ -33,14 +33,14 @@ const Search = () => {
         </div>
         <Button size={"lg"}>SEARCH MY JOB</Button>
       </div>
-      <FlexWrapper className=" px-3 w-full items-center gap-3">
+      <FlexWrapper max={false} className="w-full items-center gap-3">
         <h3 className=" font-light text-nowrap text-gray-50">POPULAR SEARCH: </h3>
-        <GridContainer className="  gap-3 items-center mt-1" cols={4}>
+        <div className=" grid grid-cols-2 sm:flex-nowrap  gap-3 items-center sm:flex mt-1">
           <InputCard value="doctors" setSearch={setSearch} />
           <InputCard value="doctors" setSearch={setSearch} />
           <InputCard value="doctors" setSearch={setSearch} />
           <InputCard value="doctors" setSearch={setSearch} />
-        </GridContainer>
+        </div>
       </FlexWrapper>
     </div>
   );

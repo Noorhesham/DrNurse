@@ -58,10 +58,6 @@ const Login = () => {
             ...data,
             device_info,
           },
-          headers: {
-            "device-unique-id": device_info.device_unique_id,
-            Accept: "application/json",
-          },
         });
         console.log(res);
         if (!res.status) setServerError(res.errors?.length > 0 ? res.errors : res.message);
@@ -181,7 +177,13 @@ const Login = () => {
         )}{" "}
         <Suspense>
           {activate && !isCode && (
-            <Methods setActivate={setActivate} tfa={searchParams.get("tfa") || ""} handleSend={handleSend} message={message} methods={methods} />
+            <Methods
+              setActivate={setActivate}
+              tfa={searchParams.get("tfa") || ""}
+              handleSend={handleSend}
+              message={message}
+              methods={methods}
+            />
           )}
           {isCode !== "" && activate && (
             <InputOTPPattern

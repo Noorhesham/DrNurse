@@ -46,11 +46,15 @@ const MeetingForm = () => {
       <Form {...form}>
         <form className="mt-4 px-5 flex flex-col gap-5" onSubmit={form.handleSubmit(onSubmit)}>
           {watchedFields.map((field, index) => (
-            <div className="flex w-full items-end gap-5" key={index}>
+            <div className="flex w-full items-center gap-5" key={index}>
               <CalendarInput control={form.control} name={`meetings.${index}.date`} />
-              <FormInput control={form.control} name={`meetings.${index}.startFrom`} type="time" />
-              <button type="button" onClick={() => remove(index)} className="rounded-xl border-2 border-gray-600 p-2">
-                <XIcon />
+              <FormInput label="Start From" control={form.control} name={`meetings.${index}.startFrom`} type="time" />
+              <button
+                type="button"
+                onClick={() => remove(index)}
+                className="rounded-xl self-center border-2 border-gray-600 p-1 my-auto"
+              >
+                <XIcon className="w-4 h-4 " />
               </button>
             </div>
           ))}

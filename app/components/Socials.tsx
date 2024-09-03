@@ -1,6 +1,8 @@
 import { useTranslations } from "next-intl";
 import { FaFacebook, FaGoogle, FaInstagram, FaLinkedin, FaWhatsapp, FaYoutube } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import { SlSocialLinkedin } from "react-icons/sl";
+import { SlSocialFacebook } from "react-icons/sl";
 
 const Socials = () => {
   const t = useTranslations();
@@ -16,10 +18,10 @@ const Socials = () => {
       </div>
       <div className="flex text-gray-50 self-center  items-center gap-2">
         <span className="  p-1.5 rounded-full  text-lg bg-main">
-          <FaFacebook />
+          <SlSocialFacebook />
         </span>
         <span className="  p-1.5 rounded-full  text-lg bg-main">
-          <FaLinkedin />
+          <SlSocialLinkedin />
         </span>
         <span className="  p-1.5 rounded-full  text-lg bg-main">
           <FaWhatsapp />

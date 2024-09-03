@@ -14,11 +14,11 @@ export default function RootLayout({
   unstable_setRequestLocale(locale);
   return (
     <MaxWidthWrapper className="">
-      <GridContainer className=" relative gap-8" cols={12}>
-        <div className=" col-span-1">
+      <GridContainer className=" relative gap-4 md:gap-8" cols={12}>
+        <div className=" col-span-2 lg:col-span-1">
           <SideBar iconsOnly />
         </div>
-        <div className=" col-span-11">{children}</div>
+        <div className=" col-span-10 lg:col-span-11">{children}</div>
       </GridContainer>
     </MaxWidthWrapper>
   );

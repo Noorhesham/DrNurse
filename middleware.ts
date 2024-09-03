@@ -19,6 +19,7 @@ export async function middleware(req: NextRequest, res: NextResponse) {
   console.log("token", token);
   // Access the requested path
   const path = req.nextUrl;
+  // if (req.nextUrl.pathname.includes("api")) return req;
   const url = req.nextUrl.pathname.replace(`/${lang}`, "");
   const isProtectedRoute = protectedRoutes.some((route) => {
     const regex = new RegExp(`^${route.replace(/\[.*\]/, ".*")}$`);

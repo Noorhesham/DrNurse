@@ -6,6 +6,8 @@ import FunctionalButton from "./FunctionalButton";
 import MeetingForm from "./forms/MeetingForm";
 import UserCard from "./UserCard";
 import SateChange from "./SateChange";
+import ModalCustom from "./ModalCustom";
+import Paragraph from "./Paragraph";
 const Notification = ({
   notification,
   show,
@@ -25,9 +27,18 @@ const Notification = ({
           ) : (
             <>
               {!notification && <SateChange />}
-              <Link href="/dashboard/doctor/1" className=" p-1 rounded-xl bg-main2 text-gray-50">
-                <ChevronRight />
-              </Link>
+              <ModalCustom
+                btn={
+                  <div className=" p-1 rounded-xl bg-main2 text-gray-50">
+                    <ChevronRight />
+                  </div>
+                }
+                content={
+                  <div>
+                    <Paragraph description="loremLorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae nisi ullam expedita atque deserunt excepturi cumque sint saepe quas consectetur? Dolores aspernatur illo quae veniam odio impedit mollitia eos earum. " />
+                  </div>
+                }
+              />
             </>
           )}
         </div>

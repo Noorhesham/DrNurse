@@ -44,8 +44,11 @@ const FilterMobile = () => {
           >
             <Filters
               colseBtn={
-                <button onClick={() => setFilterMobile(false)} className=" items-end self-end block lg:hidden text-black">
-                  <XIcon />
+                <button
+                  onClick={() => setFilterMobile(false)}
+                  className="rounded-xl self-center border-2 border-gray-600 p-1 my-auto"
+                >
+                  <XIcon className="w-4 h-4 " />
                 </button>
               }
             />

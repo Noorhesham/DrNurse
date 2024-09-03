@@ -66,7 +66,7 @@ import { PaginationDemo } from "@/app/components/Pagination";
 const page = () => {
   return (
     <div className=" flex flex-col gap-4">
-      <div className=" flex items-start justify-between">
+      <div className=" flex md:flex-row flex-col gap-4 items-start justify-between">
         <MiniTitle boldness="bold" size="lg" className="   uppercase" text="RECENTLY POSTED JOB OFFERS" />
         <FunctionalButton link="/dashboard/add-job-offer" btnText="ADD JOB OFFER" />
       </div>

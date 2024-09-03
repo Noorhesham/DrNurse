@@ -48,7 +48,7 @@ const AddNewManager = () => {
 
   return (
     <Form {...form}>
-      <form className="flex flex-col px-5 py-2.5 w-full items-stretch gap-4" onSubmit={form.handleSubmit(onSubmit)}>
+      <form className="flex flex-col  py-2.5 w-full md:items-stretch gap-4" onSubmit={form.handleSubmit(onSubmit)}>
         {fields.map((field, index) => (
           <div className=" flex  items-start gap-4" key={field.id}>
             {/* Email Input */}
@@ -77,9 +77,9 @@ const AddNewManager = () => {
               <button
                 type="button"
                 onClick={() => remove(index)}
-                className="rounded-xl self-center border-2 border-gray-600 p-2"
+                className="rounded-xl self-center border-2 border-gray-600 p-1 my-auto"
               >
-                <XIcon />
+                <XIcon className="w-4 h-4 " />
               </button>
             )}
           </div>

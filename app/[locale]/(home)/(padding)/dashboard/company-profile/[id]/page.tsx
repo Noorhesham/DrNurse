@@ -25,9 +25,9 @@ const page = () => {
       <div className=" bg-light ">
         <MaxWidthWrapper>
           <MainProfile user={doctor}>
-            <div className="flex flex-wrap items-center gap-2">
-              <FunctionalButton btnText="EDIT" icon={<EditIcon />} link={"/dashboard/profile-settings/1"} />
-              <FunctionalButton btnText="EDIT MANAGERS" icon={<EditIcon />} link="/dashboard/control-managers/1" />
+            <div className="flex flex-wrap lg:w-fit w-full  items-center gap-2">
+              <FunctionalButton className=" flex-1 lg:w-fit w-full" btnText="EDIT" icon={<EditIcon />} link={"/dashboard/profile-settings/1"} />
+              <FunctionalButton className=" flex-1 lg:w-fit w-full" btnText="EDIT MANAGERS" icon={<EditIcon />} link="/dashboard/control-managers/1" />
             </div>
           </MainProfile>
         </MaxWidthWrapper>

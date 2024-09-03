@@ -96,10 +96,7 @@ const Signup = () => {
             password: data.password,
             device_info,
           },
-          headers: {
-            "device-unique-id": device_info.device_unique_id,
-            Accept: "application/json",
-          },
+   
         });
         if (res.activation_methods) {
           setMethods(res.activation_methods);

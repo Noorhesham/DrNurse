@@ -30,10 +30,10 @@ const BreadCrumb = () => {
     pathName.includes("applications");
   return (
     <Breadcrumb className={cn(" py-3 ", dark ? "bg-main2" : " bg-[#F2F5FF]")}>
-      <MaxWidthWrapper className="flex justify-between" noPadding>
+      <MaxWidthWrapper className="flex md:flex-row flex-col gap-2 md:items-center items-start justify-between" noPadding>
         {dark ? (
           <button onClick={() => router.back()} className=" flex items-center sm:text-sm text-xs gap-2 text-gray-50">
-            <ArrowLeft /> BACK
+            <ArrowLeft  className=" w-4 h-4 md:w-8 md:h-8"/> BACK
           </button>
         ) : (
           <Head1 size="sm" text={current} />

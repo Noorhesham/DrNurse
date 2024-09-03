@@ -6,7 +6,7 @@ import FlexWrapper from "./FlexWrapper";
 const Education = ({ edu }: { edu: any }) => {
   return (
     <Container className="hover:bg-gradient-to-r from-light to-white duration-150 ">
-      <FlexWrapper max={false} className="  items-center lg:items-start justify-between">
+      <FlexWrapper max={false} className="  items-start justify-between">
         <UserCard show={false} applicant={edu} />
         <div className=" font-medium text-gray-600">
           <p>GENERAL SURGERY {"(BACHELOROS DEGREE)"}</p>

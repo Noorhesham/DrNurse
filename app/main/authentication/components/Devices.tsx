@@ -4,16 +4,23 @@ import Spinner from "@/app/components/Spinner";
 import UpdateCard from "@/app/components/UpdateCard";
 import { useGetEntity } from "@/lib/queries";
 import { format } from "date-fns";
-import React from "react";
+import React, { useTransition } from "react";
 import { FaPhone } from "react-icons/fa";
 import { MdOutlineDevices } from "react-icons/md";
-import { HiComputerDesktop } from "react-icons/hi2";
-import { Button } from "@/components/ui/button";
+import { HiComputerDesktop, HiPhone } from "react-icons/hi2";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Server } from "../../Server";
 import { useTranslations } from "next-intl";
+import { useDevice } from "@/app/context/DeviceContext";
+import { Laptop } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 const Devices = () => {
   const { data, isLoading } = useGetEntity("getDevices");
+  const queryClient = useQueryClient();
+  const { device_info } = useDevice();
+  const [isPending, startTransition] = useTransition();
   const t = useTranslations();
   const filteredResult = Object.keys(data || {})
     .filter((key) => typeof data[key] === "object")
@@ -34,35 +41,79 @@ const Devices = () => {
         isLoading ? (
           <Spinner />
         ) : (
-          <div className=" px-5 lg:px-20 py-5">
-            {filteredResult?.flat()?.map((val, i) => (
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-2" key={i}>
-                  {val.device_type?.toLowerCase() === "desktop" && (
-                    <HiComputerDesktop className=" mb-auto text-main w-10 h-10 md:w-14 md:h-14" />
-                  )}
-                  {val.device_type === "mobile" && <FaPhone className=" text-main w-10 h-10 md:w-14 md:h-14" />}
-                  <div className=" flex  items-start gap-2">
-                    <h1 className=" font-semibold text-gray-900">{val?.device_type}</h1>
-                    <span className="text-muted-foreground">{format(val?.created_at, "dd/MM/yyyy")}</span>
-                    <span className="text-muted-foreground">{val?.device_id}</span>
-                    <div className=" flex  items-center gap-2">
-                      <p>{val.os}</p> <p>{val.version}</p>
+          <div className=" flex  lg:flex-row flex-col items-center gap-5  lg:gap-20 lg:items-start px-5 lg:px-20 py-5">
+            <div className=" lg:w-[10rem]">
+              <p className=" text-sm text-nowrap font-semibold lg:text-base">ACTIVE DEVICES</p>
+            </div>
+            <div className=" flex flex-col gap-4  items-start">
+              {filteredResult
+                ?.flat()
+                ?.reverse()
+                .map((val, i) => (
+                  <div className=" flex  w-full justify-between">
+                    <div className="flex flex-col ">
+                      <div className="flex flex-col items-start gap-1" key={i}>
+                        <div className=" flex items-start gap-2">
+                          {val.device_type?.toLowerCase() === "desktop" && (
+                            <HiComputerDesktop className=" mb-auto text-main w-5 h-5 " />
+                          )}
+                          {val.device_type === "phone" && <HiPhone className=" text-main w-5 h-5" />}
+                          {val.device_type === "mobile" && <Laptop className=" text-main w-8 h-8" />}
+                          <h1 className=" font-semibold text-sm text-gray-900">{val?.device_type}</h1>
+                          {val.unique_id === device_info.device_unique_id && (
+                            <p className=" rounded-2xl text-[10px] p-1 uppercase border border-gray-100 font-semibold">
+                              This device
+                            </p>
+                          )}
+                        </div>
+                        <div className=" flex sm:flex-row flex-col items-start gap-2">
+                          <span className="  text-xs text-muted-foreground">
+                            Logged At {format(val?.created_at, "dd/MM/yyyy")}
+                          </span>
+
+                          <div className=" text-xs text-muted-foreground max-w-sm flex  items-center gap-2">
+                            <p>{val.os}</p> <p>{val.version}</p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
+                    {val.unique_id !== device_info.device_unique_id && (
+                      <button
+                        disabled={isPending}
+                        onClick={async () => {
+                          startTransition(async () => {
+                            const res = await Server({ resourceName: "deviceLogout", body: { device_id: val.id } });
+                            console.log(res);
+                            if (res.success) {
+                              toast.success(res.message);
+                              queryClient.invalidateQueries({ queryKey: ["getDevices"] });
+                            }
+                          });
+                        }}
+                        className={` self-end px-4 text-xs mt-2 ${buttonVariants({ variant: "outline" })}`}
+                      >
+                        {t("logoutDevice")}
+                      </button>
+                    )}
                   </div>
-                </div>
-                <Button
-                  onClick={async () => {
-                    const res = await Server({ resourceName: "deviceLogout", body: { device_id: val.device_id } });
+                ))}
+              <button
+                disabled={isPending}
+                onClick={async () => {
+                  startTransition(async () => {
+                    const res = await Server({ resourceName: "deviceLogout" });
                     console.log(res);
-                  }}
-                  className=" self-end mt-2"
-                  variant={"outline"}
-                >
-                  {t("logoutDevice")}
-                </Button>
-              </div>
-            ))}
+                    if (res.success) {
+                      toast.success(res.message);
+                      queryClient.invalidateQueries({ queryKey: ["getDevices"] });
+                    }
+                  });
+                }}
+                className={` self-end px-4 text-xs mt-2 ${buttonVariants({ variant: "destructive" })}`}
+              >
+                Log out from all devices
+              </button>
+            </div>
           </div>
         )
       }

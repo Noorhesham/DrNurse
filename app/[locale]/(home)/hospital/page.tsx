@@ -68,7 +68,7 @@ export default function Home() {
             ]}
           />
         </div>
-        <FlexWrapper className=" h-full">
+        <FlexWrapper  className=" h-full">
           <div className="  rounded-[2.5rem] overflow-hidden flex-1 relative aspect-square">
             <VideoZoom
               btn={

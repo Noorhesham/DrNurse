@@ -7,12 +7,12 @@ import { MinusCircle } from "lucide-react";
 
 const Manager = () => {
   return (
-    <div className=" w-full flex sm:flex-nowrap flex-wrap items-start gap-5 justify-between">
+    <div className=" w-full flex sm:flex-nowrap flex-wrap items-start gap-3 justify-between">
       <div className=" flex flex-1 flex-col items-start ">
         <MiniTitle size="md" color=" text-black" text="AHEMD MOHAMED HASSAN" />
         <p className="  text-xs sm:text-sm text-muted-foreground ">MOHAMED@gmail.com</p>
       </div>
-      <div className=" flex-[30%] w-full flex-grow">
+      <div className=" flex-[30%] text-xs w-full flex-grow">
         <Select>
           <SelectTrigger>
             <SelectValue placeholder="MANAGE USERS" />
@@ -27,11 +27,11 @@ const Manager = () => {
           </SelectContent>
         </Select>
       </div>
-      <div className=" flex-1  justify-end gap-2 flex  items-center">
-        <FunctionalButton className=" rounded-full" size={"sm"} btnText="UPDATE" onClick={() => {}} />
+      <div className=" flex-1  justify-start gap-2 flex  items-center">
+        <FunctionalButton className=" text-xs rounded-full" size={"sm"} btnText="UPDATE" onClick={() => {}} />
         <FunctionalButton
-          icon={<MinusCircle />}
-          className=" rounded-full"
+          icon={<MinusCircle className=" mr-2" />}
+          className=" text-xs rounded-full"
           size={"sm"}
           variant={"destructive"}
           btnText="DELETE"

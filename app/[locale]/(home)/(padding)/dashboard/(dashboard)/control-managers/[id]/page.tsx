@@ -7,7 +7,7 @@ const page = () => {
   return (
     <section>
       <MiniTitle boldness="bold" size="lg" text="CONTROL MANAGERS" />
-      <div className=" mt-5 flex items-start  gap-4 flex-col">
+      <div className=" mt-5 flex items-start gap-6  md:gap-4 flex-col">
         <Manager />
         <Manager />
         <Manager />

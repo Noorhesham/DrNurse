@@ -20,7 +20,7 @@ const Applicant = ({
       <div
         className={` flex ${
           show ? "flex-col sm:flex-row " : ""
-        } justify-between flex-col sm:flex-row  gap-5 items-center sm:justify-between`}
+        } justify-between flex-col sm:flex-row  gap-5 items-start md:items-center sm:justify-between`}
       >
         <UserCard notification={notification} show={show} applicant={applicant} />
         <div className=" flex items-center gap-3">

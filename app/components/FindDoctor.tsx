@@ -10,11 +10,14 @@ import FlexWrapper from "./FlexWrapper";
 const FindDoctor = ({ reverse }: { reverse?: boolean }) => {
   return (
     <MaxWidthWrapper>
-      <FlexWrapper className={`flex  lg:flex-row flex-col items-center gap-5 ${reverse ? "lg:flex-row-reverse" : ""} `}>
+      <FlexWrapper
+        max={false}
+        className={`flex  lg:flex-row flex-col items-center gap-5 ${reverse ? "lg:flex-row-reverse" : ""} `}
+      >
         <div className="flex flex-col items-start gap-10 justify-between  flex-1">
           <div className="flex flex-col items-start">
             <h3 className=" text-main2  uppercase font-medium my-1">Are you an employer?</h3>
-            <Head1  headingClasses=" text-left " text="Why Join Sudia arabic" />
+            <Head1 headingClasses=" text-left " text="Why Join Sudia arabic" />
             <Paragraph
               description="The argument in favor of using filler text goes something like this: If you use real content in the design process, anytime you reach a review point you’ll end up reviewing and negotiating the content itself and not the design. Aenean tincidunt id mauris id auctor. Donec at ligula lacus. Nulla dignissim mi quis neque interdum, quis porta sem finibus. 
 anytime you reach a review point you’ll end up reviewing and negotiating the content itself and not the design. Aenean tincidunt id mauris id auctor. "

@@ -139,11 +139,7 @@ const PostJob = () => {
           <FormFlexContainer title={t("Salary")}>
             <FormInput control={form.control} name="minSalary" currency label={t("Min Salary (USD)")} type="number" />
             <FormInput control={form.control} name="maxSalary" currency label={t("Max Salary (USD)")} type="number" />
-            <FormSelect
-              label={t("Currency")}
-              name="currency"
-              options={CURRENCY_OPTIONS}
-            />
+            <FormSelect label={t("Currency")} name="currency" options={CURRENCY_OPTIONS} />
             <FormSelect
               options={[
                 { value: "yes", label: "Yes" },
@@ -174,9 +170,9 @@ const PostJob = () => {
                   <button
                     type="button"
                     onClick={() => remove(index)}
-                    className="rounded-xl border-2 border-gray-600 p-2"
+                    className="rounded-xl self-center border-2 border-gray-600 p-1 my-auto"
                   >
-                    <XIcon />
+                    <XIcon className="w-4 h-4 " />
                   </button>
                 </div>
               ))}

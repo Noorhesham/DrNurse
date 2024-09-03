@@ -1,8 +1,7 @@
 import MiniTitle from "@/app/components/MiniTitle";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Calendar, CheckCircle, EditIcon } from "lucide-react";
-import Link from "next/link";
+import { Calendar, CheckCircle,  } from "lucide-react";
 
 const jobs = [
   {
@@ -61,8 +60,8 @@ import MeetingActions from "@/app/components/forms/MeetingActions";
 const page = () => {
   return (
     <div className="">
-      <div className="  flex items-center justify-between">
-        <MiniTitle boldness="bold" size="lg" className=" -mt-2  uppercase" text="RECENTLY POSTED JOB OFFERS" />
+      <div className=" flex md:flex-row flex-col gap-4 items-start justify-between">
+        <MiniTitle boldness="bold" size="lg" className="   uppercase" text="RECENTLY POSTED JOB OFFERS" />
         <FunctionalButton link="/dashboard/add-job-offer" btnText="ADD JOB OFFER" />
       </div>
       <Table className=" mt-5">

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
@@ -14,20 +14,24 @@ const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; fi
   const router = useRouter();
   const [filters, setFilters] = useState<Filters>({});
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [accordionValue, setAccordionValue] = useState<string | undefined>("");
 
-  // Initialize state based on client-side window object
+  // Determine if the viewport is mobile
   useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      setAccordionValue(mobile ? undefined : "item-1");
+    };
+
     if (typeof window !== "undefined") {
-      setIsMobile(window.innerWidth < 768);
-
-      const handleResize = () => setIsMobile(window.innerWidth < 768);
+      handleResize(); // Initial check
       window.addEventListener("resize", handleResize);
-
       return () => window.removeEventListener("resize", handleResize);
     }
   }, []);
 
-  // Parse the existing filters from the URL when the component mounts
+  // Parse existing filters from the URL when the component mounts
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
@@ -74,11 +78,15 @@ const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; fi
     });
   };
 
-  const defaultAccordionValue = useMemo(() => (isMobile ? null : "item-1"), [isMobile]);
-
   return (
     <div className="flex px-3 py-1.5 font-medium text-sm bg-white uppercase flex-col">
-      <Accordion defaultValue={defaultAccordionValue || ""} type="single" collapsible className="w-full">
+      <Accordion
+        type="single"
+        value={accordionValue} // Control the accordion value
+        onValueChange={setAccordionValue} // Update the state when it changes
+        collapsible
+        className="w-full"
+      >
         <AccordionItem value="item-1">
           <AccordionTrigger>
             <h2 className="text-base font-semibold text-main2">{text}</h2>

@@ -23,7 +23,7 @@ const Head1 = ({
   return (
     <div
       className={` ${className || ""}    flex flex-col items-center gap-2 font-bold ${
-        size === "sm" ? "text-xl" : "text-4xl"
+        size === "sm" ? " text-lg sm:text-xl" : " text-2xl lg:text-4xl"
       }  ${
         alignment === "left" ? "text-left" : alignment === "right" ? "text-right" : "text-center "
       }    uppercase text-main2  line-clamp-5`}

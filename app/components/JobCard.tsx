@@ -10,7 +10,7 @@ const JobCard = ({ heading }: { heading: string }) => {
     <MotionItem>
       <Link
         href={"/job/1"}
-        className=" bg-white rounded-xl w-full gap-2   border border-input shadow-sm px-10 py-7 flex flex-col"
+        className=" bg-white rounded-xl w-full gap-2   border border-input shadow-sm px-6 md:px-10 py-3 md:py-7 flex flex-col"
       >
         <h2 className=" font-semibold text-base lg:text-xl text-gray-900  uppercase">{heading}</h2>
         <div className=" flex  gap-4 items-center ">

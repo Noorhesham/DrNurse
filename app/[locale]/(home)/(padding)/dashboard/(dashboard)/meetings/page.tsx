@@ -73,10 +73,10 @@ const page = () => {
                   btn={
                     <Button
                       size={"sm"}
-                      className={cn("w-full rounded-full text-xs bg-light text-main2 ")}
+                      className={cn("w-full rounded-full text-xs capitalize bg-light text-main2 ")}
                       variant={"outline"}
                     >
-                      CONTROL AVIALABLE DATES
+                      Avialable dates
                     </Button>
                   }
                   content={<MeetingForm />}
@@ -86,10 +86,10 @@ const page = () => {
               <TableCell className="text-right">
                 <Button
                   size={"sm"}
-                  className={cn("w-full rounded-full text-xs bg-light text-main2 ")}
+                  className={cn("w-full rounded-full text-xs capitalize bg-light text-main2 ")}
                   variant={"outline"}
                 >
-                  <Link href="/dashboard/meetings/control">CONTROL AVIALABLE MEETINGS</Link>
+                  <Link href="/dashboard/meetings/control">Control Avialable meetings</Link>
                 </Button>
               </TableCell>
             </TableRow>

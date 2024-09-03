@@ -1,6 +1,6 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Server, updatePhoto } from "../../Server";
+import { Server } from "../../Server";
 import { toast } from "react-toastify";
 import { useAuth } from "@/app/context/AuthContext";
 import ModalCustom from "@/app/components/ModalCustom";
@@ -11,8 +11,6 @@ import { MailIcon, PhoneIcon } from "lucide-react";
 import Spinner from "@/app/components/Spinner";
 import { InputOTPPattern } from "./OTP";
 import { useTranslations } from "next-intl";
-import cookies from "js-cookie";
-import { useDevice } from "@/app/context/DeviceContext";
 import { format } from "date-fns";
 const UpdatePersonalInfo = () => {
   const t = useTranslations();
@@ -26,9 +24,6 @@ const UpdatePersonalInfo = () => {
   const phone = [{ name: "phone", placeholder: t("phone"), phone: true }];
   const searchParams = useSearchParams();
   const { setLogin, userSettings: user, loading } = useAuth();
-  const { device_info } = useDevice();
-  const token = cookies.get("jwt");
-
   const updatePersonalInfro = async (data: any, setError: any) => {
     const formData = new FormData();
     // Correctly append all fields to FormData
@@ -45,7 +40,8 @@ const UpdatePersonalInfo = () => {
       }
     });
 
-    const res = await updatePhoto(formData);
+    const res = await Server({ resourceName: "update_profile", body: formData, formData: true });
+    // const res = await updatePhone(formData)
     console.log(res);
 
     if (!res.status) {
@@ -183,38 +179,3 @@ const UpdatePersonalInfo = () => {
 };
 
 export default UpdatePersonalInfo;
-// let avatarBase64;
-// if (data.avatar && data.avatar[0]) {
-//   const reader = new FileReader();
-
-//   // Create a promise that resolves when the file is read
-//   avatarBase64 = await new Promise<string>((resolve, reject) => {
-//     reader.onloadend = () => {
-//       resolve(reader.result as string); // Resolve with the Base64 string
-//     };
-//     reader.onerror = (error) => {
-//       reject(error); // Reject on error
-//     };
-
-//     // Read the file as a data URL (Base64)
-//     reader.readAsDataURL(data.avatar[0]);
-//   });
-// }
-// console.log(avatarBase64)
-// const updatePersonalInfro = async (data: any, setError: any) => {
-//   const formData = new FormData();
-//   if (data.name) formData.append("name", data.name);
-//   if (data.birth_day) formData.append("birth_day", format(data.birth_day, "yyyy-MM-dd"));
-//   if (data.avatar) formData.append("avatar", data.avatar[0]);
-//   console.log(data);
-//   const res = await axios.post("https://lab.r-m.dev/api/rm_users/1/update_profile", formData, {
-//     headers: { "Content-Type": "multipart/form-data", "device-unique-id": user.device_unique_id },
-//   });
-//   console.log(res);
-//   // if (!res.status) setError(Array.isArray(res.errors) ? res.errors : res.errors.password || res.message);
-//   // if (res.status === true) {
-//   //   toast.success(res.message);
-//   //   setError(null);
-//   //   setLogin((l: any) => !l);
-//   // }
-// };

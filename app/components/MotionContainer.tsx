@@ -6,10 +6,17 @@ interface MotionContainerProps {
   children: ReactNode;
   className?: string;
   variantsCustom?: Variants;
-  easing?: string; // Custom easing for animation
+  easing?: string;
+  customstaggerEffect?: any;
 }
 
-const MotionContainer = ({ children, className, variantsCustom, easing = "easeOut" }: MotionContainerProps) => {
+const MotionContainer = ({
+  children,
+  className,
+  variantsCustom,
+  easing = "easeOut",
+  customstaggerEffect,
+}: MotionContainerProps) => {
   const childrenArray = Children.toArray(children) as ReactElement[];
   const totalItems = childrenArray.length;
 
@@ -21,19 +28,58 @@ const MotionContainer = ({ children, className, variantsCustom, easing = "easeOu
   };
   const maxDelay = 1; // Maximum delay in seconds
   const delayStep = maxDelay / totalItems; // Decrease step for each item
-  const staggerEffect = (index: number): Variants => {
-    return {
+
+  const viisble = customstaggerEffect?.visible;
+  console.log(
+    {
+      ...customstaggerEffect,
+      visible: {
+        ...viisble,
+        transition: {
+          delay: 1, // Ensure delay does not go below 0
+          duration: 0.3, // Animation duration
+          ease: easing,
+        },
+      },
+    },
+    {
       hidden: { opacity: 0, y: 10 },
       visible: {
         opacity: 1,
         y: 0,
         transition: {
-          delay: Math.max(index * delayStep, 0), // Ensure delay does not go below 0
+          delay: Math.max(1 * delayStep, 0), // Ensure delay does not go below 0
           duration: 0.3, // Animation duration
           ease: easing,
         },
       },
-    };
+    }
+  );
+  const staggerEffect = (index: number): Variants => {
+    return customstaggerEffect
+      ? {
+          ...customstaggerEffect,
+          visible: {
+            ...viisble,
+            transition: {
+              delay: Math.max(index * delayStep, 0), // Ensure delay does not go below 0
+              duration: 0.3, // Animation duration
+              ease: easing,
+            },
+          },
+        }
+      : {
+          hidden: { opacity: 0, y: 10 },
+          visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+              delay: Math.max(index * delayStep, 0), // Ensure delay does not go below 0
+              duration: 0.3, // Animation duration
+              ease: easing,
+            },
+          },
+        };
   };
 
   return (

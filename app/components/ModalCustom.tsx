@@ -46,7 +46,7 @@ const ModalCustom = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{btn}</DialogTrigger>
-      <DialogContent className="  max-w-4xl overflow-y-auto max-h-[80vh]  sm:rounded-[1.8rem]">
+      <DialogContent className="  max-w-4xl w-[95%] md:w-full overflow-y-auto max-h-[80vh]  sm:rounded-[1.8rem]">
         <DialogHeader className=" mt-10">
           {title && <DialogTitle className=" text-xl text-center text-main2">{title || ""}</DialogTitle>}
         </DialogHeader>

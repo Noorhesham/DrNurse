@@ -3,7 +3,7 @@ import MiniTitle from "./MiniTitle";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
-const Meet = ({ cancel,img }: { cancel?: boolean,img?:boolean }) => {
+const Meet = ({ cancel, img }: { cancel?: boolean; img?: boolean }) => {
   return (
     <div className=" flex  gap-1 items-stretch">
       <div className="flex flex-col items-center  px-2 py-2  rounded-xl bg-main2 text-gray-50 ">

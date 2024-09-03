@@ -37,7 +37,7 @@ export default async function RootLayout({
         <QueryProvider>
           <DeviceProvider>
             <AuthProvider>
-              <Notifications/>
+              <Notifications />
               <ToastContainer
                 position="top-center"
                 autoClose={3500}

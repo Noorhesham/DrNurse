@@ -28,7 +28,7 @@ const page = () => {
       <div className="  flex flex-col lg:grid lg:grid-cols-9 gap-4 lg:gap-8">
         <SideBar />
         <section className=" col-span-7">
-          <div className=" flex justify-between">
+          <div className=" flex md:flex-row flex-col md:gap-0 gap-3 md:mb-0 mb-2  justify-between">
             <div className="flex text-main2 font-semibold flex-col ">
               <span className=" text-xl tracking-widest">HELLO,</span>
               <MiniTitle

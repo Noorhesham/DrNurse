@@ -8,6 +8,7 @@ import { PlayIcon } from "@/app/components/Icons";
 import JobCard from "@/app/components/JobCard";
 import MaxWidthWrapper from "@/app/components/MaxWidthWrapper";
 import MotionContainer from "@/app/components/MotionContainer";
+import MotionItem from "@/app/components/MotionItem";
 import Paragraph from "@/app/components/Paragraph";
 import Search from "@/app/components/Search";
 import SwiperCards from "@/app/components/SwiperCards";
@@ -61,48 +62,50 @@ const page = () => {
           />
         </div>
         <FlexWrapper className=" h-full">
-          <div className="  rounded-[2.5rem] overflow-hidden flex-1 relative aspect-square">
-            <VideoZoom
-              btn={
+          <VideoZoom
+            btn={
+              <div className="  rounded-[2.5rem] overflow-hidden flex-1 relative aspect-square">
+                {" "}
+                <Image alt="image" fill className="object-cover cursor-pointer" src={"/doc2.jpg"} />
                 <div className="cursor-pointer absolute z-10 top-3 right-3">
                   <PlayIcon />
                 </div>
-              }
-              content={
-                <div className="relative w-full h-auto overflow-hidden" style={{ paddingBottom: "56.25%" }}>
-                  <iframe
-                    className="absolute top-0 left-0 w-full h-full"
-                    src="https://www.youtube.com/embed/QczGoCmX-pI?si=agurhHubDIgVjErj"
-                    title="YouTube video player"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    frameBorder="0"
-                  ></iframe>
-                </div>
-              }
-            />
-            <Image alt="image" fill className="object-cover " src={"/doc2.jpg"} />
-          </div>
-          <div className="  rounded-[2.5rem] overflow-hidden flex-1  relative aspect-square">
-            <VideoZoom
-              btn={
+              </div>
+            }
+            content={
+              <div className="relative w-full h-auto overflow-hidden" style={{ paddingBottom: "56.25%" }}>
+                <iframe
+                  className="absolute top-0 left-0 w-full h-full"
+                  src="https://www.youtube.com/embed/QczGoCmX-pI?si=agurhHubDIgVjErj"
+                  title="YouTube video player"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  frameBorder="0"
+                ></iframe>
+              </div>
+            }
+          />
+
+          <VideoZoom
+            btn={
+              <div className="  rounded-[2.5rem] overflow-hidden flex-1  relative aspect-square">
                 <div className=" cursor-pointer absolute z-10 top-3 right-3">
                   <PlayIcon />
-                </div>
-              }
-              content={
-                <div className="relative w-full h-auto overflow-hidden" style={{ paddingBottom: "56.25%" }}>
-                  <iframe
-                    className="absolute top-0 left-0 w-full h-full"
-                    src="https://www.youtube.com/embed/QczGoCmX-pI?si=agurhHubDIgVjErj"
-                    title="YouTube video player"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    frameBorder="0"
-                  ></iframe>
-                </div>
-              }
-            />
-            <Image alt="image" fill className="object-cover w-full h-full " src={"/doc1.jpg"} />
-          </div>
+                </div>{" "}
+                <Image alt="image" fill className="object-cover cursor-pointer w-full h-full " src={"/doc1.jpg"} />
+              </div>
+            }
+            content={
+              <div className="relative w-full h-auto overflow-hidden" style={{ paddingBottom: "56.25%" }}>
+                <iframe
+                  className="absolute top-0 left-0 w-full h-full"
+                  src="https://www.youtube.com/embed/QczGoCmX-pI?si=agurhHubDIgVjErj"
+                  title="YouTube video player"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  frameBorder="0"
+                ></iframe>
+              </div>
+            }
+          />
         </FlexWrapper>
       </MaxWidthWrapper>
       <div className="bg-[#F2F5FF] mt-4 lg:mt-10">
@@ -121,7 +124,7 @@ const page = () => {
           </MotionContainer>
         </MaxWidthWrapper>
       </div>
-      <MaxWidthWrapper className="  py-8 lg:py-16">
+      <MaxWidthWrapper className="  pt-8 lg:pt-16">
         <Head1
           paragraph="We are looking for an outstanding Surgical Nurse to join our medical team. The main role of a surgical nurse is to provide high-quality care to patients before, during and after surgical procedures."
           text="Find your job
@@ -129,23 +132,33 @@ const page = () => {
           headingClasses=" max-w-lg"
         />
         <div className=" hidden lg:grid">
-          <GridContainer className=" mt-4" cols={5}>
-            <div className=" w-full h-72 relative">
-              <Image fill alt="image" src={"/ob1.png"} className=" object-contain" />
-            </div>
-            <div className=" w-full h-72 relative">
-              <Image fill alt="image" src={"/ob2.png"} className=" object-contain" />
-            </div>
-            <div className=" w-full h-72 relative">
-              <Image fill alt="image" src={"/ob3.png"} className=" object-contain" />
-            </div>
-            <div className=" w-full h-72 relative">
-              <Image fill alt="image" src={"/ob4.png"} className=" object-contain" />
-            </div>
-            <div className=" w-full h-72 relative">
-              <Image fill alt="image" src={"/ob5.png"} className=" object-contain" />
-            </div>
-          </GridContainer>
+          <MotionContainer className=" grid grid-cols-2  lg:grid-cols-5 mt-4">
+            <MotionItem>
+              <Link className=" w-full block h-72 relative" href={"/dashboard/employees?Career-type=NURSES"}>
+                <Image fill alt="image" src={"/ob1.png"} className=" object-contain" />
+              </Link>
+            </MotionItem>
+            <MotionItem>
+              <Link className=" w-full block h-72 relative" href={"/dashboard/employees?Career-type=NURSES"}>
+                <Image fill alt="image" src={"/ob2.png"} className=" object-contain" />
+              </Link>
+            </MotionItem>
+            <MotionItem>
+              <Link href={"/dashboard/employees?Career-type=NURSES"} className=" w-full block h-72 relative">
+                <Image fill alt="image" src={"/ob3.png"} className=" object-contain" />
+              </Link>
+            </MotionItem>
+            <MotionItem>
+              <Link className=" w-full block h-72 relative" href={"/dashboard/employees?Career-type=NURSES"}>
+                <Image fill alt="image" src={"/ob4.png"} className=" object-contain" />
+              </Link>
+            </MotionItem>
+            <MotionItem>
+              <Link className=" w-full block h-72 relative" href={"/dashboard/employees?Career-type=NURSES"}>
+                <Image fill alt="image" src={"/ob5.png"} className=" object-contain" />
+              </Link>
+            </MotionItem>
+          </MotionContainer>
         </div>
         <div className=" lg:hidden block">
           <SwiperCards
@@ -167,14 +180,21 @@ const page = () => {
       </MaxWidthWrapper>
       <MaxWidthWrapper>
         <Head1 text="IMPORTANT KEYWORDS" />
-        <GridContainer cols={5} className=" gap-3 mt-5">
+        <MotionContainer className=" grid grid-cols-2  gap-3 lg:grid-cols-5 mt-4">
           {Array.from({ length: 10 }).map((_, i) => (
-            <CardContainer customPadding=" px-6 py-3" className="flex font-medium  flex-col">
-              <p className=" text-muted-foreground">120 JOBS</p>
-              <p className="  leading-5  text-gray-800  text-base">Find job Plastic surgry doctor in Jeddah, KSA</p>
+            <CardContainer customPadding=" px-3 py-1.5 md:px-6 md:py-3">
+              <Link
+                className="flex font-medium  text-sm md:text-base  flex-col"
+                href={"/dashboard/employees?Career-type=NURSES"}
+              >
+                <p className=" text-muted-foreground">120 JOBS</p>
+                <p className="  leading-5 md:text-sm text-xs  text-gray-800 ">
+                  Find job Plastic surgry doctor in Jeddah, KSA
+                </p>
+              </Link>
             </CardContainer>
           ))}
-        </GridContainer>
+        </MotionContainer>
         <div className=" relative mt-10 lg:mt-20">
           <div className="  hidden lg:block lg:w-[34rem] aspect-square absolute -left-10 lg:-left-20 z-20 -top-10">
             <Image alt="image" fill className="object-contain" src={"/phone.png"} />

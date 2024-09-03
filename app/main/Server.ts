@@ -79,7 +79,7 @@ const getURL = (resourceName: ResourceNameProps, id?: string, entityName?: strin
       return { url: `${url}/${entityName}/entities-operations/${id}`, method: "GET" };
     case "notificationToken":
       return { url: `${url}/rm_users/${VERSION}/device_sys`, method: "POST" };
-    
+
     default:
       return { url, method: "GET" as MethodProps };
   }
@@ -94,7 +94,7 @@ export async function Server({
   headers,
   noHeaders = false,
   cache = false,
-  img = false,
+  formData = false,
   entityName,
 }: {
   resourceName: ResourceNameProps;
@@ -104,7 +104,7 @@ export async function Server({
   headers?: any;
   noHeaders?: boolean;
   cache?: boolean;
-  img?: boolean;
+  formData?: boolean;
   entityName?: string;
 }) {
   // Get the token and device info from cookies
@@ -128,14 +128,8 @@ export async function Server({
     const { url, method: resolvedMethod } = getURL(resourceName, id, entityName);
     // Fetch data from the server
     let requestBody;
-    if (img) {
-      requestBody = new FormData();
-      for (const key in body) {
-        requestBody.append(key, body[key]);
-      }
-      // Remove Content-Type header for FormData
-      delete combinedHeaders["Content-Type"];
-    } else {
+    if (formData) requestBody = body;
+    else {
       requestBody = body ? JSON.stringify(body) : undefined;
       combinedHeaders["Content-Type"] = "application/json";
     }
@@ -150,25 +144,16 @@ export async function Server({
     if (!response.ok) throw new Error(`Error: ${response.status}`);
 
     const data = await response.json();
+    if (data.message === "Device token mismatch" || data.message === "Login again please") {
+      cookies().delete("jwt");
+    }
     console.log(data, body);
     return data;
   } catch (error: any) {
+    if (error.message === "Device token mismatch" || error.message === "Login again please") {
+      cookies().delete("jwt");
+    }
     console.error("Server request error:", error);
     throw new Error(`Error: ${error.message}`);
   }
 }
-export const updatePhoto = async (formData: any) => {
-  const jwt = cookies().get("jwt")?.value;
-  const deviceId = cookies().get("device_info")?.value;
-  const res = await fetch("https://lab.r-m.dev/api/rm_users/v1/update_profile", {
-    method: "POST",
-    body: formData,
-    headers: {
-      "device-unique-id": JSON.parse(deviceId||"{}").device_unique_id,
-      Authorization: `Bearer ${jwt}`,
-    },
-  });
-  const data = await res.json();
-  console.log(data);
-  return data;
-};

@@ -24,12 +24,12 @@ const DeleteAccount = () => {
   return (
     <ModalCustom
       btn={
-        <p className=" cursor-pointer z-10  mt-5 ml-3 font-semibold text-red-500 hover:text-red-400 duration-150">
+        <p className=" text-center md:text-left cursor-pointer z-10  mt-5 ml-3 font-semibold text-red-500 hover:text-red-400 duration-150">
           {t("deleteAccount")}
         </p>
       }
       content={
-        <div className=" px-5 lg:px-20 py-5">
+        <div className="  px-5 lg:px-20 py-5">
           <p>{t("deleteAccount")}</p>
           <p>{t("confirmDelete")}</p>
           <FormContainer

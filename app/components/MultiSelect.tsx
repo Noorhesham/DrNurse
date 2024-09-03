@@ -239,7 +239,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                   </div>
                   <div className="flex items-center justify-between">
                     <XIcon
-                      className="h-4 mx-2 cursor-pointer text-muted-foreground"
+                      className="md:w-8 w-4 h-4 md:h-8"
                       onClick={(event) => {
                         event.stopPropagation();
                         handleClear();

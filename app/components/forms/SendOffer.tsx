@@ -98,8 +98,12 @@ const SendOffer = () => {
           {fields.map((field, index) => (
             <div className="flex mb-5 items-center gap-4 mt-2" key={field.id}>
               <FormInput control={form.control} name={`benefits.${index}`} placeholder={t("addBenefit")} />
-              <button type="button" onClick={() => remove(index)} className="rounded-xl border-2 border-gray-600 p-2">
-                <XIcon />
+              <button
+                type="button"
+                onClick={() => remove(index)}
+                className="rounded-xl self-center border-2 border-gray-600 p-1 my-auto"
+              >
+                <XIcon className="w-4 h-4 " />
               </button>
             </div>
           ))}
