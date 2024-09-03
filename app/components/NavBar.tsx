@@ -42,7 +42,7 @@ const NavBar = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isTopPage, setIsTopPage] = useState(true);
   const pathName = usePathname();
-  const { userSettings, handleLogout, generalSettings } = useAuth();
+  const { userSettings, handleLogout, generalSettings, loading } = useAuth();
   const user = userSettings;
 
   useEffect(() => {
@@ -87,7 +87,7 @@ const NavBar = () => {
               </ul>
             </div>
             <div className="  flex items-center gap-2 ">
-              {!user ? (
+              {!user && !loading ? (
                 <>
                   <Link href="/login">
                     <Button
