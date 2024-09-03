@@ -76,7 +76,7 @@ const CustomForm = ({
     <Form {...form}>
       <form className="flex w-full items-stretch gap-2" onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex flex-1 flex-col">
-          {title && <Head1 className=" text-lg text-center" text={title} />}
+          {title && <Head1 size="sm" className=" text-lg text-center" text={title} />}
           <div className="flex pt-4 w-full flex-col  gap-4">
             <FormFlexContainer title={inputs?.filter((i) => i.title !== "")?.[0].title} className="w-full">
               {inputs
