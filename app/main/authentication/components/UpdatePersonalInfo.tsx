@@ -45,7 +45,7 @@ const UpdatePersonalInfo = () => {
     console.log(res);
 
     if (!res.status) {
-      setError(Array.isArray(res.errors) ? res.errors : res.errors.passworres || res.message);
+      setError(Array.isArray(res.errors) ? res.errors : res.message);
       return;
     }
     toast.success(res.message);
