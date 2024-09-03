@@ -84,7 +84,7 @@ const Devices = () => {
                           startTransition(async () => {
                             const res = await Server({ resourceName: "deviceLogout", body: { device_id: val.id } });
                             console.log(res);
-                            if (res.success) {
+                            if (res.status) {
                               toast.success(res.message);
                               queryClient.invalidateQueries({ queryKey: ["getDevices"] });
                             }
@@ -103,7 +103,7 @@ const Devices = () => {
                   startTransition(async () => {
                     const res = await Server({ resourceName: "deviceLogout" });
                     console.log(res);
-                    if (res.success) {
+                    if (res.status) {
                       toast.success(res.message);
                       queryClient.invalidateQueries({ queryKey: ["getDevices"] });
                     }
