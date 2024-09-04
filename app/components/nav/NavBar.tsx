@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "react-toastify";
 import MotionItem from "../defaults/MotionItem";
 import { AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
 const links = [
   {
     text: "BROWSE A JOB",
@@ -93,7 +94,12 @@ const NavBar = () => {
           )}
         </AnimatePresence>
         <MaxWidthWrapper noPadding>
-          <div className="flex relative z-20 items-center justify-center lg:justify-between  ">
+          <div
+            className={cn(
+              "flex relative z-20 items-center   ",
+              !isTopPage && !isScrollingDown ? "justify-center":"justify-between"
+            )}
+          >
             <div className="flex  items-center  gap-20 ">
               <div
                 className={`${
