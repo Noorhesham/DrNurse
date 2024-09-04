@@ -2,8 +2,8 @@
 import React, { useEffect, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { SearchIcon } from "lucide-react";
-import GridContainer from "./GridContainer";
-import FlexWrapper from "./FlexWrapper";
+import GridContainer from "./defaults/GridContainer";
+import FlexWrapper from "./defaults/FlexWrapper";
 import InputCard from "./InputCard";
 
 const Search = () => {
@@ -35,7 +35,7 @@ const Search = () => {
       </div>
       <FlexWrapper max={false} className="w-full items-center gap-3">
         <h3 className=" font-light text-nowrap text-gray-50">POPULAR SEARCH: </h3>
-        <div className=" grid grid-cols-2 sm:flex-nowrap  gap-3 items-center sm:flex mt-1">
+        <div className="  flex-wrap sm:flex-nowrap  gap-3 items-center flex mt-1">
           <InputCard value="doctors" setSearch={setSearch} />
           <InputCard value="doctors" setSearch={setSearch} />
           <InputCard value="doctors" setSearch={setSearch} />

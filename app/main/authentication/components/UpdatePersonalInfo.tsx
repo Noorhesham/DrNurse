@@ -3,7 +3,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Server } from "../../Server";
 import { toast } from "react-toastify";
 import { useAuth } from "@/app/context/AuthContext";
-import ModalCustom from "@/app/components/ModalCustom";
+import ModalCustom from "@/app/components/defaults/ModalCustom";
 import UpdateCard from "@/app/components/UpdateCard";
 import { GoPeople } from "react-icons/go";
 import FormContainer from "@/app/components/forms/FormContainer";

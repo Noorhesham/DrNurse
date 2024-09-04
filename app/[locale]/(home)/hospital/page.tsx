@@ -1,13 +1,13 @@
 import About from "@/app/components/About";
 import FindDoctor from "@/app/components/FindDoctor";
-import FlexWrapper from "@/app/components/FlexWrapper";
-import GridContainer from "@/app/components/GridContainer";
+import FlexWrapper from "@/app/components/defaults/FlexWrapper";
+import GridContainer from "@/app/components/defaults/GridContainer";
 import Head1 from "@/app/components/Head1";
 import Heading from "@/app/components/Heading";
 import { CheckIcon, CloudUploadIcon, PersonAdd, PlayIcon, SearchIcon } from "@/app/components/Icons";
 import InfoCard from "@/app/components/InfoCard";
-import MaxWidthWrapper from "@/app/components/MaxWidthWrapper";
-import Paragraph from "@/app/components/Paragraph";
+import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
+import Paragraph from "@/app/components/defaults/Paragraph";
 import SwiperCards from "@/app/components/SwiperCards";
 import VideoZoom from "@/app/components/VideoZoom";
 import Widget from "@/app/components/Widget";
@@ -15,6 +15,7 @@ import Image from "next/image";
 import { FaBriefcase } from "react-icons/fa6";
 import { GoPeople } from "react-icons/go";
 import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
+import MotionItem from "@/app/components/defaults/MotionItem";
 
 export default function Home() {
   return (
@@ -32,6 +33,7 @@ export default function Home() {
         <MaxWidthWrapper className=" flex-col items-center justify-center w-full h-full">
           <div className="   h-full z-10 relative flex gap-4 md:gap-8 lg:gap-12 mt-20 lg:mt-10 flex-col items-center justify-center">
             <Heading
+              link="/signup"
               btnText="START HIRING NOW"
               text="HIRE SMARTER , GROW FASTER"
               title2={`With Egypt’s #1 Online Recruitment Platform`}
@@ -68,13 +70,23 @@ export default function Home() {
             ]}
           />
         </div>
-        <FlexWrapper  className=" h-full">
+        <FlexWrapper className=" h-full">
           <div className="  rounded-[2.5rem] overflow-hidden flex-1 relative aspect-square">
             <VideoZoom
               btn={
-                <div className="cursor-pointer absolute z-10 top-3 right-3">
+                <MotionItem
+                  nohover
+                  initial={{ opacity: 0.4, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: [0.7, 1.02] }}
+                  transition={{
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    duration: 1,
+                  }}
+                  className="cursor-pointer absolute z-10 top-3 right-3"
+                >
                   <PlayIcon />
-                </div>
+                </MotionItem>
               }
               content={
                 <div className="relative w-full h-auto overflow-hidden" style={{ paddingBottom: "56.25%" }}>
@@ -93,9 +105,19 @@ export default function Home() {
           <div className="  rounded-[2.5rem] overflow-hidden flex-1  relative aspect-square">
             <VideoZoom
               btn={
-                <div className=" cursor-pointer absolute z-10 top-3 right-3">
+                <MotionItem
+                  nohover
+                  initial={{ opacity: 0.4, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: [0.7, 1.02] }}
+                  transition={{
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    duration: 1,
+                  }}
+                  className="cursor-pointer absolute z-10 top-3 right-3"
+                >
                   <PlayIcon />
-                </div>
+                </MotionItem>
               }
               content={
                 <div className="relative w-full h-auto overflow-hidden" style={{ paddingBottom: "56.25%" }}>

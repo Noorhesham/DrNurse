@@ -11,10 +11,10 @@ import { useEffect, useState } from "react";
 import { InputOTPPattern } from "./OTP";
 import { TbAuth2Fa } from "react-icons/tb";
 import UpdateCard from "@/app/components/UpdateCard";
-import ModalCustom from "@/app/components/ModalCustom";
+import ModalCustom from "@/app/components/defaults/ModalCustom";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/app/context/AuthContext";
-import { SkeletonCard } from "@/app/components/SkeletonCard";
+import { SkeletonCard } from "@/app/components/defaults/SkeletonCard";
 const Activate2fa = () => {
   const [serial, setSerial] = useLocalStorageState("serial", "");
   const [qrCode, setQrCode] = useLocalStorageState("qrCode", "");
@@ -65,7 +65,7 @@ const Activate2fa = () => {
             {serial && isActivated && (
               <div className=" text-2xl items-center flex flex-col mt-5">
                 <Head1 text="YOUR SERIAL" />
-                <p className=" text-black text-lg">{secret||serial}</p>
+                <p className=" text-black text-lg">{secret || serial}</p>
                 <Image alt="" src={`${qr}`} width={200} height={200} />
                 <InputOTPPattern setServerError={setErr} sendType="" activate={true} handleSend={handleCheckTfa} />
               </div>

@@ -1,5 +1,5 @@
-import MiniTitle from "@/app/components/MiniTitle";
-import Notification from "@/app/components/Notification";
+import MiniTitle from "@/app/components/defaults/MiniTitle";
+import Notification from "@/app/components/defaults/Notification";
 import React from "react";
 const doctors = [
   {

@@ -1,6 +1,5 @@
 "use client";
 import React, { Suspense, useLayoutEffect, useState, useTransition } from "react";
-import Section from "@/app/components/Section";
 import { Switch } from "@/components/ui/switch";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -21,6 +20,8 @@ import Methods from "./Methods";
 import { InputOTPPattern } from "./OTP";
 import { useAuth } from "@/app/context/AuthContext";
 import { useTranslations } from "next-intl";
+import Section from "@/app/components/defaults/Section";
+import { ArrowRight } from "lucide-react";
 
 const Login = () => {
   const t = useTranslations();
@@ -127,7 +128,7 @@ const Login = () => {
         {!activate && (
           <>
             <h1 className="text-center text-xl md:text-2xl mt-8 font-bold text-main2">{t("login")}</h1>
-            <div className="w-full mt-5 px-5 lg:px-14 flex flex-col">
+            <div className="w-full gap-3 mt-5 px-5 lg:px-14 flex flex-col">
               <div className="text-main2 self-center mx-auto text-base flex items-center gap-2">
                 <p className="text-main2 font-medium text-sm">{t("loginWithPhone")}</p>
                 <Switch
@@ -163,15 +164,13 @@ const Login = () => {
             </div>
             <div className="mt-8 text-sm flex flex-col gap-2 md:gap-0 md:flex-row items-center">
               <span className="font-[400] text-main2">{t("dontHaveAccount")}</span>
-              <Link href="/signup" className="hover:underline duration-150 ml-1 text-main font-[700]">
-                {" "}
-                {t("createAccount")}{" "}
+              <Link href="/signup" className="  duration-150 ml-1 text-main font-[700]">
+                {t("createAccount")}           
               </Link>
             </div>
 
-            <Link href="/signup" className="hover:underline duration-150 mt-2 text-main  font-semibold">
-              {" "}
-              {t("backtowebsite")}{" "}
+            <Link href="/" className="underline flex items-center  duration-150 my-2 text-main  font-semibold">
+              {t("backtowebsite")} <ArrowRight className=" h-6 w-6 arrow1"/>
             </Link>
           </>
         )}{" "}

@@ -7,6 +7,7 @@ import cookies from "js-cookie";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
+import { MdEmail } from "react-icons/md";
 
 const Address = () => {
   const t = useTranslations();
@@ -41,7 +42,7 @@ const Address = () => {
         <IconWidget
           paragraph="info@orient-paints.com"
           header={t("address.email")}
-          icon={<FaMailBulk className=" text-main" />}
+          icon={<MdEmail className=" text-main" />}
         />
       </Link>
     </div>

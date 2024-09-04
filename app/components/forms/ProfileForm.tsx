@@ -9,10 +9,10 @@ import FunctionalButton from "../FunctionalButton";
 import { MessageCircleWarningIcon, XIcon } from "lucide-react";
 import FormSelect from "../inputsForm/FormSelect";
 import { Form } from "@/components/ui/form";
-import MiniTitle from "../MiniTitle";
+import MiniTitle from "../defaults/MiniTitle";
 import { RadioGroupForm } from "../inputsForm/RadioGroup";
 import FileUpload from "../inputsForm/FileUpload";
-import FlexWrapper from "../FlexWrapper";
+import FlexWrapper from "../defaults/FlexWrapper";
 import { CURRENCY_OPTIONS } from "@/app/constants";
 
 const jobSchema = z.object({

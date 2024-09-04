@@ -9,7 +9,7 @@ import Head1 from "../Head1";
 import { DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
-import MiniTitle from "../MiniTitle";
+import MiniTitle from "../defaults/MiniTitle";
 import FormFlexContainer from "./FormFlexContainer";
 export interface CustomFormProps {
   inputs?: InputProps[];
@@ -77,7 +77,7 @@ const CustomForm = ({
       <form className="flex w-full items-stretch gap-2" onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex flex-1 flex-col">
           {title && <Head1 size="sm" className=" text-lg text-center" text={title} />}
-          <div className="flex pt-4 w-full flex-col  gap-4">
+          <div className="flex pt-4 w-full flex-col  gap-2">
             <FormFlexContainer title={inputs?.filter((i) => i.title !== "")?.[0].title} className="w-full">
               {inputs
                 ?.filter((i) => i.flex)

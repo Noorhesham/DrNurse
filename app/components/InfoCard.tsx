@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import MotionItem from "./MotionItem";
+import MotionItem from "./defaults/MotionItem";
 import { Arrow } from "./Icons";
 import ArrowDrawingAnimation from "./AnimatedArrow";
 const InfoCard = ({

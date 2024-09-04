@@ -1,10 +1,10 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import React from "react";
-import MotionItem from "./MotionItem";
-import MotionContainer from "./MotionContainer";
 import cookies from "js-cookie";
-import Head1 from "./Head1";
+import MotionItem from "./MotionItem";
+import Head1 from "../Head1";
+import MotionContainer from "./MotionContainer";
 
 const Section = ({
   heading,

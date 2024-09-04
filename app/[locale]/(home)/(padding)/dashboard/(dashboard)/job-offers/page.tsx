@@ -1,4 +1,4 @@
-import MiniTitle from "@/app/components/MiniTitle";
+import MiniTitle from "@/app/components/defaults/MiniTitle";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Calendar, CheckCircle, EditIcon } from "lucide-react";

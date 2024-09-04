@@ -1,8 +1,8 @@
 import React from "react";
 import Heading from "@/app/components/Heading";
-import MaxWidthWrapper from "@/app/components/MaxWidthWrapper";
+import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
-import Paragraph from "@/app/components/Paragraph";
+import Paragraph from "@/app/components/defaults/Paragraph";
 
 const faqItems = [
   {

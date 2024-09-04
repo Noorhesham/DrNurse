@@ -1,6 +1,6 @@
 import React from "react";
-import MiniTitle from "./MiniTitle";
-import Paragraph from "./Paragraph";
+import MiniTitle from "./defaults/MiniTitle";
+import Paragraph from "./defaults/Paragraph";
 
 const AboutDoctor = () => {
   return (

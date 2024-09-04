@@ -1,7 +1,7 @@
 import React from "react";
 import Container from "@/app/components/Container";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import MiniTitle from "../MiniTitle";
+import MiniTitle from "../defaults/MiniTitle";
 import { Button } from "@/components/ui/button";
 const MeetingActions = () => {
   return (

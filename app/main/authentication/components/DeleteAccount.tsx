@@ -1,6 +1,6 @@
 "use client";
 import FormContainer from "@/app/components/forms/FormContainer";
-import ModalCustom from "@/app/components/ModalCustom";
+import ModalCustom from "@/app/components/defaults/ModalCustom";
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
 import React from "react";

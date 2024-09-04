@@ -9,7 +9,7 @@ import FormInput from "../inputsForm/FormInput";
 import FunctionalButton from "../FunctionalButton";
 import { XIcon } from "lucide-react";
 import FormSelect from "../inputsForm/FormSelect";
-import MiniTitle from "../MiniTitle";
+import MiniTitle from "../defaults/MiniTitle";
 import FormFlexContainer from "./FormFlexContainer";
 import { CURRENCY_OPTIONS } from "@/app/constants";
 

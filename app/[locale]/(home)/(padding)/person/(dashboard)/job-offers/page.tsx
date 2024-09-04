@@ -1,7 +1,7 @@
-import MiniTitle from "@/app/components/MiniTitle";
+import MiniTitle from "@/app/components/defaults/MiniTitle";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Calendar, CheckCircle,  } from "lucide-react";
+import { Calendar, CheckCircle } from "lucide-react";
 
 const jobs = [
   {
@@ -53,7 +53,7 @@ const jobs = [
 import React from "react";
 import FunctionalButton from "@/app/components/FunctionalButton";
 import { PaginationDemo } from "@/app/components/Pagination";
-import ModalCustom from "@/app/components/ModalCustom";
+import ModalCustom from "@/app/components/defaults/ModalCustom";
 
 import MeetingActions from "@/app/components/forms/MeetingActions";
 

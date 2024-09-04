@@ -1,11 +1,11 @@
 import React from "react";
-import GridContainer from "./GridContainer";
+import GridContainer from "./defaults/GridContainer";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import Paragraph from "./Paragraph";
+import Paragraph from "./defaults/Paragraph";
 import Head1 from "./Head1";
-import MaxWidthWrapper from "./MaxWidthWrapper";
-import FlexWrapper from "./FlexWrapper";
+import MaxWidthWrapper from "./defaults/MaxWidthWrapper";
+import FlexWrapper from "./defaults/FlexWrapper";
 
 const FindDoctor = ({ reverse }: { reverse?: boolean }) => {
   return (
@@ -26,12 +26,12 @@ anytime you reach a review point you’ll end up reviewing and negotiating the c
           <Button size="lg">GET STARTED</Button>
         </div>
         <GridContainer cols={2} className=" w-full h-full flex-1 ">
-          <div className="flex flex-col gap-x-2  col-span-1">
+          <div className="flex flex-col gap-x-2 gap-y-4  col-span-1">
             <div className=" rounded-2xl overflow-hidden aspect-square relative w-full h-full">
-              <Image alt="image" fill className="object-contain " src={"/grid1.jpg"} />
+              <Image alt="image" fill className="object-cover " src={"/grid1.jpg"} />
             </div>
             <div className=" rounded-2xl overflow-hidden aspect-square relative w-full h-full">
-              <Image alt="image" fill className="object-contain " src={"/grid2.jpg"} />
+              <Image alt="image" fill className="object-cover " src={"/grid2.jpg"} />
             </div>
           </div>
           <div className=" rounded-2xl overflow-hidden relative w-full h-full">

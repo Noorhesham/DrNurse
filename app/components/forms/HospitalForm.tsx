@@ -9,9 +9,9 @@ import FunctionalButton from "../FunctionalButton";
 import { XIcon, CloudIcon } from "lucide-react";
 import FormSelect from "../inputsForm/FormSelect";
 import { Form } from "@/components/ui/form";
-import MiniTitle from "../MiniTitle";
+import MiniTitle from "../defaults/MiniTitle";
 import FileUpload from "../inputsForm/FileUpload";
-import FlexWrapper from "../FlexWrapper";
+import FlexWrapper from "../defaults/FlexWrapper";
 
 const hospitalSchema = z.object({
   hospitalType: z.string().min(1, "Hospital Type is required"),

@@ -1,10 +1,11 @@
 import Applicant from "@/app/components/Applicant";
 import Filters from "@/app/components/Filters";
-import GridContainer from "@/app/components/GridContainer";
-import MiniTitle from "@/app/components/MiniTitle";
+import GridContainer from "@/app/components/defaults/GridContainer";
+import MiniTitle from "@/app/components/defaults/MiniTitle";
 import { PaginationDemo } from "@/app/components/Pagination";
 import Sort from "@/app/components/Sort";
 import React, { Suspense } from "react";
+import FilterMobile from "@/app/components/FilterPhone";
 const doctors = [
   {
     name: "Mohamed M.",
@@ -32,9 +33,10 @@ const page = () => {
     <div className="flex flex-col">
       <GridContainer className="gap-4" cols={9}>
         <div className=" col-span-2 lg:col-span-3">
-          <Suspense>
+          <div className=" lg:block hidden ">
             <Filters />
-          </Suspense>
+          </div>
+          <FilterMobile />
         </div>
         <div className="flex flex-col gap-3 col-span-2 lg:col-span-6">
           <div className="flex items-start justify-between">
@@ -42,7 +44,7 @@ const page = () => {
             <Sort options={["latest", "earliest"]} />
           </div>
           {doctors.map((doc) => (
-            <Applicant show={false} key={doc.name} applicant={doc} />
+            <Applicant notification show={false} key={doc.name} applicant={doc} />
           ))}
           <PaginationDemo />
         </div>

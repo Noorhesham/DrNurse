@@ -1,15 +1,15 @@
 import CardContainer from "@/app/components/CardContainer";
 import DownloadButtons from "@/app/components/DownloadButtons";
-import FlexWrapper from "@/app/components/FlexWrapper";
-import GridContainer from "@/app/components/GridContainer";
+import FlexWrapper from "@/app/components/defaults/FlexWrapper";
+import GridContainer from "@/app/components/defaults/GridContainer";
 import Head1 from "@/app/components/Head1";
 import Heading from "@/app/components/Heading";
 import { PlayIcon } from "@/app/components/Icons";
 import JobCard from "@/app/components/JobCard";
-import MaxWidthWrapper from "@/app/components/MaxWidthWrapper";
-import MotionContainer from "@/app/components/MotionContainer";
-import MotionItem from "@/app/components/MotionItem";
-import Paragraph from "@/app/components/Paragraph";
+import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
+import MotionContainer from "@/app/components/defaults/MotionContainer";
+import MotionItem from "@/app/components/defaults/MotionItem";
+import Paragraph from "@/app/components/defaults/Paragraph";
 import Search from "@/app/components/Search";
 import SwiperCards from "@/app/components/SwiperCards";
 import VideoZoom from "@/app/components/VideoZoom";
@@ -67,9 +67,18 @@ const page = () => {
               <div className="  rounded-[2.5rem] overflow-hidden flex-1 relative aspect-square">
                 {" "}
                 <Image alt="image" fill className="object-cover cursor-pointer" src={"/doc2.jpg"} />
-                <div className="cursor-pointer absolute z-10 top-3 right-3">
+                <MotionItem nohover
+                  initial={{ opacity: 0.4, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: [0.7, 1.02] }}
+                  transition={{
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    duration: 1,
+                  }}
+                  className="cursor-pointer absolute z-10 top-3 right-3"
+                >
                   <PlayIcon />
-                </div>
+                </MotionItem>
               </div>
             }
             content={
@@ -88,9 +97,18 @@ const page = () => {
           <VideoZoom
             btn={
               <div className="  rounded-[2.5rem] overflow-hidden flex-1  relative aspect-square">
-                <div className=" cursor-pointer absolute z-10 top-3 right-3">
+                <MotionItem nohover
+                  initial={{ opacity: 0.4, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: [0.7, 1.02] }}
+                  transition={{
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    duration: 1,
+                  }}
+                  className="cursor-pointer absolute z-10 top-3 right-3"
+                >
                   <PlayIcon />
-                </div>{" "}
+                </MotionItem>
                 <Image alt="image" fill className="object-cover cursor-pointer w-full h-full " src={"/doc1.jpg"} />
               </div>
             }
@@ -182,31 +200,33 @@ const page = () => {
         <Head1 text="IMPORTANT KEYWORDS" />
         <MotionContainer className=" grid grid-cols-2  gap-3 lg:grid-cols-5 mt-4">
           {Array.from({ length: 10 }).map((_, i) => (
-            <CardContainer customPadding=" px-3 py-1.5 md:px-6 md:py-3">
-              <Link
-                className="flex font-medium  text-sm md:text-base  flex-col"
-                href={"/dashboard/employees?Career-type=NURSES"}
-              >
-                <p className=" text-muted-foreground">120 JOBS</p>
-                <p className="  leading-5 md:text-sm text-xs  text-gray-800 ">
-                  Find job Plastic surgry doctor in Jeddah, KSA
-                </p>
-              </Link>
-            </CardContainer>
+            <MotionItem>
+              <CardContainer customPadding=" px-3 py-1.5 md:px-6 md:py-3">
+                <Link
+                  className="flex font-medium  text-sm md:text-base  flex-col"
+                  href={"/dashboard/employees?Career-type=NURSES"}
+                >
+                  <p className=" text-muted-foreground">120 JOBS</p>
+                  <p className="  leading-5 md:text-sm text-xs  text-gray-800 ">
+                    Find job Plastic surgry doctor in Jeddah, KSA
+                  </p>
+                </Link>
+              </CardContainer>
+            </MotionItem>
           ))}
         </MotionContainer>
         <div className=" relative mt-10 lg:mt-20">
           <div className="  hidden lg:block lg:w-[34rem] aspect-square absolute -left-10 lg:-left-20 z-20 -top-10">
             <Image alt="image" fill className="object-contain" src={"/phone.png"} />
           </div>
-          <div className="w-full   relative h-full lg:h-[430px] flex justify-center items-center">
+          <div className="w-full   relative h-full aspect-square lg:aspect-auto lg:h-[430px] flex md:flex-row flex-col justify-center items-center">
             <Image
               alt="image"
               fill
-              className=" object-cover lg:object-contain rounded-[2.5rem]   object-right-top"
+              className=" object-cover lg:object-contain rounded-[2.5rem]  object-center  lg:object-right-top"
               src={"/bg.jpg"}
             />
-            <div className="flex p-4 max-w-xl relative lg:top-24 lg:left-[40%]  lg:absolute z-30 flex-col gap-2 lg:gap-5">
+            <div className="flex p-4 max-w-xl relative -top-10 lg:top-24 lg:left-[40%]  lg:absolute z-30 flex-col gap-2 lg:gap-5">
               <h1 className=" text-white text-xl lg:text-3xl font-semibold">DOWNLOAD THE APP</h1>
               <p className=" text-sm lg:text-base text-gray-50">
                 Download the application and enjoy the best services and features Download the application and enjoy the
@@ -217,7 +237,7 @@ const page = () => {
               </div>
             </div>
           </div>
-          <div className="  block lg:hidden w-[20rem] mx-auto aspect-square relative  z-20">
+          <div className=" -mt-40 sm:-mt-36 block lg:hidden w-[20rem] mx-auto aspect-square relative  z-20">
             <Image alt="image" fill className="object-contain" src={"/phone.png"} />
           </div>
         </div>

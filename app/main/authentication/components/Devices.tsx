@@ -1,5 +1,5 @@
 "use client";
-import ModalCustom from "@/app/components/ModalCustom";
+import ModalCustom from "@/app/components/defaults/ModalCustom";
 import Spinner from "@/app/components/Spinner";
 import UpdateCard from "@/app/components/UpdateCard";
 import { useGetEntity } from "@/lib/queries";

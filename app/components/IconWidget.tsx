@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import Paragraph from "./Paragraph";
+import Paragraph from "./defaults/Paragraph";
 
 const IconWidget = ({ icon, header, paragraph }: { icon: ReactNode; header: string; paragraph: string }) => {
   return (

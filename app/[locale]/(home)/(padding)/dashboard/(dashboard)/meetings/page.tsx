@@ -1,6 +1,6 @@
 import MeetingForm from "@/app/components/forms/MeetingForm";
-import MiniTitle from "@/app/components/MiniTitle";
-import ModalCustom from "@/app/components/ModalCustom";
+import MiniTitle from "@/app/components/defaults/MiniTitle";
+import ModalCustom from "@/app/components/defaults/ModalCustom";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";

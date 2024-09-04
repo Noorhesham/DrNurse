@@ -10,14 +10,14 @@ import FunctionalButton from "../FunctionalButton";
 import { XIcon } from "lucide-react";
 import FormSelect from "../inputsForm/FormSelect";
 import { Form } from "@/components/ui/form";
-import MiniTitle from "../MiniTitle";
+import MiniTitle from "../defaults/MiniTitle";
 import { RadioGroupForm } from "../inputsForm/RadioGroup";
 import FormFlexContainer from "./FormFlexContainer";
-import GridContainer from "../GridContainer";
+import GridContainer from "../defaults/GridContainer";
 import { AnimatePresence } from "framer-motion";
-import MotionContainer from "../MotionContainer";
+import MotionContainer from "../defaults/MotionContainer";
 import ComboboxForm from "../inputsForm/ComboboxForm";
-import MotionItem from "../MotionItem";
+import MotionItem from "../defaults/MotionItem";
 import { CURRENCY_OPTIONS } from "@/app/constants";
 
 // Dynamic import for the nationalities library

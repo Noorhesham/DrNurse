@@ -3,7 +3,7 @@ import Image from "next/image";
 import React from "react";
 import { Location } from "./Icons";
 import Link from "next/link";
-import MotionItem from "./MotionItem";
+import MotionItem from "./defaults/MotionItem";
 
 const JobCard = ({ heading }: { heading: string }) => {
   return (

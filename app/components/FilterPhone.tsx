@@ -26,7 +26,7 @@ const FilterMobile = () => {
         {" "}
         <button
           onClick={() => setFilterMobile(!filterMobile)}
-          className=" lg:hidden z-50 relative block text-gray-400 text-xl hover:text-orange-400 duration-150 "
+          className=" lg:hidden z-50 relative block text-gray-400 text-xl hover:text-main duration-150 "
         >
           <FaFilter />
         </button>
@@ -37,16 +37,16 @@ const FilterMobile = () => {
         {filterMobile && (
           <motion.div
             ref={containerRef}
-            className="fixed z-[11111199]  top-0 -left-10  w-[300px]  lg:hidden h-full"
-            initial={{ x: "-140%" }}
-            exit={{ x: "-140%" }}
-            animate={{ x: filterMobile ? "0%" : "-100%" }}
+            initial={{ y: 20, opacity: 0 }}
+            exit={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             <Filters
               colseBtn={
                 <button
                   onClick={() => setFilterMobile(false)}
-                  className="rounded-xl self-center border-2 border-gray-600 p-1 my-auto"
+                  className="rounded-xl self-end border-2 border-gray-600 p-1 my-auto"
                 >
                   <XIcon className="w-4 h-4 " />
                 </button>

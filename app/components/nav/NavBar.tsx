@@ -1,19 +1,21 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Logo from "./Logo";
+import Logo from "../Logo";
 import NavLink from "./NavLink";
 
-import MaxWidthWrapper from "./MaxWidthWrapper";
-import { JOB_LINKS } from "../constants";
+import MaxWidthWrapper from "../defaults/MaxWidthWrapper";
+import { JOB_LINKS } from "../../constants";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Server } from "../main/Server";
+import { Server } from "../../main/Server";
 
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 import PhoneNav from "./PhoneNav";
 import { Button } from "@/components/ui/button";
 import { toast } from "react-toastify";
+import MotionItem from "../defaults/MotionItem";
+import { AnimatePresence } from "framer-motion";
 const links = [
   {
     text: "BROWSE A JOB",
@@ -22,17 +24,15 @@ const links = [
   },
   {
     text: "FOR EMPLOYERS",
+    href: "/",
   },
   {
     text: "POST JOB",
+    href: "/hospital",
   },
   {
-    text: "BLOG",
-    href: "/about-us",
-  },
-  {
-    text: "FAQ",
-    href: "/faq",
+    text: "ABOUT US",
+    href: "/aboutus",
   },
 ];
 const NavBar = () => {
@@ -62,23 +62,47 @@ const NavBar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY, isTopPage]);
   const isHome = pathName === "/ar" || pathName === "/en" || pathName.includes("hospital");
+
   return (
     <header className=" w-full">
       <nav
         className={`${
           isHome
-            ? "text-white placeholder:text-white "
-            : `text-black placeholder:text-white ${!isScrollingDown && "bg-white/80"}`
-        } fixed inset-0 z-50 max-h-[10rem]   flex flex-col gap-2  py-4 transition-all duration-300 ${
-          isScrollingDown ? "-translate-y-full" : !isTopPage && !isScrollingDown ? "-translate-y-20" : "translate-y-0"
+            ? "text-white font-semibold placeholder:text-white "
+            : `  text-main2 font-semibold placeholder:text-white  ${isScrollingDown && "bg-white/80"}`
+        } fixed inset-0 z-50 max-h-[10rem]    flex flex-col gap-2  py-4 transition-all duration-300 ${
+          isScrollingDown
+            ? "-translate-y-full"
+            : !isTopPage && !isScrollingDown
+            ? `-translate-y-5 ${!isHome && "bg-white/80"}`
+            : "translate-y-0"
         }`}
       >
+        {" "}
+        <AnimatePresence>
+          {(isHome || pathName.includes("aboutus")) && !isTopPage && !isScrollingDown && (
+            <MotionItem
+              nohover
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 h-[20rem] bg-gradient-to-b from-black/60 via-transparent to-transparent pointer-events-none z-10"
+            >
+              {null}
+            </MotionItem>
+          )}
+        </AnimatePresence>
         <MaxWidthWrapper noPadding>
-          <div className="flex items-center justify-between  ">
+          <div className="flex relative z-20 items-center justify-center lg:justify-between  ">
             <div className="flex  items-center  gap-20 ">
-              <div className="flex items-center   ">
+              <div
+                className={`${
+                  !isTopPage && !isScrollingDown && "lg:opacity-100  hidden lg:flex  opacity-0"
+                } flex duration-150  items-center`}
+              >
                 <Logo isdark={isHome ? false : true} />
               </div>
+
               <ul className=" hidden lg:flex z-30 relative items-center  gap-4 xl:gap-8 ">
                 {links.map((link) => (
                   //@ts-ignore
@@ -97,10 +121,6 @@ const NavBar = () => {
                       LOGIN
                     </Button>
                   </Link>
-                  <Link href="/signup">
-                    {" "}
-                    <Button className="  px-4 lg:px-8 rounded-full">GET STARTED</Button>
-                  </Link>
                 </>
               ) : (
                 <Button
@@ -116,7 +136,11 @@ const NavBar = () => {
                 >
                   LOG OUT
                 </Button>
-              )}
+              )}{" "}
+              <Link href={user ? "/dashboard" : "/signup"}>
+                {" "}
+                <Button className="  px-4 lg:px-8 rounded-full">GET STARTED</Button>
+              </Link>
               <div className={`z-[999] duration-150 h-full  relative lg:hidden block`}>
                 <PhoneNav isHome={isHome} navigation={links} />
               </div>

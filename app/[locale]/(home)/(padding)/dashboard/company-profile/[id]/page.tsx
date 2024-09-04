@@ -2,12 +2,12 @@ import Applicant from "@/app/components/Applicant";
 import Education from "@/app/components/Education";
 import MeetingForm from "@/app/components/forms/MeetingForm";
 import FunctionalButton from "@/app/components/FunctionalButton";
-import GridContainer from "@/app/components/GridContainer";
+import GridContainer from "@/app/components/defaults/GridContainer";
 import InfoItem from "@/app/components/InfoDoc";
 import MainProfile from "@/app/components/MainProfile";
-import MaxWidthWrapper from "@/app/components/MaxWidthWrapper";
-import MiniTitle from "@/app/components/MiniTitle";
-import Paragraph from "@/app/components/Paragraph";
+import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
+import MiniTitle from "@/app/components/defaults/MiniTitle";
+import Paragraph from "@/app/components/defaults/Paragraph";
 import SateChange from "@/app/components/SateChange";
 import Tabing from "@/app/components/Tabing";
 import { Briefcase, BriefcaseIcon, CalendarIcon, EditIcon, HeartIcon, LanguagesIcon } from "lucide-react";
@@ -26,8 +26,18 @@ const page = () => {
         <MaxWidthWrapper>
           <MainProfile user={doctor}>
             <div className="flex flex-wrap lg:w-fit w-full  items-center gap-2">
-              <FunctionalButton className=" flex-1 lg:w-fit w-full" btnText="EDIT" icon={<EditIcon />} link={"/dashboard/profile-settings/1"} />
-              <FunctionalButton className=" flex-1 lg:w-fit w-full" btnText="EDIT MANAGERS" icon={<EditIcon />} link="/dashboard/control-managers/1" />
+              <FunctionalButton
+                className=" flex-1 lg:w-fit w-full"
+                btnText="EDIT"
+                icon={<EditIcon />}
+                link={"/dashboard/profile-settings/1"}
+              />
+              <FunctionalButton
+                className=" flex-1 lg:w-fit w-full"
+                btnText="EDIT MANAGERS"
+                icon={<EditIcon />}
+                link="/dashboard/control-managers/1"
+              />
             </div>
           </MainProfile>
         </MaxWidthWrapper>

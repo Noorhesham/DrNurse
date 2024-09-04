@@ -1,11 +1,11 @@
 import React from "react";
-import Container from "./Container";
+import Container from "../Container";
 import { CalendarIcon, ChevronRight } from "lucide-react";
 import Link from "next/link";
-import FunctionalButton from "./FunctionalButton";
-import MeetingForm from "./forms/MeetingForm";
-import UserCard from "./UserCard";
-import SateChange from "./SateChange";
+import FunctionalButton from "../FunctionalButton";
+import MeetingForm from "../forms/MeetingForm";
+import UserCard from "../UserCard";
+import SateChange from "../SateChange";
 import ModalCustom from "./ModalCustom";
 import Paragraph from "./Paragraph";
 const Notification = ({

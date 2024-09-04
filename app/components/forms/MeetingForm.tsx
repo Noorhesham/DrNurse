@@ -3,7 +3,7 @@ import { useZodForm } from "@/app/hooks/useZodForm";
 import React from "react";
 import { useFieldArray } from "react-hook-form";
 import { z } from "zod";
-import MiniTitle from "../MiniTitle";
+import MiniTitle from "../defaults/MiniTitle";
 import CalendarInput from "../inputsForm/CalendarInput";
 import { Form } from "@/components/ui/form";
 import { XIcon } from "lucide-react";

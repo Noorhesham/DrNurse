@@ -29,7 +29,7 @@ const SideNav = ({
     mounted && (
       <Link
         href={link}
-        className={`flex flex-1  text-base flex-grow w-full font-medium duration-150 cursor-pointer md:w-full rounded-lg p-1 lg:py-2 lg:px-4   items-center gap-2 self-start ${
+        className={`flex flex-1  text-base flex-grow w-full lg:py-2 lg:px-4 font-medium duration-150 cursor-pointer md:w-full rounded-lg p-1    items-center gap-2 self-start ${
           isActive && !iconsOnly
             ? " bg-hover  border-l-2 rounded-l-none  border-main2 lg:py-3   text-main2 hover:bg-gray-100 "
             : iconsOnly && isActive
@@ -38,7 +38,7 @@ const SideNav = ({
         }`}
       >
         {iconsOnly ? (
-          <TooltipProvider>
+          <TooltipProvider delayDuration={10}>
             <Tooltip>
               <TooltipTrigger asChild>
                 <span className=" mx-auto">{icon}</span>

@@ -1,7 +1,7 @@
 export const JOB_LINKS = [
   {
     text: "Find Jobs",
-    href: "/shop",
+    href: "/jobs",
   },
 ];
 export const CURRENCY_OPTIONS = [

@@ -9,12 +9,12 @@ import { Progress } from "@/components/ui/progress";
 import { AnimatePresence, motion } from "framer-motion";
 import Spinner from "../Spinner";
 
-import PhotoInput from "../PhotoInput";
+import PhotoInput from "./PhotoInput";
 import { Textarea } from "@/components/ui/textarea";
 import { useTranslations } from "next-intl";
 import cookies from "js-cookie";
 import { useFormContext } from "react-hook-form";
-import MotionItem from "../MotionItem";
+import MotionItem from "../defaults/MotionItem";
 interface FormInputProps {
   control?: any;
   name: string;
@@ -94,7 +94,7 @@ const FormInput = ({
   useEffect(() => {
     if (phone) {
       const loadPhoneSearch = async () => {
-        const { default: PhoneSearch } = await import("../PhoneSearch");
+        const { default: PhoneSearch } = await import("./PhoneSearch");
         setPhoneSearchComponent(() => PhoneSearch);
       };
       loadPhoneSearch();

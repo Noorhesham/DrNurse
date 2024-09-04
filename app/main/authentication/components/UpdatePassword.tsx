@@ -1,7 +1,7 @@
 import React from "react";
 import { Server } from "../../Server";
 import { toast } from "react-toastify";
-import ModalCustom from "@/app/components/ModalCustom";
+import ModalCustom from "@/app/components/defaults/ModalCustom";
 import { Lock } from "lucide-react";
 import UpdateCard from "@/app/components/UpdateCard";
 import FormContainer from "@/app/components/forms/FormContainer";

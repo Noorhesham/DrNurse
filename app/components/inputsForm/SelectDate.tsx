@@ -2,9 +2,9 @@
 import React from "react";
 import Container from "../Container";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import FlexWrapper from "../FlexWrapper";
-import MiniTitle from "../MiniTitle";
-import Paragraph from "../Paragraph";
+import FlexWrapper from "../defaults/FlexWrapper";
+import MiniTitle from "../defaults/MiniTitle";
+import Paragraph from "../defaults/Paragraph";
 import { Label } from "@/components/ui/label";
 
 const SelectDate = () => {

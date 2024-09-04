@@ -1,7 +1,7 @@
 import React from "react";
-import GridContainer from "./GridContainer";
-import MiniTitle from "./MiniTitle";
-import Paragraph from "./Paragraph";
+import GridContainer from "./defaults/GridContainer";
+import MiniTitle from "./defaults/MiniTitle";
+import Paragraph from "./defaults/Paragraph";
 import { Button } from "@/components/ui/button";
 import InfoItem from "./InfoDoc";
 import { BookmarkIcon, Briefcase, BriefcaseIcon, CalendarIcon, EditIcon, HeartIcon, LanguagesIcon } from "lucide-react";

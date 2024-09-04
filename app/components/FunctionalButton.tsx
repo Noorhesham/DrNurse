@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import ModalCustom from "./ModalCustom";
+import ModalCustom from "./defaults/ModalCustom";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import { cn } from "@/lib/utils";

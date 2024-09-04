@@ -1,6 +1,6 @@
 import FunctionalButton from "@/app/components/FunctionalButton";
 
-import MiniTitle from "@/app/components/MiniTitle";
+import MiniTitle from "@/app/components/defaults/MiniTitle";
 import TableData from "@/app/components/TableData";
 import React from "react";
 

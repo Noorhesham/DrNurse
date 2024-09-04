@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import UserCard from "./UserCard";
-import FlexWrapper from "./FlexWrapper";
+import FlexWrapper from "./defaults/FlexWrapper";
 
 const MainProfile = ({ user, children }: { user: any; children?: ReactNode }) => {
   return (

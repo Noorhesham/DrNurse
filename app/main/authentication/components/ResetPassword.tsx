@@ -1,7 +1,5 @@
 "use client";
 import Logo from "@/app/components/Logo";
-import Section from "@/app/components/Section";
-import { ArrowRight } from "@/app/components/Icons";
 import React, { startTransition, Suspense, useEffect, useState } from "react";
 import { useParams } from "@/app/hooks/useParams";
 import Prepare from "./Prepare";
@@ -13,6 +11,8 @@ import Methods from "./Methods";
 import { InputOTPPattern } from "./OTP";
 import { useLocalStorageState } from "@/app/hooks/useLocalStorageState";
 import Spinner from "@/app/components/Spinner";
+import Section from "@/app/components/defaults/Section";
+import { ArrowRight } from "lucide-react";
 
 const ResetPassword = () => {
   const [param, handleParam, deleteParam] = useParams("level", "prepare");
@@ -50,7 +50,8 @@ const ResetPassword = () => {
     <Suspense fallback={<Spinner />}>
       <Section CustomePadding="px-5 py-40" className=" bg-gray-50 justify-center flex flex-1  flex-col items-center">
         <div className=" mx-auto flex flex-col items-center justify-center  w-full  ">
-          <Logo size={{ width: 863, height: 338 }} type="blue" />
+          <Logo isdark size="lg" />
+
           <h1 className=" text-center text-2xl mt-8 font-bold text-main2">FORGOT PASSWORD</h1>
           {param === "prepare" && <Prepare setMessage={setMessage} handleParam={handleParam} setMethods={setMethods} />}
           {param === "forgot" && <Methods message={message || ""} handleSend={handleSend} methods={methods} />}

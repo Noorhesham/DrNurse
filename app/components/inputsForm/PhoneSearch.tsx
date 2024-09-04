@@ -1,7 +1,7 @@
 "use client";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/material.css";
-import { PhoneProps } from "./inputsForm/FormInput";
+import { PhoneProps } from "./FormInput";
 import cookies from "js-cookie";
 import ar from "react-phone-input-2/lang/ar.json";
 import { useFormContext } from "react-hook-form";

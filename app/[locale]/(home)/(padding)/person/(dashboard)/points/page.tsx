@@ -1,13 +1,13 @@
-import FlexWrapper from "@/app/components/FlexWrapper";
+import FlexWrapper from "@/app/components/defaults/FlexWrapper";
 import FunctionalButton from "@/app/components/FunctionalButton";
 import Head1 from "@/app/components/Head1";
-import Paragraph from "@/app/components/Paragraph";
+import Paragraph from "@/app/components/defaults/Paragraph";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PaperclipIcon } from "lucide-react";
 import React from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import MiniTitle from "@/app/components/MiniTitle";
+import MiniTitle from "@/app/components/defaults/MiniTitle";
 
 const reedems = [
   {

@@ -1,5 +1,4 @@
 "use client";
-import Section from "@/app/components/Section";
 import { useState, useTransition, useEffect } from "react";
 import CustomForm from "@/app/components/forms/CustomForm";
 import Link from "next/link";
@@ -14,6 +13,7 @@ import { toast } from "react-toastify";
 import { redirect } from "next/navigation";
 import { useLocalStorageState } from "@/app/hooks/useLocalStorageState";
 import { z } from "zod";
+import Section from "@/app/components/defaults/Section";
 
 const initialSignupArray = [
   {
@@ -121,12 +121,17 @@ const Signup = () => {
               options: ["Doctor", "Nurse", "Technician"],
               placeholder: "Select Your Job Title...",
             },
+            {
+              name: "referealCode",
+              optional: true,
+              placeholder: "REFERRAL CODE ...",
+            }
           ];
         }
         return prev;
       });
     } else {
-      setSignupArray((prev) => prev.filter((input) => input.name !== "jobTitle"));
+      setSignupArray((prev) => prev.filter((input) => input.name !== "jobTitle"&&input.name !== "referealCode"));
     }
   }, [role]);
 

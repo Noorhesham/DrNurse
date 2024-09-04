@@ -1,5 +1,5 @@
 import Filters from "@/app/components/Filters";
-import GridContainer from "@/app/components/GridContainer";
+import GridContainer from "@/app/components/defaults/GridContainer";
 import JobCard from "@/app/components/JobCard";
 import { PaginationDemo } from "@/app/components/Pagination";
 import React from "react";

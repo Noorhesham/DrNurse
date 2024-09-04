@@ -1,6 +1,6 @@
 import FormContainer from "@/app/components/forms/FormContainer";
 
-import ModalCustom from "@/app/components/ModalCustom";
+import ModalCustom from "@/app/components/defaults/ModalCustom";
 import UpdateCard from "@/app/components/UpdateCard";
 import React from "react";
 import { MdNotifications } from "react-icons/md";

@@ -1,7 +1,7 @@
 import Container from "@/app/components/Container";
-import GridContainer from "@/app/components/GridContainer";
-import MaxWidthWrapper from "@/app/components/MaxWidthWrapper";
-import MiniTitle from "@/app/components/MiniTitle";
+import GridContainer from "@/app/components/defaults/GridContainer";
+import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
+import MiniTitle from "@/app/components/defaults/MiniTitle";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { CheckIcon } from "lucide-react";

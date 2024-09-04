@@ -1,11 +1,11 @@
 import CompanyInfo from "@/app/components/CompanyInfo";
 import Container from "@/app/components/Container";
-import FlexWrapper from "@/app/components/FlexWrapper";
+import FlexWrapper from "@/app/components/defaults/FlexWrapper";
 import SelectDate from "@/app/components/inputsForm/SelectDate";
 import MainProfile from "@/app/components/MainProfile";
 import Meet from "@/app/components/Meet";
-import MiniTitle from "@/app/components/MiniTitle";
-import ModalCustom from "@/app/components/ModalCustom";
+import MiniTitle from "@/app/components/defaults/MiniTitle";
+import ModalCustom from "@/app/components/defaults/ModalCustom";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React from "react";

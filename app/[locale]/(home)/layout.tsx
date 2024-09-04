@@ -1,5 +1,6 @@
 import Footer from "@/app/components/Footer";
-import NavBar from "@/app/components/NavBar";
+import NavBar from "@/app/components/nav/NavBar";
+
 import { unstable_setRequestLocale } from "next-intl/server";
 
 export default function RootLayout({

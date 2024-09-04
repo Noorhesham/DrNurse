@@ -1,7 +1,7 @@
 import BreadCrumb from "@/app/components/BreadCrumb";
-import GridContainer from "@/app/components/GridContainer";
-import MaxWidthWrapper from "@/app/components/MaxWidthWrapper";
-import SideBar from "@/app/components/SideBar";
+import GridContainer from "@/app/components/defaults/GridContainer";
+import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
+import SideBar from "@/app/components/nav/SideBar";
 import { unstable_setRequestLocale } from "next-intl/server";
 
 export default function RootLayout({

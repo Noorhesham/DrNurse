@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import MiniTitle from "./MiniTitle";
+import MiniTitle from "./defaults/MiniTitle";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import FunctionalButton from "./FunctionalButton";
 import { MinusCircle } from "lucide-react";

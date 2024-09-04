@@ -1,5 +1,5 @@
 import React from "react";
-import MiniTitle from "./MiniTitle";
+import MiniTitle from "./defaults/MiniTitle";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 

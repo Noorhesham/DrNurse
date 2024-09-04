@@ -15,7 +15,7 @@ import { useAuth } from "@/app/context/AuthContext";
 import { Suspense, useState, useTransition } from "react";
 import Spinner from "@/app/components/Spinner";
 import { useDevice } from "@/app/context/DeviceContext";
-import Paragraph from "@/app/components/Paragraph";
+import Paragraph from "@/app/components/defaults/Paragraph";
 import { useTranslations } from "next-intl";
 
 export function InputOTPPattern({

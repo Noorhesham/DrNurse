@@ -2,7 +2,7 @@ import { CloudUploadIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
-import MiniTitle from "../MiniTitle";
+import MiniTitle from "../defaults/MiniTitle";
 
 const FileUpload = ({ label, name, multiple = false }: { label: string; name: string; multiple?: boolean }) => {
   const form = useFormContext();

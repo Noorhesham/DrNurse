@@ -1,4 +1,4 @@
-import MaxWidthWrapper from "@/app/components/MaxWidthWrapper";
+import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
 import { Server } from "@/app/main/Server";
 import { convertToHTML } from "@/lib/utils";
 import { CalendarHeartIcon, LayoutDashboardIcon } from "lucide-react";

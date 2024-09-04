@@ -1,12 +1,13 @@
 import React from "react";
-import GridContainer from "./GridContainer";
+import GridContainer from "./defaults/GridContainer";
 import Logo from "./Logo";
 import Socials from "./Socials";
 import { useTranslations } from "next-intl";
-import MaxWidthWrapper from "./MaxWidthWrapper";
+import MaxWidthWrapper from "./defaults/MaxWidthWrapper";
 import Image from "next/image";
 import DownloadButtons from "./DownloadButtons";
-import FlexWrapper from "./FlexWrapper";
+import FlexWrapper from "./defaults/FlexWrapper";
+import Link from "next/link";
 
 const Footer = () => {
   const t = useTranslations("footer");
@@ -33,29 +34,17 @@ const Footer = () => {
               <Logo size="lg" />
               <Socials />
             </div>
-            <div className="mt-5 md:mt-0 col-span-2">
-              <ul className="  text-white flex flex-col gap-3 lg:list-disc">
-                <li>{t("aboutus")}</li>
-                <li>{t("contactus")}</li>
-                <li>{t("ourblog")}</li>
-                <li>{t("pricing")}</li>
-                <li>{t("solutions")}</li>
-                <li>{t("agree")}</li>
-                <li>{t("testimonials")}</li>
+
+            <div className="mt-3  col-span-full lg:col-span-2">
+              <ul className="  text-white items-center  flex flex-col gap-3 lg:list-disc">
+                <Link href={"/aboutus"}>{t("aboutus")}</Link>
+                <Link href={"/contact-us"}>{t("contactus")}</Link>
+                <Link href={"#"}>{t("ourblog")}</Link>
+                <Link href={"#"}>{t("testimonials")}</Link>
+                <Link href={"/faq"}>FAQ</Link>
               </ul>
             </div>
-            <div className="mt-5 md:mt-0  col-span-2">
-              <ul className="  text-white flex flex-col gap-3 lg:list-disc">
-                <li>{t("aboutus")}</li>
-                <li>{t("contactus")}</li>
-                <li>{t("ourblog")}</li>
-                <li>{t("pricing")}</li>
-                <li>{t("solutions")}</li>
-                <li>{t("agree")}</li>
-                <li>{t("testimonials")}</li>
-              </ul>
-            </div>
-            <div className=" col-span-full lg:col-span-3 self-center flex flex-col items-center lg:items-start">
+            <div className=" col-span-full lg:col-span-6 self-center flex flex-col items-center lg:items-start">
               <h1
                 className=" text-white   mb-3 after:w-full after:lg:block after:hidden after:left-[110%] after:top-1/2 after:rounded-2xl after:bg-white after:absolute after:h-[2px] 
           relative text-base md:text-xl"
@@ -73,7 +62,9 @@ const Footer = () => {
             </div>
           </GridContainer>
           <FlexWrapper className=" w-full py-5 gap-5 flex justify-between items-center">
-            <p className=" basis-[70%] text-gray-100">{t("copyright")}</p>
+            <p className=" basis-[70%] text-gray-100">
+              {t("copyright")} <Link href={`https://rightminddev.com/`}>Right Mind</Link>
+            </p>
 
             <div className="flex self-end  w-full lg:basis-[30%] items-center gap-3">
               <DownloadButtons />

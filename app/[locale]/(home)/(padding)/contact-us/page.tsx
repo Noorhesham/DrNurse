@@ -1,15 +1,16 @@
 import FormContainer from "@/app/components/forms/FormContainer";
 import Head1 from "@/app/components/Head1";
-import MaxWidthWrapper from "@/app/components/MaxWidthWrapper";
-import Section from "@/app/components/Section";
+import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
+
 import SocialMedia from "@/app/components/Socials";
 import { BookAIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
-import Paragraph from "@/app/components/Paragraph";
+import Paragraph from "@/app/components/defaults/Paragraph";
 import Address from "@/app/components/Address";
 import ContactUsLocation from "@/app/components/ContactUsLocation";
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
+import Section from "@/app/components/defaults/Section";
 
 const Page = async ({ params: { locale } }: { params: { locale: string } }) => {
   unstable_setRequestLocale(locale);

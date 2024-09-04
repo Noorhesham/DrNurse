@@ -1,6 +1,6 @@
 import AddNewManager from "@/app/components/forms/AddNewManager";
 import Manager from "@/app/components/Manager";
-import MiniTitle from "@/app/components/MiniTitle";
+import MiniTitle from "@/app/components/defaults/MiniTitle";
 import React from "react";
 
 const page = () => {

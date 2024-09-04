@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import MiniTitle from "./MiniTitle";
+import MiniTitle from "./defaults/MiniTitle";
 
 const Doctor = ({ doctor }: { doctor: { image: string; name: string; duration: string; speciality: string } }) => {
   return (

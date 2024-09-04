@@ -1,10 +1,11 @@
 import About from "@/app/components/About";
 import FindDoctor from "@/app/components/FindDoctor";
-import FlexWrapper from "@/app/components/FlexWrapper";
-import GridContainer from "@/app/components/GridContainer";
+import FlexWrapper from "@/app/components/defaults/FlexWrapper";
+import GridContainer from "@/app/components/defaults/GridContainer";
 import Head1 from "@/app/components/Head1";
-import Paragraph from "@/app/components/Paragraph";
+import Paragraph from "@/app/components/defaults/Paragraph";
 import React from "react";
+import CounterAnimation from "@/app/components/CounterAnimation";
 
 const page = () => {
   return (
@@ -25,22 +26,22 @@ anytime you reach a review point you’ll end up reviewing and negotiating the c
         <GridContainer className="  flex-1" cols={2}>
           <div className=" flex items-center flex-col gap-4 relative">
             <span className=" absolute  top-0 right-10">+</span>
-            <h1 className=" text-main2 font-bold  text-5xl">150</h1>
+            <CounterAnimation from={0} to={200} />
             <p className=" text-gray-800 font-medium">EMPLOYEE</p>
           </div>{" "}
           <div className=" flex items-center flex-col gap-4 relative">
             <span className=" absolute  top-0 right-10">+</span>
-            <h1 className=" text-main2 font-bold  text-5xl">150</h1>
+            <CounterAnimation from={0} to={200} />
             <p className=" text-gray-800 font-medium">EMPLOYEE</p>
           </div>{" "}
           <div className=" flex items-center flex-col gap-4 relative">
             <span className=" absolute  top-0 right-10">+</span>
-            <h1 className=" text-main2 font-bold  text-5xl">150</h1>
+            <CounterAnimation from={0} to={563} />
             <p className=" text-gray-800 font-medium">EMPLOYEE</p>
           </div>{" "}
           <div className=" flex items-center flex-col gap-4 relative">
             <span className=" absolute  top-0 right-10">+</span>
-            <h1 className=" text-main2 font-bold  text-5xl">150</h1>
+            <CounterAnimation from={0} to={1235} />
             <p className=" text-gray-800 font-medium">EMPLOYEE</p>
           </div>
         </GridContainer>

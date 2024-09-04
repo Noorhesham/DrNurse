@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import MaxWidthWrapper from "./MaxWidthWrapper";
+import MaxWidthWrapper from "../defaults/MaxWidthWrapper";
 import { cn } from "@/lib/utils";
 
 const container = {
@@ -18,6 +18,7 @@ const container = {
     transition: {
       delayChildren: 0.1,
       staggerChildren: 0.1,
+      duration: 0.3,
     },
   },
 };
@@ -67,7 +68,7 @@ const PhoneNav = ({ navigation, isHome }: { navigation: any; isHome?: boolean })
              backdrop-blur-lg bottom-0 right-0 z-[999] bg-n-8 lg:static lg:flex lg:mx-auto lg:bg-transparent`}
             onClick={handleClickOutside}
           >
-            <MaxWidthWrapper className="relative z-[999] mt-20 my-auto h-full w-full flex flex-col items-center justify-start mx-auto lg:flex-row">
+            <MaxWidthWrapper className="relative z-[999] mt-20 my-auto h-full w-full flex gap-5 flex-col items-center justify-start mx-auto lg:flex-row">
               {navigation.map((link: any, i: number) =>
                 link.subLinks ? (
                   <Accordion key={i} className={`text-gray-50 z-[999] w-full ml-3`} type="single" collapsible>
@@ -76,7 +77,7 @@ const PhoneNav = ({ navigation, isHome }: { navigation: any; isHome?: boolean })
                       <AccordionContent className="flex z-50 flex-col gap-2">
                         {link.subLinks.map((subLink: any, i: number) => (
                           <Link key={i} className="ml-3 py-2 px-3 text-nowrap" href={subLink.href || ""}>
-                            {t(`navbar.${subLink.text.toLowerCase()}`)}
+                            {subLink.text}
                           </Link>
                         ))}
                       </AccordionContent>
@@ -94,7 +95,7 @@ const PhoneNav = ({ navigation, isHome }: { navigation: any; isHome?: boolean })
                         enablePageScroll();
                       }}
                     >
-                      {t(`navbar.${link.text.toLowerCase()}`)}
+                      {link.text}
                     </Link>
                   </motion.div>
                 )
@@ -127,7 +128,7 @@ const MenuSvg = ({ openNavigation, isHome }: { openNavigation: any; isHome?: boo
         width="20"
         height="2"
         rx="1"
-        fill={isHome ? "white" : "#E6007E"}
+        fill={isHome ? "white" : "#3AC0E5"}
         transform={`rotate(${openNavigation ? "45" : "0"})`}
       />
       <rect
@@ -136,7 +137,7 @@ const MenuSvg = ({ openNavigation, isHome }: { openNavigation: any; isHome?: boo
         width="20"
         height="2"
         rx="1"
-        fill={isHome ? "white" : "#E6007E"}
+        fill={isHome ? "white" : "#3AC0E5"}
       />
       <rect
         className="transition-all origin-center"
@@ -144,7 +145,7 @@ const MenuSvg = ({ openNavigation, isHome }: { openNavigation: any; isHome?: boo
         width="20"
         height="2"
         rx="1"
-        fill={isHome ? "white" : "#E6007E"}
+        fill={isHome ? "white" : "#3AC0E5"}
         transform={`rotate(${openNavigation ? "-45" : "0"})`}
       />
     </svg>

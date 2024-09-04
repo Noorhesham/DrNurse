@@ -9,10 +9,10 @@ import FormInput from "../inputsForm/FormInput";
 import FormSelect from "../inputsForm/FormSelect";
 import FormFlexContainer from "./FormFlexContainer";
 import FunctionalButton from "../FunctionalButton";
-import MiniTitle from "../MiniTitle";
-import { MultiSelect } from "../MultiSelect";
+import MiniTitle from "../defaults/MiniTitle";
+import { MultiSelect } from "../inputsForm/MultiSelect";
 import { XIcon } from "lucide-react";
-import FlexWrapper from "../FlexWrapper";
+import FlexWrapper from "../defaults/FlexWrapper";
 
 // Schema for a single manager
 const managerSchema = z.object({
