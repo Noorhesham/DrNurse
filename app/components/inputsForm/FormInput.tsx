@@ -39,6 +39,7 @@ interface FormInputProps {
   rate?: boolean;
   area?: boolean;
   photo?: boolean;
+  noimg?: boolean;
   currency?: boolean;
 }
 export interface PhoneProps {
@@ -72,6 +73,7 @@ const FormInput = ({
   photo = false,
   area = false,
   currency = false,
+  noimg = false,
 }: FormInputProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [PhoneSearchComponent, setPhoneSearchComponent] = useState<PhoneSearchComponentType>();
@@ -113,9 +115,7 @@ const FormInput = ({
   if (date && CalendarComponent)
     return (
       <Suspense fallback={<Spinner />}>
-        <div className=" w-full">
-          <CalendarComponent label={label} name={name || ""} control={control} />
-        </div>
+        <CalendarComponent label={label} name={name || ""} control={control} />
       </Suspense>
     );
 
@@ -124,7 +124,7 @@ const FormInput = ({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className={`flex my-auto w-full flex-col justify-between h-full text-left items-start  relative`}>
+        <FormItem className={` w-full relative`}>
           {!switchToggle && label !== "" && (
             <FormLabel className="uppercase">
               {label} {icon}
@@ -140,7 +140,7 @@ const FormInput = ({
                 *
               </span>
             )}
-            <FormControl className={`  ${switchToggle ? "" : "  py-1 duration-200"} `}>
+            <FormControl className={`  ${switchToggle ? "" : "   duration-200"} `}>
               {phone && PhoneSearchComponent ? (
                 <Suspense fallback={<Spinner />}>
                   <PhoneSearchComponent onChange={field.onChange} />
@@ -148,7 +148,7 @@ const FormInput = ({
               ) : area ? (
                 <Textarea placeholder={t("forms.message")} className="resize-none" {...field} />
               ) : photo ? (
-                <PhotoInput value={field.value} onChange={field.onChange} />
+                <PhotoInput noimg={noimg} value={field.value} onChange={field.onChange} />
               ) : switchToggle ? (
                 <div className="flex mx-auto   mt-3 gap-2 items-center ">
                   <Label className=" uppercase md:text-sm  text-xs text-muted-foreground" htmlFor="sale">
@@ -186,7 +186,7 @@ const FormInput = ({
                     }}
                   />
                   {currency && (
-                    <span className=" bg-gray-300 text-gray-800 p-2 rounded-lg rounded-l-none absolute right-0 top-1">
+                    <span className=" bg-gray-300 text-gray-800 p-2 rounded-lg rounded-l-none absolute right-0 top-0">
                       {form.getValues("currency")}
                     </span>
                   )}

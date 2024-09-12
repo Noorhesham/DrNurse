@@ -29,7 +29,8 @@ export type ResourceNameProps =
   | "languageUpdate"
   | "getEntity"
   | "getSingleEntity"
-  | "notificationToken";
+  | "notificationToken"
+  | "postgeneralForm";
 
 // Function to get the full URL from the resource name
 const getURL = (resourceName: ResourceNameProps, id?: string, entityName?: string) => {
@@ -79,7 +80,8 @@ const getURL = (resourceName: ResourceNameProps, id?: string, entityName?: strin
       return { url: `${url}/${entityName}/entities-operations/${id}`, method: "GET" };
     case "notificationToken":
       return { url: `${url}/rm_users/${VERSION}/device_sys`, method: "POST" };
-
+    case "postgeneralForm":
+      return { url: `${url}/forms/general-form`, method: "POST" };
     default:
       return { url, method: "GET" as MethodProps };
   }

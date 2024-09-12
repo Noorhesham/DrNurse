@@ -15,6 +15,7 @@ import Head1 from "./Head1";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import BackButton from "./BackButton";
 const BreadCrumb = () => {
   const router = useRouter();
   const pathName = usePathname();
@@ -26,7 +27,7 @@ const BreadCrumb = () => {
     pathName.includes("company-profile") ||
     pathName.includes("profile-settings") ||
     pathName.includes("my-profile") ||
-    pathName.includes("job/") ||
+    pathName.includes("job/") ||pathName.includes("applicant") ||
     pathName.includes("applications");
   return (
     <Breadcrumb className={cn(" py-3 ", dark ? "bg-main2" : " bg-[#F2F5FF]")}>
@@ -34,13 +35,7 @@ const BreadCrumb = () => {
         className="flex md:flex-row flex-col gap-2 md:items-center items-start justify-between"
         noPadding
       >
-        {dark ? (
-          <button onClick={() => router.back()} className=" flex items-center sm:text-sm text-xs gap-2 text-gray-50">
-            <ArrowLeft className=" w-4 h-4 md:w-8 md:h-8" /> BACK
-          </button>
-        ) : (
-          <Head1 size="sm" text={current} />
-        )}
+        {dark ? <BackButton /> : <Head1 size="sm" text={current} />}
         <BreadcrumbList className=" ">
           {links.map((link: any, i: number) => {
             const isLast = i === links.length - 1;

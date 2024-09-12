@@ -33,7 +33,7 @@ const Search = () => {
         </div>
         <Button size={"lg"}>SEARCH MY JOB</Button>
       </div>
-      <FlexWrapper max={false} className="w-full items-center gap-3">
+      <FlexWrapper max={false} className="w-full  justify-center items-center gap-3">
         <h3 className=" font-light text-nowrap text-gray-50">POPULAR SEARCH: </h3>
         <div className="  flex-wrap sm:flex-nowrap  gap-3 items-center flex mt-1">
           <InputCard value="doctors" setSearch={setSearch} />

@@ -21,7 +21,7 @@ const FilterMobile = () => {
     };
   });
   return (
-    <div className=" lg:hidden z-50 relative block">
+    <div className=" lg:hidden col-span-full z-50 relative block">
       <div className="flex items-center gap-2  self-end  justify-end ml-auto">
         {" "}
         <button

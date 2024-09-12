@@ -27,7 +27,7 @@ export default function ComboboxForm({
         control={form.control}
         name={name}
         render={({ field }) => (
-          <FormItem className={`flex  w-full flex-col  items-start   relative`}>
+          <FormItem className={` w-full`}>
             <FormLabel>{label}</FormLabel>
             <Popover>
               <PopoverTrigger className=" w-full" asChild>
@@ -58,6 +58,7 @@ export default function ComboboxForm({
                           key={option.value}
                           onSelect={() => {
                             form.setValue(name, option.value);
+                            form.trigger(name);
                             if (onChange) onChange(option.value);
                           }}
                         >

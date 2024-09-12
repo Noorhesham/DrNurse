@@ -13,14 +13,14 @@ function getImageData(event: ChangeEvent<HTMLInputElement>) {
 
   return { files, displayUrl };
 }
-const PhotoInput = ({ value, onChange,  }: { value: any; onChange: (event: any) => any }) => {
+const PhotoInput = ({ value, onChange,noimg  }: { value: any; onChange: (event: any) => any ,noimg?:boolean}) => {
   const [preview, setPreview] = useState("");
     console.log(value)
   return (
     <div className="w-full">
-      <div className="  w-40 h-40 mx-auto my-2 relative ">
+      {!noimg&&<div className="  w-40 h-40 mx-auto my-2 relative ">
         <Image src={preview||value||''} fill alt="preview" className="rounded-full object-cover " />
-      </div>
+      </div>}
       <Input
         type="file" 
         onChange={(event) => {

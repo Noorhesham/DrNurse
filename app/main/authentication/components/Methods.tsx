@@ -12,7 +12,7 @@ const Methods = ({
 }: {
   handleSend: (type: string) => void;
   message: string;
-  methods: { email: string; sms: string; apps: any; auth_app: any };
+  methods: any;
   tfa?: string;
   setActivate?: any;
 }) => {

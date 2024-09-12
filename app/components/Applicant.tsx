@@ -9,11 +9,11 @@ import SateChange from "./SateChange";
 const Applicant = ({
   applicant,
   show,
-  notification,
+  notification,apply
 }: {
   applicant: { image: string; name: string; duration: string; speciality: string; address: string };
   show?: boolean;
-  notification?: boolean;
+  notification?: boolean;apply?:boolean
 }) => {
   return (
     <Container className=" hover:bg-gradient-to-r from-light to-white   duration-150">
@@ -31,7 +31,10 @@ const Applicant = ({
           ) : (
             <>
               {!notification && <SateChange />}
-              <Link href="/dashboard/doctor/1" className=" p-1 rounded-xl bg-main2 text-gray-50">
+              <Link
+                href={!apply ? "/dashboard/doctor/1" : "/dashboard/applicant/1"}
+                className=" p-1 rounded-xl bg-main2 text-gray-50"
+              >
                 <ChevronRight />
               </Link>
             </>

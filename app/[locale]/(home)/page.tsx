@@ -67,7 +67,8 @@ const page = () => {
               <div className="  rounded-[2.5rem] overflow-hidden flex-1 relative aspect-square">
                 {" "}
                 <Image alt="image" fill className="object-cover cursor-pointer" src={"/doc2.jpg"} />
-                <MotionItem nohover
+                <MotionItem
+                  nohover
                   initial={{ opacity: 0.4, scale: 0.9 }}
                   animate={{ opacity: 1, scale: [0.7, 1.02] }}
                   transition={{
@@ -97,7 +98,8 @@ const page = () => {
           <VideoZoom
             btn={
               <div className="  rounded-[2.5rem] overflow-hidden flex-1  relative aspect-square">
-                <MotionItem nohover
+                <MotionItem
+                  nohover
                   initial={{ opacity: 0.4, scale: 0.9 }}
                   animate={{ opacity: 1, scale: [0.7, 1.02] }}
                   transition={{
@@ -237,7 +239,7 @@ const page = () => {
               </div>
             </div>
           </div>
-          <div className=" -mt-40 sm:-mt-36 block lg:hidden w-[20rem] mx-auto aspect-square relative  z-20">
+          <div className=" -mt-32 sm:-mt-36 block lg:hidden w-[20rem] mx-auto aspect-square relative  z-20">
             <Image alt="image" fill className="object-contain" src={"/phone.png"} />
           </div>
         </div>

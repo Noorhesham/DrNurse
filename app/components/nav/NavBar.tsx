@@ -35,6 +35,10 @@ const links = [
     text: "ABOUT US",
     href: "/aboutus",
   },
+  {
+    text: "BLOG",
+    href: "/blogs",
+  },
 ];
 const NavBar = () => {
   const [isScrollingDown, setIsScrollingDown] = useState(false);
@@ -71,11 +75,11 @@ const NavBar = () => {
           isHome
             ? "text-white font-semibold placeholder:text-white "
             : `  text-main2 font-semibold placeholder:text-white  ${isScrollingDown && "bg-white/80"}`
-        } fixed inset-0 z-50 max-h-[10rem]    flex flex-col gap-2  py-4 transition-all duration-300 ${
+        } fixed inset-0 z-50 max-h-[5rem] lg:max-h-[7rem]    flex flex-col gap-2  py-4 transition-all duration-300 ${
           isScrollingDown
-            ? "-translate-y-full"
+            ? "translate-y-[-110%]"
             : !isTopPage && !isScrollingDown
-            ? `-translate-y-5 ${!isHome && "bg-white/80"}`
+            ? `  -translate-y-2 lg:-translate-y-5 ${!isHome && "bg-white/80"}`
             : "translate-y-0"
         }`}
       >
@@ -97,13 +101,13 @@ const NavBar = () => {
           <div
             className={cn(
               "flex relative z-20 items-center   ",
-              !isTopPage && !isScrollingDown ? "justify-center":"justify-between"
+              !isTopPage && !isScrollingDown ? "justify-center lg:justify-between" : "justify-between"
             )}
           >
             <div className="flex  items-center  gap-20 ">
               <div
                 className={`${
-                  !isTopPage && !isScrollingDown && "lg:opacity-100  hidden lg:flex  opacity-0"
+                  !isTopPage   && "lg:opacity-100  hidden lg:flex  opacity-0"
                 } flex duration-150  items-center`}
               >
                 <Logo isdark={isHome ? false : true} />
@@ -127,26 +131,31 @@ const NavBar = () => {
                       LOGIN
                     </Button>
                   </Link>
+                  <Link href={user ? "/dashboard" : "/signup"}>
+                    <Button className="  px-4 lg:px-8 rounded-full">GET STARTED</Button>
+                  </Link>
                 </>
               ) : (
-                <Button
-                  onClick={async () => {
-                    const res = await Server({ resourceName: "logout" });
-                    if (res.status) {
-                      toast.success(res.message);
-                      handleLogout();
-                      router.refresh();
-                    }
-                  }}
-                  className="  px-4 lg:px-8 rounded-full"
-                >
-                  LOG OUT
-                </Button>
-              )}{" "}
-              <Link href={user ? "/dashboard" : "/signup"}>
-                {" "}
-                <Button className="  px-4 lg:px-8 rounded-full">GET STARTED</Button>
-              </Link>
+                <div>
+                  <Button
+                    onClick={async () => {
+                      const res = await Server({ resourceName: "logout" });
+                      if (res.status) {
+                        toast.success(res.message);
+                        handleLogout();
+                        router.refresh();
+                      }
+                    }}
+                    className=" text-xs  md:text-sm  px-4 lg:px-8 rounded-full"
+                  >
+                    LOG OUT
+                  </Button>{" "}
+                  <Link href={user ? "/dashboard" : "/signup"}>
+                    <Button className=" text-xs  md:text-sm px-4 lg:px-8 rounded-full">CHANGE HOSPITAL</Button>
+                  </Link>
+                </div>
+              )}
+
               <div className={`z-[999] duration-150 h-full  relative lg:hidden block`}>
                 <PhoneNav isHome={isHome} navigation={links} />
               </div>

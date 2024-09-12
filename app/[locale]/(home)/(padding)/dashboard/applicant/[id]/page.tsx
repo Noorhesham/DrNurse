@@ -83,6 +83,7 @@ const page = () => {
                 <MiniTitle color="black" text="STATES" />
                 <h3> :ARCHIVE</h3>
               </div>
+              <SateChange size="sm" />
             </div>
             <MiniTitle color="black" text="EMPLOYEE INFO" />
             <div className=" flex flex-col gap-5">

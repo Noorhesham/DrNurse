@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 
-const CalendarInput = ({ control, name,label}: { control: any; name: string,label?:string }) => {
+const CalendarInput = ({ control, name, label }: { control: any; name: string; label?: string }) => {
   return (
     <FormField
       control={control}
@@ -16,15 +16,15 @@ const CalendarInput = ({ control, name,label}: { control: any; name: string,labe
       render={({ field }) => {
         console.log(field.value);
         return (
-          <FormItem className="flex  w-full flex-col">
-            <FormLabel className=" uppercase">{label||'Date'}</FormLabel>
+          <FormItem className={` w-full`}>
+            <FormLabel className="py-1 duration-200 uppercase">{label || "Date"}</FormLabel>
             <Popover>
               <PopoverTrigger asChild>
-                <FormControl>
+                <FormControl className="">
                   <Button
                     variant={"outline"}
                     className={cn(
-                      "w-full pl-3 flex  justify-between text-left rounded-lg font-normal",
+                      "w-full pl-3 flex   mt-0 justify-between text-left rounded-lg font-normal",
                       !field.value && "text-muted-foreground"
                     )}
                   >
@@ -34,7 +34,8 @@ const CalendarInput = ({ control, name,label}: { control: any; name: string,labe
                 </FormControl>
               </PopoverTrigger>
               <PopoverContent sideOffset={-40} className="w-full p-0" align="end">
-                <Calendar className=" w-full"
+                <Calendar
+                  className=" w-full"
                   mode="single"
                   captionLayout="dropdown-buttons"
                   fromYear={1990}

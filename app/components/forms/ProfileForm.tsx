@@ -184,8 +184,11 @@ const ProfileForm = () => {
             label={t("Do you have an active license?")}
             name="licenseActive"
             options={[
-              { label: "Yes", value: "yes" },
-              { label: "No", value: "no" },
+              { label: "Saudia", value: "saudia" },
+              { label: "UAE", value: "UAE" },
+              { label: "Canada", value: "canada" },
+              { label: "America", value: "america" },
+              { label: "Australia", value: "america" },
             ]}
           />
           <FormInput

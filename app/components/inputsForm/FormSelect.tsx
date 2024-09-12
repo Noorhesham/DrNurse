@@ -18,7 +18,7 @@ const FormSelect = ({ name, label, placeholder, description, id, options, select
         return (
           <FormItem className={`${className || ""}  w-full `} id={id || ""}>
             <FormLabel className=" uppercase">{label}</FormLabel>
-            <Select  onValueChange={field.onChange} defaultValue={field.value}>
+            <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
                 <SelectTrigger className="  shadow-sm">
                   <SelectValue placeholder={placeholder || "SELECT"}>{selected && selected.name}</SelectValue>
@@ -27,7 +27,7 @@ const FormSelect = ({ name, label, placeholder, description, id, options, select
               <SelectContent>
                 {filteredOptions &&
                   filteredOptions.map((option, i) => (
-                    <SelectItem key={i} value={option._id || option.value || option}>
+                    <SelectItem key={i + `${option.label} ${option.value}`} value={option._id || option.value || option}>
                       {option.label || option.name || option}
                     </SelectItem>
                   ))}

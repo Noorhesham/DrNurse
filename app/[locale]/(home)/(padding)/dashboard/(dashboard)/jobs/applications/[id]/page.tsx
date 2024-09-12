@@ -78,7 +78,7 @@ const page = () => {
         </FlexWrapper>
       </Container>
       <GridContainer className=" mt-5 gap-4" cols={8}>
-        <div className=" lg:block hidden ">
+        <div className=" lg:block hidden col-span-full lg:col-span-3 ">
           <Filters />
         </div>
         <FilterMobile />
@@ -88,7 +88,7 @@ const page = () => {
             <Sort options={["latest", "earliest"]} />
           </div>
           {doctors.map((doc) => (
-            <Applicant show={false} key={doc.name} applicant={doc} />
+            <Applicant apply={true} show={false} key={doc.name} applicant={doc} />
           ))}
           <PaginationDemo />
         </div>

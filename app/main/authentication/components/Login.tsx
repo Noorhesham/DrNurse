@@ -160,7 +160,7 @@ const Login = () => {
                 />
               </CustomForm>
 
-              <Socials />
+              <Socials login={true} />
             </div>
             <div className="mt-8 text-sm flex flex-col gap-2 md:gap-0 md:flex-row items-center">
               <span className="font-[400] text-main2">{t("dontHaveAccount")}</span>
