@@ -11,10 +11,10 @@ const DownloadButtons = () => {
   const { app_store, play_store } = generalSettings.store_url;
   return (
     <>
-      <Link href={app_store} className="   w-full h-20 relative">
+      <Link href={`${app_store}`} className="   w-full h-20 relative">
         <Image fill className=" opacity-80 object-contain" src={"/apple.png"} alt="" />
       </Link>
-      <Link href={play_store} className="   w-full h-20 relative">
+      <Link href={`${play_store}`} className="   w-full h-20 relative">
         <Image fill className=" opacity-80 object-contain" src={"/google.png"} alt="" />
       </Link>
     </>
