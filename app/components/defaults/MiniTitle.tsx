@@ -12,7 +12,7 @@ const MiniTitle = ({
   link,
 }: {
   text: string;
-  size?: "lg" | "md" | "2xl" | "3xl";
+  size?:"sm"| "lg" | "md" | "2xl" | "3xl";
   color?: string;
   className?: string;
   boldness?: "bold" | "normal" | "extraBold";
@@ -23,6 +23,7 @@ const MiniTitle = ({
     <div className={`flex  uppercase items-center  justify-between ${color || "text-gray-800"}`}>
       <h2
         className={cn(" ", {
+          "text-sm": size === "sm",
           " text-3xl": size === "3xl",
           "text-2xl": size === "2xl",
           " text-sm sm:text-lg": size === "lg",

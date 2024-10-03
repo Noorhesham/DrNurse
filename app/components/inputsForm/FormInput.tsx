@@ -114,13 +114,7 @@ const FormInput = ({
         </div>
       </Suspense>
     );
-  const handleFileChange = (e: any) => {
-    const files = e.target.files;
 
-    if (files && files.length > 0) {
-      form.setValue(name, files[0]);
-    }
-  };
   return (
     <FormField
       control={control}
@@ -168,7 +162,6 @@ const FormInput = ({
                     placeholder={placeholder}
                     {...field}
                     onChange={(e: any) => {
-                      if (type === "file") return handleFileChange(e);
                       field.onChange(e);
                       if (password) handlePasswordChange(e.target.value);
                     }}

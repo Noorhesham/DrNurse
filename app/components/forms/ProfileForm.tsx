@@ -213,10 +213,11 @@ const ProfileForm = () => {
     console.log("Form Submitted", data);
     startTransition(async () => {
       const res = await Server({
-        resourceName: "update_profile",
+        resourceName: "add-profile",
         body: formData,
         formData: true,
       });
+      console.log(res)
       if (res.status) toast.success(res.message);
       else toast.error(res.message);
     });
@@ -416,12 +417,8 @@ const ProfileForm = () => {
                   careerType="career_type_id"
                 />
                 <FormInput control={form.control} name={`education.${index}.date`} label={t("Date")} date />
-                <FormInput
-                  control={form.control}
-                  type="file"
-                  name={`education.${index}.certificate`}
-                  label={t("Upload certificate")}
-                />
+
+                <FileUpload noicon={true} label={t("Upload certificate")} name={`education.${index}.certificate`} />
                 <button
                   className=" border-2  rounded-lg p-1  mt-auto border-gray-800 justify-end"
                   type="button"
