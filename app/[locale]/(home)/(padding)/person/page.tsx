@@ -1,12 +1,10 @@
 import React from "react";
-import Doctor from "@/app/components/Doctor";
-import FunctionalButton from "@/app/components/FunctionalButton";
-import GridContainer from "@/app/components/defaults/GridContainer";
+
 import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
 import Meet from "@/app/components/Meet";
 import MiniTitle from "@/app/components/defaults/MiniTitle";
 import SideBar from "@/app/components/nav/SideBar";
-import SwiperCards from "@/app/components/SwiperCards";
+
 import JobsTable from "@/app/components/tables/JobTable";
 import OffersTable from "@/app/components/tables/OffersTable";
 import Image from "next/image";

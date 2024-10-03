@@ -14,6 +14,7 @@ import { redirect } from "next/navigation";
 import { useLocalStorageState } from "@/app/hooks/useLocalStorageState";
 import { z } from "zod";
 import Section from "@/app/components/defaults/Section";
+import { useTranslations } from "next-intl";
 
 const initialSignupArray = [
   {
@@ -56,17 +57,20 @@ const initialSignupArray = [
 ];
 
 const Signup = () => {
+  const t = useTranslations();
+  const singup = signupSchema(t);
+
   const form = useForm({
-    resolver: zodResolver(signupSchema),
+    resolver: zodResolver(singup),
     defaultValues: {
       email: "",
       name: "",
       password: "",
       referealCode: "",
-      role: "person", // Default to person for testing
+      role: "person",
       phone: "",
       sms: false,
-      jobTitle: "", // Add jobTitle to default values
+      jobTitle: "",
     },
     mode: "onChange",
   });
@@ -77,7 +81,7 @@ const Signup = () => {
   const [isPending, startTransition] = useTransition();
   const [methods, setMethods] = useLocalStorageState([], "methods");
 
-  const onSubmit = async (data: z.infer<typeof signupSchema>) => {
+  const onSubmit = async (data: z.infer<typeof singup>) => {
     startTransition(async () => {
       const res = await Server({
         resourceName: "signup",
@@ -96,7 +100,6 @@ const Signup = () => {
             password: data.password,
             device_info,
           },
-   
         });
         if (res.activation_methods) {
           setMethods(res.activation_methods);
@@ -125,13 +128,13 @@ const Signup = () => {
               name: "referealCode",
               optional: true,
               placeholder: "REFERRAL CODE ...",
-            }
+            },
           ];
         }
         return prev;
       });
     } else {
-      setSignupArray((prev) => prev.filter((input) => input.name !== "jobTitle"&&input.name !== "referealCode"));
+      setSignupArray((prev) => prev.filter((input) => input.name !== "jobTitle" && input.name !== "referealCode"));
     }
   }, [role]);
 

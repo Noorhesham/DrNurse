@@ -39,7 +39,7 @@ const UpdatePassword = () => {
             cancel={true}
             btnStyles={"w-full"}
             btnText={t("confirm")}
-            schema="forgotPassword"
+  
             formArray={updatePassword}
             title={t("updatePassword")}
           />

@@ -42,7 +42,6 @@ const UpdateNotifications = () => {
             submit={UpdateNotificationsSubmit}
             btnStyles={"w-full"}
             btnText="SAVE CHANGES"
-            schema="notifictations"
             formArray={notifications}
             title="CUSTOMIZE  NOTIFICATIONS"
           />

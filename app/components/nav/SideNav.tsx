@@ -10,16 +10,18 @@ const SideNav = ({
   text,
   link,
   iconsOnly,
+  active,
 }: {
   icon: React.ReactNode;
   text: string;
   link: string;
   iconsOnly?: boolean;
+  active?: string;
 }) => {
   const [mounted, setMounted] = useState(false);
   const pathName = usePathname();
   const lang = cookies.get("NEXT_LOCALE");
-  const isActive = pathName.replace(`/${lang}`, "") === `${link}`;
+  const isActive = pathName.replace(`/${lang}`, "") === `${link}` || (active && pathName.includes(active));
 
   useEffect(() => {
     setMounted(true);

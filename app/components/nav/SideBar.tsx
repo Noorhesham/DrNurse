@@ -30,7 +30,14 @@ const SideBar = ({ iconsOnly = false, person }: { iconsOnly?: boolean; person?: 
     { link: `${origin}/meetings`, text: "METTINGS", icon: <CalendarClock className={iconsStyles} /> },
     { link: `${origin}/job-offers`, text: "JOB OFFER", icon: <HandCoins className={iconsStyles} /> },
     ...(person
-      ? [{ link: `${origin}/my-profile`, text: "MY PROFILE", icon: <User className={iconsStyles} /> }]
+      ? [
+          {
+            link: `${origin}/my-profile` || `${origin}/create-profile`,
+            text: "MY PROFILE",
+            icon: <User className={iconsStyles} />,
+            active: "create-profile" || "my-profile",
+          },
+        ]
       : [{ link: `${origin}/company-profile/1`, text: "COMPANY PROFILE", icon: <Users className={iconsStyles} /> }]),
     ...(person
       ? [{ link: `${origin}/points`, text: "Invoices & Subscriptions", icon: <BadgeCheck className={iconsStyles} /> }]
@@ -58,7 +65,14 @@ const SideBar = ({ iconsOnly = false, person }: { iconsOnly?: boolean; person?: 
         } md:flex md:flex-col flex-nowrap md:flex-wrap gap-5 mt-3 lg:flex-col text-gray-900 font-semibold`}
       >
         {navItems.map((item, index) => (
-          <SideNav iconsOnly={iconsOnly} key={index} link={item.link} text={item.text} icon={item.icon} />
+          <SideNav
+            active={item.active}
+            iconsOnly={iconsOnly}
+            key={index}
+            link={item.link}
+            text={item.text}
+            icon={item.icon}
+          />
         ))}
       </ul>
     </div>

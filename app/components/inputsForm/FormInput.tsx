@@ -3,16 +3,12 @@ import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessa
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { getPasswordStrength } from "../../helpers/utils";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { AnimatePresence, motion } from "framer-motion";
-import Spinner from "../Spinner";
 
 import PhotoInput from "./PhotoInput";
 import { Textarea } from "@/components/ui/textarea";
-import { useTranslations } from "next-intl";
-import cookies from "js-cookie";
 import { useFormContext } from "react-hook-form";
 import MotionItem from "../defaults/MotionItem";
 interface FormInputProps {
@@ -89,10 +85,7 @@ const FormInput = ({
     setShowPassword(!showPassword);
     console.log("Password visibility toggled", showPassword);
   };
-  const handlePasswordChange = (value: string) => {
-    const strength = getPasswordStrength(value);
-    setPasswordStrength(strength);
-  };
+  const handlePasswordChange = (value: string) => {};
   useEffect(() => {
     if (phone) {
       const loadPhoneSearch = async () => {
@@ -110,15 +103,24 @@ const FormInput = ({
       loadCalendar();
     }
   }, [phone, date]);
-  const t = useTranslations();
-  const local = cookies.get("NEXT_LOCALE") || "en";
+
   if (date && CalendarComponent)
     return (
-      <Suspense fallback={<Spinner />}>
-        <CalendarComponent label={label} name={name || ""} control={control} />
+      <Suspense>
+        <div className=" relative w-full">
+          {!optional && <span className={`absolute right-2 -top-[-40px]  z-10   font-normal text-red-600`}>*</span>}
+
+          <CalendarComponent label={label} name={name || ""} control={control} />
+        </div>
       </Suspense>
     );
+  const handleFileChange = (e: any) => {
+    const files = e.target.files;
 
+    if (files && files.length > 0) {
+      form.setValue(name, files[0]);
+    }
+  };
   return (
     <FormField
       control={control}
@@ -131,22 +133,14 @@ const FormInput = ({
             </FormLabel>
           )}
           <div className={`relative  w-full inline-flex items-center justify-center ${className}`}>
-            {!optional && !currency && !switchToggle && (
-              <span
-                className={`absolute ${
-                  local === "en" ? "right-1 -top-[-13px]" : " top-1 right-1"
-                }  z-10   font-normal text-red-600`}
-              >
-                *
-              </span>
-            )}
+            {!optional && <span className={`absolute right-1 -top-[-13px]  z-10   font-normal text-red-600`}>*</span>}
             <FormControl className={`  ${switchToggle ? "" : "   duration-200"} `}>
-              {phone && PhoneSearchComponent ? (
-                <Suspense fallback={<Spinner />}>
-                  <PhoneSearchComponent onChange={field.onChange} />
+              {area ? (
+                <Textarea placeholder={"MESSAGE"} className="resize-none" {...field} />
+              ) : phone && PhoneSearchComponent ? (
+                <Suspense>
+                  <PhoneSearchComponent name={name} onChange={field.onChange} />
                 </Suspense>
-              ) : area ? (
-                <Textarea placeholder={t("forms.message")} className="resize-none" {...field} />
               ) : photo ? (
                 <PhotoInput noimg={noimg} value={field.value} onChange={field.onChange} />
               ) : switchToggle ? (
@@ -154,14 +148,7 @@ const FormInput = ({
                   <Label className=" uppercase md:text-sm  text-xs text-muted-foreground" htmlFor="sale">
                     {label2 || ""}
                   </Label>
-                  <Switch
-                    noSwitch
-                    disabled={disabled}
-                    id="sale"
-                    className=""
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
+                  <Switch disabled={disabled} className="" checked={field.value} onCheckedChange={field.onChange} />
                   <Label className="md:text-sm uppercase flex-grow  text-xs  text-muted-foreground" htmlFor="sale">
                     {label || ""}
                   </Label>
@@ -180,7 +167,8 @@ const FormInput = ({
                     className={`${!phone && "bg-white"} mt-auto shadow-sm w-full ${password && "pl-8"} `}
                     placeholder={placeholder}
                     {...field}
-                    onChange={(e) => {
+                    onChange={(e: any) => {
+                      if (type === "file") return handleFileChange(e);
                       field.onChange(e);
                       if (password) handlePasswordChange(e.target.value);
                     }}
@@ -190,26 +178,6 @@ const FormInput = ({
                       {form.getValues("currency")}
                     </span>
                   )}
-                  <AnimatePresence>
-                    {!noProgress && password && field.value && (
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: "100%" }}
-                        exit={{ width: 0 }}
-                        className=" flex w-full items-center gap-1"
-                      >
-                        <Progress
-                          nocustomcol={true}
-                          color={passwordStrength.color}
-                          value={passwordStrength.score * 25}
-                          className={` w-full  flex-grow `}
-                        />
-                        <p className={` text-${passwordStrength.text} text-sm font-medium `}>
-                          {passwordStrength.label}
-                        </p>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
                 </div>
               )}
             </FormControl>

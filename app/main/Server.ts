@@ -30,10 +30,15 @@ export type ResourceNameProps =
   | "getEntity"
   | "getSingleEntity"
   | "notificationToken"
-  | "postgeneralForm";
+  | "postgeneralForm"
+  | "my-profile"
+  | "add-profile"
+  | "countries"
+  | "cities"
+  | "states";
 
 // Function to get the full URL from the resource name
-const getURL = (resourceName: ResourceNameProps, id?: string, entityName?: string) => {
+const getURL = (resourceName: ResourceNameProps, id?: string, entityName?: string, queryParams?: URLSearchParams) => {
   const url = BASE_URL;
   switch (resourceName) {
     case "user":
@@ -75,13 +80,29 @@ const getURL = (resourceName: ResourceNameProps, id?: string, entityName?: strin
     case "languageUpdate":
       return { url: `${url}/rm_users/${VERSION}/device_sys`, method: "POST" };
     case "getEntity":
-      return { url: `${url}/${entityName}/entities-operations`, method: "GET" };
+      return {
+        url: `${url}/${entityName}/entities-operations${queryParams ? `?${queryParams.toString()}` : ""}`,
+        method: "GET",
+      };
     case "getSingleEntity":
       return { url: `${url}/${entityName}/entities-operations/${id}`, method: "GET" };
     case "notificationToken":
       return { url: `${url}/rm_users/${VERSION}/device_sys`, method: "POST" };
     case "postgeneralForm":
       return { url: `${url}/forms/general-form`, method: "POST" };
+    case "my-profile":
+      return { url: `${url}/recruitment/profile`, method: "GET" };
+    case "add-profile":
+      return { url: `${url}/recruitment/profiles/update`, method: "POST" };
+    case "countries":
+      return { url: `${url}/countries/entities-operations?itemsCount=200&${queryParams}`, method: "GET" };
+    case "cities":
+      return { url: `${url}/info-cities/entities-operations?state_id=${id}`, method: "GET" };
+    case "states":
+      return {
+        url: `${url}/states/entities-operations?itemsCount=200&country_id=${id}`,
+        method: "GET",
+      };
     default:
       return { url, method: "GET" as MethodProps };
   }
@@ -95,9 +116,10 @@ export async function Server({
   body,
   headers,
   noHeaders = false,
-  cache = false,
+  cache = 0,
   formData = false,
   entityName,
+  queryParams,
 }: {
   resourceName: ResourceNameProps;
   id?: string;
@@ -105,9 +127,10 @@ export async function Server({
   body?: any;
   headers?: any;
   noHeaders?: boolean;
-  cache?: boolean;
+  cache?: number;
   formData?: boolean;
   entityName?: string;
+  queryParams?: URLSearchParams;
 }) {
   // Get the token and device info from cookies
   const jwt = cookies().get("jwt")?.value;
@@ -127,7 +150,7 @@ export async function Server({
 
   try {
     // Get the URL and method from the resource name
-    const { url, method: resolvedMethod } = getURL(resourceName, id, entityName);
+    const { url, method: resolvedMethod } = getURL(resourceName, id, entityName, queryParams);
     // Fetch data from the server
     let requestBody;
     if (formData) requestBody = body;
@@ -135,14 +158,16 @@ export async function Server({
       requestBody = body ? JSON.stringify(body) : undefined;
       combinedHeaders["Content-Type"] = "application/json";
     }
-    console.log(combinedHeaders, requestBody);
     const response = await fetch(url, {
       method: method || resolvedMethod,
       headers: combinedHeaders,
       body: requestBody,
-      cache: cache ? "default" : "no-cache",
+      next: {
+        revalidate: cache ? cache : 0,
+        tags: cache ? [`${resourceName}`] : [],
+      },
     });
-
+    console.log(url);
     if (!response.ok) throw new Error(`Error: ${response.status}`);
 
     const data = await response.json();

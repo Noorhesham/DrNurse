@@ -12,6 +12,8 @@ import SateChange from "@/app/components/SateChange";
 import Tabing from "@/app/components/Tabing";
 import { Briefcase, BriefcaseIcon, CalendarIcon, EditIcon, HeartIcon, LanguagesIcon, Paperclip } from "lucide-react";
 import React from "react";
+import { Server } from "@/app/main/Server";
+import { redirect } from "next/navigation";
 const doctor = {
   name: "Mohamed M.",
   image: "/doctor1.png",
@@ -19,7 +21,10 @@ const doctor = {
   address: "Nairobi, Kenya",
   duration: "in 7 days",
 };
-const page = () => {
+const page = async () => {
+  const res = await Server({ resourceName: "my-profile" });
+  if (!res.status) redirect("/person/create-profile");
+  console.log(res);
   return (
     <section>
       <div className=" bg-light ">

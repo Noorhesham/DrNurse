@@ -1,93 +1,117 @@
 import { z } from "zod";
+
 const phoneRegex = /^[0-9]{10,14}$/; // Adjust this regex based on your specific phone number requirements
-export const phoneSchema = z.object({
-  phone: z.string().min(10, "Phone number must be at least 10 characters"),
-});
-export const loginSchema = z
-  .object({
-    useEmail: z.boolean(),
-    username: z.string(),
-    password: z.string().min(4, "Password must be at least 4 characters").max(30, "Too Long ! "),
-  })
-  .refine(
-    (data) => {
-      if (data.useEmail) {
-        return z.string().email({ message: "Invalid email address" }).max(30, "Too Long ! ").safeParse(data.username)
-          .success;
-      } else {
-        return phoneRegex.test(data.username);
+
+// Example usage of Next Intl's translation
+export const phoneSchema = (t: any) =>
+  z.object({
+    phone: z.string().min(10, { message: t("validationAuth.phoneMin") }),
+  });
+
+export const loginSchema = (t: any) =>
+  z
+    .object({
+      useEmail: z.boolean(),
+      username: z.string(),
+      password: z.string().min(4, { message: t("validationAuth.passwordMin", { length: 4 }) }),
+    })
+    .refine(
+      (data) => {
+        if (data.useEmail) {
+          return z
+            .string()
+            .email({ message: t("validationAuth.invalidEmail") })
+            .safeParse(data.username).success;
+        } else {
+          return phoneRegex.test(data.username);
+        }
+      },
+      {
+        message: t("validationAuth.invalidEmailOrPhone"),
+        path: ["username"],
       }
-    },
-    {
-      message: "Invalid email address or phone number",
-      path: ["username"],
-    }
-  );
-export const signupSchema = z.object({
-  name: z.string().min(3, "Name must be at least 3 characters"),
-  phone: z.string().min(10, "Phone number must be at least 10 characters"),
-  email: z.string().email("Invalid email address"),
-  password: z
-    .string()
-    .min(8, "Password must be at least 8 characters")
-    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-    .regex(/[0-9]/, "Password must contain at least one number")
-    .regex(/[^A-Za-z0-9]/, "Password must contain at least one special character").max(30, "Too Long ! "),
-  referealCode: z.string(),
-});
+    );
 
-export const resetPasswordSchemaPrepare = z
-  .object({
-    username: z.string(),
-    useEmail: z.boolean(),
-  })
-  .refine(
-    (data) => {
-      if (data.useEmail) {
-        return z.string().email({ message: "Invalid email address" }).safeParse(data.username).success;
-      } else {
-        return phoneRegex.test(data.username);
+export const signupSchema = (t: any) =>
+  z.object({
+    name: z.string().min(3, { message: t("validationAuth.nameMin", { length: 3 }) }),
+    phone: z.string().min(10, { message: t("validationAuth.phoneMin", { length: 10 }) }),
+    email: z.string().email({ message: t("validationAuth.invalidEmail") }),
+    password: z
+      .string()
+      .min(8, { message: t("validationAuth.passwordMin", { length: 8 }) })
+      .regex(/[A-Z]/, { message: t("validationAuth.passwordUpper") })
+      .regex(/[0-9]/, { message: t("validationAuth.passwordNumber") })
+      .regex(/[^A-Za-z0-9]/, { message: t("validationAuth.passwordSpecial") }),
+    referealCode: z.string().optional(),
+  });
+
+export const resetPasswordSchemaPrepare = (t: any) =>
+  z
+    .object({
+      username: z.string(),
+      useEmail: z.boolean(),
+    })
+    .refine(
+      (data) => {
+        if (data.useEmail) {
+          return z
+            .string()
+            .email({ message: t("validationAuth.invalidEmail") })
+            .safeParse(data.username).success;
+        } else {
+          return phoneRegex.test(data.username);
+        }
+      },
+      {
+        message: t("validationAuth.invalidEmailOrPhone"),
+        path: ["username"],
       }
-    },
-    {
-      message: "Invalid email address or phone number",
-      path: ["username"],
-    }
-  );
-export const resetPasswordForgot = z.object({
-  code: z.string(),
-});
-export const contactUsSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  phone: z.string().min(10, "Phone number is too short"),
-  email: z.string().email("Invalid email address"),
-  inquiry: z.string().optional(),
-  message: z.string().min(5, "Message must be at least 5 characters long"),
-});
-export const forgotPasswordSchema2 = z.object({
-  password: z
-    .string()
-    .min(6, "Password must be at least 6 characters")
-    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-    .regex(/[0-9]/, "Password must contain at least one number")
-    .regex(/[^A-Za-z0-9]/, "Password must contain at least one special character").max(30, "Too Long ! "),
-  // password:z.string().min(6, "Password must be at least 6 characters long"),
-});
+    );
 
-export const notifictationsSchema = z.object({
-  active: z.boolean(),
-});
-export const personalSchema = z.object({
-  name: z.string(),
-  birth_day: z.any(),
-  avatar: z.any().optional(),
-});
+export const resetPasswordForgot = (t: any) =>
+  z.object({
+    code: z.string(),
+  });
 
-export const commentSchema = z.object({
-  comment: z.string(),
-  name: z.string(),
-  rate: z.number(),
-});
-export const emailSchema = z.object({
-  email: z.string().email(),
-});
+export const contactUsSchema = (t: any) =>
+  z.object({
+    name: z.string().min(1, { message: t("validationAuth.nameRequired") }),
+    phone: z.string().min(10, { message: t("validationAuth.phoneMin", { length: 10 }) }),
+    email: z.string().email({ message: t("validationAuth.invalidEmail") }),
+    inquiry: z.string().optional(),
+    message: z.string().min(5, { message: t("validationAuth.messageMin", { length: 5 }) }),
+  });
+
+export const forgotPasswordSchema2 = (t: any) =>
+  z.object({
+    password: z
+      .string()
+      .min(6, { message: t("validationAuth.passwordMin", { length: 6 }) })
+      .regex(/[A-Z]/, { message: t("validationAuth.passwordUpper") })
+      .regex(/[0-9]/, { message: t("validationAuth.passwordNumber") })
+      .regex(/[^A-Za-z0-9]/, { message: t("validationAuth.passwordSpecial") }),
+  });
+
+export const notifictationsSchema = (t: any) =>
+  z.object({
+    active: z.boolean(),
+  });
+
+export const personalSchema = (t: any) =>
+  z.object({
+    name: z.string(),
+    birth_day: z.any(),
+    avatar: z.any().optional(),
+  });
+
+export const commentSchema = (t: any) =>
+  z.object({
+    content: z.string(),
+    rating: z.number(),
+  });
+
+export const emailSchema = (t: any) =>
+  z.object({
+    email: z.string().email({ message: t("validationAuth.invalidEmail") }),
+  });

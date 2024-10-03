@@ -1,5 +1,4 @@
 "use client";
-import ModalCustom from "@/app/components/defaults/ModalCustom";
 import Spinner from "@/app/components/Spinner";
 import UpdateCard from "@/app/components/UpdateCard";
 import { useGetEntity } from "@/lib/queries";
@@ -15,9 +14,10 @@ import { useDevice } from "@/app/context/DeviceContext";
 import { Laptop } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import ModalCustom from "@/app/components/defaults/ModalCustom";
 
 const Devices = () => {
-  const { data, isLoading } = useGetEntity("getDevices");
+  const { data, isLoading } = useGetEntity("getDevices", "devices");
   const queryClient = useQueryClient();
   const { device_info } = useDevice();
   const [isPending, startTransition] = useTransition();
@@ -25,7 +25,7 @@ const Devices = () => {
   const filteredResult = Object.keys(data || {})
     .filter((key) => typeof data[key] === "object")
     .map((key) => data[key]);
-  console.log(data, filteredResult);
+
   return (
     <ModalCustom
       btn={
@@ -43,14 +43,14 @@ const Devices = () => {
         ) : (
           <div className=" flex  lg:flex-row flex-col items-center gap-5  lg:gap-20 lg:items-start px-5 lg:px-20 py-5">
             <div className=" lg:w-[10rem]">
-              <p className=" text-sm text-nowrap font-semibold lg:text-base">ACTIVE DEVICES</p>
+              <p className=" text-sm text-nowrap font-semibold lg:text-base">{t("activedevices")}</p>
             </div>
             <div className=" flex flex-col gap-4  items-start">
               {filteredResult
                 ?.flat()
                 ?.reverse()
                 .map((val, i) => (
-                  <div className=" flex  w-full justify-between">
+                  <div key={i} className=" flex  w-full justify-between">
                     <div className="flex flex-col ">
                       <div className="flex flex-col items-start gap-1" key={i}>
                         <div className=" flex items-start gap-2">
@@ -61,15 +61,17 @@ const Devices = () => {
                           {val.device_type === "mobile" && <Laptop className=" text-main w-8 h-8" />}
                           <h1 className=" font-semibold text-sm text-gray-900">{val?.device_type}</h1>
                           {val.unique_id === device_info.device_unique_id && (
-                            <p className=" rounded-2xl text-[10px] p-1 uppercase border border-gray-100 font-semibold">
-                              This device
+                            <p className=" rounded-2xl text-[10px]  py-2 px-4 uppercase border border-gray-100 font-semibold">
+                              {t("thisdevice")}
                             </p>
                           )}
                         </div>
                         <div className=" flex sm:flex-row flex-col items-start gap-2">
-                          <span className="  text-xs text-muted-foreground">
-                            Logged At {format(val?.created_at, "dd/MM/yyyy")}
-                          </span>
+                          {val && (
+                            <span className="  text-xs text-muted-foreground">
+                              {t("logged")} {val.created_at && format(new Date(val.created_at), "dd MMM yyyy")}
+                            </span>
+                          )}
 
                           <div className=" text-xs text-muted-foreground max-w-sm flex  items-center gap-2">
                             <p>{val.os}</p> <p>{val.version}</p>
@@ -86,7 +88,7 @@ const Devices = () => {
                             console.log(res);
                             if (res.status) {
                               toast.success(res.message);
-                              queryClient.invalidateQueries({ queryKey: ["getDevices"] });
+                              queryClient.invalidateQueries({ queryKey: ["devices"] });
                             }
                           });
                         }}
@@ -105,7 +107,7 @@ const Devices = () => {
                     console.log(res);
                     if (res.status) {
                       toast.success(res.message);
-                      queryClient.invalidateQueries({ queryKey: ["getDevices"] });
+                      queryClient.invalidateQueries({ queryKey: ["devices"] });
                     }
                   });
                 }}

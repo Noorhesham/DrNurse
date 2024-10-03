@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useContext, useEffect,useState } from "react";
+import { createContext, useContext, useEffect, useLayoutEffect, useState } from "react";
 import cookies from "js-cookie";
 import { Server } from "../main/Server";
 import { QueryClient, useQueryClient } from "@tanstack/react-query";
@@ -12,6 +12,8 @@ interface AuthContextType {
   handleLogout: () => void;
   setLogin: React.Dispatch<React.SetStateAction<boolean>>;
   loading: boolean;
+  cartCount: any;
+  setCartCount: React.Dispatch<React.SetStateAction<any>>;
 }
 interface UpdateFnParams {
   checker: any;
@@ -21,6 +23,7 @@ interface UpdateFnParams {
   setDates: React.Dispatch<React.SetStateAction<any>>;
   queryClient: QueryClient;
   status: boolean;
+  setCartCount?: React.Dispatch<React.SetStateAction<any>>;
 }
 /**
  * Function to update state and cache data.
@@ -35,9 +38,10 @@ interface UpdateFnParams {
  */
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-const updateFn = ({ checker, setState, key, dateKey, setDates, queryClient, status }: UpdateFnParams) => {
+const updateFn = ({ checker, setState, key, dateKey, setDates, queryClient, status, setCartCount }: UpdateFnParams) => {
   if (checker || (!queryClient.getQueryData([key]) && status !== false)) {
     setState(checker);
+
     queryClient.setQueryData([key], checker);
     setDates((prevDates: any) => ({
       ...prevDates,
@@ -65,8 +69,10 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [generalSettings, setGeneralSettings] = useState<any>(() => queryClient.getQueryData(["general_settings"]));
   const [userSettings, setUserSettings] = useState<any>(() => queryClient.getQueryData(["user_settings"]));
   const [user2Settings, setUser2Settings] = useState<any>(() => queryClient.getQueryData(["user2_settings"]));
+  const [cartCount, setCartCount] = useLocalStorageState(0, "cartCount");
   const [loading, setLoading] = useState(true);
-  console.log("auth context", generalSettings, userSettings, user2Settings);
+  console.log("auth context", generalSettings, userSettings, user2Settings, "cartcount", cartCount);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -81,8 +87,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             device_id: device_info.device_unique_id,
           },
         });
-        console.log(res.general_settings, res.user_settings, res.user2_settings);
-        // Handle general settings
+        if (!res.check_auth && userSettings) handleLogout();
 
         updateFn({
           checker: res.general_settings.data,
@@ -111,6 +116,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           setDates,
           queryClient,
           status: res.user2_settings?.status,
+          setCartCount: setCartCount,
         });
       } catch (error) {
         console.error("Error fetching settings:", error);
@@ -121,17 +127,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     fetchData();
   }, [login]);
-  // useLayoutEffect(() => {
-  //   console.log(queryClient.getQueryData(["general_settings"]), "asdadsadsadasdasdsad  ");
-  //   if (!queryClient.getQueryData(["general_settings"])) {
-  //     setLogin(false);
-  //     setDates((prevDates: any) => ({
-  //       ...prevDates,
-  //       last_update_date_general: "",
-  //     }));
-  //   }
-  // }, []);
+
   const handleLogout = () => {
+    setCartCount(0);
     setLoading(true);
     cookies.remove("jwt");
     queryClient.removeQueries({ queryKey: ["user_settings"] });
@@ -145,12 +143,12 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUserSettings(undefined);
     setUser2Settings(undefined);
     setLoading(false);
-    cookies.remove("notificationToken");
-    localStorage.removeItem("notificationToken");
   };
 
   return (
-    <AuthContext.Provider value={{ generalSettings, userSettings, user2Settings, handleLogout, setLogin, loading }}>
+    <AuthContext.Provider
+      value={{ generalSettings, userSettings, user2Settings, handleLogout, setLogin, loading, cartCount, setCartCount }}
+    >
       {children}
     </AuthContext.Provider>
   );

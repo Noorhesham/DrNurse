@@ -107,7 +107,7 @@ const NavBar = () => {
             <div className="flex  items-center  gap-20 ">
               <div
                 className={`${
-                  !isTopPage   && "lg:opacity-100  hidden lg:flex  opacity-0"
+                  !isTopPage && "lg:opacity-100  hidden lg:flex  opacity-0"
                 } flex duration-150  items-center`}
               >
                 <Logo isdark={isHome ? false : true} />
@@ -150,9 +150,15 @@ const NavBar = () => {
                   >
                     LOG OUT
                   </Button>{" "}
-                  <Link href={user ? "/dashboard" : "/signup"}>
-                    <Button className=" text-xs  md:text-sm px-4 lg:px-8 rounded-full">CHANGE HOSPITAL</Button>
-                  </Link>
+                  {isHome ? (
+                    <Link href={user ? "/dashboard" : "/signup"}>
+                      <Button className="  px-4 lg:px-8 rounded-full">GET STARTED</Button>
+                    </Link>
+                  ) : (
+                    <Link href={'/dashboard'}>
+                      <Button className=" text-xs  md:text-sm px-4 lg:px-8 rounded-full">CHANGE HOSPITAL</Button>
+                    </Link>
+                  )}
                 </div>
               )}
 

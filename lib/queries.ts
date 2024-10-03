@@ -17,14 +17,25 @@ const useGetGeneralSettings = (needed: string[]) => {
 
   return { data, isLoading };
 };
-const useGetEntity = (resourseName: ResourceNameProps, body?: any) => {
+const useGetEntity = (
+  resourceName: ResourceNameProps,
+  key?: any,
+  id?: string,
+  options: { enabled?: boolean } = {},
+  queryParams?: any
+) => {
   const { data, isLoading } = useQuery({
-    queryKey: [resourseName],
+    queryKey: [key],
     queryFn: async () =>
       await Server({
-        resourceName: resourseName,
+        resourceName: resourceName,
+        id: id,
+        queryParams,
       }),
+    enabled: options.enabled,
   });
+
+  console.log(data);
   return { data, isLoading };
 };
 export { useGetGeneralSettings, useGetEntity };

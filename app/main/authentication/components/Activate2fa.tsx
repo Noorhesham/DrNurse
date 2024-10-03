@@ -11,20 +11,21 @@ import { useEffect, useState } from "react";
 import { InputOTPPattern } from "./OTP";
 import { TbAuth2Fa } from "react-icons/tb";
 import UpdateCard from "@/app/components/UpdateCard";
-import ModalCustom from "@/app/components/defaults/ModalCustom";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/app/context/AuthContext";
+import ModalCustom from "@/app/components/defaults/ModalCustom";
 import { SkeletonCard } from "@/app/components/defaults/SkeletonCard";
 const Activate2fa = () => {
-  const [serial, setSerial] = useLocalStorageState("serial", "");
-  const [qrCode, setQrCode] = useLocalStorageState("qrCode", "");
+  const [serial, setSerial] = useLocalStorageState("", "serial");
+  const [qrCode, setQrCode] = useLocalStorageState("", "qrCode");
   const { userSettings, loading, setLogin } = useAuth();
   const t = useTranslations();
   const [qr, setQr] = useState<string>("");
   const [err, setErr] = useState<string>("");
   const isActivated = userSettings?.tfa;
   useEffect(() => {
-    QRCode.toDataURL(qrCode).then(setQr);
+    if (!qrCode) return;
+    QRCode?.toDataURL(qrCode).then(setQr);
   }, [qrCode]);
   const handleCheckTfa = async () => {
     const res = await Server({
@@ -41,7 +42,8 @@ const Activate2fa = () => {
     }
   };
   if (loading) return <SkeletonCard className="w-full" />;
-  const secret = serial?.match(/secret=([^&]+)/)?.[1];
+  console.log(serial);
+  const secret = serial ? serial?.match(/secret=([^&]+)/)?.[1] : "";
 
   return (
     <ModalCustom
@@ -52,7 +54,7 @@ const Activate2fa = () => {
       }
       content={
         <section className=" flex flex-col items-center">
-          <div className="flex mt-5 items-center space-x-2">
+          <div className="flex mt-5 items-center  gap-4">
             <Checkbox defaultChecked={userSettings?.tfa} onCheckedChange={() => handleCheckTfa()} id="terms" />
             <label
               htmlFor="terms"

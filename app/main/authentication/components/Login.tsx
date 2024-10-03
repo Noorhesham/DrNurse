@@ -1,11 +1,12 @@
 "use client";
-import React, { Suspense, useLayoutEffect, useState, useTransition } from "react";
+import React, { Suspense, useEffect, useLayoutEffect, useState, useTransition } from "react";
+
 import { Switch } from "@/components/ui/switch";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "@/app/schema";
-import CustomForm from "@/app/components/forms/CustomForm";
+
 import Link from "next/link";
 import { Server } from "../../Server";
 import Logo from "@/app/components/Logo";
@@ -21,17 +22,17 @@ import { InputOTPPattern } from "./OTP";
 import { useAuth } from "@/app/context/AuthContext";
 import { useTranslations } from "next-intl";
 import Section from "@/app/components/defaults/Section";
-import { ArrowRight } from "lucide-react";
-
+import CustomForm from "@/app/components/forms/CustomForm";
 const Login = () => {
   const t = useTranslations();
+  const loginSchemaa = loginSchema(t);
   const [useEmail, setUseEmail] = useState(false);
   const [activate, setActivate] = useState(false);
   const [methods, setMethods] = useLocalStorageState([], "methods");
-  const [message, setMessage] = useLocalStorageState("", "message");
+  const [message, setMessage] = useState("");
   const [isCode, setIsCode] = useState("");
   const form = useForm({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(loginSchemaa),
     defaultValues: {
       useEmail: false,
       username: "",
@@ -48,16 +49,25 @@ const Login = () => {
   const [isPending, startTransition] = useTransition();
   const { setLogin } = useAuth();
   useLayoutEffect(() => {
+    if (searchParams.get("error")) {
+      const updatedParams = new URLSearchParams(searchParams);
+      updatedParams.delete("error");
+      router.push(`?${updatedParams.toString()}`, { scroll: false });
+    }
     if (param !== "") setActivate(true);
   }, [param]);
-  const onSubmit = async (data: z.infer<typeof loginSchema>) => {
+  const onSubmit = async (data: z.infer<typeof loginSchemaa>) => {
     startTransition(async () => {
       try {
         const res = await Server({
           resourceName: "login",
           body: {
             ...data,
-            device_info,
+            device_info: device_info,
+          },
+          headers: {
+            "device-unique-id": device_info.device_unique_id,
+            Accept: "application/json",
           },
         });
         console.log(res);
@@ -88,30 +98,45 @@ const Login = () => {
       }
     });
   };
-  const handleSend = async (sendType?: string) => {
-    const res = await Server({
-      resourceName: searchParams.get("tfa") === "true" ? "tfaSend" : "verify",
-      id: param,
-      body: {
-        send_by: sendType,
-      },
+  const handleSend = (sendType?: string) => {
+    startTransition(async () => {
+      const res = await Server({
+        resourceName: searchParams.get("tfa") === "true" ? "tfaSend" : "verify",
+        id: param,
+        body: {
+          send_by: sendType,
+        },
+      });
+      console.log(res);
+      if (!res.status)
+        setServerError(
+          Array.isArray(res.errors) && res.errors.length > 0 ? res.errors : res.errors.send_by || res.message
+        );
+      if (res.status) {
+        setServerError(null);
+        toast.success(res.message);
+        setIsCode(sendType || "");
+      }
     });
-    console.log(res);
-    if (!res.status)
-      setServerError(
-        Array.isArray(res.errors) && res.errors.length > 0 ? res.errors : res.errors.send_by || res.message
-      );
-    if (res.status) {
-      setServerError(null);
-      toast.success(res.message);
-      setIsCode(sendType || "");
-    }
   };
+  useEffect(() => {
+    if (searchParams.get("status") === "true") {
+      if (searchParams.get("token")) {
+        toast.success(searchParams.get("message"));
+        cookies.set("jwt", searchParams.get("token"));
+        setLogin(true);
+        router.push(redirect || "/");
+      }
+    }
+    if (searchParams.get("status") === "false") setServerError(searchParams.get("message"));
+  }, []);
   const loginArray = [
     {
       name: "username",
       placeholder: useEmail ? t("email") : t("phone"),
       phone: !useEmail,
+      type: "text",
+      returnFullPhone: true,
     },
     {
       name: "password",
@@ -124,11 +149,11 @@ const Login = () => {
   return (
     <Section CustomePadding="px-5 py-20" className="bg-gray-50 justify-center flex flex-1 flex-col items-center">
       <div className="mx-auto flex flex-col items-center justify-center w-full">
-        <Logo isdark size="lg" />
+        <Logo size="lg" isdark={true} />
         {!activate && (
           <>
             <h1 className="text-center text-xl md:text-2xl mt-8 font-bold text-main2">{t("login")}</h1>
-            <div className="w-full gap-3 mt-5 px-5 lg:px-14 flex flex-col">
+            <div className="w-full mt-5 px-5 lg:px-14 flex flex-col">
               <div className="text-main2 self-center mx-auto text-base flex items-center gap-2">
                 <p className="text-main2 font-medium text-sm">{t("loginWithPhone")}</p>
                 <Switch
@@ -142,10 +167,9 @@ const Login = () => {
                 <p className="text-main2 font-medium text-sm">{t("loginWithEmail")}</p>
               </div>
               <CustomForm
-                serverError={serverError}
                 link="/forgot-password?level=prepare"
                 linkText={t("forgotPassword")}
-                btnText="LOGIN"
+                btnText={t("login")}
                 isPending={isPending}
                 form={form}
                 inputs={loginArray}
@@ -159,42 +183,46 @@ const Login = () => {
                   render={({ field }) => <input type="hidden" {...field} value={useEmail} />}
                 />
               </CustomForm>
+              {serverError && <p className="text-red-500 text-center mt-3 text-sm font-semibold">{serverError}</p>}
 
               <Socials login={true} />
             </div>
             <div className="mt-8 text-sm flex flex-col gap-2 md:gap-0 md:flex-row items-center">
               <span className="font-[400] text-main2">{t("dontHaveAccount")}</span>
-              <Link href="/signup" className="  duration-150 ml-1 text-main font-[700]">
-                {t("createAccount")}           
+              <Link href="/signup" className="hover:underline duration-150 ml-1 text-main font-[700]">
+                {" "}
+                {t("createAccount")}{" "}
               </Link>
             </div>
 
-            <Link href="/" className="underline flex items-center  duration-150 my-2 text-main  font-semibold">
-              {t("backtowebsite")} <ArrowRight className=" h-6 w-6 arrow1"/>
+            <Link href="/" className="hover:underline duration-150 mt-2 text-main  font-semibold">
+              {" "}
+              {t("backtowebsite")}{" "}
             </Link>
           </>
         )}{" "}
         <Suspense>
           {activate && !isCode && (
-            <Methods
-              setActivate={setActivate}
-              tfa={searchParams.get("tfa") || ""}
-              handleSend={handleSend}
-              message={message}
-              methods={methods}
-            />
+            <Methods tfa={searchParams.get("tfa") || ""} handleSend={handleSend} message={message} methods={methods} />
           )}
           {isCode !== "" && activate && (
-            <InputOTPPattern
-              forgot={false}
-              tfa={Boolean(searchParams.get("tfa") === "true")}
-              setServerError={setServerError}
-              sendType={isCode}
-              handleSend={handleSend}
-            />
+            <>
+              {" "}
+              <InputOTPPattern
+                isPending2={isPending}
+                forgot={false}
+                tfa={Boolean(searchParams.get("tfa") === "true")}
+                setServerError={setServerError}
+                sendType={isCode}
+                handleSend={handleSend}
+              />{" "}
+              <Link href="/" className="hover:underline duration-150 mt-2 text-main  font-semibold">
+                {" "}
+                {t("backtowebsite")}{" "}
+              </Link>
+            </>
           )}
         </Suspense>
-        {/* {serverError && <p className="text-red-500 text-center mt-3 text-sm font-semibold">{serverError}</p>} */}
       </div>
     </Section>
   );

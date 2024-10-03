@@ -2,17 +2,17 @@
 
 import * as React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { DayPicker, useDayPicker, useNavigation } from "react-day-picker";
+import { DayPicker, useNavigation } from "react-day-picker";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
-import { format, setMonth } from "date-fns";
+import { format, setMonth, setYear } from "date-fns";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "./select";
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
-// Separate Component for Month Dropdown
 const MonthDropdown: React.FC = () => {
   const { goToMonth, currentMonth } = useNavigation();
+
   const selectItems = Array.from({ length: 12 }, (_, i) => ({
     value: i.toString(),
     label: format(setMonth(new Date(), i), "MMMM"),
@@ -20,7 +20,10 @@ const MonthDropdown: React.FC = () => {
 
   return (
     <Select
-      onValueChange={(newval) => goToMonth(setMonth(currentMonth, parseInt(newval)))}
+      onValueChange={(newval) => {
+        const newMonth = parseInt(newval);
+        goToMonth(setMonth(currentMonth, newMonth));
+      }}
       value={currentMonth.getMonth().toString()}
     >
       <SelectTrigger>{format(currentMonth, "MMMM")}</SelectTrigger>
@@ -35,26 +38,25 @@ const MonthDropdown: React.FC = () => {
   );
 };
 
-// Separate Component for Year Dropdown
 const YearDropdown: React.FC = () => {
   const { goToMonth, currentMonth } = useNavigation();
-  const { fromYear, toYear } = useDayPicker();
-  const selectItems = React.useMemo(() => {
-    if (fromYear && toYear) {
-      return Array.from({ length: toYear - fromYear + 1 }, (_, i) => {
-        const year = fromYear + i;
-        return { label: year.toString(), value: year.toString() };
-      });
-    }
-    return [];
-  }, [fromYear, toYear]);
+  const startYear = 1950;
+  const endYear = new Date().getFullYear();
+
+  const selectItems = Array.from({ length: endYear - startYear + 1 }, (_, i) => {
+    const year = startYear + i;
+    return { label: year.toString(), value: year.toString() };
+  });
 
   return (
     <Select
-      onValueChange={(newval) => goToMonth(new Date(parseInt(newval), currentMonth.getMonth()))}
+      onValueChange={(newval) => {
+        const newYear = parseInt(newval);
+        goToMonth(setYear(currentMonth, newYear));
+      }}
       value={currentMonth.getFullYear().toString()}
     >
-      <SelectTrigger className="mt-2">Years</SelectTrigger>
+      <SelectTrigger>{currentMonth.getFullYear()}</SelectTrigger>
       <SelectContent>
         {selectItems.map((item) => (
           <SelectItem key={item.value} value={item.value}>
@@ -66,7 +68,10 @@ const YearDropdown: React.FC = () => {
   );
 };
 
-function Calendar({ className, classNames, showOutsideDays = true, ...props }: CalendarProps) {
+function Calendar({ className, classNames, showOutsideDays = true, fromYear = 1950, ...props }: CalendarProps) {
+  const toYear = new Date().getFullYear();
+  const prop = { ...props, fromYear: 1950 };
+
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
@@ -88,16 +93,20 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
         head_cell: "text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]",
         row: "flex w-full mt-2",
         cell: "h-9 w-9 text-center text-sm p-0 relative",
-        day: cn(buttonVariants({ variant: "ghost" }), "h-9 w-9 p-0 font-normal aria-selected:opacity-100"),
+        day: cn(
+          buttonVariants({ variant: "ghost" }),
+          "h-9 w-9 p-0 font-normal aria-selected:bg-sky-100 aria-selected:opacity-100"
+        ),
         ...classNames,
       }}
+      toYear={toYear}
       components={{
         IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" {...props} />,
         IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" {...props} />,
         Dropdown: (props) =>
           props.name === "months" ? <MonthDropdown /> : props.name === "years" ? <YearDropdown /> : null,
       }}
-      {...props}
+      {...prop}
     />
   );
 }

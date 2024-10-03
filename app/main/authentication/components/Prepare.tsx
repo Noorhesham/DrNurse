@@ -6,8 +6,9 @@ import { useForm } from "react-hook-form";
 import { Server } from "../../Server";
 import { z } from "zod";
 import { toast } from "react-toastify";
-import CustomForm from "@/app/components/forms/CustomForm";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
+import CustomForm from "@/app/components/forms/CustomForm";
 
 const Prepare = ({ setMethods, handleParam, setMessage }: { setMethods: any; handleParam: any; setMessage: any }) => {
   const [useEmail, setUseEmail] = useState(false);
@@ -23,16 +24,17 @@ const Prepare = ({ setMethods, handleParam, setMessage }: { setMethods: any; han
     },
   ];
   const [isPending, startTransition] = useTransition();
-
+  const t = useTranslations();
+  const resetOassSchema1 = resetPasswordSchemaPrepare(t);
   const form = useForm({
-    resolver: zodResolver(resetPasswordSchemaPrepare),
+    resolver: zodResolver(resetOassSchema1),
     defaultValues: {
       username: "",
       useEmail: false,
     },
     mode: "onChange",
   });
-  const onSubmit = (data: z.infer<typeof resetPasswordSchemaPrepare>) => {
+  const onSubmit = (data: z.infer<typeof resetOassSchema1>) => {
     startTransition(async () => {
       const res = await Server({
         resourceName: "reset",
@@ -57,7 +59,7 @@ const Prepare = ({ setMethods, handleParam, setMessage }: { setMethods: any; han
   return (
     <>
       <div className="text-main2  mt-8 self-center mx-auto text-base flex items-center gap-2">
-        <p className="text-main2 font-medium text-sm">BY PHONE</p>
+        <p className="text-main2 font-medium text-sm">{t("loginWithPhone")}</p>
         <Switch
           noSwitch={true}
           checked={useEmail}
@@ -66,7 +68,7 @@ const Prepare = ({ setMethods, handleParam, setMessage }: { setMethods: any; han
             form.setValue("useEmail", !useEmail);
           }}
         />
-        <p className="text-main2 font-medium text-sm">BY EMAIL</p>
+        <p className="text-main2 font-medium text-sm">{t("loginWithEmail")}</p>
       </div>
       <div className=" w-full mt-5 px-5 md:px-14 flex flex-col ">
         <CustomForm

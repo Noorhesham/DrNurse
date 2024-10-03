@@ -62,7 +62,6 @@ const page = () => {
     <div className="">
       <div className=" flex md:flex-row flex-col gap-4 items-start justify-between">
         <MiniTitle boldness="bold" size="lg" className="   uppercase" text="RECENTLY POSTED JOB OFFERS" />
-        <FunctionalButton link="/dashboard/add-job-offer" btnText="ADD JOB OFFER" />
       </div>
       <Table className=" mt-5">
         <TableHeader className=" bg-light">

@@ -1,18 +1,21 @@
 import React, { ReactNode, useTransition } from "react";
-import FormSelect from "../inputsForm/FormSelect";
-import FormInput from "../inputsForm/FormInput";
+
 import { Form } from "@/components/ui/form";
-import SubmitButton from "../SubmitButton";
-import MyLink from "../MyLink";
+
 import { cn } from "@/lib/utils";
-import Head1 from "../Head1";
+
 import { DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
-import MiniTitle from "../defaults/MiniTitle";
-import FormFlexContainer from "./FormFlexContainer";
+import Head1 from "../Head1";
+import FormSelect from "../inputsForm/FormSelect";
+import CountriesInput from "../inputsForm/CountriesInput";
+import FormInput from "../inputsForm/FormInput";
+import MyLink from "../MyLink";
+import SubmitButton from "../SubmitButton";
+
 export interface CustomFormProps {
-  inputs?: InputProps[];
+  inputs: InputProps[];
   src?: string;
   serverError?: string[] | string | null;
   title?: string;
@@ -38,7 +41,6 @@ export interface InputProps {
   placeholder?: string;
   description?: string;
   label?: string;
-  className?: string;
   id?: string;
   options?: any[];
   select?: boolean;
@@ -50,11 +52,16 @@ export interface InputProps {
   label2?: string;
   date?: boolean;
   password?: boolean;
+  cityName?: string;
   children?: ReactNode;
   noProgress?: boolean;
   area?: boolean;
-  title?: string;
-  flex?: boolean;
+  country?: boolean;
+  returnFullPhone?: boolean;
+  countryName?: string | any;
+  className?: string;
+  disabled?: boolean;
+  stateName?: string | any;
 }
 const CustomForm = ({
   inputs,
@@ -77,53 +84,35 @@ const CustomForm = ({
       <form className="flex w-full items-stretch gap-2" onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex flex-1 flex-col">
           {title && <Head1 size="sm" className=" text-lg text-center" text={title} />}
-          <div className="flex pt-4 w-full flex-col  gap-2">
-            <FormFlexContainer title={inputs?.filter((i) => i.title !== "")?.[0].title} className="w-full">
-              {inputs
-                ?.filter((i) => i.flex)
-                .map((input) =>
-                  input.select ? (
-                    <FormSelect placeholder={input.placeholder} key={input.name} {...input} />
-                  ) : (
-                    <FormInput
-                      disabled={disabled}
-                      label2={input.label2 || ""}
-                      switchToggle={input.switchToggle}
-                      phone={input.phone || false}
-                      key={input.name}
-                      {...input}
-                    />
-                  )
-                )}
-            </FormFlexContainer>
-            {inputs
-              ?.filter((i) => !i.flex)
-              .map((input) => (
-                <>
-                  {input.title && <MiniTitle boldness="bold" size="lg" className="   uppercase" text={input.title} />}
-                  {input.select ? (
-                    <FormSelect placeholder={input.placeholder} key={input.name} {...input} />
-                  ) : (
-                    <FormInput
-                      disabled={disabled}
-                      label2={input.label2 || ""}
-                      switchToggle={input.switchToggle}
-                      phone={input.phone || false}
-                      key={input.name}
-                      {...input}
-                    />
-                  )}
-                </>
-              ))}{" "}
+          <div className="flex lg:pt-4 flex-col gap-4">
+            {inputs.map((input) =>
+              input?.select ? (
+                <FormSelect placeholder={input.placeholder} key={input.name} {...input} />
+              ) : input.country ? (
+                <CountriesInput cityName={input.cityName} countryName={input.countryName} stateName={input.stateName} />
+              ) : (
+                <FormInput
+                  returnFullPhone={input?.returnFullPhone}
+                  disabled={disabled}
+                  label2={input?.label2 || ""}
+                  switchToggle={input?.switchToggle}
+                  phone={input.phone || false}
+                  key={input.name}
+                  {...input}
+                />
+              )
+            )}
           </div>
           {children}
-          <div className={cn("flex gap-2 mt-5 items-center", { "self-center w-[60%]": cancel })}>
-            <div className={`${btnStyles} ${!cancel ? "flex-1" : "flex-grow"} flex items-center flex-col`}>
+          <div className={cn("flex gap-2 mt-5 items-center", { "self-center w-full lg:w-[60%]": cancel })}>
+            <div className={`${btnStyles} flex-1 flex items-center flex-col`}>
               {link && linkText && <MyLink link={link} text={linkText} />}
-              <SubmitButton btnStyles={btnStyles} text={btnText || "Submit"} isPending={isPending || disabled} />
+              <div className=" w-full">
+                <SubmitButton btnStyles={btnStyles} text={btnText || t("Submit")} isPending={isPending || disabled} />
+              </div>
             </div>
             {cancel && (
-              <DialogClose className=" mx-auto flex-grow w-full flex  items-center gap-5  ">
+              <DialogClose className=" mx-auto flex-1 w-full flex  items-center gap-5  ">
                 {
                   <Button
                     type="button"

@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { AuthProvider } from "../context/AuthContext";
 import Notifications from "../components/Notificationts";
+import CustomIntlProvider from "../context/IntlProvider";
 
 const inter = Bai_Jamjuree({ subsets: ["latin"], weight: ["400", "600", "700", "200", "300", "500"] });
 const locales = ["en", "ar"];
@@ -51,7 +52,9 @@ export default async function RootLayout({
 
               <ReactQueryDevtools initialIsOpen={false} />
 
-              <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+              <CustomIntlProvider messages={messages} locale={locale}>
+                {children}
+              </CustomIntlProvider>
             </AuthProvider>
           </DeviceProvider>
         </QueryProvider>

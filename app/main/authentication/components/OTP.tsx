@@ -8,15 +8,15 @@ import { toast } from "react-toastify";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import FormInput from "@/app/components/inputsForm/FormInput";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/app/context/AuthContext";
 import { Suspense, useState, useTransition } from "react";
 import Spinner from "@/app/components/Spinner";
 import { useDevice } from "@/app/context/DeviceContext";
-import Paragraph from "@/app/components/defaults/Paragraph";
+
 import { useTranslations } from "next-intl";
+import FormInput from "@/app/components/inputsForm/FormInput";
 
 export function InputOTPPattern({
   handleSend,
@@ -29,8 +29,9 @@ export function InputOTPPattern({
   revalidate,
   phone,
   country_key,
+  isPending2,
 }: {
-  handleSend: any;
+  handleSend?: any;
   sendType: string;
   setServerError?: any;
   forgot?: boolean;
@@ -40,8 +41,10 @@ export function InputOTPPattern({
   revalidate?: any;
   phone?: boolean;
   country_key?: string;
+  isPending2?: boolean;
 }) {
   const { setLogin } = useAuth();
+  const [resending, setResending] = useState(false);
   const [timer, setTimer] = useState(true);
   const otpSchema = z.object({
     code: z.string().min(6).max(6),
@@ -60,6 +63,40 @@ export function InputOTPPattern({
   const [isPending, startTransition] = useTransition();
   const { device_info } = useDevice();
   const t = useTranslations();
+  const Resend = async () => {
+    try {
+      setResending(true);
+      const res = await Server({
+        resourceName: forgot
+          ? "reset"
+          : tfa
+          ? "tfaValidate"
+          : email || phone
+          ? "update_profile"
+          : activate
+          ? "tfaActivate"
+          : "validate",
+        id: searchParams.get("uuid") || "",
+        body: {
+          send_type: sendType,
+          send_by: sendType,
+          email: email && searchParams.get("email"),
+          phone: phone && searchParams.get("phone"),
+          type: "verify",
+          email_uuid: email && searchParams.get("uuid"),
+          device_info: device_info,
+          phone_uuid: phone && searchParams.get("uuid"),
+          country_key: phone && country_key,
+        },
+      });
+      if (!res.status) setServerError(res.message);
+      if (res.status) toast.success(res.message);
+    } catch (error) {
+      setServerError(error);
+    } finally {
+      setResending(false);
+    }
+  };
   const onSubmit = async (data: z.infer<typeof otpSchema>) => {
     startTransition(async () => {
       const res = await Server({
@@ -76,36 +113,38 @@ export function InputOTPPattern({
         body: {
           send_type: sendType,
           send_by: sendType,
-          code: data.code,
+          code: data?.code,
           uuid: searchParams.get("uuid"),
           username: searchParams.get("username"),
           type: activate ? "verify" : searchParams.get("level"),
           password: forgot && data.password,
-          email_code: email && data.code,
+          email_code: email && data?.code,
           tfa: activate && "1",
           email_uuid: email && searchParams.get("uuid"),
           email: email && searchParams.get("email"),
-          device_info,
+          device_info: device_info,
           phone: phone && searchParams.get("phone"),
           phone_uuid: phone && searchParams.get("uuid"),
-          phone_code: phone && data.code,
+          phone_code: phone && data?.code,
           country_key: phone && country_key,
         },
       });
       console.log(res);
+      const redirect = searchParams.get("redirect");
+
       if (!res.status) setServerError(res.message);
       if (res.status) {
         if (res.token) cookies.set("jwt", res.token);
-        setLogin(true);
         toast.success(res.message);
+        if (!forgot) setLogin((l: boolean) => !l);
+        setServerError(null);
         const updatedParams = new URLSearchParams(searchParams.toString());
-        ["username", "uuid", "level", "email"].forEach((p) => updatedParams.delete(p));
+        ["username", "uuid", "level", "email", "phone"].forEach((p) => updatedParams.delete(p));
         if (activate) return;
         if (email || phone) {
-          setLogin((l: boolean) => !l);
           return router.push(`?${updatedParams.toString()}`, { scroll: false });
         }
-        forgot ? router.push("/login") : router.push("/");
+        forgot ? router.push("/login") : router.push(redirect ? redirect : "/");
       }
     });
   };
@@ -138,9 +177,10 @@ export function InputOTPPattern({
               )}
             />
             {forgot && <FormInput name="password" control={form.control} placeholder={t("password")} password />}
-            <div className="mt-4 flex items-center gap-2">
+            <div className="mt-4  flex items-center gap-2">
               {!activate && (
                 <Button
+                  className="rounded-full flex-1 px-8"
                   onClick={(e: any) => {
                     handleSend(sendType);
                     setTimer(true);
@@ -149,8 +189,8 @@ export function InputOTPPattern({
                   {t("resend_code")}
                 </Button>
               )}
-              <Button disabled={isPending} className=" rounded-full px-8" type="submit">
-                {isPending ? <Spinner /> : "Submit"}
+              <Button disabled={isPending} className=" flex-1 rounded-full px-8" type="submit">
+                {isPending ? <Spinner /> : t("Submit")}
               </Button>
             </div>
           </form>
