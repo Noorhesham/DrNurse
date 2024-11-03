@@ -179,7 +179,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
     return (
       <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen} modal={modalPopover}>
         <PopoverTrigger asChild>
-          <div className="flex flex-col gap-2 w-full">
+          <div className="flex space-y-2 w-full relative flex-col gap-2 w-full">
             <Label> SELECT MULTIPLE :</Label>
             <Button
               ref={ref}

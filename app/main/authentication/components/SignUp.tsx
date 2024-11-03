@@ -10,23 +10,26 @@ import { Server } from "../../Server";
 import { useDevice } from "@/app/context/DeviceContext";
 import Logo from "@/app/components/Logo";
 import { toast } from "react-toastify";
-import { redirect } from "next/navigation";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
 import { useLocalStorageState } from "@/app/hooks/useLocalStorageState";
 import { z } from "zod";
 import Section from "@/app/components/defaults/Section";
 import { useTranslations } from "next-intl";
-
+import cookies from "js-cookie";
+import { useAuth } from "@/app/context/AuthContext";
 const initialSignupArray = [
   {
     name: "role",
     label: "PERSON",
     label2: "HOSPITAL",
     switchToggle: true,
+    noSwitch: true,
   },
   {
     name: "phone",
     placeholder: "Add Your Phone...",
     phone: true,
+    returnFullPhone: false,
   },
   {
     name: "sms",
@@ -50,9 +53,19 @@ const initialSignupArray = [
     optional: true,
   },
   {
-    name: "referealCode",
+    name: "referral_code",
     optional: true,
     placeholder: "REFERRAL CODE ...",
+  },
+  {
+    name: "register_as",
+    optional: true,
+    placeholder: "REGISTER AS ...",
+    select: true,
+    options: [
+      { name: "PATIENT", value: "patient" },
+      { name: "DOCTOR", value: "doctor" },
+    ],
   },
 ];
 
@@ -66,22 +79,35 @@ const Signup = () => {
       email: "",
       name: "",
       password: "",
-      referealCode: "",
-      role: "person",
+      referral_code: "",
+      role: false,
       phone: "",
       sms: false,
-      jobTitle: "",
+      register_as: "",
     },
     mode: "onChange",
   });
-
+  const router = useRouter();
+  const { setLogin } = useAuth();
   const [signupArray, setSignupArray] = useState(initialSignupArray);
   const [serverError, setServerError] = useState<string[] | null>(null);
   const { device_info } = useDevice();
   const [isPending, startTransition] = useTransition();
   const [methods, setMethods] = useLocalStorageState([], "methods");
-
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    const referal = localStorage.getItem("referal");
+    if (referal) {
+      form.setValue("referral_code", referal);
+    }
+    const role = searchParams.get("role");
+    if (role === "hospital") form.setValue("register_as", "hospital");
+    if (role === "doctor") form.setValue("register_as", "doctor");
+  }, []);
   const onSubmit = async (data: z.infer<typeof singup>) => {
+    console.log(data);
+    if (data.phone) data.country_key = data.phone.country_key;
+    if (data.phone) data.phone = data.phone.phone;
     startTransition(async () => {
       const res = await Server({
         resourceName: "signup",
@@ -90,21 +116,19 @@ const Signup = () => {
           device_info,
         },
       });
-      if (!res.status) setServerError(res.errors);
+      console.log(res);
+      if (!res.status) setServerError(res.message || res.errors);
       if (res.status) {
         setServerError(null);
-        const res = await Server({
-          resourceName: "login",
-          body: {
-            username: data.phone || data.email,
-            password: data.password,
-            device_info,
-          },
-        });
+
         if (res.activation_methods) {
           setMethods(res.activation_methods);
           toast.success(`${res.message} ...`);
           redirect(`/login?uuid=${res.activation_uuid}`);
+        } else {
+          cookies.set("jwt", res.token);
+          setLogin(true);
+          router.push("/loader");
         }
       }
     });
@@ -113,31 +137,27 @@ const Signup = () => {
   const role = form.watch("role");
   useEffect(() => {
     if (role) {
-      setSignupArray((prev) => {
-        const jobTitleExists = prev.some((input) => input.name === "jobTitle");
+      setSignupArray((prev: any) => {
+        const jobTitleExists = prev.some((input: any) => input.name === "register_as");
         if (!jobTitleExists) {
           return [
             ...prev,
             {
-              name: "jobTitle",
+              name: "register_as",
               select: true,
-              options: ["Doctor", "Nurse", "Technician"],
+              options: ["doctor", "nurse"],
               placeholder: "Select Your Job Title...",
-            },
-            {
-              name: "referealCode",
-              optional: true,
-              placeholder: "REFERRAL CODE ...",
             },
           ];
         }
         return prev;
       });
     } else {
-      setSignupArray((prev) => prev.filter((input) => input.name !== "jobTitle" && input.name !== "referealCode"));
+      setSignupArray((prev) => prev.filter((input) => input.name !== "register_as"));
+      form.setValue("register_as", "hospital");
     }
   }, [role]);
-
+  console.log(form.getValues("register_as"));
   return (
     <Section CustomePadding="px-5  py-10" className=" flex flex-1 justify-center flex-col items-center">
       <div className="mx-auto flex flex-col items-center justify-center w-full">

@@ -4,7 +4,6 @@ import UpdateCard from "@/app/components/UpdateCard";
 import { useGetEntity } from "@/lib/queries";
 import { format } from "date-fns";
 import React, { useTransition } from "react";
-import { FaPhone } from "react-icons/fa";
 import { MdOutlineDevices } from "react-icons/md";
 import { HiComputerDesktop, HiPhone } from "react-icons/hi2";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -17,11 +16,11 @@ import { toast } from "react-toastify";
 import ModalCustom from "@/app/components/defaults/ModalCustom";
 
 const Devices = () => {
+  const t = useTranslations();
   const { data, isLoading } = useGetEntity("getDevices", "devices");
   const queryClient = useQueryClient();
   const { device_info } = useDevice();
   const [isPending, startTransition] = useTransition();
-  const t = useTranslations();
   const filteredResult = Object.keys(data || {})
     .filter((key) => typeof data[key] === "object")
     .map((key) => data[key]);

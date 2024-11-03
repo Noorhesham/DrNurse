@@ -41,7 +41,7 @@ const MonthDropdown: React.FC = () => {
 const YearDropdown: React.FC = () => {
   const { goToMonth, currentMonth } = useNavigation();
   const startYear = 1950;
-  const endYear = new Date().getFullYear();
+  const endYear = new Date().getFullYear() + 50; // Allow navigation up to 50 years in the future
 
   const selectItems = Array.from({ length: endYear - startYear + 1 }, (_, i) => {
     const year = startYear + i;
@@ -69,9 +69,6 @@ const YearDropdown: React.FC = () => {
 };
 
 function Calendar({ className, classNames, showOutsideDays = true, fromYear = 1950, ...props }: CalendarProps) {
-  const toYear = new Date().getFullYear();
-  const prop = { ...props, fromYear: 1950 };
-
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
@@ -95,18 +92,19 @@ function Calendar({ className, classNames, showOutsideDays = true, fromYear = 19
         cell: "h-9 w-9 text-center text-sm p-0 relative",
         day: cn(
           buttonVariants({ variant: "ghost" }),
-          "h-9 w-9 p-0 font-normal aria-selected:bg-sky-100 aria-selected:opacity-100"
+          "h-9 w-9 p-0 font-normal aria-selected:bg-sky-200 aria-selected:opacity-100"
         ),
         ...classNames,
       }}
-      toYear={toYear}
+      fromYear={fromYear}
+      toYear={new Date().getFullYear() + 50} 
       components={{
         IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" {...props} />,
         IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" {...props} />,
         Dropdown: (props) =>
           props.name === "months" ? <MonthDropdown /> : props.name === "years" ? <YearDropdown /> : null,
       }}
-      {...prop}
+      {...props}
     />
   );
 }

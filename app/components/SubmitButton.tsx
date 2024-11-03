@@ -7,13 +7,13 @@ const SubmitButton = ({ text, isPending, btnStyles }: { text: string; isPending?
   return (
     <Button
       type="submit"
-      className={`  rounded-full hover:bg-main2/60 duration-150 bg-main2  text-center text-gray-50 py-2 px-8 ${btnStyles}`}
+      className={`relative  rounded-full hover:bg-main2/60 duration-150 bg-main2  text-center text-gray-50 py-2 px-8 ${btnStyles}`}
     >
       {isPending ? (
-        <Spinner />
+        <Spinner className=" border-[5px] border-white text-center m-auto" />
       ) : (
         <p className="flex items-center gap-2">
-          {text=='SAVE CHANGES'&&<CheckCircleIcon />}
+          {text == "SAVE CHANGES" && <CheckCircleIcon />}
           {text}
         </p>
       )}

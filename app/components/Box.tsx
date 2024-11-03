@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+import { useLoading } from "../context/LoadingContext";
+import { useSetLoading } from "../hooks/useSetLoadingt";
 
 interface Filters {
   [key: string]: string[];
@@ -15,7 +17,7 @@ const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; fi
   const [filters, setFilters] = useState<Filters>({});
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [accordionValue, setAccordionValue] = useState<string | undefined>("");
-
+  const { WrapperFn } = useSetLoading();
   // Determine if the viewport is mobile
   useEffect(() => {
     const handleResize = () => {
@@ -25,7 +27,7 @@ const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; fi
     };
 
     if (typeof window !== "undefined") {
-      handleResize(); // Initial check
+      handleResize();
       window.addEventListener("resize", handleResize);
       return () => window.removeEventListener("resize", handleResize);
     }
@@ -45,27 +47,30 @@ const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; fi
 
   // Update URL when filters change
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
+    const update = () => {
+      if (typeof window !== "undefined") {
+        const params = new URLSearchParams(window.location.search);
 
-      // Update the params with the current filters state
-      Object.entries(filters).forEach(([key, values]) => {
-        if (values.length > 0) {
-          params.set(key, values.join(",")); // Set the new values for each filter
-        } else {
-          params.delete(key); // Remove the filter if no values are selected
-        }
-      });
+        // Update the params with the current filters state
+        Object.entries(filters).forEach(([key, values]) => {
+          if (values.length > 0) {
+            params.set(key, values.join(",")); // Set the new values for each filter
+          } else {
+            params.delete(key); // Remove the filter if no values are selected
+          }
+        });
 
-      router.push(`?${params.toString()}`, { scroll: false });
-    }
+        router.push(`?${params.toString()}`, { scroll: false });
+      }
+    };
+
+    WrapperFn(update);
   }, [filters, router]);
 
   const handleFilter = (filterValue: string, filterName: string) => {
     setFilters((prevFilters) => {
       const currentFilters = prevFilters[filterName] || [];
       const isFilterSelected = currentFilters.includes(filterValue);
-
       // Toggle the filter on/off
       const updatedFilters = isFilterSelected
         ? currentFilters.filter((item) => item !== filterValue) // Remove the filter
@@ -96,7 +101,7 @@ const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; fi
               {!btn
                 ? options?.map((option, i) => (
                     <li
-                      onClick={() => handleFilter(option, filter)}
+                      onClick={() => handleFilter(option.id.toString(), filter)}
                       key={i}
                       className="flex items-center gap-2 cursor-pointer"
                     >
@@ -104,28 +109,34 @@ const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; fi
                         type="checkbox"
                         name={filter}
                         id={option}
-                        checked={filters[filter]?.includes(option) || false}
-                        onChange={() => handleFilter(option, filter)}
+                        checked={filters[filter]?.includes(option.id.toString()) || false}
+                        onChange={() => handleFilter(option.id.toString(), filter)}
                       />
-                      <label className="text-main2 text-xs" htmlFor={option}>
-                        {option}
+                      <label className="text-main2 text-xs" htmlFor={option.name}>
+                        {option.name}
                       </label>
                     </li>
                   ))
-                : options?.map((option, i) => (
-                    <Button
-                      size={"lg"}
-                      className={cn(
-                        "w-full lg:text-xs bg-gray-100 text-main2 ",
-                        filters[filter]?.includes(option) ? "bg-main2 text-gray-50" : ""
-                      )}
-                      variant={"outline"}
-                      key={i}
-                      onClick={() => handleFilter(option, filter)}
-                    >
-                      {option}
-                    </Button>
-                  ))}
+                : options?.map((option, i) => {
+                    return (
+                      <Button
+                        size={"lg"}
+                        className={cn(
+                          "w-full lg:text-xs bg-gray-100 text-main2 ",
+                          filters[filter]?.includes(option.id.toString())
+                            ? "bg-main2 hover:bg-main2  hover:text-white text-gray-50"
+                            : ""
+                        )}
+                        variant={"outline"}
+                        key={i}
+                        onClick={() => {
+                          handleFilter(option.id.toString(), filter);
+                        }}
+                      >
+                        {option.name}
+                      </Button>
+                    );
+                  })}
             </ul>
           </AccordionContent>
         </AccordionItem>

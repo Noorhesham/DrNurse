@@ -17,12 +17,12 @@ export function RadioGroupForm({ options, name }: { options?: any; name: string 
   const t = useTranslations();
 
   // State to manage the selected radio value
-  const [selectedValue, setSelectedValue] = useState<string | undefined>(form.watch("type"));
+  const [selectedValue, setSelectedValue] = useState<string | undefined>(form.watch(name));
 
   // Update the selected value when radio button changes
   const handleValueChange = (value: string) => {
     setSelectedValue(value);
-    form.setValue("type", value); // Sync with react-hook-form
+    form.setValue(name, value); // Sync with react-hook-form
   };
 
   return (
@@ -33,7 +33,11 @@ export function RadioGroupForm({ options, name }: { options?: any; name: string 
         <FormItem className="space-y-3">
           <FormLabel>{t("recipientEmail")}</FormLabel>
           <FormControl>
-            <RadioGroup onValueChange={handleValueChange} value={selectedValue} className="flex lg:flex-row flex-col items-start space-y-1">
+            <RadioGroup
+              onValueChange={handleValueChange}
+              value={selectedValue}
+              className="flex lg:flex-row flex-col items-start space-y-1"
+            >
               {options.map((option: any, i: number) => (
                 <FormItem
                   key={i}
@@ -42,7 +46,7 @@ export function RadioGroupForm({ options, name }: { options?: any; name: string 
                   }`}
                 >
                   <FormControl>
-                    <RadioGroupItem id={option.title} value={option.title} />
+                    <RadioGroupItem id={option.title} value={option.value} />
                   </FormControl>
                   <FormLabel htmlFor={option.title} className="flex flex-col">
                     <h2 className="font-normal">{option.title}</h2>

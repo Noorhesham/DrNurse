@@ -12,7 +12,7 @@ import { Form } from "@/components/ui/form";
 import MiniTitle from "./defaults/MiniTitle";
 
 import FlexWrapper from "./defaults/FlexWrapper";
-import { CURRENCY_OPTIONS } from "@/app/constants";
+import { CURRENCY_OPTIONS, FAMILYSTATUS } from "@/app/constants";
 import ComboboxForm from "./inputsForm/ComboboxForm";
 import { toast } from "react-toastify";
 import { useDevice } from "../context/DeviceContext";
@@ -144,13 +144,7 @@ const Profile2 = () => {
         <FlexWrapper max={false}>
           <FormSelect
             label="FAMILY STATUS"
-            options={[
-              { label: "Married", value: "Married" },
-              { label: "Single", value: "Single" },
-              { label: "Divorced", value: "Divorced" },
-              { label: "Separated", value: "Separated" },
-              { label: "Widow", value: "Widow" },
-            ]}
+            options={FAMILYSTATUS}
             name="familyStatus"
           />
           <FormSelect

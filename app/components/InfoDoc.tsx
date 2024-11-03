@@ -12,7 +12,7 @@ const InfoItem = ({ icon, title, description }: InfoItemProps) => {
       {icon}
       <div className="flex text-xs md:text-sm  flex-col">
         <p>{title}</p>
-        <p className="text-xs md:text-sm  text-muted-foreground">{description}</p>
+        <p className="text-xs  uppercase md:text-sm  text-muted-foreground">{description}</p>
       </div>
     </div>
   );

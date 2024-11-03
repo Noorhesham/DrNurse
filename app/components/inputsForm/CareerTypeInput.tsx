@@ -1,10 +1,11 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useEffect } from "react";
 import ComboboxForm from "./ComboboxForm";
 import { useFormContext } from "react-hook-form";
 import { useTranslations } from "next-intl";
 import { ResourceNameProps, Server } from "@/app/main/Server";
+import FlexWrapper from "../defaults/FlexWrapper";
 
 export const useGetEntities = ({
   key,
@@ -13,6 +14,7 @@ export const useGetEntities = ({
   enable = true,
   id,
   entityName,
+  cache,
 }: {
   key: string;
   resourceName: ResourceNameProps;
@@ -20,10 +22,12 @@ export const useGetEntities = ({
   enable?: boolean;
   id?: string;
   entityName?: string;
+  cache?: number;
 }) => {
   const { data, isLoading } = useQuery({
     queryKey: [key, queryParams, id],
-    queryFn: async () => await Server({ resourceName: resourceName, id, cache: Infinity, queryParams, entityName }),
+    queryFn: async () =>
+      await Server({ resourceName: resourceName, id, cache: cache || 96000, queryParams, entityName }),
     enabled: enable,
   });
   return { data, isLoading };
@@ -48,7 +52,7 @@ const CareerInput = ({
 }) => {
   const form = useFormContext();
 
-  const selectedCareerType = form.getValues(careerType);
+  const selectedCareerType = form.getValues(careerType || "career_type_id");
 
   const { data: careerSpecialties, isLoading: loadingCareerSpecialties } = useGetEntities({
     resourceName: "getEntity",
@@ -67,13 +71,13 @@ const CareerInput = ({
     entityName: "career-levels",
     id: selectedCareerSpecialty,
     enable: !!selectedCareerSpecialty,
-    queryParams: `with=careerTypes&career_type=${selectedCareerType}`,
+    queryParams: `scope=filter&career_specialty_id=${selectedCareerSpecialty}&career_type=${selectedCareerType}&with=career_type`,
   });
-
   return (
-    <div className="flex w-full gap-4">
+    <FlexWrapper max={false} className="flex w-full gap-4">
       {!onlySpeciality && (
         <ComboboxForm
+          key={`${onlySpeciality}-${careerSpecialty}`}
           name={careerType}
           disabled={loadingCareerTypes}
           label={"Career Type"}
@@ -85,23 +89,24 @@ const CareerInput = ({
         />
       )}
 
-  
-        {(selectedCareerType || onlySpeciality) && (
-          <ComboboxForm
-            disabled={loadingCareerSpecialties || disabled}
-            name={careerSpecialty}
-            label={"Career Specialty"}
-            placeholder={"Select Career Specialty"}
-            options={careerSpecialties?.data?.map((specialty: any) => ({
-              label: specialty.title,
-              value: specialty.id,
-            }))}
-          />
-        )}
+      {(selectedCareerType || onlySpeciality) && (
+        <ComboboxForm
+          disabled={loadingCareerSpecialties || disabled || (loadingCareerSpecialties && loadingCareerTypes)}
+          name={careerSpecialty}
+          loading={loadingCareerSpecialties}
+          label={"Career Specialty"}
+          placeholder={"Select Career Specialty"}
+          options={careerSpecialties?.data?.map((specialty: any) => ({
+            label: specialty.title,
+            value: specialty.id,
+          }))}
+        />
+      )}
 
       {selectedCareerSpecialty && careerLevel !== "" && (
         <ComboboxForm
           disabled={loadingCareerLevels}
+          loading={loadingCareerLevels || loadingCareerLevels}
           name={careerLevel}
           label={"Career Level"}
           placeholder={"Select Career Level"}
@@ -111,7 +116,7 @@ const CareerInput = ({
           }))}
         />
       )}
-    </div>
+    </FlexWrapper>
   );
 };
 

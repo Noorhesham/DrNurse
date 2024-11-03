@@ -1,32 +1,62 @@
-import Filters from "@/app/components/Filters";
-import GridContainer from "@/app/components/defaults/GridContainer";
-import JobCard from "@/app/components/JobCard";
-import { PaginationDemo } from "@/app/components/Pagination";
 import React from "react";
+import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
+import { Server } from "@/app/main/Server";
 
-const page = () => {
+import JobsList from "@/app/components/Jobs";
+import { LoadingProvider } from "@/app/context/LoadingContext";
+
+const page = async ({ params: { locale }, searchParams }: { params: { locale: string }; searchParams: any }) => {
+  const {
+    experience_from,
+    experience_to,
+    career_type_id,
+    country_ids,
+    page,
+    sort,
+    career_specialty_id,
+    career_levels,
+    search,
+  } = searchParams;
+
+  const queryParams = new URLSearchParams({
+    page: page || "",
+    experience_from: experience_from || "",
+    experience_to: experience_to || "",
+    career_type_id: career_type_id || "",
+    career_specialty_id: career_specialty_id || "",
+  });
+  if (country_ids) {
+    const countryIdsArray = country_ids.split(",");
+    countryIdsArray.forEach((value: string) => {
+      queryParams.append("country_ids[]", value);
+    });
+  }
+  if (career_levels) {
+    const careerLevelsArray = career_levels.split(",");
+    careerLevelsArray.forEach((value: string) => {
+      queryParams.append("career_levels[]", value);
+    });
+  }
+  const data = await Server({ resourceName: "getJobs", queryParams });
+  const jobs = data?.data.jobs;
+  const career_types = data.data.career_types;
+  const career_levelsfilter = data.data.career_levels;
+  const countries = data.data.countries;
+  const career_specialties = data.data.career_specialties;
+
+  const totalPages = Math.ceil(data.data.count / 10);
+  const filters = [
+    { "Career Type": career_types, filter: "career_type_id" },
+    { Country: countries, arr: true, filter: "country_ids" },
+    { "Career Specialty": career_specialties, arr: true, filter: "career_specialty_id" },
+    { "Career Level": career_levelsfilter, arr: true, filter: "career_levels" },
+  ];
   return (
-    <GridContainer className=" mt-5 gap-4" cols={8}>
-      {" "}
-      <div className=" col-span-2 lg:col-span-3">
-        <Filters />
-      </div>
-      <div className="flex flex-col gap-3 col-span-2 lg:col-span-5">
-        <JobCard heading="Anesthesiologist" />
-        <JobCard heading="Anesthesiologist" />
-        <JobCard heading="Anesthesiologist" />
-        <JobCard heading="Anesthesiologist" />
-        <JobCard heading="Anesthesiologist" />
-        <JobCard heading="Anesthesiologist" />
-        <JobCard heading="Anesthesiologist" />
-        <JobCard heading="Anesthesiologist" />
-        <JobCard heading="Anesthesiologist" />
-        <JobCard heading="Anesthesiologist" />
-        <JobCard heading="Anesthesiologist" />
-        <JobCard heading="Anesthesiologist" />
-        <PaginationDemo />
-      </div>
-    </GridContainer>
+    <div>
+      <LoadingProvider>
+        <JobsList filters={filters} jobs={jobs} totalPages={totalPages} />
+      </LoadingProvider>
+    </div>
   );
 };
 

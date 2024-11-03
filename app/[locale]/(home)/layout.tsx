@@ -14,7 +14,7 @@ export default function RootLayout({
   return (
     <main>
       <NavBar />
-      <section className=" min-h-full pb-10 lg:pb-0">{children}</section>
+      <section className="min-h-screen relative w-full pb-10 lg:pb-0">{children}</section>
       <Footer />
     </main>
   );

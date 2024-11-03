@@ -21,7 +21,7 @@ const useGetEntity = (
   resourceName: ResourceNameProps,
   key?: any,
   id?: string,
-  options: { enabled?: boolean } = {},
+  options: { enabled?: boolean; nocompany?: boolean } = {},
   queryParams?: any
 ) => {
   const { data, isLoading } = useQuery({
@@ -31,11 +31,11 @@ const useGetEntity = (
         resourceName: resourceName,
         id: id,
         queryParams,
+        nocompany: options.nocompany,
       }),
     enabled: options.enabled,
   });
 
-  console.log(data);
   return { data, isLoading };
 };
 export { useGetGeneralSettings, useGetEntity };

@@ -5,6 +5,7 @@ import ComboboxForm from "./ComboboxForm";
 import { useFormContext } from "react-hook-form";
 import { useTranslations } from "next-intl";
 import { ResourceNameProps, Server } from "@/app/main/Server";
+import FlexWrapper from "../defaults/FlexWrapper";
 
 const useGetEntities = ({
   key,
@@ -21,7 +22,7 @@ const useGetEntities = ({
 }) => {
   const { data, isLoading } = useQuery({
     queryKey: [key, queryParams, id],
-    queryFn: async () => await Server({ resourceName: resourceName, id, cache: Infinity }),
+    queryFn: async () => await Server({ resourceName: resourceName, id, cache: 100 * 24 * 60 * 60 }),
     enabled: enable,
   });
   return { data, isLoading };
@@ -37,7 +38,7 @@ const CountriesInput = ({
   cityName?: string;
 }) => {
   const form = useFormContext();
-  const t = useTranslations("CountriesInput"); // Get translations for this component
+  const t = useTranslations("CountriesInput");
   const { data: countries, isLoading } = useGetEntities({
     resourceName: "countries",
     key: "countries",
@@ -56,17 +57,18 @@ const CountriesInput = ({
     key: "cities",
     enable: !!selectedStateCode && cityName !== "",
   });
-
   return (
-    <div className="flex  w-full gap-4">
-      {!isLoading && (
+    <FlexWrapper max={false} className="flex  w-full gap-4">
+      {
         <ComboboxForm
+          loading={isLoading}
+          disabled={isLoading}
           name={countryName}
           label={t("countryLabel")}
           placeholder={t("selectCountry")}
-          options={countries?.data.map((country: any) => ({ label: country.title, value: country.id }))}
+          options={countries?.data?.map((country: any) => ({ label: country.title, value: country.id }))}
         />
-      )}
+      }
       {selectedCountryCode && (
         <ComboboxForm
           loading={statesLoading}
@@ -87,7 +89,7 @@ const CountriesInput = ({
           options={cities?.data.map((country: any) => ({ label: country.title, value: country.id }))}
         />
       )}
-    </div>
+    </FlexWrapper>
   );
 };
 

@@ -23,10 +23,10 @@ const Head1 = ({
   return (
     <div
       className={` ${className || ""}    flex flex-col items-center gap-2 font-bold ${
-        size === "sm" ? " text-lg sm:text-xl" : " text-2xl lg:text-4xl"
+        size === "sm" ? " text-lg sm:text-xl" : " text-2xl lg:text-4xl my-2"
       }  ${
-        alignment === "left" ? "text-left" : alignment === "right" ? "text-right" : "text-center "
-      }    uppercase text-main2  line-clamp-5`}
+        alignment === "left" || alignment === "right" ? "text-start" : "text-center mx-auto  "
+      }    max-w-4xl   uppercase text-main2  line-clamp-5`}
     >
       <h1 className={headingClasses || ""}>{text}</h1>
       {secondText && <h1>{secondText}</h1>}

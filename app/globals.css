@@ -32,8 +32,6 @@
   @apply py-2 px-4  w-full  border-none pl-14 !important;
 }
 
-
-
 .special-label {
   display: none !important;
 }
@@ -151,5 +149,38 @@
 
   50% {
     transform: translate(10px, 0);
+  }
+}
+.reveal_header {
+  animation: reveal 1s 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+}
+.reveal_header-delayed {
+  animation: reveal 1s 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+  animation-delay: 0.5s;
+}
+.zoomanimation {
+  animation: zoom 2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite alternate;
+  transform-origin: center center;
+}
+@keyframes zoom {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.01);
+  }
+  100% {
+    transform: scale(0.95);
+  }
+}
+@keyframes reveal {
+  0% {
+    opacity: 0;
+    transform: rotateX(-90deg) translateY(100px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: rotateX(0deg) translateY(0);
   }
 }

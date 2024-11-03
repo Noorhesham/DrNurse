@@ -18,11 +18,9 @@ const Tabing = ({ defaultValue, options }: TabingProps) => {
     else setCurrentPath(defaultValue);
   }, [category, defaultValue]);
   const handleClick = (href: string) => {
-    console.log(href, currentPath);
     router.push(`${window.location.pathname}?section=${href}`, { scroll: false });
     setCurrentPath(href);
   };
-  console.log(currentPath);
   return (
     <div className="w-full  ">
       <div className="flex flex-wrap w-full   items-center gap-3">
@@ -41,7 +39,7 @@ const Tabing = ({ defaultValue, options }: TabingProps) => {
           </Button>
         ))}
       </div>
-      <div className="overflow-hidden min-h-[40vh] lg:min-h-[60vh] mt-5">
+      <div className="overflow-hidden min-h-[20vh] md:h-[40vh] lg:min-h-[60vh] mt-8">
   <AnimatePresence mode="wait">
     {options.map(
       (option) =>

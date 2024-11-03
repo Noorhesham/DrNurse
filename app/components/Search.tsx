@@ -8,7 +8,7 @@ import InputCard from "./InputCard";
 
 const Search = () => {
   const [search, setSearch] = React.useState<string>("");
-
+  const [query, setQuery] = React.useState<string>("");
   const [suggestions, setSuggestions] = React.useState<string[]>([]);
   const [isPending, startTransition] = useTransition();
   //TODO: i write more than 4 words i will make a debounced request to the server

@@ -113,6 +113,7 @@ const FormContainer: React.FC<Formcontainer> = ({
     resolver: zodResolver(dynamicSchema),
     mode: "onChange",
     defaultValues:
+    //@ts-ignore
       {
         ...defaultValues,
         birth_day: defaultValues?.birthday || "",

@@ -10,24 +10,31 @@ const MiniTitle = ({
   className,
   boldness,
   link,
+  headingClass,
+  form,
 }: {
   text: string;
-  size?:"sm"| "lg" | "md" | "2xl" | "3xl";
+  size?: "sm" | "lg" | "md" | "2xl" | "3xl";
   color?: string;
   className?: string;
   boldness?: "bold" | "normal" | "extraBold";
   link?: string;
+  headingClass?: string;
+  form?: boolean;
 }) => {
-  console.log(color);
   return (
-    <div className={`flex  uppercase items-center  justify-between ${color || "text-gray-800"}`}>
+    <div
+      className={`flex ${headingClass || ""}  uppercase items-center  ${
+        form && "bg-blue-100 rounded-full py-2 px-4"
+      }  justify-between ${color || "text-gray-800"}`}
+    >
       <h2
         className={cn(" ", {
           "text-sm": size === "sm",
           " text-3xl": size === "3xl",
           "text-2xl": size === "2xl",
           " text-sm sm:text-lg": size === "lg",
-          " text-xs sm:text-sm md:text-base": size === "md",
+          " text-sm lg:text-base": size === "md",
           className,
           "font-semibold": boldness === "bold",
           "font-normal": boldness === "normal",
@@ -38,7 +45,7 @@ const MiniTitle = ({
         {text}
       </h2>
       {link && (
-        <Link className="flex text-gray-500 items-center text-sm gap-2" href="#">
+        <Link className="flex text-gray-500 items-center text-sm gap-2" href={link || "/"}>
           VIEW ALL <ArrowRight className=" h-5 w-5" />
         </Link>
       )}

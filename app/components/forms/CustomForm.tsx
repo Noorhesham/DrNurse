@@ -62,6 +62,7 @@ export interface InputProps {
   className?: string;
   disabled?: boolean;
   stateName?: string | any;
+  noSwitch?: boolean;
 }
 const CustomForm = ({
   inputs,
@@ -81,7 +82,7 @@ const CustomForm = ({
   const t = useTranslations();
   return (
     <Form {...form}>
-      <form className="flex w-full items-stretch gap-2" onSubmit={form.handleSubmit(onSubmit)}>
+      <form className="flex w-full items-stretch gap-3" onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex flex-1 flex-col">
           {title && <Head1 size="sm" className=" text-lg text-center" text={title} />}
           <div className="flex lg:pt-4 flex-col gap-4">
@@ -92,6 +93,7 @@ const CustomForm = ({
                 <CountriesInput cityName={input.cityName} countryName={input.countryName} stateName={input.stateName} />
               ) : (
                 <FormInput
+                  noSwitch={input.noSwitch}
                   returnFullPhone={input?.returnFullPhone}
                   disabled={disabled}
                   label2={input?.label2 || ""}
@@ -116,7 +118,7 @@ const CustomForm = ({
                 {
                   <Button
                     type="button"
-                    className="text-xs flex-grow mr-auto self-end mx-0  hover:bg-main2 hover:text-white rounded-full flex  items-center gap-2 px-6  border border-main2 bg-white text-main2"
+                    className="text-xs relative flex-grow mr-auto self-end mx-0  hover:bg-main2 hover:text-white rounded-full flex  items-center gap-2 px-6  border border-main2 bg-white text-main2"
                   >
                     {t("cancel")}
                   </Button>

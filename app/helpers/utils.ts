@@ -42,3 +42,16 @@ export function getYouTubeThumbnail(url: string) {
   }
   return "";
 }
+export const getYouTubeEmbedUrl = (url:string) => {
+  // Check if it's a YouTube link
+  const youtubeRegex = /^https?:\/\/(www\.)?(youtube\.com|youtu\.be)\/(watch\?v=|embed\/)?([A-Za-z0-9._%-]+)(&.*)?$/;
+  const match = url.match(youtubeRegex);
+
+  if (match && match[4]) {
+    // Return the embed URL
+    return `https://www.youtube.com/embed/${match[4]}`;
+  } else {
+    // Return null if it's not a valid YouTube link
+    return null;
+  }
+};

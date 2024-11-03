@@ -134,7 +134,7 @@ export const PlayIcon = () => {
   return (
     <svg width="105" height="105" viewBox="0 0 105 105" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect x="20" y="20" width="65" height="65" rx="32.5" fill="#224982" />
-      <rect x="10" y="10" width="85" height="85" rx="42.5" stroke="#224982" strokeOpacity="0.3" strokeWidth="20" />
+      <rect className=" zoomanimation" x="10" y="10" width="85" height="85" rx="42.5" stroke="#224982" strokeOpacity="0.3" strokeWidth="20" />
       <path d="M65.4727 52.7904L45.737 64.5967L45.737 40.9841L65.4727 52.7904Z" fill="white" />
     </svg>
   );

@@ -144,7 +144,7 @@ export function InputOTPPattern({
         if (email || phone) {
           return router.push(`?${updatedParams.toString()}`, { scroll: false });
         }
-        forgot ? router.push("/login") : router.push(redirect ? redirect : "/");
+        forgot ? router.push("/login") : router.push(redirect ? redirect : "/loader");
       }
     });
   };
@@ -179,9 +179,10 @@ export function InputOTPPattern({
             {forgot && <FormInput name="password" control={form.control} placeholder={t("password")} password />}
             <div className="mt-4  flex items-center gap-2">
               {!activate && (
-                <Button
+                <Button type="button"
                   className="rounded-full flex-1 px-8"
-                  onClick={(e: any) => {
+                  onClick={(e) => {
+                      e.stopPropagation();
                     handleSend(sendType);
                     setTimer(true);
                   }}
@@ -190,7 +191,7 @@ export function InputOTPPattern({
                 </Button>
               )}
               <Button disabled={isPending} className=" flex-1 rounded-full px-8" type="submit">
-                {isPending ? <Spinner /> : t("Submit")}
+                {isPending ? <Spinner className=" border-[5px] border-white text-center m-auto" /> : t("Submit")}
               </Button>
             </div>
           </form>

@@ -29,15 +29,14 @@ const Page = async ({ params: { locale } }: { params: { locale: string } }) => {
             <Address />
 
             <div className=" flex flex-col items-start mt-2">
-              <h1 className="  font-semibold text-main">{t("contact.contact")}</h1>
+              <h1 className="  text-left font-semibold text-main">{t("contact.contact")}</h1>
               <Paragraph description={t("contact.contactDescription")} />
               <SocialMedia />
             </div>
           </Section>
           <div className=" lg:mt-0 mt-2 w-full flex flex-col items-start col-span-2">
-            <Head1 size="sm" text={t("contact.question")} />
+            <Head1 alignment="left" size="sm" text={t("contact.question")} />
             <FormContainer
-              schema={"contact"}
               btnText={t("contact.send")}
               formArray={[
                 { name: "name", placeholder: t("forms.name"), type: "text" },

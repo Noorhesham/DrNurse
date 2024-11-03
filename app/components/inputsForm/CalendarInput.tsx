@@ -8,41 +8,59 @@ import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 
-const CalendarInput = ({ control, name, label }: { control: any; name: string; label?: string }) => {
+const CalendarInput = ({
+  control,
+  name,
+  label,
+  disabled,
+}: {
+  control: any;
+  name: string;
+  label?: string;
+  disabled?: boolean;
+}) => {
   return (
     <FormField
       control={control}
       name={name}
+      disabled={disabled}
       render={({ field }) => {
-        console.log(field.value);
         return (
-          <FormItem className={` w-full`}>
-            <FormLabel className="py-1 duration-200 uppercase">{label || "Date"}</FormLabel>
+          <FormItem className={` relative z-[60] w-full`}>
+            <FormLabel className="duration-200 uppercase">{label || "Date"}</FormLabel>
             <Popover>
               <PopoverTrigger asChild>
                 <FormControl className="">
                   <Button
                     variant={"outline"}
                     className={cn(
-                      "w-full pl-3 flex   mt-0 justify-between text-left rounded-lg font-normal",
+                      "w-full pl-3 flex  space-y-0  mt-0 justify-between text-left rounded-lg font-normal",
                       !field.value && "text-muted-foreground"
                     )}
                   >
-                    {field.value ? format(field.value, "PPP") : <span>SELECT</span>}
+                    {field.value ? (
+                      format(new Date(field.value), "yyyy-MM-dd") // Use "yyyy-MM-dd" format here
+                    ) : (
+                      <span>SELECT</span>
+                    )}
                     <CalendarIcon className="ml-auto mr-2 h-4 w-4 opacity-50" />
                   </Button>
                 </FormControl>
               </PopoverTrigger>
-              <PopoverContent sideOffset={-40} className="w-full p-0" align="end">
+              <PopoverContent sideOffset={-40} className="w-full  relative z-[9999] p-0" align="end">
                 <Calendar
-                  className=" w-full"
+                  className=" relative z-[9999] w-full"
                   mode="single"
                   captionLayout="dropdown-buttons"
                   fromYear={1990}
                   toYear={new Date().getFullYear()}
                   selected={field.value}
-                  onSelect={field.onChange}
-                  disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
+                  onSelect={(date) => {
+                    if (!date) return;
+                    const formattedDate = format(date, "yyyy-MM-dd");
+                    field.onChange(formattedDate);
+                  }}
+                  disabled={(date) => date < new Date("1900-01-01")}
                   initialFocus
                 />
               </PopoverContent>

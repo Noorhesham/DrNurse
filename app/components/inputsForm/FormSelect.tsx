@@ -12,7 +12,6 @@ const FormSelect = ({
   options,
   selected,
   className,
-  optional = false,
 }: InputProps) => {
   const form = useFormContext();
   const selectedValue = form.watch(name);
@@ -29,7 +28,7 @@ const FormSelect = ({
           <FormItem className={`${className || ""} relative w-full `} id={id || ""}>
             <FormLabel className=" uppercase">{label}</FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
-              {!optional && <span className={`absolute right-8 -top-[-32px]  z-10   font-normal text-red-600`}>*</span>}
+              {/* {!optional && <span className={`absolute right-8 -top-[-32px]  z-10   font-normal text-red-600`}>*</span>} */}
               <FormControl>
                 <SelectTrigger className="  shadow-sm">
                   <SelectValue placeholder={placeholder || "SELECT"}>{selected && selected.name}</SelectValue>

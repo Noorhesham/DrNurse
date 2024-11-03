@@ -2,6 +2,7 @@
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/material.css";
 import { PhoneProps } from "./FormInput";
+import cookies from "js-cookie";
 import ar from "react-phone-input-2/lang/ar.json";
 import { useFormContext } from "react-hook-form";
 import { useLocale, useTranslations } from "next-intl";
@@ -23,7 +24,6 @@ const PhoneSearch = ({ onChange, name, returnFullPhone = true, defaultValue }: E
 
   // Combine dial code and phone number for the PhoneInput value
   const fullPhoneValue = dialCodeValue ? `${dialCodeValue}${phoneValue}` : defaultValue ? currentValue : "";
-  console.log(currentValue, dialCodeValue);
   return (
     <PhoneInput
       enableSearch
@@ -31,7 +31,7 @@ const PhoneSearch = ({ onChange, name, returnFullPhone = true, defaultValue }: E
       excludeCountries={["il"]}
       searchStyle={{ width: "80%" }}
       country="eg" // Default country
-      value={returnFullPhone ? `${dialCodeValue}${phoneValue}` : fullPhoneValue} // Ensure value is a string (full phone value)
+      value={`${dialCodeValue}${phoneValue}`} // Ensure value is a string (full phone value)
       onChange={(value, country) => {
         let phoneData;
 

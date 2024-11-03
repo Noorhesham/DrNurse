@@ -27,73 +27,57 @@ export default function ComboboxForm({
   loading?: boolean;
 }) {
   const form = useFormContext();
+
   return (
     <>
       <FormField
-        disabled={disabled}
+        defaultValue={form.getValues(name)} // Verify this is correctly passed
         control={form.control}
         name={name}
         render={({ field }) => (
           <FormItem className={`relative  w-full`}>
-            {label && <FormLabel>{label}</FormLabel>}
-            {loading ? <Spinner className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" /> : null}
+            {label && <FormLabel className="uppercase">{label}</FormLabel>}
             <Popover>
-              <PopoverTrigger disabled={disabled} className=" w-full" asChild>
-                <FormControl className=" w-full">
+              <PopoverTrigger disabled={disabled} className="w-full" asChild>
+                <FormControl className="w-full">
                   <Button
                     variant="outline"
                     role="combobox"
                     style={{ width: "100%" }}
-                    className={cn("w-full  px-4  justify-between", !field.value && "text-muted-foreground")}
+                    className={cn("w-full px-4 justify-between", !field.value && "text-muted-foreground")}
                   >
                     {field.value
-                      ? options?.find((language: any) => language.value === field.value)?.label
+                      ? options?.find((option: any) => option.value === field.value)?.label
                       : placeholder || ""}
-                    <CaretSortIcon className=" h-4 w-4 shrink-0 opacity-50" />
+                    {loading && <Spinner className=" absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2" />}
+                    <CaretSortIcon className="h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </FormControl>
               </PopoverTrigger>
-              <PopoverContent className=" w-full min-w-[200px] ">
+              <PopoverContent className="w-full min-w-[200px]">
                 <Command>
-                  <CommandInput placeholder=" ابحث ..." className="h-9 " />
-                  <CommandList className=" overflow-y-scroll">
-                    {disabled ? (
-                      <FaSpinner className="h-4 w-4 mx-auto animate-spin text-main" />
-                    ) : (
-                      <>
-                        <CommandEmpty>لم يتم ايجاد نتائج</CommandEmpty>
-
-                        <CommandGroup>
-                          {options?.map((option: any) => (
-                            <CommandItem
-                              className=" justify-between"
-                              value={option.label}
-                              key={option.value}
-                              onSelect={() => {
-                                form.setValue(name, option.value);
-                                form.trigger(name);
-                                if (onChange) onChange(option.value);
-                              }}
-                            >
-                              {option.label}
-                              <CheckIcon
-                                className={cn(
-                                  "mr-auto h-4 w-4",
-                                  option.value === field.value ? "opacity-100" : "opacity-0"
-                                )}
-                              />
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </>
-                    )}
+                  <CommandInput placeholder="ابحث ..." className="h-9" />
+                  <CommandList className="overflow-y-scroll">
+                    {options?.map((option: any) => (
+                      <CommandItem
+                        className="justify-between"
+                        value={option.label}
+                        key={option.value}
+                        onSelect={() => {
+                          field.onChange(option.value); // Update field value directly
+                          form.setValue(name, option.value); // Ensure form updates
+                          form.trigger(name); // Trigger validation if needed
+                          if (onChange) onChange(option.value);
+                        }}
+                      >
+                        {option.label}
+                        <CheckIcon
+                          className={cn("mr-auto h-4 w-4", option.value === field.value ? "opacity-100" : "opacity-0")}
+                        />
+                      </CommandItem>
+                    ))}
                   </CommandList>
-                </Command>{" "}
-                {disabled && (
-                  <div className="  ">
-                    <Spinner />
-                  </div>
-                )}
+                </Command>
               </PopoverContent>
             </Popover>
             <FormMessage />

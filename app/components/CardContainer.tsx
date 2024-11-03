@@ -13,7 +13,7 @@ const CardContainer = ({
   return (
     <div
       className={cn(
-        "bg-white border border-input rounded-xl",
+        "bg-white border-2 shadow-sm border-input rounded-xl",
         customPadding ? customPadding : "py-2 px-4", 
         className 
       )}

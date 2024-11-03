@@ -10,7 +10,7 @@ import Image from "next/image";
 const RightMind = () => {
   const [hover, setHover] = useState(false);
   const t = useTranslations();
-  console.log(hover);
+
   return (
     <div className=" relative">
       <AnimatePresence>
@@ -26,7 +26,7 @@ const RightMind = () => {
         )}
       </AnimatePresence>
       <p onMouseOver={() => setHover(true)} onMouseLeave={() => setHover(false)} className=" basis-[70%] text-gray-100">
-        {t("footer.copyright")} <Link href={`https://rightminddev.com/`}>Right Mind</Link>
+        {t("footer.copyright")} <Link target="_blank" href={`https://rightminddev.com/`}>Right Mind</Link>
       </p>
     </div>
   );

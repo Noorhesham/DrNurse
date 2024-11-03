@@ -16,50 +16,50 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import BackButton from "./BackButton";
-const BreadCrumb = () => {
+const BreadCrumb = ({ linksCustom }: { linksCustom?: { href: string; text: string }[] }) => {
   const router = useRouter();
   const pathName = usePathname();
-  const links: any = pathName.split("/").filter((link) => !["ar", "en"].includes(link));
-  console.log(links);
+  const links: any = linksCustom || pathName.split("/").filter((link) => !["ar", "en"].includes(link));
+
   const current = links[links.length - 1];
   const dark =
     pathName.includes("doctor") ||
     pathName.includes("company-profile") ||
     pathName.includes("profile-settings") ||
     pathName.includes("my-profile") ||
-    pathName.includes("job/") ||pathName.includes("applicant") ||
+    pathName.includes("job/") ||
+    pathName.includes("applicant") ||
     pathName.includes("applications");
   return (
-    <Breadcrumb className={cn(" py-3 ", dark ? "bg-main2" : " bg-[#F2F5FF]")}>
+    <Breadcrumb className={cn(" py-3 ", dark ? "bg-main2 text-gray-50" : " bg-[#F2F5FF]")}>
       <MaxWidthWrapper
         className="flex md:flex-row flex-col gap-2 md:items-center items-start justify-between"
         noPadding
       >
-        {dark ? <BackButton /> : <Head1 size="sm" text={current} />}
+        {dark ? <BackButton /> : <Head1 alignment="left" size="sm" text={current.text || current.replace("-", " ")} />}
         <BreadcrumbList className=" ">
-          {links.map((link: any, i: number) => {
-            const isLast = i === links.length - 1;
-            if (isLast && dark) return null;
+          {links.map((link: any, index: any) => {
+            const isLast = index === links.length - 1;
             return (
-              <ol className="flex items-center" key={i}>
+              <div className="flex items-center" key={index}>
                 <BreadcrumbItem>
-                  {
-                    <BreadcrumbLink
-                      className={`${
-                        global?.window?.location.pathname === `/${link}`
-                          ? " text-main  hover:text-blue-400 duration-150"
-                          : dark
-                          ? "text-gray-50 hover:text-gray-100"
-                          : " text-[#191c1f86]"
-                      } flex text-xs sm:text-sm uppercase items-center gap-2`}
-                      href={`/${link.href || link}`}
-                    >
-                      {i === 0 && <FaHome />} {link === "" ? "Home" : link.replace("-", " ") || ""}
-                    </BreadcrumbLink>
-                  }
+                  <BreadcrumbLink
+                    className={`${
+                      global?.window?.location.pathname === `/${link}`
+                        ? " text-main  hover:text-blue-400 duration-150"
+                        : dark
+                        ? "text-gray-50"
+                        : " text-[#191c1f86]"
+                    } flex uppercase items-center gap-2`}
+                    href={`${link.href === "" ? "/" : link.href || link}`}
+                  >
+                    {index === 0 && <FaHome />}
+
+                    {link.text ? link.text : link === "" ? "HOME" : link.replace("-", "  ").toLowerCase()}
+                  </BreadcrumbLink>
                 </BreadcrumbItem>
                 {!isLast && <BreadcrumbSeparator />}
-              </ol>
+              </div>
             );
           })}
         </BreadcrumbList>

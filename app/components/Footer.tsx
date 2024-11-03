@@ -26,7 +26,7 @@ const Footer = () => {
         <div className="  hidden lg:block z-[-1] absolute w-full h-full inset-0">
           <Image src={"/footer.svg"} alt="footer" fill className=" object-top object-cover" />
         </div>
-        <MaxWidthWrapper className=" flex z-10 lg:bg-none  bg-gradient-to-b from-[#224982] to-[#0C1D37]  flex-col items-start py-10  lg:pt-40">
+        <MaxWidthWrapper className=" flex z-10 lg:bg-none  bg-gradient-to-b from-[#224982] to-[#0C1D37]  flex-col items-start  py5  lg:pt-40">
           <GridContainer
             className=" pb-5   text-center lg:text-justify  border-white border-b-2 justify-between gap-y-5 md:gap-y-10 lg:gap-20 "
             cols={11}
@@ -36,44 +36,47 @@ const Footer = () => {
               <Socials />
             </div>
 
-            <div className="mt-3  col-span-full lg:col-span-2">
-              <ul className="  text-white items-center  flex flex-col gap-3 lg:list-disc">
-                <Link href={"/aboutus"}>{t("aboutus")}</Link>
-                <Link href={"/contact-us"}>{t("contactus")}</Link>
-                <Link href={"#"}>{t("ourblog")}</Link>
-                <Link href={"#"}>{t("testimonials")}</Link>
-                <Link href={"/faq"}>FAQ</Link>
+            <div className=" mt-1 col-span-full lg:col-span-2 self-start flex flex-col text-white items-start">
+              <ul className=" lg:list-disc gap-2 mx-auto grid grid-cols-1 w-full items-start  place-items-center lg:place-items-start ">
+                <li className=" hover:opacity-80 duration-150">
+                  <Link href={"/about-us"}>{t("aboutus")}</Link>
+                </li>
+                <li className=" hover:opacity-80 duration-150">
+                  <Link href={"/contact-us"}>{t("contactus")}</Link>
+                </li>
+                <li className=" hover:opacity-80 duration-150">
+                  {" "}
+                  <Link href={"/blogs"}>{t("ourblog")}</Link>
+                </li>
+                {/* <Link href={"#"}>{t("testimonials")}</Link> */}
+                <li className=" hover:opacity-80 duration-150">
+                  {" "}
+                  <Link href={"/faq"}>FAQ</Link>
+                </li>
               </ul>
             </div>
-            <div className="mt-3  col-span-full lg:col-span-2">
-              <ul className="  text-white items-center  flex flex-col gap-3 lg:list-disc">
-                <Link href={"/aboutus"}>PRICING</Link>
-                <Link href={"#"}>PRICELIST</Link>
-                <Link href={"#"}>OUR SOLUTIONS</Link>
-                <Link href={"#"}>USER AGREEMENT</Link>
-                <Link href={"/contact-us"}>CONTACT US</Link>
-                <Link href={"#"}>TESTIMONIALS</Link>
-                <Link href={"/faq"}>FAQ</Link>
-              </ul>
-            </div>
-            <div className=" col-span-full lg:col-span-4 self-center flex flex-col items-center lg:items-start">
-              <h1
+
+            <div className=" col-span-full lg:col-span-6 self-start flex flex-col items-center lg:items-start">
+              <h4
                 className=" text-white   mb-3 after:w-full after:lg:block after:hidden after:left-[110%] after:top-1/2 after:rounded-2xl after:bg-white after:absolute after:h-[2px] 
           relative text-base md:text-xl"
               >
                 {t("jobs")}
-              </h1>
-              <ul className="  text-white flex flex-col gap-3 lg:list-disc">
-                <li>{t("senior")}</li>
-                <li>{t("jr")}</li>
-                <li>{t("predicate")}</li>
-                <li>{t("fresh")}</li>
-                <li>{t("mad")}</li>
-                <li>{t("predicate")}</li>
+              </h4>
+              <ul
+                className=" lg:list-disc grid grid-cols-1 lg:grid-cols-2 w-full items-center lg:place-items-start
+               place-items-center  text-white gap-3 "
+              >
+                <li className="lg:border-none border-b border-gray-50 w-fit pb-2 ">{t("senior")}</li>
+                <li className="lg:border-none border-b border-gray-50 w-fit pb-2 ">{t("jr")}</li>
+                <li className="lg:border-none border-b border-gray-50 w-fit pb-2 ">{t("predicate")}</li>
+                <li className="lg:border-none border-b border-gray-50 w-fit pb-2 ">{t("fresh")}</li>
+                <li className="lg:border-none border-b border-gray-50 w-fit pb-2 ">{t("mad")}</li>
+                <li className="lg:border-none border-b border-gray-50 w-fit pb-2 ">{t("predicate")}</li>
               </ul>
             </div>
           </GridContainer>
-          <FlexWrapper className=" w-full py-5 gap-5 flex justify-between items-center">
+          <FlexWrapper max={false} className=" w-full pt-5 gap-5 flex justify-between items-center">
             <RightMind />
 
             <div className="flex self-end  w-full lg:basis-[30%] items-center gap-3">

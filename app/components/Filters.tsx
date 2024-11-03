@@ -1,59 +1,46 @@
 "use client";
 import React, { ReactNode } from "react";
 import Box from "./Box";
+import ExperienceFilter from "./PriceFilter";
+interface FilterOption {
+  id: string | number;
+  name?: string;
+  label?: string;
+  title?: string;
+}
+const Filters = ({ colseBtn, filters, from_years }: { colseBtn?: ReactNode; filters: any[]; from_years?: any }) => {
+  const renderFilterBoxes = () => {
+    return filters.map((filterObj, index) => {
+      const entries: [string, FilterOption[]][] = Object.entries(filterObj);
 
-const Filters = ({ colseBtn }: { colseBtn?: ReactNode }) => {
+      const [label, filterOptions]: [string, FilterOption[]] = entries[0];
+      // this will be an entryarray (key value pair) cause i need the first as label and second optios
+      const filterKey = filterObj.filter;
+      const arr = filterObj.arr || false;
+
+      if (!filterOptions || filterOptions.length === 0) return null;
+
+      return (
+        <Box
+          btn={!arr}
+          key={index}
+          filter={filterKey}
+          text={label}
+          options={filterOptions?.map((filter: any) => ({
+            id: filter.id || filter.value,
+            name: filter.title || filter.name || filter.label,
+          }))}
+        />
+      );
+    });
+  };
+
   return (
-    <div className="  max-h-screen  rounded-2xl border bg-white shadow-sm border-gray-400 overflow-y-auto lg:max-h-full col-span-full ">
-      <div className="   flex flex-col py-4  px-3">
+    <div className="max-h-screen rounded-2xl border bg-white shadow-sm border-gray-400 overflow-y-auto lg:max-h-full col-span-full">
+      <div className="flex flex-col py-4 px-3">
         {colseBtn}
-        <Box
-          filter="Career-type"
-          btn
-          text="Career type"
-          options={["All Jobs", "NURSES", "DOCTORS", "HEALTHCARE SPECIALIST"]}
-        />
-
-        <Box
-          btn
-          filter="specialization"
-          text="POPULAR TAGS"
-          options={[
-            "ALL JOBS",
-            "DENSITY",
-            "INTENSIVE CARE",
-            "EMERGENCY",
-            "PHYSICAL THRABY",
-            "CHILD HEALTH",
-            "SEE MORE",
-          ]}
-        />
-        <Box
-          filter="career-level"
-          text="CAREER LEVEL"
-          options={["ALL LEVELS", "RN1", "RN2", "RN3", "CHARGE", "HEAD NURSE", "SUPER F"]}
-        />
-        <Box
-          filter="current-country"
-          text="CURRENT COUNTRY"
-          options={["EGYPT", "SAUDI ARABIA", "ARAB EMIRATES", "UNITED KINGDOM", "UNITED STATES"]}
-        />
-        <Box
-          filter="experience"
-          text="EXPERIENCE"
-          options={["0 - 5 years", "5 - 10 years", "10 - 15 years", "MORE THAN 15 years"]}
-        />
-        <Box
-          filter="available-for-employment"
-          text="AVAILABLE FOR EMPLOYMENT"
-          options={["AVAILABLE FROM NOW", "AVAILABLE FROM CUSTOM DATE"]}
-        />
-        <Box filter="gender" text="GENDER" options={["MALE", "FEMALE"]} />
-        <Box
-          filter="applicant-classifications"
-          text="APPLICANT CLASSIFICATIONS"
-          options={["GOOD", "POOR", "SHORTLIST", "REJECTED"]}
-        />
+        {renderFilterBoxes()}
+        <ExperienceFilter from_years={from_years} />
       </div>
     </div>
   );

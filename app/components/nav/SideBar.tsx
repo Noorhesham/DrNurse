@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import SideNav from "./SideNav";
 import {
@@ -13,22 +14,42 @@ import {
   Users,
 } from "lucide-react";
 import { MdAddCircle, MdNotifications } from "react-icons/md";
+import { useParams } from "next/navigation";
 const iconsStyles = "w-5 h-5";
 
 const SideBar = ({ iconsOnly = false, person }: { iconsOnly?: boolean; person?: boolean }) => {
-  const origin = person ? "/person" : "/dashboard";
+  const params = useParams();
+  const origin = person ? "/person" : `/dashboard`;
+  const appendId = (path: string) => (person ? path : `/dashboard/${params.id}${path.replace("/dashboard", "")}`);
+
   const navItems = [
-    { link: `${origin}`, text: "OVERVIEW", icon: <House className={iconsStyles} /> },
+    { link: person ? "/person" : `/dashboard/${params.id}`, text: "OVERVIEW", icon: <House className={iconsStyles} /> },
+
+    // Conditionally add "Find a Employee" when not a person
     ...(person
       ? []
-      : [{ link: `${origin}/employees`, text: "Find a Employee", icon: <Users className={iconsStyles} /> }]),
-    { link: `${origin}/jobs`, text: "MY JOBS", icon: <BriefcaseBusiness className={iconsStyles} /> },
+      : [{ link: appendId(`${origin}/employees`), text: "Find a Employee", icon: <Users className={iconsStyles} /> }]),
+
+    // Jobs section: Different for person and non-person
+    {
+      link: appendId(`${origin}/jobs`),
+      text: person ? "JOBS" : "MY JOBS",
+      icon: <BriefcaseBusiness className={iconsStyles} />,
+    },
+
     ...(person
       ? [{ link: `${origin}/bookmarked-jobs`, text: "BOOKMARKED JOBS", icon: <BookmarkIcon className={iconsStyles} /> }]
-      : [{ link: `${origin}/post-job`, text: "POST A JOB", icon: <MdAddCircle className={iconsStyles} /> }]),
-    { link: `${origin}/notifications`, text: "NOTIFICATIONS", icon: <MdNotifications className={iconsStyles} /> },
-    { link: `${origin}/meetings`, text: "METTINGS", icon: <CalendarClock className={iconsStyles} /> },
-    { link: `${origin}/job-offers`, text: "JOB OFFER", icon: <HandCoins className={iconsStyles} /> },
+      : [{ link: appendId(`${origin}/post-job`), text: "POST A JOB", icon: <MdAddCircle className={iconsStyles} /> }]),
+
+    {
+      link: appendId(`${origin}/notifications`),
+      text: "NOTIFICATIONS",
+      icon: <MdNotifications className={iconsStyles} />,
+    },
+
+    { link: appendId(`${origin}/meetings`), text: "MEETINGS", icon: <CalendarClock className={iconsStyles} /> },
+    { link: appendId(`${origin}/job-offers`), text: "JOB OFFERS", icon: <HandCoins className={iconsStyles} /> },
+
     ...(person
       ? [
           {
@@ -38,26 +59,35 @@ const SideBar = ({ iconsOnly = false, person }: { iconsOnly?: boolean; person?: 
             active: "create-profile" || "my-profile",
           },
         ]
-      : [{ link: `${origin}/company-profile/1`, text: "COMPANY PROFILE", icon: <Users className={iconsStyles} /> }]),
-    ...(person
-      ? [{ link: `${origin}/points`, text: "Invoices & Subscriptions", icon: <BadgeCheck className={iconsStyles} /> }]
       : [
           {
-            link: `${origin}/invoices`,
+            link: appendId(`${origin}/company-profile`),
+            text: "COMPANY PROFILE",
+            icon: <Users className={iconsStyles} />,
+          },
+        ]),
+
+    ...(!person
+      ? [
+          {
+            link: appendId(`${origin}/invoices`),
             text: "Invoices & Subscriptions",
             icon: <BadgeCheck className={iconsStyles} />,
           },
-        ]),
+        ]
+      : [{ link: `${origin}/points`, text: "Points", icon: <BadgeCheck className={iconsStyles} /> }]),
+    // Settings and logout
     { link: `${origin}/settings`, text: "SETTINGS", icon: <SlidersHorizontal className={iconsStyles} /> },
     { link: "", text: "LOG-OUT", icon: <LogOutIcon className={iconsStyles} /> },
   ];
+
   return (
     <div
       className={`flex items-center ${
         iconsOnly ? "sticky top-0" : "lg:sticky lg:top-0"
-      } lg bg-light rounded-xl h-fit pb-5 flex-col  col-span-full lg:col-span-2 gap-3`}
+      } lg bg-light  rounded-xl z-50 h-fit pb-5 flex-col   col-span-full lg:col-span-2  w-full gap-3`}
     >
-      <h1 className="lg:px-6 py-3 mt-4 text-main2 font-semibold">{!iconsOnly ? "HOSPITAL DASHBOARD" : "HDB"}</h1>
+      <h1 className="lg:px-6  py-3 mt-4 text-main2 font-semibold">{!iconsOnly ? "HOSPITAL DASHBOARD" : "HDB"}</h1>
       <ul
         style={iconsOnly ? { alignItems: "center", padding: "15px" } : {}}
         className={`text-xs :text-sm items-start ${

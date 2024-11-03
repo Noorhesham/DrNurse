@@ -42,7 +42,7 @@ const ContactUsLocation = () => {
   }));
   return (
     <div className=" w-full h-[500px]">
-      {mount && <MapComponent defaultLocation={markers[0].position} markers={markers} />}
+      {mount && <MapComponent defaultLocation={markers[0]?.position} markers={markers} />}
     </div>
   );
 };

@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { use } from "react";
 import Container from "./Container";
 import { CalendarIcon, ChevronRight } from "lucide-react";
 import Link from "next/link";
@@ -6,15 +7,21 @@ import FunctionalButton from "./FunctionalButton";
 import MeetingForm from "./forms/MeetingForm";
 import UserCard from "./UserCard";
 import SateChange from "./SateChange";
+import { useParams } from "next/navigation";
 const Applicant = ({
   applicant,
   show,
-  notification,apply
+  notification,
+  apply,
+  jobId,
 }: {
-  applicant: { image: string; name: string; duration: string; speciality: string; address: string };
+  applicant: { image: string; name: string; duration: string; speciality: string; address: string; id: string };
   show?: boolean;
-  notification?: boolean;apply?:boolean
+  notification?: boolean;
+  apply?: boolean;
+  jobId?: string;
 }) => {
+  const { id } = useParams();
   return (
     <Container className=" hover:bg-gradient-to-r from-light to-white   duration-150">
       <div
@@ -22,7 +29,13 @@ const Applicant = ({
           show ? "flex-col sm:flex-row " : ""
         } justify-between flex-col sm:flex-row  gap-5 items-start md:items-center sm:justify-between`}
       >
-        <UserCard notification={notification} show={show} applicant={applicant} />
+        <Link
+          href={
+            !apply ? `/dashboard/${id}/doctor/${applicant.id}${jobId ? `?job=${jobId}` : ""}` : "/dashboard/applicant/1"
+          }
+        >
+          <UserCard show={show} applicant={applicant} />
+        </Link>
         <div className=" flex items-center gap-3">
           {show ? (
             <>
@@ -32,7 +45,7 @@ const Applicant = ({
             <>
               {!notification && <SateChange />}
               <Link
-                href={!apply ? "/dashboard/doctor/1" : "/dashboard/applicant/1"}
+                href={!apply ? `/dashboard/${id}/doctor/${applicant.id}?job=${jobId}` : "/dashboard/applicant/1"}
                 className=" p-1 rounded-xl bg-main2 text-gray-50"
               >
                 <ChevronRight />

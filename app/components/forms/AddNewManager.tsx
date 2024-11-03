@@ -1,23 +1,25 @@
 "use client";
 
-import React from "react";
+import React, { useTransition } from "react";
 import { z } from "zod";
 import { useZodForm } from "@/app/hooks/useZodForm";
 import { useFieldArray } from "react-hook-form";
 import { Form } from "@/components/ui/form";
 import FormInput from "../inputsForm/FormInput";
-import FormSelect from "../inputsForm/FormSelect";
-import FormFlexContainer from "./FormFlexContainer";
 import FunctionalButton from "../FunctionalButton";
-import MiniTitle from "../defaults/MiniTitle";
 import { MultiSelect } from "../inputsForm/MultiSelect";
-import { XIcon } from "lucide-react";
+import { MinusCircle, XIcon } from "lucide-react";
 import FlexWrapper from "../defaults/FlexWrapper";
+import { useQueryClient } from "@tanstack/react-query";
+import { Server } from "@/app/main/Server";
+import { toast } from "react-toastify";
+import MiniTitle from "../defaults/MiniTitle";
+import Manager from "../Manager";
 
 // Schema for a single manager
 const managerSchema = z.object({
   email: z.string().email("Invalid email address"),
-  controls: z.array(z.string()).min(1, "At least one control must be selected"),
+  permissions: z.array(z.string()).min(1, "At least one control must be selected"),
 });
 
 // Schema for the array of managers
@@ -27,12 +29,14 @@ const managersArraySchema = z.object({
 
 type ManagerFormValues = z.infer<typeof managersArraySchema>;
 
-const AddNewManager = () => {
+const AddNewManager = ({ data, id }: { data: any; id?: string }) => {
+  if (!data?.status) return <p className=" text-center text-base text-red-500 font-semibold">{data?.message}</p>;
   const form = useZodForm({
     schema: managersArraySchema,
     defaultValues: {
-      managers: [
-        { email: "", controls: [] }, // Initial empty manager
+      //@ts-ignore
+      managers: [...data?.data.map((e: any) => ({ email: e.email, permissions: JSON.parse(e.pivot.permissions) }))] || [
+        { email: "", permissions: [] },
       ],
     },
   });
@@ -41,16 +45,37 @@ const AddNewManager = () => {
     control: form.control,
     name: "managers",
   });
-
+  const queryClient = useQueryClient();
+  const [isPending, startTransition] = useTransition();
   const onSubmit = (data: ManagerFormValues) => {
     console.log("Form Submitted", data);
+    startTransition(async () => {
+      const res = await Server({
+        resourceName: "update-managers",
+        body: data,
+      });
+      console.log(res);
+      if (res.status) {
+        toast.success(res.message);
+        queryClient.invalidateQueries({ queryKey: [`control_managers-${id}`] });
+      } else {
+        toast.error(res.message);
+      }
+    });
   };
 
   return (
     <Form {...form}>
+      {" "}
+      <MiniTitle boldness="bold" size="lg" text="CONTROL MANAGERS" />
+      <div className=" mt-5 flex items-start gap-6  md:gap-4 flex-col">
+        {/* {data.map((manager) => (
+          <Manager key={manager.id} manager={manager} />
+        ))} */}
+      </div>
       <form className="flex flex-col  py-2.5 w-full md:items-stretch gap-4" onSubmit={form.handleSubmit(onSubmit)}>
         {fields.map((field, index) => (
-          <div className=" flex  items-start gap-4" key={field.id}>
+          <div className=" flex  items-end gap-4" key={field.id}>
             {/* Email Input */}
             <FlexWrapper className="  w-full" max={false}>
               <FormInput
@@ -61,42 +86,45 @@ const AddNewManager = () => {
                 type="email"
               />
 
-              {/* Multi-Select for Controls */}
+              {/* Multi-Select for permissions */}
               <MultiSelect
-                name={`managers.${index}.controls`}
+                name={`managers.${index}.permissions`}
                 options={[
-                  { value: "controlPosts", label: "Control Posts" },
-                  { value: "controlManagers", label: "Control Managers" },
+                  { value: "mangers-view", label: "View Managers" },
+                  { value: "update-mangers", label: "Update Managers" },
                 ]}
-                onValueChange={(val) => form.setValue(`managers.${index}.controls`, val)}
-                defaultValue={field.controls || []}
+                onValueChange={(val) => form.setValue(`managers.${index}.permissions`, val)}
+                defaultValue={field.permissions || []}
               />
+              {fields.length > 1 && (
+                <FunctionalButton
+                  icon={<MinusCircle className=" mr-2" />}
+                  className=" text-xs mt-auto rounded-full"
+                  size={"sm"}
+                  variant={"destructive"}
+                  btnText="DELETE"
+                  onClick={() => {
+                    remove(index);
+                  }}
+                />
+              )}
             </FlexWrapper>
             {/* Remove Manager Button */}
-            {fields.length > 1 && (
-              <button
-                type="button"
-                onClick={() => remove(index)}
-                className="rounded-xl self-center border-2 border-gray-600 p-1 my-auto"
-              >
-                <XIcon className="w-4 h-4 " />
-              </button>
-            )}
           </div>
         ))}
 
         {/* Add Manager Button */}
-
+        <MiniTitle boldness="bold" size="lg" text="ADD NEW MANAGER" />
         <div className="my-4">
           <FunctionalButton
             size="sm"
             btnText={"Add Another Manager"}
-            onClick={() => append({ email: "", controls: [] })}
+            onClick={() => append({ email: "", permissions: [] })}
           />
         </div>
         {/* Submit Button */}
         <div className="mt-4 w-fit">
-          <FunctionalButton
+          <FunctionalButton disabled={isPending}
             onClick={form.handleSubmit(onSubmit)}
             size="lg"
             btnText="Submit Managers"

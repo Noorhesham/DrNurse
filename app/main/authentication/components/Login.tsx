@@ -23,6 +23,7 @@ import { useAuth } from "@/app/context/AuthContext";
 import { useTranslations } from "next-intl";
 import Section from "@/app/components/defaults/Section";
 import CustomForm from "@/app/components/forms/CustomForm";
+import Spinner from "@/app/components/Spinner";
 const Login = () => {
   const t = useTranslations();
   const loginSchemaa = loginSchema(t);
@@ -31,6 +32,7 @@ const Login = () => {
   const [methods, setMethods] = useLocalStorageState([], "methods");
   const [message, setMessage] = useState("");
   const [isCode, setIsCode] = useState("");
+  const [fa, set2fa] = useState(false);
   const form = useForm({
     resolver: zodResolver(loginSchemaa),
     defaultValues: {
@@ -74,9 +76,12 @@ const Login = () => {
         if (!res.status) setServerError(res.errors?.length > 0 ? res.errors : res.message);
         if (res.status) {
           setServerError(null);
-          toast.done(`${res.message} ...`);
+          toast.success(`${res.message} ...`);
           if (res.require_activation || res.tfa) {
-            setActivate(true);
+            set2fa(true);
+            setTimeout(() => {
+              setActivate(true);
+            }, 300);
             if (res.require_activation) handleParam(res.activation_uuid, "uuid");
             setMethods(res.activation_methods || res.tfa_methods);
             if (res.tfa) {
@@ -90,7 +95,7 @@ const Login = () => {
           if (!res.require_activation && !res.tfa) {
             cookies.set("jwt", res.token);
             setLogin(true);
-            router.push(redirect || "/");
+            router.push(redirect || "/loader");
           }
         }
       } catch (error: any) {
@@ -109,9 +114,9 @@ const Login = () => {
       });
       console.log(res);
       if (!res.status)
-        setServerError(
-          Array.isArray(res.errors) && res.errors.length > 0 ? res.errors : res.errors.send_by || res.message
-        );
+        res.message
+          ? setServerError(res.message)
+          : setServerError(Array.isArray(res.errors) && res.errors.length > 0 ? res.errors : res.errors.send_by);
       if (res.status) {
         setServerError(null);
         toast.success(res.message);
@@ -121,11 +126,12 @@ const Login = () => {
   };
   useEffect(() => {
     if (searchParams.get("status") === "true") {
-      if (searchParams.get("token")) {
+      const token = searchParams.get("token");
+      if (token) {
         toast.success(searchParams.get("message"));
-        cookies.set("jwt", searchParams.get("token"));
+        if (token) cookies.set("jwt", token || "");
         setLogin(true);
-        router.push(redirect || "/");
+        router.push(redirect || "/loader");
       }
     }
     if (searchParams.get("status") === "false") setServerError(searchParams.get("message"));
@@ -146,6 +152,7 @@ const Login = () => {
       placeholder: t("password"),
     },
   ];
+  console.log(serverError);
   return (
     <Section CustomePadding="px-5 py-20" className="bg-gray-50 justify-center flex flex-1 flex-col items-center">
       <div className="mx-auto flex flex-col items-center justify-center w-full">
@@ -153,7 +160,7 @@ const Login = () => {
         {!activate && (
           <>
             <h1 className="text-center text-xl md:text-2xl mt-8 font-bold text-main2">{t("login")}</h1>
-            <div className="w-full mt-5 px-5 lg:px-14 flex flex-col">
+            <div className="w-full mt-5 px-5 lg:px-14 gap-3 flex flex-col">
               <div className="text-main2 self-center mx-auto text-base flex items-center gap-2">
                 <p className="text-main2 font-medium text-sm">{t("loginWithPhone")}</p>
                 <Switch
@@ -183,7 +190,6 @@ const Login = () => {
                   render={({ field }) => <input type="hidden" {...field} value={useEmail} />}
                 />
               </CustomForm>
-              {serverError && <p className="text-red-500 text-center mt-3 text-sm font-semibold">{serverError}</p>}
 
               <Socials login={true} />
             </div>
@@ -201,9 +207,14 @@ const Login = () => {
             </Link>
           </>
         )}{" "}
-        <Suspense>
+        <Suspense fallback={<Spinner />}>
           {activate && !isCode && (
-            <Methods tfa={searchParams.get("tfa") || ""} handleSend={handleSend} message={message} methods={methods} />
+            <Methods
+              tfa={!fa || searchParams.get("tfa") || ""}
+              handleSend={handleSend}
+              message={message}
+              methods={methods}
+            />
           )}
           {isCode !== "" && activate && (
             <>
@@ -211,7 +222,7 @@ const Login = () => {
               <InputOTPPattern
                 isPending2={isPending}
                 forgot={false}
-                tfa={Boolean(searchParams.get("tfa") === "true")}
+                tfa={fa || Boolean(searchParams.get("tfa") === "true")}
                 setServerError={setServerError}
                 sendType={isCode}
                 handleSend={handleSend}
@@ -221,7 +232,8 @@ const Login = () => {
                 {t("backtowebsite")}{" "}
               </Link>
             </>
-          )}
+          )}{" "}
+          {serverError && <p className="text-red-500 text-center mt-3 text-sm font-semibold">{serverError}</p>}
         </Suspense>
       </div>
     </Section>
@@ -229,3 +241,4 @@ const Login = () => {
 };
 
 export default Login;
+// referral_code=asdfs56&register_as=doctor&job_title=newdoc

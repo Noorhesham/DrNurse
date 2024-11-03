@@ -33,7 +33,7 @@ const Section = ({
     <section id={id} className={`${className || ""}  `}>
       <div className=" flex flex-col items-stretch  w-full ">
         <MotionContainer className="flex flex-row items-center justify-between">
-          {heading && <Head1 size="sm" text={heading} />}
+          {heading && <Head1 alignment="left" size="sm" text={heading} />}
           {paragraph && (
             <MotionItem nohover className=" text-sm sm:text-lg text-[20px] text-[#0D3B6F]">
               {paragraph}

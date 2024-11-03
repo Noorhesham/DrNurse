@@ -1,25 +1,37 @@
+"use client";
 import BreadCrumb from "@/app/components/BreadCrumb";
-import GridContainer from "@/app/components/defaults/GridContainer";
-import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
-import SideBar from "@/app/components/nav/SideBar";
-import { unstable_setRequestLocale } from "next-intl/server";
+
+import Spinner from "@/app/components/Spinner";
+import { useGetEntity } from "@/lib/queries";
+import { useParams, usePathname } from "next/navigation";
 
 export default function RootLayout({
   children,
-  params: { locale },
 }: Readonly<{
   children: React.ReactNode;
-  params: { locale: string };
 }>) {
-  unstable_setRequestLocale(locale);
+  const params = useParams();
+  const pathname = usePathname();
+  const { data, isLoading } = useGetEntity("company", `company-${params.id}`, params.id);
+  if (isLoading || !data) return <Spinner />;
+  const lastSegment = pathname.split("/").pop();
+
+  const formattedLastSegment = lastSegment
+    ? lastSegment.replace(/-/g, " ").replace(/\b\w/g, (char: string) => char.toUpperCase())
+    : "";
+  console.log(data, params.id);
   return (
-    <MaxWidthWrapper className="">
-      <GridContainer className=" relative gap-4 md:gap-8" cols={12}>
-        <div className=" col-span-2 lg:col-span-1">
-          <SideBar iconsOnly />
-        </div>
-        <div className=" col-span-10 lg:col-span-11">{children}</div>
-      </GridContainer>
-    </MaxWidthWrapper>
+    <>
+      {!pathname.includes("doctor") && (
+        <BreadCrumb
+          linksCustom={[
+            { href: "", text: "Home" },
+            ...(params.id ? [{ href: `/dashboard/${data.data.id}`, text: data.data.title }] : []),
+            ...(lastSegment !== `${params.id}` ? [{ href: pathname, text: formattedLastSegment }] : []),
+          ]}
+        />
+      )}
+      <div className="  relative">{children}</div>
+    </>
   );
 }

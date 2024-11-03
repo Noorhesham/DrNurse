@@ -17,33 +17,14 @@ import { toast } from "react-toastify";
 import MotionItem from "../defaults/MotionItem";
 import { AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-const links = [
-  {
-    text: "BROWSE A JOB",
-    href: "/shop",
-    subLinks: JOB_LINKS,
-  },
-  {
-    text: "FOR EMPLOYERS",
-    href: "/",
-  },
-  {
-    text: "POST JOB",
-    href: "/hospital",
-  },
-  {
-    text: "ABOUT US",
-    href: "/aboutus",
-  },
-  {
-    text: "BLOG",
-    href: "/blogs",
-  },
-];
+import ModalCustom from "../defaults/ModalCustom";
+import MyHospitals from "../MyHospitals";
+
 const NavBar = () => {
   const [isScrollingDown, setIsScrollingDown] = useState(false);
   const [active, setIsActive] = useState(false);
   const router = useRouter();
+  const [isPhone, setIsPhone] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isTopPage, setIsTopPage] = useState(true);
   const pathName = usePathname();
@@ -66,8 +47,95 @@ const NavBar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY, isTopPage]);
-  const isHome = pathName === "/ar" || pathName === "/en" || pathName.includes("hospital");
+  useEffect(() => {
+    console.log(isPhone);
+    const handleResize = () => {
+      setIsPhone(window.innerWidth < 768);
+    };
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  const isHome = pathName === "/ar" || pathName === "/en" || pathName.includes("/hospital-home");
+  const isPerson = pathName.includes("/person");
+  const isDashboard = pathName.includes("/dashboard");
+  let links;
 
+  if (isHome) {
+    if (pathName.includes("/hospital-home")) {
+      // Links for hospital home
+      links = [
+        {
+          text: "ABOUT US",
+          href: "/about-us",
+        },
+        {
+          text: "BLOG",
+          href: "/blogs",
+        },
+        {
+          text: "FOR MEDICAL STUFF",
+          href: "/",
+        },
+      ];
+    } else {
+      links = [
+        {
+          text: "ABOUT US",
+          href: "/about-us",
+        },
+        {
+          text: "BLOG",
+          href: "/blogs",
+        },
+        {
+          text: "FOR EMPLOYEES",
+          href: "/hospital-home",
+        },
+      ];
+    }
+  } else if (isPerson) {
+    // Links for a person (profile)
+    links = [
+      {
+        text: "MY PROFILE",
+        href: "/person/profile",
+      },
+
+      {
+        text: "BACK TO WEBSITE",
+        href: "/",
+      },
+    ];
+  } else if (isDashboard) {
+    // Links for dashboard
+    links = [
+      {
+        text: "MY SETTINGS",
+        href: "/dashboard/settings",
+      },
+      {
+        text: "BACK TO WEBSITE",
+        href: "/",
+      },
+    ];
+  } else {
+    // Default or fallback links (for safety)
+    links = [
+      {
+        text: "ABOUT US",
+        href: "/about-us",
+      },
+      {
+        text: "BLOG",
+        href: "/blogs",
+      },
+      {
+        text: "FOR EMPLOYEES",
+        href: "/hospital-home",
+      },
+    ];
+  }
   return (
     <header className=" w-full">
       <nav
@@ -75,7 +143,7 @@ const NavBar = () => {
           isHome
             ? "text-white font-semibold placeholder:text-white "
             : `  text-main2 font-semibold placeholder:text-white  ${isScrollingDown && "bg-white/80"}`
-        } fixed inset-0 z-50 max-h-[5rem] lg:max-h-[7rem]    flex flex-col gap-2  py-4 transition-all duration-300 ${
+        } fixed inset-0  max-h-[5rem] lg:max-h-[7rem]  z-[99]   flex flex-col gap-2  py-4 transition-all duration-300 ${
           isScrollingDown
             ? "translate-y-[-110%]"
             : !isTopPage && !isScrollingDown
@@ -84,19 +152,9 @@ const NavBar = () => {
         }`}
       >
         {" "}
-        <AnimatePresence>
-          {(isHome || pathName.includes("aboutus")) && !isTopPage && !isScrollingDown && (
-            <MotionItem
-              nohover
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 h-[20rem] bg-gradient-to-b from-black/60 via-transparent to-transparent pointer-events-none z-10"
-            >
-              {null}
-            </MotionItem>
-          )}
-        </AnimatePresence>
+        {isHome && !isTopPage && (
+          <div className="absolute inset-0 h-[20rem] bg-gradient-to-b from-black/60 via-transparent to-transparent pointer-events-none z-10"></div>
+        )}
         <MaxWidthWrapper noPadding>
           <div
             className={cn(
@@ -105,11 +163,23 @@ const NavBar = () => {
             )}
           >
             <div className="flex  items-center  gap-20 ">
-              <div
-                className={`${
-                  !isTopPage && "lg:opacity-100  hidden lg:flex  opacity-0"
-                } flex duration-150  items-center`}
-              >
+              <div className="  md:hidden flex">
+                <AnimatePresence>
+                  {isTopPage && isPhone && (
+                    <MotionItem
+                      nohover
+                      exit={{ opacity: 0 }}
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      className={` flex duration-150  items-center`}
+                    >
+                      <Logo isdark={isHome ? false : true} />
+                    </MotionItem>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              <div className={`  md:flex hidden duration-150  items-center`}>
                 <Logo isdark={isHome ? false : true} />
               </div>
 
@@ -131,7 +201,7 @@ const NavBar = () => {
                       LOGIN
                     </Button>
                   </Link>
-                  <Link href={user ? "/dashboard" : "/signup"}>
+                  <Link href={user ? "/dashboard" : isPerson ? "/signup?role=doctor" : "/signup?role=hospital"}>
                     <Button className="  px-4 lg:px-8 rounded-full">GET STARTED</Button>
                   </Link>
                 </>
@@ -146,18 +216,26 @@ const NavBar = () => {
                         router.refresh();
                       }
                     }}
-                    className=" text-xs  md:text-sm  px-4 lg:px-8 rounded-full"
+                    className={`text-xs  ${
+                      isHome ? "border-white  text-white  " : "border-main2 text-main2"
+                    }  bg-transparent  border hover:bg-main2
+                      hover:text-white font-semibold md:text-sm  px-2 lg:px-8 rounded-full`}
                   >
                     LOG OUT
                   </Button>{" "}
                   {isHome ? (
-                    <Link href={user ? "/dashboard" : "/signup"}>
-                      <Button className="  px-4 lg:px-8 rounded-full">GET STARTED</Button>
+                    <Link href={user ? "/loader" : "/signup"}>
+                      <Button className="  px-2 lg:px-8 rounded-full">GET STARTED</Button>
                     </Link>
                   ) : (
-                    <Link href={'/dashboard'}>
-                      <Button className=" text-xs  md:text-sm px-4 lg:px-8 rounded-full">CHANGE HOSPITAL</Button>
-                    </Link>
+                    !isPerson && (
+                      <ModalCustom
+                        content={<MyHospitals />}
+                        btn={
+                          <Button className=" text-xs  md:text-sm px-4 lg:px-8 rounded-full">CHANGE HOSPITAL</Button>
+                        }
+                      />
+                    )
                   )}
                 </div>
               )}

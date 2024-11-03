@@ -1,5 +1,7 @@
 "use server";
+import { isRedirectError } from "next/dist/client/components/redirect";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 // Constants
 const BASE_URL = "https://lab.r-m.dev/api";
@@ -35,10 +37,64 @@ export type ResourceNameProps =
   | "add-profile"
   | "countries"
   | "cities"
-  | "states";
+  | "states"
+  | "companies"
+  | "add-hospital"
+  | "home"
+  | "company"
+  | "update-hospital"
+  | "about-us"
+  | "controlManagers"
+  | "getJobs"
+  | "add-job"
+  | "addWishlist"
+  | "getManagers"
+  | "update-managers"
+  | "wishlistStatus"
+  | "company-jobs"
+  | "job"
+  | "update-job"
+  | "lock-job"
+  | "duplicate"
+  | "getProfiles"
+  | "company-overview"
+  | "person-overview"
+  | "doctor"
+  | "apply-job"
+  | "applicants"
+  | "points"
+  | "prizes"
+  | "reedem"
+  | "slots"
+  | "add-slot"
+  | "delete-slot"
+  | "update-slot"
+  | "add-points"
+  | "meetings"
+  | "sendInvite"
+  | "cancelInvite"
+  | "person-slots"
+  | "book"
+  | "cancel-book"
+  | "person-meetings"
+  | "add-offer"
+  | "offers"
+  | "person-offers"
+  | "offerAction"
+  | "reoffer"
+  | "negotiate"
+  | "cancel-offer"
+  | "bookmarks"
+  | "check-bookmarks"
+  | "getBranches";
 
 // Function to get the full URL from the resource name
-const getURL = (resourceName: ResourceNameProps, id?: string, entityName?: string, queryParams?: URLSearchParams) => {
+const getURL = (
+  resourceName: ResourceNameProps,
+  id?: string,
+  entityName?: string,
+  queryParams?: URLSearchParams | string
+) => {
   const url = BASE_URL;
   switch (resourceName) {
     case "user":
@@ -84,6 +140,8 @@ const getURL = (resourceName: ResourceNameProps, id?: string, entityName?: strin
         url: `${url}/${entityName}/entities-operations${queryParams ? `?${queryParams.toString()}` : ""}`,
         method: "GET",
       };
+    case "getBranches":
+      return { url: `${url}/branch/entities-operations?itemsCount=200&${queryParams}`, method: "GET" };
     case "getSingleEntity":
       return { url: `${url}/${entityName}/entities-operations/${id}`, method: "GET" };
     case "notificationToken":
@@ -103,6 +161,102 @@ const getURL = (resourceName: ResourceNameProps, id?: string, entityName?: strin
         url: `${url}/states/entities-operations?itemsCount=200&country_id=${id}`,
         method: "GET",
       };
+    case "company":
+      return {
+        url: `${url}/recruitment/companies/${id}`,
+        method: "GET",
+      };
+    case "companies":
+      return {
+        url: `${url}/recruitment/dircompanies/managers/companies`,
+        method: "GET",
+      };
+    case "add-hospital":
+      return { url: `${url}/dircompanies/entities-operations/store`, method: "POST" };
+    case "home":
+      return { url: `${url}/rm_page/${VERSION}/show?slug=${id}`, method: "GET" };
+    case "update-hospital":
+      return { url: `${url}/dircompanies/entities-operations/${id}/update`, method: "POST" };
+    case "about-us":
+      return { url: `${url}/rm_page/${VERSION}/show?slug=about-us`, method: "GET" };
+    case "controlManagers":
+      return { url: `${url}/recruitment/dircompanies/managers`, method: "GET" };
+    case "getJobs":
+      return { url: `${url}/recruitment/jobs?${queryParams}`, method: "GET" };
+    case "add-job":
+      return { url: `${url}/req-job-posts/entities-operations/store`, method: "POST" };
+    case "update-job":
+      return { url: `${url}/req-job-posts/entities-operations/${id}/update`, method: "PUT" };
+    case "addWishlist":
+      return { url: `${url}/req-job-posts/entities-operations/${id}/bookmarks`, method: "POST" };
+    case "update-managers":
+      return { url: `${url}/recruitment/dircompanies/managers`, method: "PUT" };
+    case "wishlistStatus":
+      return { url: `${url}/req-job-posts/entities-operations/${id}/bookmarked`, method: "GET" };
+    case "company-jobs":
+      return { url: `${url}/recruitment/req-job-posts/jobs`, method: "GET" };
+    case "job":
+      return { url: `${url}/recruitment/jobs/${id}`, method: "GET" };
+    case "lock-job":
+      return { url: `${url}/recruitment/req-job-posts/status`, method: "PUT" };
+    case "duplicate":
+      return { url: `${url}/recruitment/req-job-posts/duplicate`, method: "POST" };
+    case "getProfiles":
+      return { url: `${url}/recruitment/profiles?${queryParams}`, method: "GET" };
+    case "company-overview":
+      return { url: `${url}/recruitment/companies/overview`, method: "GET" };
+    case "person-overview":
+      return { url: `${url}/recruitment/person/overview`, method: "GET" };
+    case "doctor":
+      return { url: `${url}/recruitment/profiles/${id}`, method: "GET" };
+    case "apply-job":
+      return { url: `${url}/recruitment/jobs/applay`, method: "POST" };
+    case "applicants":
+      return { url: `${url}/recruitment/jobs/${id}/applicants?${queryParams}`, method: "GET" };
+    case "points":
+      return { url: `${url}/rm_pointsys/${VERSION}/history`, method: "GET" };
+    case "prizes":
+      return { url: `${url}/rm_pointsys/${VERSION}/prizes`, method: "GET" };
+    case "reedem":
+      return { url: `${url}/redeem-requests/entities-operations/store`, method: "POST" };
+    case "slots":
+      return { url: `${url}/recruitment/meetings/slots?job_id=${id}`, method: "GET" };
+    case "add-slot":
+      return { url: `${url}/recruitment/meetings/slots`, method: "POST" };
+    case "delete-slot":
+      return { url: `${url}/recruitment/meetings/slots/${id}`, method: "DELETE" };
+    case "meetings":
+      return { url: `${url}/recruitment/meetings?job_id=${id}`, method: "GET" };
+    case "sendInvite":
+      return { url: `${url}/recruitment/meetings/invite`, method: "POST" };
+    case "cancelInvite":
+      return { url: `${url}/recruitment/meetings/cancel`, method: "GET" };
+    case "person-slots":
+      return { url: `${url}/recruitment/person/meetings/slots?job_id=${id}`, method: "GET" };
+    case "book":
+      return { url: `${url}/recruitment/person/meetings/book`, method: "POST" };
+    case "cancel-book":
+      return { url: `${url}/recruitment/person/meetings/cancel`, method: "POST" };
+    case "person-meetings":
+      return { url: `${url}/recruitment/person/meetings`, method: "GET" };
+    case "add-offer":
+      return { url: `${url}/recruitment/job-offers`, method: "POST" };
+    case "offers":
+      return { url: `${url}/recruitment/job-offers?${queryParams}`, method: "GET" };
+    case "person-offers":
+      return { url: `${url}/recruitment/person/job-offers`, method: "GET" };
+    case "offerAction":
+      return { url: `${url}/recruitment/person/job-offers/action`, method: "POST" };
+    case "reoffer":
+      return { url: `${url}/recruitment/job-offers/re-offer`, method: "POST" };
+    case "cancel-offer":
+      return { url: `${url}/recruitment/job-offers/cancel`, method: "POST" };
+    case "negotiate":
+      return { url: `${url}/recruitment/person/job-offers/negotiate`, method: "POST" };
+    case "check-bookmarks":
+      return { url: `${url}/req-job-posts/entities-operations/${id}/bookmarked`, method: "GET" };
+    case "bookmarks":
+      return { url: `${url}/req-job-posts/entities-operations/bookmarks/list?${queryParams}`, method: "GET" };
     default:
       return { url, method: "GET" as MethodProps };
   }
@@ -120,6 +274,7 @@ export async function Server({
   formData = false,
   entityName,
   queryParams,
+  nocompany,
 }: {
   resourceName: ResourceNameProps;
   id?: string;
@@ -130,12 +285,13 @@ export async function Server({
   cache?: number;
   formData?: boolean;
   entityName?: string;
-  queryParams?: URLSearchParams;
+  queryParams?: URLSearchParams | string;
+  nocompany?: boolean;
 }) {
   // Get the token and device info from cookies
   const jwt = cookies().get("jwt")?.value;
-  const deviceId = cookies().get("device_info")?.value;
-
+  const deviceId = cookies().get("device_info")?.value || "{}";
+  const hospitalId = cookies().get("hospitalId")?.value;
   // Set up headers
   const combinedHeaders: { [key: string]: string } = {
     ...headers,
@@ -147,7 +303,9 @@ export async function Server({
   if (deviceId) {
     combinedHeaders["device-unique-id"] = JSON.parse(deviceId).device_unique_id;
   }
-
+  if (hospitalId && !nocompany) {
+    combinedHeaders["company-id"] = hospitalId;
+  }
   try {
     // Get the URL and method from the resource name
     const { url, method: resolvedMethod } = getURL(resourceName, id, entityName, queryParams);
@@ -167,18 +325,24 @@ export async function Server({
         tags: cache ? [`${resourceName}`] : [],
       },
     });
-    console.log(url);
     if (!response.ok) throw new Error(`Error: ${response.status}`);
-
+    console.log(url);
     const data = await response.json();
-    if (data.message === "Device token mismatch" || data.message === "Login again please") {
-      cookies().delete("jwt");
+    if (
+      data.message === "Device token mismatch" ||
+      data.message === "Login again please" ||
+      data.message === "تسجيل الدخول مرة أخرى من فضلك"
+    ) {
+      redirect("/login?error=true");
     }
-    console.log(data, body);
+    console.log(data);
     return data;
   } catch (error: any) {
+    if (isRedirectError(error)) {
+      throw error;
+    }
     if (error.message === "Device token mismatch" || error.message === "Login again please") {
-      cookies().delete("jwt");
+      redirect("/login?error=true");
     }
     console.error("Server request error:", error);
     throw new Error(`Error: ${error.message}`);

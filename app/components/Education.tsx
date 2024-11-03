@@ -2,15 +2,16 @@ import React from "react";
 import UserCard from "./UserCard";
 import Container from "./Container";
 import FlexWrapper from "./defaults/FlexWrapper";
+import { formatDate } from "date-fns";
 
 const Education = ({ edu }: { edu: any }) => {
   return (
-    <Container className="hover:bg-gradient-to-r from-light to-white duration-150 ">
-      <FlexWrapper max={false} className="  items-start justify-between">
+    <Container className="bg-gradient-to-r w-full from-light to-white duration-150 ">
+      <FlexWrapper max={false} className=" w-full  items-center justify-between">
         <UserCard edu={true} show={false} applicant={edu} />
-        <div className=" font-medium text-gray-600">
-          <p>GENERAL SURGERY {"(BACHELOROS DEGREE)"}</p>
-          <span className=" text-sm">May 2013 - May 2020 . 7yrs</span>
+        <div className=" ml-auto self-end   font-medium text-gray-600">
+          <p className=" lg:text-base text-sm  font-semibold uppercase">{edu.speciality}</p>
+          <span className=" text-sm">{formatDate(edu.date, "dd MMM yyyy")}</span>
         </div>
       </FlexWrapper>
     </Container>

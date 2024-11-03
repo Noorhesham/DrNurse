@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import Spinner from "./Spinner";
 
 const FunctionalButton = ({
   btnText,
@@ -16,8 +17,12 @@ const FunctionalButton = ({
   className,
   type,
   variant,
+  disabled,
+  download,
+  noclick,
 }: {
   btnText: string;
+  disabled?: boolean;
   content?: React.ReactNode;
   icon?: React.ReactNode;
   link?: string;
@@ -26,6 +31,8 @@ const FunctionalButton = ({
   className?: string;
   type?: "button" | "reset" | "submit" | undefined;
   variant?: "default" | "link" | "destructive" | "outline" | "secondary" | "ghost";
+  download?: boolean;
+  noclick?: boolean;
 }) => {
   const buttonContent = (
     <>
@@ -36,11 +43,11 @@ const FunctionalButton = ({
 
   if (link) {
     return (
-      <Link className={className || ""} href={link} passHref>
+      <Link target={download ? "_blank" : "_self"} className={className || ""} href={link}>
         <Button
           variant={variant || "default"}
           size={size || "lg"}
-          className={cn("flex  items-center gap-2 bg-main2 text-gray-50 hover:bg-main2/80", className)}
+          className={cn("flex  relative items-center gap-2 bg-main2 text-gray-50 hover:bg-main2/80", className)}
           type={type || "button"}
         >
           {buttonContent}
@@ -51,22 +58,24 @@ const FunctionalButton = ({
 
   return onClick ? (
     <Button
+      disabled={disabled || noclick}
       variant={variant || "default"}
       onClick={onClick}
       type={type || "button"}
       size={size || "lg"}
       className={cn(
-        variant !== "destructive" && "flex items-center gap-2 bg-main2 text-gray-50 hover:bg-main2/80",
+        variant !== "destructive" &&
+          "flex relative items-center gap-2 min-w-[150px] bg-main2 text-gray-50 hover:bg-main2/80",
         className
       )}
     >
-      {buttonContent}
+      {disabled ? <Spinner className=" border-white border-[5px] text-center m-auto" /> : buttonContent}
     </Button>
   ) : (
     <ModalCustom
       btn={
-        <Button size="lg" className=" flex items-cetner gap-2 bg-main2 text-gray-50 hover:bg-main2/80">
-          {icon ? icon : <PlusCircle />}
+        <Button size="lg" className="relative flex items-cetner gap-2 bg-main2 text-gray-50 hover:bg-main2/80">
+          {icon ? icon : <PlusCircle className=" w-5 h-5" />}
           {btnText}
         </Button>
       }

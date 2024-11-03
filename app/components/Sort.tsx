@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,17 +7,42 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 const Sort = ({ options }: { options: any[] }) => {
+  const [selected, setSelected] = useState();
+  const router = useRouter();
+  const t = useTranslations();
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+    const sort = params.get("sort");
+    if (sort) {
+      // @ts-ignore
+      setSelected((s) =>s);
+    }
+  }, [searchParams]);
   return (
-    <div className=" flex items-center ">
+    <div className="    flex items-center justify-between gap-4">
+      <h2 className=" text-gray-500 text-sm">{t("sort")}</h2>
       <DropdownMenu modal={false}>
-        <DropdownMenuTrigger className=" bg-white py-1.5 px-3 rounded-xl text-sm  flex items-center gap-1">
-          Most Popular <ChevronDown className="text-gray-500" />
+        <DropdownMenuTrigger className=" bg-white min-w-[150px] py-1.5 px-3 rounded-xl text-sm  flex items-center gap-1">
+          {selected || t("latest")}
+          <ChevronDown className=" ml-auto text-gray-500" />
         </DropdownMenuTrigger>
         <DropdownMenuContent className=" w-full rounded-sm">
           {options.map((option, i) => (
-            <DropdownMenuItem className=" uppercase  rounded-sm" key={i}>
-              {option}
+            <DropdownMenuItem
+              onClick={() => {
+                setSelected(option.label);
+                const params = new URLSearchParams(searchParams);
+                params.set("sort", option.value);
+                router.push(`?${params.toString()}`, { scroll: false });
+              }}
+              className=" uppercase  rounded-sm"
+              key={i}
+            >
+              {option.label}
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>

@@ -12,12 +12,13 @@ import {
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useSetLoading } from "../hooks/useSetLoadingt";
 
 export function PaginationDemo({ totalPages = 5 }: { totalPages?: number }) {
   const { replace } = useRouter();
   const searchParams = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
-
+  const { WrapperFn } = useSetLoading();
   useEffect(() => {
     const page = parseInt(searchParams.get("page") || "1", 10);
     setCurrentPage(page);
@@ -33,22 +34,19 @@ export function PaginationDemo({ totalPages = 5 }: { totalPages?: number }) {
   return (
     <Pagination className=" mt-10 col-span-full">
       <PaginationContent>
-        <PaginationItem>
-          <Button
-            size={"sm"}
-            className={
-              currentPage >= (totalPages || 5)
-                ? " cursor-not-allowed text-main   opacity-80"
-                : "rounded-full flex mr-1 md:mr-3 p-1 items-center text-main2  bg-light duration-150 hover:text-white hover:bg-main2"
-            }
+        <PaginationItem className=" w-fit">
+          <button
+            className={`rounded-full ${
+              currentPage >= (totalPages || 5) && " cursor-not-allowed "
+            } w-fit flex mr-1 md:mr-3 p-1 items-center text-main2  bg-light duration-150 hover:text-white hover:bg-main2`}
             onClick={(e) => {
               e.preventDefault();
-              if (currentPage > 1) handlePageChange(currentPage - 1);
+              if (currentPage > 1) WrapperFn(() => handlePageChange(currentPage - 1));
             }}
           >
             {" "}
             <ArrowLeft className="mr-1" />
-          </Button>
+          </button>
         </PaginationItem>
         {[...Array(totalPages)].map((_, i) => {
           const page = i + 1;
@@ -62,7 +60,7 @@ export function PaginationDemo({ totalPages = 5 }: { totalPages?: number }) {
                 isActive={currentPage === page}
                 onClick={(e) => {
                   e.preventDefault();
-                  handlePageChange(page);
+                  WrapperFn(() =>handlePageChange(page));
                 }}
               >
                 {page}
@@ -74,22 +72,19 @@ export function PaginationDemo({ totalPages = 5 }: { totalPages?: number }) {
           <PaginationEllipsis />
         </PaginationItem>
         <PaginationItem>
-          <Button
-            size={"sm"}
-            className={
-              currentPage >= totalPages
-                ? " cursor-not-allowed text-main  opacity-80"
-                : "rounded-full bg-light text-main2 ml-1 md:ml-3 p-1 flex  1items-center duration-150 hover:text-white hover:bg-main2"
-            }
+          <button
+            className={`rounded-full ${
+              currentPage >= (totalPages || 5) && " cursor-not-allowed "
+            } bg-light text-main2 ml-1 md:ml-3 p-1 flex  1items-center duration-150 hover:text-white hover:bg-main2`}
             onClick={(e) => {
               e.preventDefault();
               if (currentPage >= totalPages) return null;
-              handlePageChange(currentPage + 1);
+              WrapperFn(() =>handlePageChange(currentPage + 1));
             }}
           >
             {" "}
             <ArrowRight className="mr-1" />
-          </Button>
+          </button>
         </PaginationItem>
       </PaginationContent>
     </Pagination>

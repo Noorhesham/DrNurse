@@ -6,7 +6,7 @@ import { useParams } from "@/app/hooks/useParams";
 import Prepare from "./Prepare";
 import Link from "next/link";
 import { Server } from "../../Server";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 import Methods from "./Methods";
 import { InputOTPPattern } from "./OTP";
@@ -23,6 +23,7 @@ const ResetPassword = () => {
   const [message, setMessage] = useState<string | null>(null);
   const [server, setServerError] = useState<string | null>(null);
   const [type, setType] = useState<string | null>("");
+  const router = useRouter();
   const locale = useLocale();
   useEffect(() => {
     if (!methods) {
@@ -47,7 +48,9 @@ const ResetPassword = () => {
       setType(sendType || "");
       console.log(res);
       if (!res.status) setServerError(res.message);
-      if (res.status) toast.success(res.message);
+      if (res.status) {
+        toast.success(res.message);
+      }
     });
   };
 
@@ -57,8 +60,10 @@ const ResetPassword = () => {
         <div className=" mx-auto flex flex-col items-center justify-center w-full">
           <Logo isdark size="lg" />
           <h1 className=" text-center text-2xl mt-8 font-bold text-main2">{t("forgotPasswordContent.title")}</h1>
-          {param === "prepare" && <Prepare  setMessage={setMessage} handleParam={handleParam} setMethods={setMethods} />}
-          {param === "forgot" && <Methods reset={true} message={message || ""} handleSend={handleSend} methods={methods} />}
+          {param === "prepare" && <Prepare setMessage={setMessage} handleParam={handleParam} setMethods={setMethods} />}
+          {param === "forgot" && (
+            <Methods reset={true} message={message || ""} handleSend={handleSend} methods={methods} />
+          )}
           {param === "code" && (
             <InputOTPPattern
               forgot={true}

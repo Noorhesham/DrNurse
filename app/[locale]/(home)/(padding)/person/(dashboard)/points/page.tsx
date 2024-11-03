@@ -1,3 +1,4 @@
+"use client";
 import FlexWrapper from "@/app/components/defaults/FlexWrapper";
 import FunctionalButton from "@/app/components/FunctionalButton";
 import Head1 from "@/app/components/Head1";
@@ -5,57 +6,46 @@ import Paragraph from "@/app/components/defaults/Paragraph";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PaperclipIcon } from "lucide-react";
-import React from "react";
+import React, { useTransition } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import MiniTitle from "@/app/components/defaults/MiniTitle";
+import { format } from "date-fns";
+import { useGetEntity } from "@/lib/queries";
+import Spinner from "@/app/components/Spinner";
+import { useAuth } from "@/app/context/AuthContext";
+import { convertToHTML } from "@/lib/utils";
+import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
+import FormContainer from "@/app/components/forms/FormContainer";
+import { Server } from "@/app/main/Server";
+import { toast } from "react-toastify";
+import { WEBSITEURL } from "@/app/constants";
 
-const reedems = [
-  {
-    title: "Redeem points",
-    date: "20 Dec 2024",
-    points: "300 Points",
-    purpose: "Get a surgery Book",
-  },
-  {
-    title: "Redeem points",
-    date: "20 Dec 2024",
-    points: "300 Points",
-    purpose: "Get a surgery Book",
-  },
-  {
-    title: "Redeem points",
-    date: "20 Dec 2024",
-    points: "300 Points",
-    purpose: "Get a surgery Book",
-  },
-  {
-    title: "Redeem points",
-    date: "20 Dec 2024",
-    points: "300 Points",
-    purpose: "Get a surgery Book",
-  },
-];
 const page = () => {
+  const { data: terms, isLoading: isLoadingTerms } = useGetEntity("home", "terms-points", "terms-and-conditions");
+  const { data: points, isLoading } = useGetEntity("points", "points");
+  const { data: prizes, isLoading: isLoadingPrizes } = useGetEntity("prizes", "prizes");
+  const handelCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
+    toast.success("copied");
+  };
+  const { user2Settings, loading, userSettings } = useAuth();
+  if (isLoading || !points || loading || isLoadingTerms || isLoadingPrizes || loading) return <Spinner />;
   return (
     <section>
       <div className="flex flex-col gap-2">
         <FlexWrapper max={false} className=" justify-between">
-          <Head1 text="ABOUT POINTS PROGRAM" />
+          <Head1 alignment="left" text="ABOUT POINTS PROGRAM" />
           <FunctionalButton
-            icon={<PaperclipIcon />}
+            icon={<PaperclipIcon className="w-5 h-5" />}
             btnText="CONDITIONS"
             content={
-              <div className=" flex flex-col items-center gap-3">
+              <MaxWidthWrapper className=" flex flex-col items-center gap-3">
                 <MiniTitle boldness="bold" text="Conditions for the points system" color="text-main2" />
-                <Paragraph
-                  description="Dr.Nurse application is an innovative recruitment platform that aims to connect job seekers with employers easily and effectively. The application provides a range of tools and features that facilitate the hiring process for both sides, making it faster and more efficient.
-[App Name] application is an innovative recruitment platform that aims to connect job seekers with employers easily and effectively. The application provides a range of tools and features that facilitate the hiring process for both sides, making it faster and more efficient.
-[App Name] application is an innovative recruitment platform that aims to connect job seekers with employers easily and effectively. The application provides a range of tools and features that facilitate the hiring process for both sides, making it faster and more efficient.
-Dr.Nurse application is an innovative recruitment platform that aims to connect job seekers with employers easily and effectively. The application provides a range of tools and features that facilitate the hiring process for both sides, making it faster and more efficient.
-[App Name] application is an innovative recruitment platform that aims to connect job seekers with employers easily and effectively. The application provides a range of tools and features that facilitate the hiring process for both sides, making it faster and more efficient.
-[App Name] application is an innovative recruitment platform that aims to connect job seekers with employers easily and effectively. The application provides a range of tools and features that facilitate the hiring process for both sides, making it faster and more efficient."
+                <div
+                  dangerouslySetInnerHTML={{ __html: convertToHTML(terms.page.content || "") }}
+                  className={` text-black lg:text-base text-sm  font-medium my-2 leading-[1.7] `}
                 />
-              </div>
+              </MaxWidthWrapper>
             }
           />
         </FlexWrapper>
@@ -65,25 +55,58 @@ Dr.Nurse application is an innovative recruitment platform that aims to connect 
         />
       </div>
       <FlexWrapper max={false} className=" mt-10 justify-between">
-        <div className=" flex w-full  flex-col gap-2">
-          <Label>Invite a friend</Label>
-          <Input
-            className={` bg-white shadow-sm w-full `}
-            placeholder={"https://referralrock.com/blog/referral-link/.."}
-          />
+        <div className=" flex w-full items-center   gap-1">
+          <div className=" flex  w-full flex-col gap-2">
+            <Label>Invite a friend</Label>
+            <Input disabled className={` bg-white shadow-sm w-full `} placeholder={userSettings.referral_code} />
+          </div>
+          <button onClick={() => handelCopy(userSettings.referral_code)} className=" text-sm text-main2 font-medium ">
+            COPY
+          </button>
         </div>
-        <div className=" flex  w-full flex-col gap-2">
-          <Label>Invite a friend</Label>
-          <Input
-            className={` bg-white shadow-sm w-full `}
-            placeholder={"https://referralrock.com/blog/referral-link/.."}
-          />
+        <div className=" flex items-center  w-full gap-1">
+          <div className=" flex  w-full items-center flex-col gap-2">
+            <Label>Invite a friend</Label>
+            <Input
+              disabled
+              className={` bg-white shadow-sm w-full `}
+              placeholder={`${WEBSITEURL}?referal=${userSettings.referral_code}`}
+            />
+          </div>
+          <button
+            onClick={() => handelCopy(`${WEBSITEURL}?referal=${userSettings.referral_code}`)}
+            className="text-sm text-main2 font-medium "
+          >
+            COPY
+          </button>
         </div>
       </FlexWrapper>
       <div className=" flex flex-col gap-2 mt-10">
         <FlexWrapper max={false} className=" justify-between">
-          <Head1 text="54,271 Points" />
-          <FunctionalButton icon={<PaperclipIcon />} btnText="REDEEM NOW" content={""} />
+          <div className=" flex flex-col gap-2">
+            <Head1 alignment="left" text={`${user2Settings.points.available} Points`} />
+            <h2 className=" font-semibold text-black">from {user2Settings.points.total}</h2>
+          </div>
+
+          <FunctionalButton
+            icon={<PaperclipIcon className="w-5 h-5" />}
+            btnText="REDEEM NOW"
+            content={
+              <MaxWidthWrapper className=" flex flex-col ">
+                <FormContainer
+                  submit={async (data: any) => {
+                    const res = await Server({
+                      resourceName: "reedem",
+                      body: data,
+                    });
+                    if (res.status) toast.success(res.message);
+                    else toast.error(res.message);
+                  }}
+                  formArray={[{ name: "prize", select: true, options: prizes.prizes.map((prize: string) => prize) }]}
+                />
+              </MaxWidthWrapper>
+            }
+          />
         </FlexWrapper>
         <Table className=" mt-2">
           <TableHeader className=" bg-light">
@@ -95,7 +118,7 @@ Dr.Nurse application is an innovative recruitment platform that aims to connect 
             </TableRow>
           </TableHeader>
           <TableBody>
-            {reedems.map((job, i) => (
+            {points.history.map((job, i) => (
               <TableRow key={i}>
                 <TableCell className="font-medium">
                   <div className=" flex flex-col items-start">
@@ -103,9 +126,14 @@ Dr.Nurse application is an innovative recruitment platform that aims to connect 
                   </div>
                 </TableCell>
 
-                <TableCell className="  gap-2 ">{job.date}</TableCell>
-                <TableCell className=" text-main2 font-semibold  gap-2 ">{job.points}</TableCell>
-                <TableCell className=" text-main2 font-semibold  gap-2 ">{job.purpose}</TableCell>
+                <TableCell className="  gap-2 ">{format(job.created_at, "mmm dd, yyyy")}</TableCell>
+                <TableCell
+                  className={`${job.operation !== "deposit" ? "text-red-500" : " text-main2"} font-semibold  gap-2 `}
+                >
+                  {job.operation !== "deposit" && "-"}
+                  {job.points}
+                </TableCell>
+                <TableCell className=" text-main2 font-semibold  gap-2 ">{job.type}</TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -6,15 +6,14 @@ import { useAuth } from "@/app/context/AuthContext";
 import UpdateCard from "@/app/components/UpdateCard";
 import { GoPeople } from "react-icons/go";
 import { MailIcon, PhoneIcon } from "lucide-react";
-import Spinner from "@/app/components/Spinner";
 import { InputOTPPattern } from "./OTP";
 import { useLocale, useTranslations } from "next-intl";
 import { format } from "date-fns";
-
 import { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import ModalCustom from "@/app/components/defaults/ModalCustom";
 import FormContainer from "@/app/components/forms/FormContainer";
+import { useQueryClient } from "@tanstack/react-query";
 
 const UpdatePersonalInfo = () => {
   const t = useTranslations();
@@ -56,7 +55,7 @@ const UpdatePersonalInfo = () => {
     setError(null);
     setLogin((l: any) => !l);
   };
-
+  const queryClient = useQueryClient();
   const updateEmailInfo = async (data: any, setError: any) => {
     const phone = data?.phone?.phone;
     const updatedData = {
@@ -75,6 +74,7 @@ const UpdatePersonalInfo = () => {
     if (res.status) {
       toast.success(res.message);
       setLogin((l: any) => !l);
+      queryClient.invalidateQueries({ queryKey: ["my-profile"] });
       setError(null);
       const updatedParams = new URLSearchParams(searchParams);
       data.phone ? updatedParams.set("phone", phone) : updatedParams.set("email", data.email);
