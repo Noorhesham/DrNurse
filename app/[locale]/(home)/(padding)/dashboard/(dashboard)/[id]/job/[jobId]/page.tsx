@@ -18,6 +18,7 @@ import { PersonIcon } from "@radix-ui/react-icons";
 import { useQueryClient } from "@tanstack/react-query";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { Briefcase, CalendarIcon, DollarSign, EditIcon, LockIcon } from "lucide-react";
+import { unstable_setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useTransition } from "react";
@@ -26,7 +27,8 @@ import { FaXTwitter } from "react-icons/fa6";
 import { GoLocation } from "react-icons/go";
 import { toast } from "react-toastify";
 
-const page = ({ params: { jobId } }: { params: { jobId: string } }) => {
+const page = ({ params: { jobId, locale } }: { params: { jobId: string; locale: string } }) => {
+  unstable_setRequestLocale(locale);
   const { data, isLoading } = useGetEntities({ resourceName: "job", id: jobId, key: `job-${jobId}` });
   const queryClient = useQueryClient();
   const [isPending, startTransition] = useTransition();

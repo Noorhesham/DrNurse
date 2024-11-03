@@ -3,13 +3,17 @@ import BreadCrumb from "@/app/components/BreadCrumb";
 
 import Spinner from "@/app/components/Spinner";
 import { useGetEntity } from "@/lib/queries";
+import { unstable_setRequestLocale } from "next-intl/server";
 import { useParams, usePathname } from "next/navigation";
 
 export default function RootLayout({
   children,
+  params: { locale },
 }: Readonly<{
   children: React.ReactNode;
+  params: { locale: string };
 }>) {
+  unstable_setRequestLocale(locale);
   const params = useParams();
   const pathname = usePathname();
   const { data, isLoading } = useGetEntity("company", `company-${params.id}`, params.id);

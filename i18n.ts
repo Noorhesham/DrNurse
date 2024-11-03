@@ -1,14 +1,26 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getRequestConfig } from "next-intl/server";
 
-// Can be imported from a shared config
+// Define supported locales
 const locales = ["en", "ar"];
+const defaultLocale = "en"; // Define your default locale here
 
 export default getRequestConfig(async ({ locale }) => {
-  // Validate that the incoming `locale` parameter is valid
-  if (!locales.includes(locale as any)) notFound();
+  // Check if the locale is valid
+  if (!locales.includes(locale as string)) {
+    // Redirect to default locale if the locale is invalid
+    return redirect(`/${defaultLocale}`);
+  }
 
-  return {
-    messages: (await import(`./messages/${locale}.json`)).default,
-  };
+  try {
+    // Import the messages dynamically based on the locale
+    const messages = (await import(`./messages/${locale}.json`)).default;
+    return {
+      messages,
+    };
+  } catch (error) {
+    // Handle errors such as file not found
+    console.error(`Error loading messages for locale ${locale}`, error);
+    return notFound();
+  }
 });

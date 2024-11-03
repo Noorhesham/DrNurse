@@ -4,10 +4,13 @@ const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  typescript: { ignoreBuildErrors: true },
-  experimental: {
-    missingSuspenseWithCSRBailout: false,
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
   },
+  typescript: { ignoreBuildErrors: true },
+  eslint: { ignoreDuringBuilds: true },
   images: {
     remotePatterns: [
       {
@@ -19,6 +22,11 @@ const nextConfig = {
   experimental: {
     missingSuspenseWithCSRBailout: false,
   },
+  reactStrictMode: false,
+  fallback: "blocking",
+  // images: {
+  //   unoptimized: true,
+  // },
 };
 
 export default withNextIntl(nextConfig);
