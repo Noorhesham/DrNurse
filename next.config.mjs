@@ -23,7 +23,7 @@ const nextConfig = {
     missingSuspenseWithCSRBailout: false,
   },
   reactStrictMode: false,
-  fallback: "blocking",
+
   // images: {
   //   unoptimized: true,
   // },
