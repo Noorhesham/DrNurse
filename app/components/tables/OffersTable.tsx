@@ -98,7 +98,7 @@ const OffersTable: React.FC<OffersTableProps> = ({ offers, action, person = fals
                     }
                     content={
                       person ? (
-                        <div className=" flex flex-col items-center gap-4">
+                        <div className=" flex flex-col justify-center items-center gap-4">
                           <h3 className=" text-xl lg:text-2xl uppercase text-main2 font-semibold mt-4">
                             Negotiation DETAILS
                           </h3>

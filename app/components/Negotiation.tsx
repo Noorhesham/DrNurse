@@ -15,7 +15,7 @@ const Negotiation = ({ negotiation, jobOfferId }: { negotiation: any; jobOfferId
   const [isPending, startTransition] = useTransition();
   const queryClient = useQueryClient();
   return (
-    <div className=" flex flex-col h-full   gap-4 items-center">
+    <div className=" flex flex-col h-full justify-center   gap-4 items-center">
       <Paragraph size="lg" description={negotiation.description} />
       <FlexWrapper className=" justify-center">
         <Link href={`/dashboard/${id}/edit-offer/${jobOfferId}`}>
