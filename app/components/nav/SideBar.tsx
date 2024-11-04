@@ -78,7 +78,7 @@ const SideBar = ({ iconsOnly = false, person }: { iconsOnly?: boolean; person?: 
       : [{ link: `${origin}/points`, text: "Points", icon: <BadgeCheck className={iconsStyles} /> }]),
     // Settings and logout
     { link: `${origin}/settings`, text: "SETTINGS", icon: <SlidersHorizontal className={iconsStyles} /> },
-    { link: "", text: "LOG-OUT", icon: <LogOutIcon className={iconsStyles} /> },
+    { link: "", text: "LOG-OUT", icon: <LogOutIcon  className={iconsStyles} /> },
   ];
 
   return (
