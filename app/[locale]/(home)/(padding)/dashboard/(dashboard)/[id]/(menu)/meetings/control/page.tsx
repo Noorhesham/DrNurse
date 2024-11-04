@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import ModalCustom from "@/app/components/defaults/ModalCustom";
+import Paragraph from "@/app/components/defaults/Paragraph";
 const page = () => {
   const searchParams = useSearchParams();
   const jobId = searchParams.get("jobId") || "0";
@@ -88,11 +89,11 @@ const page = () => {
                           </Button>
                         }
                         content={
-                          <div className="flex flex-col gap-2">
+                          <div className="flex flex-col justify-center gap-2">
                           <Paragraph
                             description={"DETERMINE WHETHER YOU WANT TO DISABLED OR RESCHEDULE THE MEETING"}
                           />
-                          <div className="flex items-center gap-5">
+                          <div className="flex items-center justify-center gap-5">
                             <Button
                               disabled={isPending}
                               onClick={() => {

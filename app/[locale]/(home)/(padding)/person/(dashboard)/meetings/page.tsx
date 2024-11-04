@@ -99,11 +99,11 @@ const page = () => {
                           </Button>
                         }
                         content={
-                          <div class>
+                          <div className="flex items-center justify-center flex-col gap-2">
                             <Paragraph
                               description={"DETERMINE WHETHER YOU WANT TO DISABLED OR RESCHEDULE THE MEETING"}
                             />
-                            <div className="flex items-center gap-5">
+                            <div className="flex  justify-center  items-center gap-5">
                               <Button
                                 disabled={isPending}
                                 onClick={() => {
