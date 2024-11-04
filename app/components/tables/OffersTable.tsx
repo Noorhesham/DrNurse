@@ -5,13 +5,16 @@ import { Calendar, CheckCircle, TimerIcon, XCircle } from "lucide-react";
 import ModalCustom from "../defaults/ModalCustom";
 import MeetingActions from "../forms/MeetingActions";
 import Negotiation from "../Negotiation";
+import Paragraph from "../defaults/Paragraph";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 
 interface OffersTableProps {
   offers: any[];
   action?: boolean;
+  person?: boolean;
 }
 
-const OffersTable: React.FC<OffersTableProps> = ({ offers, action }) => {
+const OffersTable: React.FC<OffersTableProps> = ({ offers, action, person = false }) => {
   return (
     <Table className="">
       <TableHeader>
@@ -44,12 +47,18 @@ const OffersTable: React.FC<OffersTableProps> = ({ offers, action }) => {
                 <div className="flex items-center gap-2">
                   {offer.status.toLowerCase() === "accepted" || offer.status.toLowerCase() === "approved" ? (
                     <CheckCircle className="text-green-500" />
-                  ) : offer.status === "rejected" || offer.negotiation ? (
+                  ) : offer.status.toLowerCase() === "rejected" ? (
                     <XCircle className="text-red-500" />
-                  ) : offer.status === "pending" ? (
+                  ) : offer.negotiation && !person ? (
+                    <ExclamationTriangleIcon className=" text-yellow-500" />
+                  ) : offer.status.toLowerCase() === "pending" ? (
                     <TimerIcon className=" text-blue-500" />
                   ) : null}
-                  <p className="text-sm uppercase font-semibold">{offer.negotiation ? "NEGOTIATION" : offer.status}</p>
+                  <p className="text-sm uppercase font-semibold">
+                    {offer.negotiation && !person && offer.status.toLowerCase() !== "approved"
+                      ? "NEGOTIATION"
+                      : offer.status}
+                  </p>
                 </div>
               </div>
             </TableCell>
@@ -66,28 +75,43 @@ const OffersTable: React.FC<OffersTableProps> = ({ offers, action }) => {
                 <Button
                   size={"lg"}
                   variant={"outline"}
-                  className="font-semibold text-main2 bg-light hover:bg-main2 hover:text-light duration-150"
+                  className="font-semibold lg:w-[50%] text-main2 bg-light hover:bg-main2 hover:text-light duration-150"
                 >
                   DOWNLOAD OFFER
                 </Button>
                 {action && offer.status !== "rejected" && offer.status !== "approved" && (
                   <ModalCustom
                     btn={
-                      <Button className=" rounded-full" size={"sm"}>
+                      <Button className="lg:w-[50%] w-full rounded-full" size={"sm"}>
                         TAKE ACTION
                       </Button>
                     }
                     content={<MeetingActions offerId={offer.id} />}
                   />
                 )}
-                {offer.negotiation && !action && (
+                {offer.negotiation && offer.status.toLowerCase() !== "approved" && (
                   <ModalCustom
                     btn={
                       <Button className=" rounded-full" size={"sm"}>
-                        NEGOTIATION DETAILS
+                        INFO
                       </Button>
                     }
-                    content={<Negotiation jobOfferId={offer.id} negotiation={offer.negotiation} />}
+                    content={
+                      person ? (
+                        <div className=" flex flex-col items-center gap-4">
+                          <h3 className=" text-xl lg:text-2xl uppercase text-main2 font-semibold mt-4">
+                            Negotiation DETAILS
+                          </h3>
+                          <Paragraph
+                            className=" text-center m-auto"
+                            size="lg"
+                            description={offer.negotiation.description}
+                          />
+                        </div>
+                      ) : (
+                        <Negotiation jobOfferId={offer.id} negotiation={offer.negotiation} />
+                      )
+                    }
                   />
                 )}
               </div>

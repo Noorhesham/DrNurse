@@ -18,7 +18,7 @@ const Negotiation = ({ negotiation, jobOfferId }: { negotiation: any; jobOfferId
     <div className=" flex flex-col h-full   gap-4 items-center">
       <Paragraph size="lg" description={negotiation.description} />
       <FlexWrapper className=" justify-center">
-        <Link href={`/dashboard/${id}/edit-offer/${negotiation.id}`}>
+        <Link href={`/dashboard/${id}/edit-offer/${jobOfferId}`}>
           <Button className=" rounded-full" size={"sm"}>
             EDIT OFFER
           </Button>

@@ -124,6 +124,7 @@ const Signup = () => {
         if (res.activation_methods) {
           setMethods(res.activation_methods);
           toast.success(`${res.message} ...`);
+          localStorage.removeItem("referal");
           redirect(`/login?uuid=${res.activation_uuid}`);
         } else {
           cookies.set("jwt", res.token);

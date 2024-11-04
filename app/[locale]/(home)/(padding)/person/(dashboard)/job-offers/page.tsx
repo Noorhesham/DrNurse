@@ -25,7 +25,7 @@ const page = () => {
     <div className="">
       <div className=" flex flex-col gap-4 items-start justify-between">
         <MiniTitle boldness="bold" size="lg"  className="   uppercase" text="RECENTLY POSTED JOB OFFERS" />
-        {jobs.length > 0 ? <OffersTable action={true} offers={jobs} /> : <Empty text="No job offers found" />}
+        {jobs.length > 0 ? <OffersTable person={true} action={true} offers={jobs} /> : <Empty text="No job offers found" />}
       </div>
       {/* {jobs.length > 0 && <PaginationDemo />} */}
     </div>

@@ -17,6 +17,7 @@ import Actions from "./Actions";
 import { useParams } from "next/navigation";
 import { Job } from "../types";
 import { FaDraft2Digital } from "react-icons/fa";
+import { format } from "date-fns";
 
 export default function TableData({ offer, jobs, person }: { offer?: boolean; jobs?: any; person?: boolean }) {
   const { id } = useParams();
@@ -41,9 +42,23 @@ export default function TableData({ offer, jobs, person }: { offer?: boolean; jo
                 >
                   {job.job_title}
                 </Link>
-                <div className="  flex items-center gap-3 text-muted-foreground">
-                  <p>{job.type}</p>
-                  <span>{job.duration}</span>
+                <div className="  flex items-start gap-3 text-muted-foreground">
+                  <p>{job.career_type.title}</p>
+                  <span
+                    className={`list-disc relative ml-3 mr-2 after:-left-2 after:top-1/2 after:-translate-y-1/2 after:absolute 
+                  after:w-1.5 
+                  after:h-1.5 after:rounded-full ${
+                    job.status === "publish"
+                      ? "after:bg-green-500"
+                      : job.status === "draft"
+                      ? "after:bg-blue-500"
+                      : job.status === "closed"
+                      ? "after:bg-red-500"
+                      : " after:bg-yellow-400"
+                  }`}
+                  >
+                    {format(job.created_at, "dd/MM/yyyy")}
+                  </span>
                 </div>
               </div>
             </TableCell>

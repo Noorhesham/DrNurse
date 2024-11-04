@@ -7,24 +7,23 @@ import { useParams, usePathname } from "next/navigation";
 
 export default function RootLayout({
   children,
-  params: { locale },
 }: Readonly<{
   children: React.ReactNode;
-  params: { locale: string };
 }>) {
   const params = useParams();
+  const { id } = params;
   const pathname = usePathname();
-  const { data, isLoading } = useGetEntity("company", `company-${params.id}`, params.id);
+  const { data, isLoading } = useGetEntity("company", `company-${id}`, id);
   if (isLoading || !data) return <Spinner />;
   const lastSegment = pathname.split("/").pop();
 
   const formattedLastSegment = lastSegment
     ? lastSegment.replace(/-/g, " ").replace(/\b\w/g, (char: string) => char.toUpperCase())
     : "";
-  console.log(data, params.id);
   return (
-    <>
-      {!pathname.includes("doctor") && (
+    <section id="portal" className=" flex flex-col-reverse portalele">
+      <div className="  relative">{children}</div>
+      {!pathname.includes("doctor") && !pathname.includes("edit-offer") && (
         <BreadCrumb
           linksCustom={[
             { href: "", text: "Home" },
@@ -33,7 +32,6 @@ export default function RootLayout({
           ]}
         />
       )}
-      <div className="  relative">{children}</div>
-    </>
+    </section>
   );
 }

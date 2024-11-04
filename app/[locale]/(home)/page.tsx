@@ -28,7 +28,12 @@ const page = async () => {
     <main>
       <section className={`w-full h-screen relative bg-no-repeat bg-cover  `}>
         <div className=" w-full  absolute z-[-1] h-screen">
-          <Image className="object-cover lg:block  hidden w-full h-full" src={page.pc_image?.[0]?.file} alt="cover" fill />
+          <Image
+            className="object-cover lg:block  hidden w-full h-full"
+            src={page.pc_image?.[0]?.file}
+            alt="cover"
+            fill
+          />
           <Image
             className="object-cover lg:hidden block w-full h-full"
             src={page.mobile_image[0]?.file}
@@ -110,9 +115,9 @@ const page = async () => {
         </FlexWrapper>
       </MaxWidthWrapper>
       <div className="bg-[#F2F5FF] mt-5">
-        <MaxWidthWrapper className="  py-8 lg:py-16">
+        <MaxWidthWrapper className=" ">
           <div className=" flex items-center lg:gap-4 gap-2 flex-col">
-            <Head1 text={page.latest_job_title} />
+            <Head1 className=" my-0 mt-0" text={page.latest_job_title} />
             <div
               dangerouslySetInnerHTML={{ __html: convertToHTML(page.latest_jobs_content || "") }}
               className={`lg:max-w-4xl text-center text-black lg:text-base text-sm  font-medium my-2 leading-[1.7] `}
@@ -125,7 +130,7 @@ const page = async () => {
           </MotionContainer>
         </MaxWidthWrapper>
       </div>
-      <MaxWidthWrapper className="  pt-8 lg:pt-16">
+      <MaxWidthWrapper>
         <div className=" flex items-center gap-2 lg:gap-4 flex-col">
           <Head1 text={page.specialties_title} />
           <div
@@ -134,8 +139,8 @@ const page = async () => {
           />
         </div>
 
-        <div className=" hidden lg:grid">
-          <MotionContainer className=" grid grid-cols-2   gap-5 lg:grid-cols-5 mt-4">
+        <div className=" hidden  mt-4 lg:grid">
+          <MotionContainer className=" grid grid-cols-2   gap-5 lg:grid-cols-5">
             {page.specialties.map((specialty: any) => (
               <MotionItem>
                 <Link
@@ -192,7 +197,7 @@ const page = async () => {
               return (
                 <MotionItem className=" uppercase h-full self-stretch">
                   <CardContainer customPadding="h-full w-full  px-4 py-3 ">
-                    <Link className="flex flex-col" href={`/jobs?career_specialty_id=${keyword.id}`}>
+                    <Link className="flex flex-col" href={`/jobs?career_specialty_id=${keyword.career_specialty_id}`}>
                       <p className=" text-xs text-muted-foreground">{keyword.job_title}</p>
                       <p className="  font-semibold leading-5  text-base  text-gray-800 ">
                         {keyword.branch?.country?.title || ""},{keyword.branch?.state?.title || ""}

@@ -15,12 +15,12 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 const page = () => {
   const searchParams = useSearchParams();
-  const jobId = searchParams.get("jobId");
+  const jobId = searchParams.get("jobId") || "0";
   const [isPending, startTransition] = useTransition();
   const queryClient = useQueryClient();
   const router = useRouter();
   console.log(jobId);
-  const { data, isLoading } = useGetEntity("meetings", `meetings-${jobId}`, jobId);
+  const { data, isLoading } = useGetEntity("meetings", `meetings-${jobId}`, jobId || "0" || "");
   if (isLoading || !data) return <Spinner />;
   console.log(data);
   console.log(data);

@@ -116,7 +116,7 @@ const Page = () => {
             </div>
             <div className=" flex flex-col gap-2">
               <MiniTitle link="#" className="capitalizes" boldness="bold" color="text-gray-900" text="Offers" />
-              <OffersTable offers={overView.data.job_offers} />
+              <OffersTable person offers={overView.data.job_offers} />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-5 my-4 gap-5">
               <div className="flex col-span-2 flex-col gap-4 bg-[#F7F9FB] px-5 py-5 rounded-lg">

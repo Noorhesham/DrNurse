@@ -86,7 +86,9 @@ export type ResourceNameProps =
   | "cancel-offer"
   | "bookmarks"
   | "check-bookmarks"
-  | "getBranches";
+  | "getBranches"
+  | "offer"
+  | "update-offer";
 
 // Function to get the full URL from the resource name
 const getURL = (
@@ -226,7 +228,7 @@ const getURL = (
     case "delete-slot":
       return { url: `${url}/recruitment/meetings/slots/${id}`, method: "DELETE" };
     case "meetings":
-      return { url: `${url}/recruitment/meetings?job_id=${id}`, method: "GET" };
+      return { url: `${url}/recruitment/meetings${id ? `?job_id=${id}` : ""}`, method: "GET" };
     case "sendInvite":
       return { url: `${url}/recruitment/meetings/invite`, method: "POST" };
     case "cancelInvite":
@@ -257,6 +259,11 @@ const getURL = (
       return { url: `${url}/req-job-posts/entities-operations/${id}/bookmarked`, method: "GET" };
     case "bookmarks":
       return { url: `${url}/req-job-posts/entities-operations/bookmarks/list?${queryParams}`, method: "GET" };
+    case "offer":
+      return { url: `${url}/recruitment/job-offers/${id}`, method: "GET" };
+    case "update-offer":
+      return { url: `${url}/recruitment/job-offers/${id}`, method: "POST" };
+
     default:
       return { url, method: "GET" as MethodProps };
   }

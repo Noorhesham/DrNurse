@@ -15,6 +15,7 @@ import { useTranslations } from "next-intl";
 import { useAuth } from "@/app/context/AuthContext";
 import ModalCustom from "@/app/components/defaults/ModalCustom";
 import { SkeletonCard } from "@/app/components/defaults/SkeletonCard";
+import Paragraph from "@/app/components/defaults/Paragraph";
 const Activate2fa = () => {
   const [serial, setSerial] = useLocalStorageState("", "serial");
   const [qrCode, setQrCode] = useLocalStorageState("", "qrCode");
@@ -62,7 +63,8 @@ const Activate2fa = () => {
             >
               {t("2fadesc")}
             </label>
-          </div>
+          </div>{" "}
+          <Paragraph className=" text-center" description={t("2fadescc")} />
           <div>
             {serial && isActivated && (
               <div className=" text-2xl items-center flex flex-col mt-5">

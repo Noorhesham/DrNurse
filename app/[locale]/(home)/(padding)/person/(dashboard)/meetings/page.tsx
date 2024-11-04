@@ -39,18 +39,20 @@ const page = () => {
                   <Meet meet={meet} img />
                   <div className=" flex items-center gap-3">
                     <ModalCustom
-                      content={<SelectDate jobId={meet.req_job_post_id} meeting_id={meet.id} />}
+                      content={<SelectDate  jobId={meet.req_job_post_id} meeting_id={meet.id} />}
                       btn={
                         <Button size={"lg"} className=" rounded-full">
                           SET DATE
                         </Button>
                       }
                     />
-                    <Link href={`/person/job/${meet.req_job_post_id}`}>
-                      <Button size={"lg"} className="  bg-light text-main2 rounded-full" variant={"outline"}>
-                        VIEW JOB
-                      </Button>
-                    </Link>
+                    {meet.req_job_post_id && (
+                      <Link href={`/person/job/${meet.req_job_post_id}`}>
+                        <Button size={"lg"} className="  bg-light text-main2 rounded-full" variant={"outline"}>
+                          VIEW JOB
+                        </Button>
+                      </Link>
+                    )}
                     <ModalCustom
                       content={
                         <div className=" flex flex-col gap-5">

@@ -22,6 +22,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import FlexWrapper from "../defaults/FlexWrapper";
 import { useParams, useRouter } from "next/navigation";
+import { FaExclamationCircle } from "react-icons/fa";
 
 const offerSchema = z.object({
   employeeName: z.string().min(1, "Name is required"),
@@ -40,8 +41,18 @@ const offerSchema = z.object({
 
 type OfferFormValues = z.infer<typeof offerSchema>;
 
-const SendOffer = ({ userId }: { userId: string }) => {
-  const { data, isLoading } = useGetEntity("doctor", `doctor-${userId}`, userId);
+const SendOffer = ({
+  userId,
+  defaultvals,
+  negotiation,
+}: {
+  userId: string & { name: string; id: string };
+  defaultvals?: any;
+  negotiation?: { description: string };
+}) => {
+  const { data, isLoading } = useGetEntity("doctor", `doctor-${userId}`, userId, {
+    enabled: defaultvals ? false : true,
+  });
   const { id: companyId } = useParams();
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -49,14 +60,17 @@ const SendOffer = ({ userId }: { userId: string }) => {
   const form = useZodForm({
     schema: offerSchema,
     defaultValues: {
-      employeeName: data?.data?.name || "",
+      employeeName: data?.data?.name || userId.name || "",
+      country_id: defaultvals?.country_id || "",
+      city_id: defaultvals?.city_id || "",
+      state_id: defaultvals?.state_id || "",
       details: {
-        job_title: "",
-        salary: 0,
-        benefits: [""],
-        currency: "",
-        start_date: "",
-        address: "",
+        job_title: defaultvals?.job_title || "",
+        salary: defaultvals?.salary || 0,
+        benefits: defaultvals?.benefits || [],
+        currency: defaultvals?.currency || "usd",
+        start_date: defaultvals?.start_date || "",
+        address: defaultvals?.address || "",
       },
     },
   });
@@ -70,10 +84,16 @@ const SendOffer = ({ userId }: { userId: string }) => {
   const onSubmit = (data: OfferFormValues) => {
     console.log("Form Submitted", data);
     startTransition(async () => {
-      const res = await Server({
-        resourceName: "add-offer",
-        body: { ...data, user_id: id },
-      });
+      const res = defaultvals
+        ? await Server({
+            resourceName: "update-offer",
+            id: defaultvals.id,
+            body: { ...data, user_id: userId.id, _method: "PUT" },
+          })
+        : await Server({
+            resourceName: "add-offer",
+            body: { ...data, user_id: id },
+          });
       queryClient.invalidateQueries({ queryKey: [`offers-${userId}`] });
 
       console.log(res);
@@ -99,18 +119,23 @@ const SendOffer = ({ userId }: { userId: string }) => {
       label: t("startdate"),
     },
   ];
-  if (isLoading || !data) return <Spinner />;
+  if (isLoading) return <Spinner />;
 
   return (
-    <div className=" px-5 py-2.5">
+    <div className=" px-5 ">
+      {negotiation && (
+        <div className=" py-2 px-4 flex items-center gap-2 rounded-xl bg-yellow-500/90 mb-2 font-semibold text-yellow-100 border-gray-50">
+          <FaExclamationCircle /> {negotiation?.description}
+        </div>
+      )}
       <MiniTitle text={t("addJobOffer")} boldness="bold" size="lg" />
       <div className=" flex flex-col mt-5 items-start gap-2">
         <Label className=" uppercase">{t("employeeName")}</Label>
-        <Input disabled value={data.data.name} />
+        <Input disabled value={data?.data?.name || userId?.name || ""} />
       </div>
       <CustomForm
         disabled={isPending}
-        btnText={t("addJobOffer")}
+        btnText={defaultvals?.id ? t("UPDATE JOB OFFER") : t("addJobOffer")}
         form={form}
         inputs={offerArray}
         btnStyles="w-fit mr-auto "

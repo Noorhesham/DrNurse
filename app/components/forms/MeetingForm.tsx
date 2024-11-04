@@ -45,6 +45,7 @@ const MeetingForm = ({
     enabled: !!jobId,
   });
   const params = useParams();
+  console.log(jobId)
   const { data, isLoading } = useGetEntity("slots", `slots-${jobId}`, jobId);
 
   const defaultMeetings = data?.data
@@ -146,7 +147,7 @@ const MeetingForm = ({
   };
 
   const watchedFields = form.watch("meetings", fields);
-
+  console.log(data)
   return (
     <div>
       <MiniTitle boldness="bold" color="black" text={job?.data?.job_title || ""} />

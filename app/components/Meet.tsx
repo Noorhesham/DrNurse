@@ -33,7 +33,7 @@ const Meet = ({ cancel, img, meet }: { cancel?: boolean; img?: boolean; meet: an
               />
             </div>
           )}
-          <div>
+          <div className=" mb-[0.5px]">
             <MiniTitle
               boldness="extraBold"
               size="md"
@@ -41,10 +41,10 @@ const Meet = ({ cancel, img, meet }: { cancel?: boolean; img?: boolean; meet: an
               text={meet.req_job_post?.job_title || meet.invited?.name}
             />
             {meet?.company && <h2 className=" text-black font-semibold text-base">{meet.company.title}</h2>}
-            {meet?.invited && <h2 className=" text-gray-500">{meet.invited.email}</h2>}
+            {meet?.invited && <h2 className=" text-gray-600">{meet.invited.email}</h2>}
           </div>
         </div>
-        <div className=" flex flex-col gap-1 ">
+        <div className=" flex flex-col ">
           <p className=" text-xs text-muted-foreground">GTM : {formatToGMT(meet.created_at)}</p>
           <p className=" text-xs text-muted-foreground">Your local time : {formatToLocalTime(meet.created_at)}</p>
         </div>

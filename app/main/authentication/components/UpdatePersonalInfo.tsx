@@ -112,7 +112,7 @@ const UpdatePersonalInfo = () => {
                 title={t("updateEmail")}
               />
               {searchParams.get("uuid") && <InputOTPPattern setServerError={setOtpError} email sendType="email" />}
-              {OtpError && <p className="text-red-500 text-sm">{OtpError}</p>}
+              {OtpError && <p className="text-red-500 text-center mt-3 m-auto self-center text-sm">{OtpError}</p>}
             </div>
           )
         }
@@ -150,7 +150,7 @@ const UpdatePersonalInfo = () => {
               {searchParams.get("uuid") && (
                 <InputOTPPattern setServerError={setOtpError} sendType="" phone country_key={user.country_key} />
               )}
-              {OtpError && <p className="text-red-500">{OtpError}</p>}
+              {OtpError && <p className="text-red-500 text-center mt-3 m-auto self-center text-sm">{OtpError}</p>}
             </div>
           )
         }

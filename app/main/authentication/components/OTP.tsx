@@ -46,6 +46,7 @@ export function InputOTPPattern({
   const { setLogin } = useAuth();
   const [resending, setResending] = useState(false);
   const [timer, setTimer] = useState(true);
+
   const otpSchema = z.object({
     code: z.string().min(6).max(6),
     password: !forgot
@@ -144,13 +145,13 @@ export function InputOTPPattern({
         if (email || phone) {
           return router.push(`?${updatedParams.toString()}`, { scroll: false });
         }
-        forgot ? router.push("/login") : router.push(redirect ? redirect : "/loader");
+        forgot ? router.push("/login") : router.push(redirect ? redirect : "/");
       }
     });
   };
   return (
     <Suspense>
-      <div className="flex flex-col items-center mt-8">
+      <div className="flex flex-col gap-4 items-center mt-8">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
@@ -179,19 +180,21 @@ export function InputOTPPattern({
             {forgot && <FormInput name="password" control={form.control} placeholder={t("password")} password />}
             <div className="mt-4  flex items-center gap-2">
               {!activate && (
-                <Button type="button"
-                  className="rounded-full flex-1 px-8"
+                <Button
+                  disabled={resending}
+                  type="button"
+                  className="rounded-full relative min-w-[150px] bg-white border-main border  text-main hover:text-white flex-1 px-8"
                   onClick={(e) => {
-                      e.stopPropagation();
-                    handleSend(sendType);
+                    e.stopPropagation();
+                    handleSend ? handleSend(sendType) : Resend();
                     setTimer(true);
                   }}
                 >
-                  {t("resend_code")}
+                  {resending ? <Spinner className=" border-[5px] border-[#3a4f91] m-auto" /> : t("resend_code")}
                 </Button>
               )}
-              <Button disabled={isPending} className=" flex-1 rounded-full px-8" type="submit">
-                {isPending ? <Spinner className=" border-[5px] border-white text-center m-auto" /> : t("Submit")}
+              <Button disabled={isPending} className="  relative flex-1 rounded-full px-8" type="submit">
+                {isPending ? <Spinner className=" border-[5px] border-[#3a4f91] m-auto" /> : t("Submit")}
               </Button>
             </div>
           </form>

@@ -13,6 +13,7 @@ import { useGetEntities } from "@/app/components/inputsForm/CareerTypeInput";
 import { Server } from "@/app/main/Server";
 import { Job } from "@/app/types";
 import { Button } from "@/components/ui/button";
+import { useGetEntity } from "@/lib/queries";
 import { convertToHTML } from "@/lib/utils";
 import { PersonIcon } from "@radix-ui/react-icons";
 import { useQueryClient } from "@tanstack/react-query";
@@ -27,9 +28,9 @@ import { GoLocation } from "react-icons/go";
 import { toast } from "react-toastify";
 
 const page = ({ params: { jobId, locale } }: { params: { jobId: string; locale: string } }) => {
-  const { data, isLoading } = useGetEntities({ resourceName: "job", id: jobId, key: `job-${jobId}` });
+  const { data, isLoading } = useGetEntity("job", `job-${jobId}`, jobId);
   const queryClient = useQueryClient();
-  const [isPending, startTransition] = useTransition(); 
+  const [isPending, startTransition] = useTransition();
   if (!data || isLoading) return <Spinner />;
   const job = data.data;
   const timeAgo = job?.created_at ? formatDistanceToNow(parseISO(job?.created_at), { addSuffix: true }) : "";
@@ -37,8 +38,10 @@ const page = ({ params: { jobId, locale } }: { params: { jobId: string; locale: 
   const doctor = {
     name: job.job_title,
     image: "/job.svg",
-    speciality: `${job.career_type.title} , ${job.career_specialty.title} , ${job.career_level.title}`,
-    address: `${`${job.branch?.country?.title || ""} ,` || ""} ${job.branch?.state?.title || ""}`,
+    speciality: [job?.career_type?.title, job?.career_specialty?.title, job?.career_level?.title]
+      .filter(Boolean)
+      .join(", "),
+    address: [job?.branch?.country?.title, job?.branch?.state?.title].filter(Boolean).join(", "),
     duration: "in 7 days",
   };
 
@@ -69,12 +72,12 @@ const page = ({ params: { jobId, locale } }: { params: { jobId: string; locale: 
                     });
                     if (res.status) {
                       toast.success(res.message);
-                      queryClient.invalidateQueries({ queryKey: [`job-${job.id}`] });
+                      queryClient.invalidateQueries({ queryKey: [`job-${jobId}`] });
                     } else toast.error(res.message);
                   });
                 }}
-                className={` text-gray-800 ${
-                  job.status === "closed" ? " bg-red-500" : " bg-[#D3DDEE]"
+                className={`  ${
+                  job.status === "closed" ? " bg-red-500 text-gray-50" : " bg-[#D3DDEE] text-gray-800"
                 }  p-3 rounded-xl `}
               >
                 <div className=" w-6 h-6 relative">
@@ -110,20 +113,34 @@ const page = ({ params: { jobId, locale } }: { params: { jobId: string; locale: 
       <MaxWidthWrapper>
         <GridContainer className=" gap-8" cols={8}>
           <div className=" col-span-2 lg:col-span-6">
-            <section className=" flex flex-col gap-2 ">
-              <MiniTitle boldness="bold" color=" text-main2" text="JOB DESCRIPTION" />
-              <div
-                dangerouslySetInnerHTML={{ __html: convertToHTML(job.job_description || "") }}
-                className={`lg:max-w-4xl  text-black lg:text-base text-sm  font-medium my-2 leading-[1.7] `}
-              />
-              {JSON.parse(job.benefits).map((benefit: string, index: number) => (
-                <Paragraph key={index} description={benefit} />
-              ))}
-              <MiniTitle boldness="bold" color=" text-main2" text="Responsibilities" />
-              <div
-                dangerouslySetInnerHTML={{ __html: convertToHTML(job.job_requirements || "") }}
-                className={`lg:max-w-4xl  text-black lg:text-base text-sm  font-medium my-2 leading-[1.7] `}
-              />
+            <section className=" flex flex-col gap-4">
+              <div className=" flex flex-col gap-1">
+                <MiniTitle boldness="bold" color=" text-main2" text="JOB DESCRIPTION" />
+                <div
+                  dangerouslySetInnerHTML={{ __html: convertToHTML(job.job_description || "") }}
+                  className={`lg:max-w-4xl  text-black lg:text-base text-sm  font-medium  leading-[1.7] `}
+                />
+              </div>
+              {JSON.parse(job.benefits).length > 0 && (
+                <div className="flex gap-1 flex-col">
+                  {<MiniTitle boldness="bold" color=" text-main2" text="JOB BENEFITS" />}
+                  {JSON.parse(job.benefits).map((benefit: string, index: number) => (
+                    <p
+                      key={index}
+                      className={`lg:max-w-4xl  text-black lg:text-base text-sm  font-medium  leading-[1.7] `}
+                    >
+                      {benefit}
+                    </p>
+                  ))}
+                </div>
+              )}
+              <div className="flex gap-1 items-start flex-col">
+                <MiniTitle boldness="bold" color=" text-main2" text="Responsibilities" />
+                <div
+                  dangerouslySetInnerHTML={{ __html: convertToHTML(job.job_requirements || "") }}
+                  className={`lg:max-w-4xl  text-black lg:text-base text-sm  font-medium leading-[1.7] `}
+                />
+              </div>
               {job && (
                 <div className=" flex items-center gap-2 mt-2">
                   <p className=" font-medium">SHARE THIS JOB</p>

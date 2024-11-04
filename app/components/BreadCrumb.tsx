@@ -20,7 +20,7 @@ const BreadCrumb = ({ linksCustom }: { linksCustom?: { href: string; text: strin
   const router = useRouter();
   const pathName = usePathname();
   const links: any = linksCustom || pathName.split("/").filter((link) => !["ar", "en"].includes(link));
-
+  console.log(links)
   const current = links[links.length - 1];
   const dark =
     pathName.includes("doctor") ||
