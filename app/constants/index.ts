@@ -7,11 +7,11 @@ export const JOB_LINKS = [
 export const CURRENCY_OPTIONS = [
   {
     label: "USD",
-    value: "USD",
+    value: "usd",
   },
   {
     label: "SAR",
-    value: "SAR",
+    value: "sar",
   },
 ];
 

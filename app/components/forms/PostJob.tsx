@@ -97,7 +97,7 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
       benefits: JSON.parse(defaultData?.benefits || "[]") || [" "],
       job_description: defaultData?.job_description || "",
       job_requirements: defaultData?.job_requirements || "",
-      currency: defaultData?.currency || "USD",
+      currency: defaultData?.currency || "sar",
       recipient_status: defaultData?.recipient_status || "",
       recipient_email: defaultData?.recipient_email || "",
     },
@@ -124,12 +124,13 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
             resourceName: "add-job",
             body: data,
           });
-      defaultData?.id
-        ? queryClient.invalidateQueries({ queryKey: [`job-${defaultData.id}`] })
-        : router.push(`/dashboard/${id}/jobs`);
-      queryClient.invalidateQueries({ queryKey: [`company-overview-${id}`] });
+
       console.log(res);
       if (res.status) {
+        defaultData?.id
+          ? queryClient.invalidateQueries({ queryKey: [`job-${defaultData.id}`] })
+          : router.push(`/dashboard/${id}/jobs`);
+        queryClient.invalidateQueries({ queryKey: [`company-overview-${id}`] });
         toast.success(res.message);
       } else {
         toast.error(res.message);
