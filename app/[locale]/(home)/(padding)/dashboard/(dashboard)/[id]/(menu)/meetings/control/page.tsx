@@ -88,7 +88,11 @@ const page = () => {
                           </Button>
                         }
                         content={
-                          <div>
+                          <div className="flex flex-col gap-2">
+                          <Paragraph
+                            description={"DETERMINE WHETHER YOU WANT TO DISABLED OR RESCHEDULE THE MEETING"}
+                          />
+                          <div className="flex items-center gap-5">
                             <Button
                               disabled={isPending}
                               onClick={() => {
@@ -103,7 +107,7 @@ const page = () => {
                                   if (res.status) {
                                     toast.success(res.message);
 
-                                    queryClient.invalidateQueries({ queryKey: [`meetings-${jobId}`] });
+                                    queryClient.invalidateQueries({ queryKey: [`meetings-${meet.req_job_post_id}`] });
                                   } else toast.error(res.message);
                                 });
                               }}
@@ -127,7 +131,7 @@ const page = () => {
                                   if (res.status) {
                                     toast.success(res.message);
 
-                                    queryClient.invalidateQueries({ queryKey: [`meetings-${jobId}`] });
+                                    queryClient.invalidateQueries({ queryKey: [`meetings-${meet.req_job_post_id}`] });
                                   } else toast.error(res.message);
                                 });
                               }}
@@ -138,6 +142,7 @@ const page = () => {
                               CANCEL MEETING
                             </Button>
                           </div>
+                        </div>
                         }
                       />
                     ) : (

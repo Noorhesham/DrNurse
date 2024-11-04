@@ -17,6 +17,7 @@ import { Server } from "@/app/main/Server";
 import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import Paragraph from "@/app/components/defaults/Paragraph";
 
 const page = () => {
   const { data, isLoading } = useGetEntity("person-meetings", "person-meetings");
@@ -39,7 +40,7 @@ const page = () => {
                   <Meet meet={meet} img />
                   <div className=" flex items-center gap-3">
                     <ModalCustom
-                      content={<SelectDate  jobId={meet.req_job_post_id} meeting_id={meet.id} />}
+                      content={<SelectDate jobId={meet.req_job_post_id} meeting_id={meet.id} />}
                       btn={
                         <Button size={"lg"} className=" rounded-full">
                           SET DATE
@@ -91,30 +92,70 @@ const page = () => {
                   <Meet meet={meet} img />
                   <div className=" flex items-center gap-3">
                     {meet.status !== "cancelled" ? (
-                      <Button
-                        disabled={isPending}
-                        onClick={() => {
-                          startTransition(async () => {
-                            const res = await Server({
-                              resourceName: "cancel-book",
-                              body: {
-                                meeting_id: meet.id,
-                                cancelled: false,
-                              },
-                            });
-                            if (res.status) {
-                              toast.success(res.message);
+                      <ModalCustom
+                        btn={
+                          <Button size={"lg"} className=" rounded-full">
+                            CHANGE MEETING STATUS
+                          </Button>
+                        }
+                        content={
+                          <div class>
+                            <Paragraph
+                              description={"DETERMINE WHETHER YOU WANT TO DISABLED OR RESCHEDULE THE MEETING"}
+                            />
+                            <div className="flex items-center gap-5">
+                              <Button
+                                disabled={isPending}
+                                onClick={() => {
+                                  startTransition(async () => {
+                                    const res = await Server({
+                                      resourceName: "cancel-book",
+                                      body: {
+                                        meeting_id: meet.id,
+                                        cancelled: false,
+                                      },
+                                    });
+                                    if (res.status) {
+                                      toast.success(res.message);
 
-                              queryClient.invalidateQueries({ queryKey: [`person-meetings`] });
-                            } else toast.error(res.message);
-                          });
-                        }}
-                        variant={"destructive"}
-                        size={"lg"}
-                        className=" rounded-full"
-                      >
-                        CANCEL MEETING
-                      </Button>
+                                      queryClient.invalidateQueries({ queryKey: [`meetings-${meet.req_job_post_id}`] });
+                                    } else toast.error(res.message);
+                                  });
+                                }}
+                                variant={"destructive"}
+                                size={"lg"}
+                                className=" rounded-full"
+                              >
+                                RESCHEDULE MEETING
+                              </Button>{" "}
+                              <Button
+                                disabled={isPending}
+                                onClick={() => {
+                                  startTransition(async () => {
+                                    const res = await Server({
+                                      resourceName: "cancel-book",
+                                      body: {
+                                        meeting_id: meet.id,
+                                        cancelled: true,
+                                      },
+                                    });
+                                    if (res.status) {
+                                      toast.success(res.message);
+
+                                      queryClient.invalidateQueries({ queryKey: [`meetings-${meet.req_job_post_id}`] });
+                                    } else toast.error(res.message);
+                                  });
+                                }}
+                                variant={"destructive"}
+                                size={"lg"}
+                                className=" rounded-full"
+                              >
+                                CANCEL MEETING
+                              </Button>
+                            </div>
+                          </div>
+                        }
+                      />
                     ) : (
                       <Button disabled={true} variant={"destructive"} size={"lg"} className=" rounded-full">
                         CANCELED
