@@ -48,7 +48,7 @@ const jobSchema = z
     license_number: z.string().optional(),
     benefits: z.array(z.string().min(1, "Benefit is required")).optional(),
     description: z.string().min(20, "Description is too short"),
-
+    identification_card_number: z.string().min(1, "Identification Card Number is required"),
     main_education: z.object({
       university_name: z.string().min(1, "University Name is required"),
       country_id: z.union([z.string().min(1, "Country is required"), z.number()]),
@@ -139,6 +139,7 @@ const ProfileForm = ({ data }: { data?: any }) => {
       practice_license: data?.practice_license?.[0] || "",
       identification_card: data?.identification_card?.[0] || "",
       resume: data?.resume[0] || "",
+      identification_card_number: data?.identification_card_number || "",
       education:
         data?.educations.length > 0
           ? [
@@ -274,6 +275,13 @@ const ProfileForm = ({ data }: { data?: any }) => {
           name="current_job_title"
           label={t("CURRENT JOB TITLE")}
           placeholder={t("Enter Job Title")}
+        />
+        <FormInput
+          control={form.control}
+          type="number"
+          name="identification_card_number"
+          label={t("IDENTIFICATION CARD NUMBER")}
+          placeholder={t("Enter Identification Card Number")}
         />
         {/* Personal Data */}
         <FlexWrapper max={false}>
