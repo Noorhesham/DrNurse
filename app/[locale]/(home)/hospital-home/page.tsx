@@ -21,6 +21,7 @@ export default async function Home() {
   console.log(data);
   const page = data.page;
   const { important_numbers, services_list, hospital_logos, main_cover_title } = page;
+  console.log(important_numbers);
   return (
     <main>
       <section className={`w-full h-screen relative bg-no-repeat bg-cover  `}>
@@ -46,8 +47,9 @@ export default async function Home() {
               <LoaderBtn />
             </div>
             <GridContainer cols={4}>
-              {important_numbers.map((item: any) => (
+              {important_numbers.map((item: any, i: number) => (
                 <Widget
+                  key={i}
                   title={item.number}
                   subTitle={item.important_numbers_title}
                   icon={item.important_numbers_icon[0].sizes.medium}

@@ -13,6 +13,7 @@ import React, { useTransition } from "react";
 import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import ModalCustom from "@/app/components/defaults/ModalCustom";
 const page = () => {
   const searchParams = useSearchParams();
   const jobId = searchParams.get("jobId") || "0";
@@ -80,30 +81,65 @@ const page = () => {
                   <Meet meet={meet} img />
                   <div className=" flex items-center gap-3">
                     {meet.status !== "cancelled" ? (
-                      <Button
-                        disabled={isPending}
-                        onClick={() => {
-                          startTransition(async () => {
-                            const res = await Server({
-                              resourceName: "cancel-book",
-                              body: {
-                                meeting_id: meet.id,
-                                cancelled: false,
-                              },
-                            });
-                            if (res.status) {
-                              toast.success(res.message);
+                      <ModalCustom
+                        btn={
+                          <Button size={"lg"} className=" rounded-full">
+                            CHANGE MEETING STATUS
+                          </Button>
+                        }
+                        content={
+                          <div>
+                            <Button
+                              disabled={isPending}
+                              onClick={() => {
+                                startTransition(async () => {
+                                  const res = await Server({
+                                    resourceName: "cancel-book",
+                                    body: {
+                                      meeting_id: meet.id,
+                                      cancelled: false,
+                                    },
+                                  });
+                                  if (res.status) {
+                                    toast.success(res.message);
 
-                              queryClient.invalidateQueries({ queryKey: [`meetings-${jobId}`] });
-                            } else toast.error(res.message);
-                          });
-                        }}
-                        variant={"destructive"}
-                        size={"lg"}
-                        className=" rounded-full"
-                      >
-                        CANCEL MEETING
-                      </Button>
+                                    queryClient.invalidateQueries({ queryKey: [`meetings-${jobId}`] });
+                                  } else toast.error(res.message);
+                                });
+                              }}
+                              variant={"destructive"}
+                              size={"lg"}
+                              className=" rounded-full"
+                            >
+                              RESCHEDULE MEETING
+                            </Button>{" "}
+                            <Button
+                              disabled={isPending}
+                              onClick={() => {
+                                startTransition(async () => {
+                                  const res = await Server({
+                                    resourceName: "cancel-book",
+                                    body: {
+                                      meeting_id: meet.id,
+                                      cancelled: true,
+                                    },
+                                  });
+                                  if (res.status) {
+                                    toast.success(res.message);
+
+                                    queryClient.invalidateQueries({ queryKey: [`meetings-${jobId}`] });
+                                  } else toast.error(res.message);
+                                });
+                              }}
+                              variant={"destructive"}
+                              size={"lg"}
+                              className=" rounded-full"
+                            >
+                              CANCEL MEETING
+                            </Button>
+                          </div>
+                        }
+                      />
                     ) : (
                       <Button disabled={true} variant={"destructive"} size={"lg"} className=" rounded-full">
                         CANCELED
