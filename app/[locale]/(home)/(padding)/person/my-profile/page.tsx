@@ -134,7 +134,7 @@ const page = () => {
                                 show={false}
                                 applicant={{
                                   name: experience.name,
-                                  image: "/experience.name,Experience.svg",
+                                  image: "/Experience.svg",
                                   address: experience?.country?.title,
                                 }}
                               />
