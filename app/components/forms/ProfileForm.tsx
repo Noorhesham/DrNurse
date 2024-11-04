@@ -61,7 +61,7 @@ const jobSchema = z
           country_id: z.union([z.string().min(1, "Country is required"), z.number()]),
           career_specialty_id: z.union([z.string().min(1, "Specialty is required"), z.number()]),
           date: z.string().min(1, " date is required"),
-          certificate_name: z.string().optional(),
+          certificate_name: z.string().min(1, "Certificate Name is required"),
           training_center: z.string().optional(),
           career_level_id: z.union([z.string(), z.number()]),
           certificate: z.any().optional(),
