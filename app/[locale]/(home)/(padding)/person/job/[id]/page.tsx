@@ -123,7 +123,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
                 className={`lg:max-w-4xl  text-black lg:text-base text-sm  font-medium  leading-[1.7] `}
               />
               <div className=" text-black lg:text-base text-sm  font-medium  leading-[1.7] ">
-                {JSON.parse(job.benefits).map((benefit: string) => (
+                {JSON.parse(job.benefits)?.map((benefit: string) => (
                   <p className="" key={benefit}>
                     {benefit}
                   </p>
