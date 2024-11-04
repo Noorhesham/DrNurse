@@ -63,7 +63,7 @@ const page = () => {
               <div className=" flex flex-col gap-4 bg-[#F7F9FB] px-5 py-5 rounded-lg">
                 <MiniTitle boldness="bold" text="RECENTLY MEETINGS" />
                 {overView.data.meetings.length > 0 ? (
-                  overView.data.meetings.map((meet: any) => <Meet meet={meet} />)
+                  overView.data.meetings.map((meet: any) => <Meet key={meet.id} meet={meet} />)
                 ) : (
                   <Empty text="No Meetings Yet !" />
                 )}
@@ -79,8 +79,8 @@ const page = () => {
                     {overView.data.proposed_persons.length > 0 ? (
                       overView.data.proposed_persons.map((doctor: any) => (
                         <Doctor
-                          link={`/dashboard/${params.id}/doctor/${doctor.user.profile.id}?job=${doctor.req_job_post_id}`}
-                          doctor={doctor.user}
+                          link={`/dashboard/${params.id}/doctor/${doctor.user?.profile?.id}?job=${doctor.req_job_post_id}`}
+                          doctor={{ ...doctor.user, image: doctor.user?.avatar_url }}
                         />
                       ))
                     ) : (
@@ -96,7 +96,12 @@ const page = () => {
                       slidesPerView={2}
                       samePhone
                       items={overView.data.proposed_persons.map((doctor: any, i: number) => ({
-                        card: <Doctor key={i} doctor={doctor} />,
+                        card: (
+                          <Doctor key={i}
+                            link={`/dashboard/${params.id}/doctor/${doctor.user?.profile?.id}?job=${doctor.req_job_post_id}`}
+                            doctor={{ ...doctor.user, image: doctor.user?.avatar_url }}
+                          />
+                        ),
                       }))}
                     />
                   ) : (
