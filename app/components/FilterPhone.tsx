@@ -44,8 +44,7 @@ const FilterMobile = ({ from_years, filters }: { from_years?: any; filters?: any
           >
             <Filters
               from_years={from_years}
-              filters
-              {...filters}
+              filters={filters}
               colseBtn={
                 <button
                   onClick={() => setFilterMobile(false)}
