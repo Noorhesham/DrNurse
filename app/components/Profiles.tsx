@@ -41,18 +41,14 @@ const Profiles = ({ doctors, totalPages, filters, count, jobId }: any) => {
         ) : doctors.length > 0 ? (
           doctors.map((doc: any) => (
             <Applicant
-              jobId={jobId}
+              jobId={jobId || ""}
               notification
               show={false}
               key={doc.name}
               applicant={{
                 name: doc.name,
                 image: doc.avatar,
-                speciality: [
-                  doc?.career_type?.title,
-                  doc?.career_specialty?.title,
-                  doc?.career_level?.title,
-                ]
+                speciality: [doc?.career_type?.title, doc?.career_specialty?.title, doc?.career_level?.title]
                   .filter(Boolean)
                   .join(", "),
                 address: `${doc.current_location.title}`,
