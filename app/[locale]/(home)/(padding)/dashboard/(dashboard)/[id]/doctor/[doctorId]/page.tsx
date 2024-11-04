@@ -131,8 +131,8 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
                                 edu={true}
                                 show={false}
                                 applicant={{
-                                  name: 
-                                  image: "/experience.name,Experience.svg",
+                                  name: experience.name,
+                                  image: "/Experience.svg",
                                   address: experience?.country?.title,
                                 }}
                               />
