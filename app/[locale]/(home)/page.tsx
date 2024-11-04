@@ -135,11 +135,11 @@ const page = async () => {
           <Head1 text={page.specialties_title} />
           <div
             dangerouslySetInnerHTML={{ __html: convertToHTML(page.specialties_content || "") }}
-            className={`lg:max-w-4xl text-center text-black lg:text-base text-sm  font-medium my-2 leading-[1.7] `}
+            className={`lg:max-w-4xl text-center text-black lg:text-base text-sm  font-medium  leading-[1.7] `}
           />
         </div>
 
-        <div className=" hidden  mt-4 lg:grid">
+        {/* <div className=" hidden  mt-4 lg:grid">
           <MotionContainer className=" grid grid-cols-2   gap-5 lg:grid-cols-5">
             {page.specialties.map((specialty: any) => (
               <MotionItem>
@@ -155,12 +155,11 @@ const page = async () => {
               </MotionItem>
             ))}
           </MotionContainer>
-        </div>
-        <div className=" lg:hidden block">
+        </div> */}
+        <div className=" mt-4 lg:mt-14  block">
           <SwiperCards
             autoplay={true}
-            slidesPerView={2.1}
-            samePhone
+            slidesPerView={5}
             className=" h-full"
             contain
             logo
@@ -190,7 +189,7 @@ const page = async () => {
         </div>
       </MaxWidthWrapper>
       <MaxWidthWrapper className="">
-        <div className=" flex flex-col gap-2">
+        <div className=" flex flex-col gap-2 lg:gap-3">
           <Head1 size="lg" text={page.Keywords_title} />
           <MotionContainer className=" grid grid-cols-1 md:grid-cols-2 items-stretch  gap-3 lg:grid-cols-5 my-5">
             {page.keywords_jobs.map((keyword: any) => {
@@ -198,7 +197,10 @@ const page = async () => {
               return (
                 <MotionItem className=" uppercase h-full self-stretch">
                   <CardContainer customPadding="h-full w-full  px-4 py-3 ">
-                    <Link className="flex flex-col" href={`/jobs?career_specialty_id=${keyword.career_specialty_id}`}>
+                    <Link
+                      className="flex flex-col"
+                      href={`/person/jobs?career_specialty_id=${keyword.career_specialty_id}`}
+                    >
                       <p className=" text-xs text-muted-foreground">{keyword.job_title}</p>
                       <p className="  font-semibold leading-5  text-base  text-gray-800 ">
                         {keyword.branch?.country?.title || ""},{keyword.branch?.state?.title || ""}

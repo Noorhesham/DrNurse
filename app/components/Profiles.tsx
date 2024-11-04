@@ -51,7 +51,7 @@ const Profiles = ({ doctors, totalPages, filters, count, jobId }: any) => {
                 speciality: [doc?.career_type?.title, doc?.career_specialty?.title, doc?.career_level?.title]
                   .filter(Boolean)
                   .join(", "),
-                address: `${doc.current_location.title}`,
+                address: `${doc.current_location?.title}`,
                 duration: `${doc.years_of_experience} of experience`,
                 id: doc.id,
               }}
