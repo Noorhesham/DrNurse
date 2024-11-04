@@ -14,7 +14,7 @@ import React, { useEffect } from "react";
 const page = () => {
   const { userSettings, loading } = useAuth();
   const router = useRouter();
-  if (loading) return <Spinner />;
+  if (loading||!userSettings) return <Spinner />;
   const isAccountOlderThan10Days = () => {
     const createdAt = new Date(userSettings.created_at);
     const currentDate = new Date();
@@ -23,7 +23,7 @@ const page = () => {
     return diffInDays > 10;
   };
   useEffect(() => {
-    if (isAccountOlderThan10Days() && !userSettings.role.includes("admin")) {
+    if (isAccountOlderThan10Days() && !userSettings?.role.includes("admin")) {
       router.push("/person");
     }
   }, [router]);
