@@ -32,7 +32,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
   useEffect(() => {
     setCurrentUrl(window.location.href);
   }, []);
-  if (isLoading || !data || loading) return <Spinner />;
+  if (isLoading || !data || loading||!users) return <Spinner />;
   const job = data.data;
   const doctor = {
     name: job.job_title,
