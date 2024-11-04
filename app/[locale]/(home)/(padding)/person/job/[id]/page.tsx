@@ -32,7 +32,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
   useEffect(() => {
     setCurrentUrl(window.location.href);
   }, []);
-  if (isLoading || !data || loading||!users) return <Spinner />;
+  if (isLoading || !data || loading||!userSettings) return <Spinner />;
   const job = data.data;
   const doctor = {
     name: job.job_title,
@@ -71,7 +71,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
         <MaxWidthWrapper>
           <MainProfile user={doctor}>
             <div className="flex  items-center gap-2">
-              {!userSettings.has_profile ? (
+              {!userSettings?.has_profile ? (
                 <FunctionalButton
                   btnText={"APPLY FOR JOB"}
                   icon={null}
