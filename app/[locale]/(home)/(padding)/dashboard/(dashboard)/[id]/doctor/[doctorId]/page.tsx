@@ -103,12 +103,12 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
                             key={index}
                             edu={{
                               image: "/education-10.png",
-                              name: `${edu.training_center} , ${edu.certificate_name}`,
-                              speciality: `${edu.specialty?.title || edu?.career_specialty?.title} , ${
-                                edu?.career_level?.title || ""
-                              }`,
+                              name: [edu.training_center || "", edu.certificate_name || ""].filter(Boolean),
+                              speciality: [edu.specialty?.title || "", edu?.career_specialty?.title || ""]
+                                .filter(Boolean)
+                                .join(", "),
                               date: edu.date,
-                              address: edu?.country?.title,
+                              address: edu?.country?.title || "",
                             }}
                           />
                         ))
