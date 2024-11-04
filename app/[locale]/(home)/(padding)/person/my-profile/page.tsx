@@ -100,7 +100,7 @@ const page = () => {
                           <Education
                             key={index}
                             edu={{
-                              image: "/education-10.png",
+                              image: "/Vector (10).svg",
                               name: `${edu.training_center} , ${edu.certificate_name}`,
                               speciality: [
                                 dataPage?.career_type?.title,
@@ -134,7 +134,7 @@ const page = () => {
                                 show={false}
                                 applicant={{
                                   name: experience.name,
-                                  image: "/work-experience-icon.svg",
+                                  image: "/experience.name,Experience.svg",
                                   address: experience?.country?.title,
                                 }}
                               />

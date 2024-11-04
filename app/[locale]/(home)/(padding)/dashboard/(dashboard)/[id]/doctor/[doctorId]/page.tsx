@@ -102,7 +102,7 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
                           <Education
                             key={index}
                             edu={{
-                              image: "/education-10.png",
+                              image: "/Vector (10).svg",
                               name: [edu.training_center || "", edu.certificate_name || ""].filter(Boolean),
                               speciality: [edu.specialty?.title || "", edu?.career_specialty?.title || ""]
                                 .filter(Boolean)
@@ -131,8 +131,8 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
                                 edu={true}
                                 show={false}
                                 applicant={{
-                                  name: experience.name,
-                                  image: "/work-experience-icon.svg",
+                                  name: 
+                                  image: "/experience.name,Experience.svg",
                                   address: experience?.country?.title,
                                 }}
                               />

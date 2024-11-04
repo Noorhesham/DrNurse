@@ -31,7 +31,7 @@ const page = async () => {
           <MotionContainer className="grid grid-cols-1 mt-2 lg:grid-cols-3 gap-5">
             {page.vision.map((service: any, i: number) => (
               <MotionItem className="text-center flex flex-col items-start">
-                <div className=" rounded-2xl overflow-hidden w-full h-40 relative">
+                <div className=" rounded-2xl overflow-hidden w-full h-52 relative">
                   <Image alt="image" fill className="object-cover w-full h-full " src={service.image[0].file} />
                 </div>
                 <div className=" my-2 items-start flex flex-col text-main2  font-semibold">

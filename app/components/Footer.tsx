@@ -26,7 +26,10 @@ const Footer = () => {
         <div className="  hidden lg:block z-[-1] absolute w-full h-full inset-0">
           <Image src={"/footer.svg"} alt="footer" fill className=" object-top object-cover" />
         </div>
-        <MaxWidthWrapper className=" flex z-10 lg:bg-none  bg-gradient-to-b from-[#224982] to-[#0C1D37]  flex-col items-start  py5  lg:pt-40">
+        <MaxWidthWrapper
+          noPadding
+          className=" flex z-10 lg:bg-none  bg-gradient-to-b from-[#224982] to-[#0C1D37]  flex-col items-start  pb-5 lg:pt-32"
+        >
           <GridContainer
             className=" pb-5   text-center lg:text-justify  border-white border-b-2 justify-between gap-y-5 md:gap-y-10 lg:gap-20 "
             cols={11}
@@ -36,7 +39,7 @@ const Footer = () => {
               <Socials />
             </div>
 
-            <div className=" mt-1 col-span-full lg:col-span-2 self-start flex flex-col text-white items-start">
+            <div className=" col-span-full lg:col-span-2 self-end flex flex-col text-white items-start">
               <ul className=" lg:list-disc gap-2 mx-auto grid grid-cols-1 w-full items-start  place-items-center lg:place-items-start ">
                 <li className=" hover:opacity-80 duration-150">
                   <Link href={"/about-us"}>{t("aboutus")}</Link>
@@ -56,7 +59,7 @@ const Footer = () => {
               </ul>
             </div>
 
-            <div className=" col-span-full lg:col-span-6 self-start flex flex-col items-center lg:items-start">
+            <div className=" col-span-full lg:col-span-6 self-end flex flex-col items-center lg:items-start">
               <h4
                 className=" text-white   mb-3 after:w-full after:lg:block after:hidden after:left-[110%] after:top-1/2 after:rounded-2xl after:bg-white after:absolute after:h-[2px] 
           relative text-base md:text-xl"
@@ -76,10 +79,10 @@ const Footer = () => {
               </ul>
             </div>
           </GridContainer>
-          <FlexWrapper max={false} className=" w-full pt-5 gap-5 flex justify-between items-center">
+          <FlexWrapper max={false} className=" w-full mt-5 gap-5 flex justify-between items-center">
             <RightMind />
 
-            <div className="flex self-end  w-full lg:basis-[30%] items-center gap-3">
+            <div className="flex   justify-center self-end  w-full lg:basis-[30%] items-center gap-3">
               <DownloadButtons />
             </div>
           </FlexWrapper>

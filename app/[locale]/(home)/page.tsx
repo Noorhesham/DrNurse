@@ -144,10 +144,10 @@ const page = async () => {
             {page.specialties.map((specialty: any) => (
               <MotionItem>
                 <Link
-                  className="  w-full  block aspect-square h-52 rounded-full overflow-hidden relative"
-                  href={`/dashboard/employees?Career-type=${specialty.career_specialty_id}`}
+                  className="  w-full  block aspect-square h-52  overflow-hidden relative"
+                  href={`/dashboard/employees?career_specialty_id=${specialty.career_specialty_id}`}
                 >
-                  <Image fill alt="image" src={specialty.specialty_image?.[0].file} className=" object-cover" />
+                  <Image fill alt="image" src={specialty.specialty_image?.[0].file} className=" object-contain" />
                 </Link>
                 <h1 className="shadow-md -mt-4 z-10 relative w-fit px-6  rounded-xl self-center mx-auto text-center font-semibold text-main2 uppercase py-2 bg-white">
                   {specialty.specialty_title}
