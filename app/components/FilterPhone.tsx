@@ -6,7 +6,7 @@ import Filters from "./Filters";
 import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
 import { XIcon } from "lucide-react";
-const FilterMobile = () => {
+const FilterMobile = ({ from_years, filters }: { from_years?: any; filters?: any }) => {
   const [filterMobile, setFilterMobile] = React.useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const handleClickOuttside = (e: MouseEvent) => {
@@ -43,6 +43,9 @@ const FilterMobile = () => {
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             <Filters
+              from_years={from_years}
+              filters
+              {...filters}
               colseBtn={
                 <button
                   onClick={() => setFilterMobile(false)}

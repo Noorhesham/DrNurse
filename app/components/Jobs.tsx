@@ -45,7 +45,7 @@ const JobsList = ({ jobs, totalPages, filters }: JobsListProps) => {
         <div className=" lg:block hidden ">
           <Filters from_years={false} filters={filters} />
         </div>
-        <FilterMobile />
+        <FilterMobile from_years={false} filters={filters} />
       </div>
     </GridContainer>
   );
