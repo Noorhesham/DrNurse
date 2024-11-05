@@ -23,6 +23,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import Spinner from "../Spinner";
 import { format } from "date-fns";
 import { useAuth } from "@/app/context/AuthContext";
+import { useRouter } from "next/navigation";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const jobSchema = z
   .object({
@@ -54,6 +56,8 @@ const jobSchema = z
       country_id: z.union([z.string().min(1, "Country is required"), z.number()]),
       career_specialty_id: z.union([z.string().min(1, "Specialty is required"), z.number()]),
       date: z.string().min(1, " date is required"),
+      date_to: z.string().min(1, " date is required"),
+      present: z.union([z.boolean(), z.number()]).transform((val) => (val === true ? 1 : 0)),
     }),
     education: z
       .array(
@@ -61,6 +65,8 @@ const jobSchema = z
           country_id: z.union([z.string().min(1, "Country is required"), z.number()]),
           career_specialty_id: z.union([z.string().min(1, "Specialty is required"), z.number()]),
           date: z.string().min(1, " date is required"),
+          date_to: z.string().min(1, " date is required"),
+          present: z.union([z.boolean(), z.number()]).transform((val) => (val === true ? 1 : 0)),
           certificate_name: z.string().min(1, "Certificate Name is required"),
           training_center: z.string().optional(),
           career_level_id: z.union([z.string(), z.number()]),
@@ -155,6 +161,8 @@ const ProfileForm = ({ data }: { data?: any }) => {
                 career_level_id: "",
                 career_specialty_id: "",
                 date: "",
+                date_to: "",
+                present: 0,
                 certificate: "",
               },
             ],
@@ -169,7 +177,7 @@ const ProfileForm = ({ data }: { data?: any }) => {
           about: "",
         },
       ],
-      currency: data?.currency || "USD",
+      currency: data?.currency || "usd",
     },
   });
   const {
@@ -180,7 +188,7 @@ const ProfileForm = ({ data }: { data?: any }) => {
     control: form.control,
     name: "education",
   });
-
+  const router = useRouter();
   const queryClient = useQueryClient();
   const {
     append: appendExperience,
@@ -193,6 +201,7 @@ const ProfileForm = ({ data }: { data?: any }) => {
   console.log(form.getValues());
   const { setDates, setLogin } = useAuth();
   const onSubmit = (data: JobFormValues) => {
+    console.log(data);
     const formData = new FormData();
     const fileFields = ["resume", "practice_license", "identification_card", "certificate"];
     for (const key in data) {
@@ -248,15 +257,17 @@ const ProfileForm = ({ data }: { data?: any }) => {
         last_update_date_user: "",
       }));
       setLogin((l) => !l);
-      if (res.status) toast.success(res.message);
-      else toast.error(res.message);
+      if (res.status) {
+        toast.success(res.message);
+        router.push("/person");
+      } else toast.error(res.message);
     });
   };
   useEffect(() => {
     if (form.getValues("available") === "yes") form.setValue("start_availability_at", format(Date.now(), "yyyy-MM-dd"));
   }, [form, form.getValues("available")]);
   if (isLoading) return <Spinner />;
-
+  console.log(form.formState.errors);
   return (
     <Form {...form}>
       <form className="flex flex-col px-5 py-2.5 w-full items-stretch gap-4" onSubmit={form.handleSubmit(onSubmit)}>
@@ -402,12 +413,21 @@ const ProfileForm = ({ data }: { data?: any }) => {
               careerSpecialty="main_education.career_specialty_id"
               careerType="career_type_id"
               onlySpeciality
-            />{" "}
-            <FormInput control={form.control} name={`main_education.date`} label={t("Date")} date />
+            />
           </FlexWrapper>
+          <div className="flex w-full  lg:flex-row flex-col items-center gap-4">
+            <FormInput control={form.control} name={`main_education.date`} label={t("FROM Date")} date />
+            <FormInput control={form.control} name={`main_education.date_to`} label={t("TO DATE")} date />
+            <FormInput
+              control={form.control}
+              name={`main_education.present`}
+              label={t("ARE YOU CRRUNTLEY PRESENT ?")}
+              check
+            />{" "}
+          </div>
 
           {educationFields.map((field, index) => (
-            <div key={field.id} className=" bg-gray-100 rounded-xl mt-2 p-2 mb-2">
+            <div key={index} className=" bg-gray-100 rounded-xl mt-2 p-2 mb-2">
               <FlexWrapper
                 max={false}
                 key={field.id}
@@ -446,8 +466,24 @@ const ProfileForm = ({ data }: { data?: any }) => {
                   careerSpecialty={`education.${index}.career_specialty_id`}
                   careerType="career_type_id"
                 />
-                <FormInput control={form.control} name={`education.${index}.date`} label={t("Date")} date />
               </FlexWrapper>{" "}
+              <FlexWrapper className=" w-full" max={false}>
+                <div className="flex flex-col lg:flex-row w-full items-center gap-4">
+                  <FormInput control={form.control} name={`education.${index}.date`} label={t("FROM Date")} date />
+                  <FormInput
+                    control={form.control}
+                    name={`education.${index}.date_to`}
+                    label={t("TO DATE")}
+                    date
+                  />{" "}
+                  <FormInput
+                    control={form.control}
+                    name={`education.${index}.present`}
+                    label={t("ARE YOU CRRUNTLEY PRESENT ?")}
+                    check
+                  />{" "}
+                </div>
+              </FlexWrapper>
               <div className="flex gap-2 px-3 py-2 items-center">
                 <FormInput type="file" label={t("Upload certificate")} name={`education.${index}.certificate`} />
                 <button
@@ -474,6 +510,8 @@ const ProfileForm = ({ data }: { data?: any }) => {
                 country_id: "",
                 training_center: "",
                 career_level_id: "",
+                date_to: "",
+                present: 0,
               })
             }
           />
@@ -481,7 +519,7 @@ const ProfileForm = ({ data }: { data?: any }) => {
         {/* Experience */}
         <MiniTitle form size="md" boldness="bold" text={t("Experience")} />
         {experienceFields.map((field, index) => (
-          <div className="border  bg-gray-100 rounded p-2 flex flex-col gap-2">
+          <div key={index} className="border  bg-gray-100 rounded p-2 flex flex-col gap-2">
             <FlexWrapper max={false}>
               <FormInput control={form.control} name={`previous_experience.${index}.name`} label={t("Hospital")} />
               <ComboboxForm

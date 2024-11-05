@@ -14,6 +14,7 @@ import MotionItem from "../defaults/MotionItem";
 import Image from "next/image";
 import Link from "next/link";
 import { getPasswordStrength } from "@/app/helpers/utils";
+import { Checkbox } from "@/components/ui/checkbox";
 interface FormInputProps {
   control?: any;
   name: string;
@@ -21,6 +22,7 @@ interface FormInputProps {
   width?: string;
   type?: string;
   phone?: boolean;
+  check?: boolean;
   className?: string;
   description?: string;
   price?: boolean;
@@ -81,6 +83,7 @@ const FormInput = ({
   returnFullPhone = true,
   width,
   noSwitch = false,
+  check = false,
 }: FormInputProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [PhoneSearchComponent, setPhoneSearchComponent] = useState<PhoneSearchComponentType>();
@@ -134,9 +137,9 @@ const FormInput = ({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className={`${width || "w-full"} relative`}>
+        <FormItem className={`${width || "w-full"} ${check && "flex items-center "} relative`}>
           {!switchToggle && label !== "" && (
-            <FormLabel className="uppercase">
+            <FormLabel className={`uppercase ${check && "text-nowrap mt-2"}`}>
               {label} {icon}
             </FormLabel>
           )}
@@ -169,6 +172,12 @@ const FormInput = ({
                     {label || ""}
                   </Label>
                 </div>
+              ) : check ? (
+                <Checkbox
+                  className=" self-center my-auto"
+                  checked={field.value === 1 || field.value === true}
+                  onCheckedChange={field.onChange}
+                />
               ) : (
                 <div className=" flex flex-col gap-2 w-full items-start">
                   {type === "file" && form.getValues(name) && !(form.getValues(name) instanceof File) && (

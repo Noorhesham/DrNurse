@@ -32,7 +32,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
   useEffect(() => {
     setCurrentUrl(window.location.href);
   }, []);
-  if (isLoading || !data || loading||!userSettings) return <Spinner />;
+  if (isLoading || !data || loading || !userSettings) return <Spinner />;
   const job = data.data;
   const doctor = {
     name: job.job_title,
@@ -135,7 +135,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
                 className={`lg:max-w-4xl  text-black lg:text-base text-sm  font-medium  leading-[1.7] `}
               />
               {job && (
-                <div className=" flex items-center gap-2 mt-2">
+                <div className=" flex items-center lg:flex-nowrap flex-wrap gap-2 mt-2">
                   <p className=" font-medium">SHARE THIS JOB</p>
                   <div className="flex items-center gap-2">
                     <Link href={`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`} target="_blank">
