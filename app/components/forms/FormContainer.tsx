@@ -2,11 +2,13 @@
 import { z, ZodObject, ZodTypeAny } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import CustomForm from "./CustomForm";
 import { useTranslations } from "next-intl";
 import { toast } from "react-toastify";
+import { CheckIcon } from "lucide-react";
 import { Server } from "@/app/main/Server";
+import MotionItem from "../defaults/MotionItem";
 
 const generateSchemaFromFields = (fields: any[], t: any): ZodObject<any> => {
   const schemaShape: Record<string, ZodTypeAny> = {};
@@ -36,7 +38,7 @@ const generateSchemaFromFields = (fields: any[], t: any): ZodObject<any> => {
         else fieldSchema = z.string().email(`${t("must be a valid email")}`);
         break;
       case "phoneNumber":
-        if (field.returnFullPhone) fieldSchema = z.string().min(10, `${t("must be a valid phone number")}`);
+        if (field.returnFullPhone) fieldSchema = z.string().min(9, `${t("must be a valid phone number")}`);
         else
           fieldSchema = z
             .object({
@@ -107,13 +109,13 @@ const FormContainer: React.FC<Formcontainer> = ({
 }) => {
   const t = useTranslations("form");
 
-  const dynamicSchema = generateSchemaFromFields(formArray, t);
+  const dynamicSchema = useMemo(() => generateSchemaFromFields(formArray, t), [formArray, t]);
 
   const form = useForm({
     resolver: zodResolver(dynamicSchema),
     mode: "onChange",
     defaultValues:
-    //@ts-ignore
+      //@ts-ignore
       {
         ...defaultValues,
         birth_day: defaultValues?.birthday || "",
@@ -123,31 +125,69 @@ const FormContainer: React.FC<Formcontainer> = ({
         },
         avatar: defaultValues?.photo || "",
       } || {},
+    shouldUnregister: true,
   });
   console.log(form.formState.errors);
   const [serverError, setServerError] = useState<string[] | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [resetFormData, setResetFormData] = useState(false);
 
   const onSubmit = async (data: z.infer<typeof dynamicSchema>) => {
     startTransition(async () => {
-      submit(data, setServerError);
+      if (server) {
+        try {
+          console.log(data);
+          const res = await Server({ resourceName: "submitForm", body: data, id: id || "contact-us" });
+          console.log(res);
+          if (res.status) {
+            toast.success(res.message, { autoClose: 5000 });
+            setResetFormData(true); // Trigger reset
+            setServerError(null);
+            setTimeout(() => setResetFormData(false), 0);
+          }
+          if (!res.status) setServerError(res.message);
+        } catch (error) {
+          console.log(error);
+        }
+      } else if (submit) {
+        submit(data, setServerError);
+        form.reset({});
+        setServerError(null);
+      }
     });
   };
+  useEffect(() => {
+    if (resetFormData) {
+      form.reset({});
+    }
+  }, [resetFormData, form]);
 
   return (
-    <CustomForm
-      serverError={serverError}
-      btnText={btnText || t("Submit")}
-      form={form}
-      isPending={isPending}
-      cancel={cancel}
-      title={title || ""}
-      btnStyles={btnStyles || "w-[40%] mr-auto "}
-      inputs={formArray}
-      onSubmit={onSubmit}
-    >
-      {children}
-    </CustomForm>
+    <div className="  w-full min-h-[20vh]">
+      {!resetFormData ? (
+        <CustomForm
+          serverError={serverError}
+          btnText={btnText || t("Submit")}
+          form={form}
+          isPending={isPending}
+          cancel={cancel}
+          title={title || ""}
+          btnStyles={btnStyles || "w-[40%] mr-auto "}
+          inputs={formArray}
+          onSubmit={onSubmit}
+        >
+          {children}
+        </CustomForm>
+      ) : (
+        <MotionItem nohover initial={{ opacity: 0, scale: 0.6 }} whileInView={{ opacity: 1, scale: 1 }}>
+          <p>
+            <CheckIcon className=" text-gray-400" />
+            {t("success")}
+          </p>
+          <span>{t("backtoform")}</span>
+        </MotionItem>
+      )}
+    </div>
   );
 };
 

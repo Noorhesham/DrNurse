@@ -88,7 +88,9 @@ export type ResourceNameProps =
   | "check-bookmarks"
   | "getBranches"
   | "offer"
-  | "update-offer";
+  | "update-offer"
+  | "getForms"
+  | "submitForm";
 
 // Function to get the full URL from the resource name
 const getURL = (
@@ -263,6 +265,10 @@ const getURL = (
       return { url: `${url}/recruitment/job-offers/${id}`, method: "GET" };
     case "update-offer":
       return { url: `${url}/recruitment/job-offers/${id}`, method: "POST" };
+    case "getForms":
+      return { url: `${url}/forms/getForms`, method: "POST" };
+    case "submitForm":
+      return { url: `${url}/forms/${id}/submit`, method: "POST" };
 
     default:
       return { url, method: "GET" as MethodProps };
