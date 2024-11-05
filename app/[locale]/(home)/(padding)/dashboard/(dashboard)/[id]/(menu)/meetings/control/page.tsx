@@ -89,7 +89,7 @@ const page = () => {
                           </Button>
                         }
                         content={
-                          <div className="flex flex-col justify-center gap-2">
+                          <div className="flex flex-col items-center justify-center gap-2">
                           <Paragraph
                             description={"DETERMINE WHETHER YOU WANT TO DISABLED OR RESCHEDULE THE MEETING"}
                           />
