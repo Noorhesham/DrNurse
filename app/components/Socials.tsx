@@ -48,7 +48,7 @@ const Socials = ({ login = false }: { login?: boolean }) => {
     }
 
     return (
-      <Link key={key} href={href} className={commonStyles}>
+      <Link target="_blank" key={key} href={href} className={commonStyles}>
         <Icon />
       </Link>
     );
