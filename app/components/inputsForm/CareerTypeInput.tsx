@@ -104,7 +104,9 @@ const CareerInput = ({
       )}
 
       {selectedCareerSpecialty &&
-        (!loadingCareerTypes || !loadingCareerLevels || !loadingCareerSpecialties) &&
+        !loadingCareerTypes &&
+        !loadingCareerLevels &&
+        !loadingCareerSpecialties &&
         careerLevel !== "" && (
           <ComboboxForm
             disabled={loadingCareerLevels}
