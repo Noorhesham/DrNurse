@@ -91,9 +91,9 @@ const CareerInput = ({
 
       {(selectedCareerType || onlySpeciality) && (
         <ComboboxForm
-          disabled={loadingCareerSpecialties || disabled || (loadingCareerSpecialties && loadingCareerTypes)}
+          disabled={loadingCareerSpecialties || disabled || loadingCareerSpecialties || loadingCareerTypes}
           name={careerSpecialty}
-          loading={loadingCareerSpecialties}
+          loading={loadingCareerSpecialties || loadingCareerSpecialties || loadingCareerTypes}
           label={"Career Specialty"}
           placeholder={"Select Career Specialty"}
           options={careerSpecialties?.data?.map((specialty: any) => ({
@@ -106,7 +106,7 @@ const CareerInput = ({
       {selectedCareerSpecialty && careerLevel !== "" && (
         <ComboboxForm
           disabled={loadingCareerLevels}
-          loading={loadingCareerLevels || loadingCareerLevels}
+          loading={loadingCareerLevels || loadingCareerSpecialties || loadingCareerTypes}
           name={careerLevel}
           label={"Career Level"}
           placeholder={"Select Career Level"}
