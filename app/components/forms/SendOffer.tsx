@@ -67,7 +67,7 @@ const SendOffer = ({
       details: {
         job_title: defaultvals?.job_title || "",
         salary: defaultvals?.salary || 0,
-        benefits: defaultvals?.benefits || [],
+        benefits: defaultvals?.benefits || [""],
         currency: defaultvals?.currency || "usd",
         start_date: defaultvals?.start_date || "",
         address: defaultvals?.address || "",
@@ -78,7 +78,7 @@ const SendOffer = ({
   const { append, remove, fields } = useFieldArray({
     control: form.control,
     //@ts-ignore
-    name: "benefits",
+    name: "details.benefits",
   });
   const id = data?.data?.user_id;
   const onSubmit = (data: OfferFormValues) => {
