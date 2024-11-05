@@ -89,7 +89,7 @@ const CareerInput = ({
         />
       )}
 
-      {(selectedCareerType || onlySpeciality) && (
+      {(selectedCareerType || onlySpeciality) && !loadingCareerSpecialties && !loadingCareerTypes && (
         <ComboboxForm
           disabled={loadingCareerSpecialties || disabled || loadingCareerSpecialties || loadingCareerTypes}
           name={careerSpecialty}
@@ -103,19 +103,21 @@ const CareerInput = ({
         />
       )}
 
-      {selectedCareerSpecialty && careerLevel !== "" && (
-        <ComboboxForm
-          disabled={loadingCareerLevels}
-          loading={loadingCareerLevels || loadingCareerSpecialties || loadingCareerTypes}
-          name={careerLevel}
-          label={"Career Level"}
-          placeholder={"Select Career Level"}
-          options={careerLevels?.data.map((level: any) => ({
-            label: level.title,
-            value: level.id,
-          }))}
-        />
-      )}
+      {selectedCareerSpecialty &&
+        (!loadingCareerTypes || !loadingCareerLevels || !loadingCareerSpecialties) &&
+        careerLevel !== "" && (
+          <ComboboxForm
+            disabled={loadingCareerLevels}
+            loading={loadingCareerLevels || loadingCareerSpecialties || loadingCareerTypes}
+            name={careerLevel}
+            label={"Career Level"}
+            placeholder={"Select Career Level"}
+            options={careerLevels?.data.map((level: any) => ({
+              label: level.title,
+              value: level.id,
+            }))}
+          />
+        )}
     </FlexWrapper>
   );
 };
