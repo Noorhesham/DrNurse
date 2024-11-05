@@ -117,8 +117,7 @@ const page = () => {
                                     });
                                     if (res.status) {
                                       toast.success(res.message);
-
-                                      queryClient.invalidateQueries({ queryKey: [`meetings-${meet.req_job_post_id}`] });
+                                      queryClient.invalidateQueries({ queryKey: [`person-meetings`] });
                                     } else toast.error(res.message);
                                   });
                                 }}
@@ -142,7 +141,7 @@ const page = () => {
                                     if (res.status) {
                                       toast.success(res.message);
 
-                                      queryClient.invalidateQueries({ queryKey: [`meetings-${meet.req_job_post_id}`] });
+                                      queryClient.invalidateQueries({ queryKey: [`person-meetings`] });
                                     } else toast.error(res.message);
                                   });
                                 }}
