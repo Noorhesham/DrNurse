@@ -23,7 +23,7 @@ const page = () => {
         <MiniTitle boldness="bold" size="lg" className="   uppercase" text="RECENTLY POSTED JOB OFFERS" />
       </div>
       <OffersTable action={false} offers={jobs} />
-      <PaginationDemo />
+      {/* <PaginationDemo /> */}
     </div>
   );
 };
