@@ -10,7 +10,7 @@ const page = async ({ params }: { params: { locale: string; id: string } }) => {
   const item: any = data.item;
   const { main_gallery, title, content } = item;
   const contentHTML = convertToHTML(content);
-  console.log(main_gallery);
+
   return (
     <section className=" min-h-screen  ">
       <MaxWidthWrapper className="flex flex-col items-start px-14  mt-5 justify-center">

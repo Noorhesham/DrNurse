@@ -23,7 +23,7 @@ const page = async () => {
   const data = await Server({ resourceName: "home", id: "persons-home" });
 
   const page = data.page;
-  console.log(data);
+
   return (
     <main>
       <section className={`w-full h-screen relative bg-no-repeat bg-cover  `}>
@@ -193,7 +193,7 @@ const page = async () => {
           <Head1 size="lg" text={page.Keywords_title} />
           <MotionContainer className=" grid grid-cols-1 md:grid-cols-2 items-stretch  gap-3 lg:grid-cols-5 my-5">
             {page.keywords_jobs.map((keyword: any) => {
-              console.log(keyword);
+       
               return (
                 <MotionItem className=" uppercase h-full self-stretch">
                   <CardContainer customPadding="h-full w-full  px-4 py-3 ">

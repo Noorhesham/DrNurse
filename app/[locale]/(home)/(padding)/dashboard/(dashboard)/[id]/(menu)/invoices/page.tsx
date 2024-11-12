@@ -13,7 +13,6 @@ import React from "react";
 const page = async ({ params: { id } }: { params: { id: string } }) => {
   const data = await Server({ resourceName: "my-subs" });
   const invoices = await Server({ resourceName: "my-invoices" });
-  console.log(invoices);
   return (
     <div>
       <Table>

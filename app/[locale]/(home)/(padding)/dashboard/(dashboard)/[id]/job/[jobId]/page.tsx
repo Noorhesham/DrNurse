@@ -45,7 +45,7 @@ const page = ({ params: { jobId, locale } }: { params: { jobId: string; locale: 
     duration: "in 7 days",
   };
 
-  console.log(job);
+
   return (
     <section>
       <div className=" bg-light ">

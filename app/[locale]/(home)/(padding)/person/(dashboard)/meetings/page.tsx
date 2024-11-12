@@ -25,7 +25,7 @@ const page = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
   if (isLoading || !data) return <Spinner />;
-  console.log(data);
+
   const invitations = data.data.filter((meet: any) => meet.status === "invitation");
   const meetings = data.data.filter((meet: any) => meet.status !== "invitation");
   return (

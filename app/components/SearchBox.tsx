@@ -100,7 +100,7 @@ const SearchBox = ({
       data.products.length > 0 ? router.push(`/shop?search=${query}`) : router.push(`/shop`);
     }
   };
-  console.log(data);
+
   return (
     <div ref={containerRef} className=" w-full relative md:w-[80%] flex flex-col gap-4  ">
       {" "}

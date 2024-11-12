@@ -14,14 +14,26 @@ const Applicant = ({
   notification,
   apply,
   jobId,
+  classify = false,
 }: {
-  applicant: { image: string; name: string; duration: string; speciality: string; address: string; id: string };
+  applicant: {
+    image: string;
+    name: string;
+    duration: string;
+    speciality: string;
+    address: string;
+    id: string;
+    applicationId?: string;
+    classification?: { id: string | number; name: string };
+  };
   show?: boolean;
   notification?: boolean;
   apply?: boolean;
   jobId?: string;
+  classify?: boolean;
 }) => {
   const { id } = useParams();
+
   return (
     <Container className=" hover:bg-gradient-to-r from-light to-white   duration-150">
       <div
@@ -43,7 +55,7 @@ const Applicant = ({
             </>
           ) : (
             <>
-              {!notification && <SateChange />}
+              {classify && <SateChange defaultValue={applicant.classification} jobId={applicant.applicationId} />}
               <Link
                 href={!apply ? `/dashboard/${id}/doctor/${applicant.id}?job=${jobId}` : "/dashboard/applicant/1"}
                 className=" p-1 rounded-xl bg-main2 text-gray-50"

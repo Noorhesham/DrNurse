@@ -19,7 +19,7 @@ const page = async ({ params: { locale }, searchParams }: { params: { locale: st
   unstable_setRequestLocale(locale);
   const t = await getTranslations();
   const { status, message, response, error, explanation } = searchParams;
-  console.log(error);
+
   const hospitalId = cookies().get("hospitalId")?.value;
   return (
     <MaxWidthWrapper>

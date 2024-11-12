@@ -10,7 +10,7 @@ const page = () => {
   const { id } = useParams();
   const { data, isLoading } = useGetEntity("company", `company-${id}`, `${id}`);
   if (!data || isLoading) return <Spinner />;
-  console.log(data);
+
   return (
     <>
       <HospitalProfileSettings defaultData={data.data} />

@@ -26,12 +26,11 @@ export default async function NotFound() {
     const pathSegments = url.pathname.split("/").filter(Boolean);
     lastSlug = pathSegments[pathSegments.length - 1];
 
-    console.log("Last Slug:", lastSlug);
   } catch (error) {
     console.error("Invalid URL:", error);
   }
   const data = await Server({ resourceName: "home", id: lastSlug });
-  console.log(data);
+
   return (
     <QueryProvider>
       <DeviceProvider>

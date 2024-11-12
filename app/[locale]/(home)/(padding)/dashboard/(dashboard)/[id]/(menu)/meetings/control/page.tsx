@@ -21,11 +21,9 @@ const page = () => {
   const [isPending, startTransition] = useTransition();
   const queryClient = useQueryClient();
   const router = useRouter();
-  console.log(jobId);
   const { data, isLoading } = useGetEntity("meetings", `meetings-${jobId}`, jobId || "0" || "");
   if (isLoading || !data) return <Spinner />;
-  console.log(data);
-  console.log(data);
+
   // const invitations = data.data.filter((meet: any) => meet.status === "invitation");
   const meetings = data.data.filter((meet: any) => meet.status !== "invitation");
   return (

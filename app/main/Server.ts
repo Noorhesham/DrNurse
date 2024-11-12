@@ -96,7 +96,10 @@ export type ResourceNameProps =
   | "my-invoices"
   | "payment"
   | "pay-invoice"
-  | "subscribe";
+  | "subscribe"
+  | "classification"
+  | "classify"
+  | "cv";
 
 // Function to get the full URL from the resource name
 const getURL = (
@@ -287,6 +290,12 @@ const getURL = (
       return { url: `${url}/rm_subscriptions_system/v1/subscriptions/subscribe`, method: "POST" };
     case "pay-invoice":
       return { url: `${url}/rm_invoices_system/v1/invoices/${id}/pay`, method: "POST" };
+    case "classification":
+      return { url: `${url}/classifications/entities-operations`, method: "GET" };
+    case "classify":
+      return { url: `${url}/recruitment/jobs/classify`, method: "POST" };
+    case "cv":
+      return { url: `${url}/recruitment/cv-download`, method: "GET" };
     default:
       return { url, method: "GET" as MethodProps };
   }
@@ -358,7 +367,14 @@ export async function Server({
       },
     });
     if (!response.ok) throw new Error(`Error: ${response.status}`);
-    console.log(url);
+    const contentType = response.headers.get("Content-Type");
+    console.log(contentType);
+    if (contentType && contentType.includes("application/pdf")) {
+      const arrayBuffer = await response.arrayBuffer();
+      const base64Data = Buffer.from(arrayBuffer).toString("base64");
+
+      return { base64Data };
+    }
     const data = await response.json();
     if (
       data.message === "Device token mismatch" ||
@@ -367,7 +383,7 @@ export async function Server({
     ) {
       redirect("/login?error=true");
     }
-    console.log(data);
+    // console.log(data);
     return data;
   } catch (error: any) {
     if (isRedirectError(error)) {

@@ -26,7 +26,7 @@ const page = () => {
   if (isLoading || !data || isLoadingOverView) return <Spinner />;
 
   const { title } = data.data;
-  console.log(overView);
+
   return (
     <>
       <MaxWidthWrapper>

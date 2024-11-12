@@ -10,7 +10,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 
 const Negotiation = ({ negotiation, jobOfferId }: { negotiation: any; jobOfferId: string }) => {
-  console.log(negotiation);
+
   const { id } = useParams();
   const [isPending, startTransition] = useTransition();
   const queryClient = useQueryClient();
@@ -27,7 +27,7 @@ const Negotiation = ({ negotiation, jobOfferId }: { negotiation: any; jobOfferId
           onClick={() => {
             startTransition(async () => {
               const res = await Server({ resourceName: "cancel-offer", body: { job_offer_id: jobOfferId } });
-              console.log(res);
+    
               if (res.status) {
                 toast.success(res.message);
                 queryClient.invalidateQueries({ queryKey: ["offers"] });

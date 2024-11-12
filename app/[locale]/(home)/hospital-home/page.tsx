@@ -18,10 +18,10 @@ import LoaderBtn from "@/app/components/LoaderBtn";
 
 export default async function Home() {
   const data = await Server({ resourceName: "home", id: "company-home" });
-  console.log(data);
+
   const page = data.page;
   const { important_numbers, services_list, hospital_logos, main_cover_title } = page;
-  console.log(important_numbers);
+
   return (
     <main>
       <section className={`w-full h-screen relative bg-no-repeat bg-cover  `}>

@@ -57,7 +57,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
       else toast.error(res.message);
     });
   };
-  console.log(job);
+
   return (
     <section>
       <BreadCrumb

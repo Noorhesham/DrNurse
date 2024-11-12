@@ -16,7 +16,7 @@ const page = () => {
   if (isLoading || !data) return <Spinner />;
   const jobs = data?.data;
 
-  console.log(data);
+
   return (
     <div className=" flex flex-col gap-4">
       <div className=" flex md:flex-row flex-col gap-4 items-start justify-between">

@@ -46,7 +46,7 @@ const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; fi
   }, []);
 
   // Update URL when filters change
-  console.log(new URLSearchParams(window.location.search))
+
   useEffect(() => {
     const update = () => {
       if (typeof window !== "undefined") {

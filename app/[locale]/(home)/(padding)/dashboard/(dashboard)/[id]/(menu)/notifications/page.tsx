@@ -13,7 +13,6 @@ const page = () => {
     key: "notifications",
   });
   if (isLoading || !data) return <Spinner />;
-  console.log(data);
   return (
     <div className=" flex  flex-col gap-8">
       <MiniTitle size="2xl" boldness="bold" color=" text-main2" text="Notifications" />

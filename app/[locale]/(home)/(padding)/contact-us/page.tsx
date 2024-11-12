@@ -35,7 +35,7 @@ const Page = async ({ params: { locale } }: { params: { locale: string } }) => {
       };
     })
     .filter((field: any) => field !== undefined);
-  console.log(forms[0].fields);
+
   return (
     <main className=" ">
       <MaxWidthWrapper>

@@ -13,7 +13,7 @@ const formatToLocalTime = (date: any) => {
   return format(date, "dd/MM/yyyy hh:mmaaa");
 };
 const Meet = ({ cancel, img, meet }: { cancel?: boolean; img?: boolean; meet: any }) => {
-  console.log(meet);
+
   if (!meet) return null;
   return (
     <div className=" flex  gap-1 items-stretch">

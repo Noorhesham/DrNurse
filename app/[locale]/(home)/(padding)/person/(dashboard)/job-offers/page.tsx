@@ -19,7 +19,7 @@ const page = () => {
   const { id } = useParams();
   const { data, isLoading } = useGetEntity("person-offers", "offers");
   if (isLoading || !data) return <Spinner />;
-  console.log(data);
+
   const jobs = data?.data;
   return (
     <div className="">

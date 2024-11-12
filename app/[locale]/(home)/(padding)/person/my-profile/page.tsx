@@ -8,7 +8,7 @@ import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
 import MiniTitle from "@/app/components/defaults/MiniTitle";
 import Tabing from "@/app/components/Tabing";
 import { Briefcase, DollarSign, EditIcon, HeartIcon, LanguagesIcon, Paperclip } from "lucide-react";
-import React from "react";
+import React, { startTransition } from "react";
 import { redirect } from "next/navigation";
 import { useGetEntity } from "@/lib/queries";
 import Spinner from "@/app/components/Spinner";
@@ -22,6 +22,8 @@ import { DashboardIcon } from "@radix-ui/react-icons";
 import BreadCrumb from "@/app/components/BreadCrumb";
 import Paragraph from "@/app/components/defaults/Paragraph";
 import { GoLocation, GoPeople } from "react-icons/go";
+import { Server } from "@/app/main/Server";
+import CVdownload from "@/app/components/CVdownload";
 
 const page = () => {
   const { data, isLoading } = useGetEntity("my-profile", "my-profile");
@@ -29,7 +31,6 @@ const page = () => {
   else if (!data.data && !isLoading) redirect("/person/create-profile");
   const dataPage = data.data;
   const { description } = data.data;
-  console.log(dataPage);
   return (
     <section>
       <BreadCrumb
@@ -57,13 +58,7 @@ const page = () => {
             }}
           >
             <div className="flex  justify-end  items-center gap-2">
-              <FunctionalButton
-                className="w-full"
-                btnText="DOWNLOAD CV"
-                icon={<Paperclip className=" w-5 h-5" />}
-                link={dataPage?.resume?.[0]?.file || "#"}
-                download
-              />
+              <CVdownload/>
               <FunctionalButton
                 className=" w-full"
                 btnText="EDIT"

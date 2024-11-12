@@ -27,8 +27,6 @@ const Section = ({
   CustomePadding?: string;
   id?: string;
 }) => {
-  const locale = cookies.get("NEXT_LOCALE");
-  console.log(locale?.trim() === "ar");
   return (
     <section id={id} className={`${className || ""}  `}>
       <div className=" flex flex-col items-stretch  w-full ">
@@ -42,9 +40,7 @@ const Section = ({
           {link && (
             <Link
               href={link}
-              className={`text-[#E6007E] text-xs md:text-sm font-semibold flex flex-row items-center gap-1 md:gap-2 ${
-                locale?.trim() === "ar" ? "flex-row-reverse" : " "
-              }`}
+              className={`text-[#E6007E] text-xs md:text-sm font-semibold flex flex-row items-center gap-1 md:gap-2 `}
             >
               {linkText} <ArrowRight className=" md:w-5 md:h-5 w-3 h-3" />
             </Link>

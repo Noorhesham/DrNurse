@@ -77,7 +77,7 @@ const Page = () => {
   const router = useRouter();
   if (isLoading || !data || isLoadingOverView) return <Spinner />;
   const dataPage = data.data;
-  console.log(overView);
+
   return (
     <MaxWidthWrapper>
       <div className="flex flex-col lg:grid lg:grid-cols-8 gap-5">
