@@ -42,8 +42,8 @@ const jobSchema = z
     family_status: z.string().min(1, "Family Status is required"),
     address: z.string().min(1, "Current Address is required"),
     current_location_id: z.union([z.string().min(1, "Country is required"), z.number()]),
-    city_id: z.union([z.string().min(1, "City is required"), z.number()]),
-    state_id: z.union([z.string().min(1, "State is required"), z.number()]),
+    city_id: z.union([z.string().min(1, "City is required"), z.number().min(1, "required")]),
+    state_id: z.union([z.string().min(1, "State is required"), z.number().min(1, "required")]),
     available: z.string().min(1, "Employment Availability is required"),
     start_availability_at: z.string().optional(),
     active_license_country: z.string().min(1, "Active License status is required"),
@@ -85,6 +85,7 @@ const jobSchema = z
           to: z.string().min(1, "End date is required"),
           about: z.string().optional(),
           career_level_id: z.union([z.string().min(1, "CAEREER LEVEL is required"), z.number()]),
+          present: z.union([z.boolean(), z.number()]).transform((val) => (val === true ? 1 : 0)),
         })
       )
       .optional(),
@@ -546,6 +547,12 @@ const ProfileForm = ({ data }: { data?: any }) => {
                 label={t("Start Date")}
                 date
               />
+              <FormInput
+                control={form.control}
+                name={`previous_experience.${index}.present`}
+                label={t("ARE YOU CRRUNTLEY PRESENT ?")}
+                check
+              />{" "}
               <div className="flex w-full items-center gap-2">
                 <FormInput control={form.control} name={`previous_experience.${index}.to`} label={t("End Date")} date />
                 <button

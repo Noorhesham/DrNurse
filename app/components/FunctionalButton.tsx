@@ -20,6 +20,7 @@ const FunctionalButton = ({
   disabled,
   download,
   noclick,
+  noicon,
 }: {
   btnText: string;
   disabled?: boolean;
@@ -33,10 +34,11 @@ const FunctionalButton = ({
   variant?: "default" | "link" | "destructive" | "outline" | "secondary" | "ghost";
   download?: boolean;
   noclick?: boolean;
+  noicon?: boolean;
 }) => {
   const buttonContent = (
     <>
-      {icon ? icon : <PlusCircle />}
+      {noicon ? null : icon ? icon : <PlusCircle />}
       {btnText}
     </>
   );

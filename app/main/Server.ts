@@ -90,7 +90,13 @@ export type ResourceNameProps =
   | "offer"
   | "update-offer"
   | "getForms"
-  | "submitForm";
+  | "submitForm"
+  | "subs"
+  | "my-subs"
+  | "my-invoices"
+  | "payment"
+  | "pay-invoice"
+  | "subscribe";
 
 // Function to get the full URL from the resource name
 const getURL = (
@@ -269,7 +275,18 @@ const getURL = (
       return { url: `${url}/forms/getForms`, method: "POST" };
     case "submitForm":
       return { url: `${url}/forms/${id}/submit`, method: "POST" };
-
+    case "subs":
+      return { url: `${url}/sub-subscription-plans/entities-operations?with=features`, method: "GET" };
+    case "my-subs":
+      return { url: `${url}/sub-subscriptions/entities-operations?with=features`, method: "GET" };
+    case "my-invoices":
+      return { url: `${url}/inv-invoices/entities-operations?with=plan&with=subscription`, method: "GET" };
+    case "payment":
+      return { url: `${url}/rm_payment_gateways/v1/available`, method: "GET" };
+    case "subscribe":
+      return { url: `${url}/rm_subscriptions_system/v1/subscriptions/subscribe`, method: "POST" };
+    case "pay-invoice":
+      return { url: `${url}/rm_invoices_system/v1/invoices/${id}/pay`, method: "POST" };
     default:
       return { url, method: "GET" as MethodProps };
   }
@@ -305,6 +322,7 @@ export async function Server({
   const jwt = cookies().get("jwt")?.value;
   const deviceId = cookies().get("device_info")?.value || "{}";
   const hospitalId = cookies().get("hospitalId")?.value;
+  const lang = cookies().get("NEXT_LOCALE")?.value || "en";
   // Set up headers
   const combinedHeaders: { [key: string]: string } = {
     ...headers,
@@ -319,6 +337,7 @@ export async function Server({
   if (hospitalId && !nocompany) {
     combinedHeaders["company-id"] = hospitalId;
   }
+  combinedHeaders["lang"] = lang;
   try {
     // Get the URL and method from the resource name
     const { url, method: resolvedMethod } = getURL(resourceName, id, entityName, queryParams);
