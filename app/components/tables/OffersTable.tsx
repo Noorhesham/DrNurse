@@ -7,6 +7,7 @@ import MeetingActions from "../forms/MeetingActions";
 import Negotiation from "../Negotiation";
 import Paragraph from "../defaults/Paragraph";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import DownloadOffer from "../DownloadOffer";
 
 interface OffersTableProps {
   offers: any[];
@@ -72,13 +73,7 @@ const OffersTable: React.FC<OffersTableProps> = ({ offers, action, person = fals
             </TableCell>
             <TableCell className="text-right self-end lg:mr-0 ml-auto ">
               <div className="flex items-center gap-2">
-                <Button
-                  size={"lg"}
-                  variant={"outline"}
-                  className="font-semibold lg:w-[50%] text-main2 bg-light hover:bg-main2 hover:text-light duration-150"
-                >
-                  DOWNLOAD OFFER
-                </Button>
+              <DownloadOffer id={offer.id} />
                 {action && offer.status !== "rejected" && offer.status !== "approved" && (
                   <ModalCustom
                     btn={

@@ -6,75 +6,16 @@ import Meet from "@/app/components/Meet";
 import MiniTitle from "@/app/components/defaults/MiniTitle";
 import SideBar from "@/app/components/nav/SideBar";
 
-import JobsTable from "@/app/components/tables/JobTable";
 import OffersTable from "@/app/components/tables/OffersTable";
 import Image from "next/image";
 import { useGetEntity } from "@/lib/queries";
 import Spinner from "@/app/components/Spinner";
-import { useRouter } from "next/navigation";
 import Empty from "@/app/components/Empty";
 import TableData from "@/app/components/TableData";
-
-const offers = [
-  {
-    title: "Anesthesiologist Doctor",
-    date: "20 Dec 2024",
-    duration: "27 days remaing",
-    STATUS: "ACTIVE",
-  },
-
-  {
-    title: "Junior Surgeon",
-    date: "20 Dec 2024",
-
-    duration: "27 days remaing",
-    STATUS: "ACTIVE",
-  },
-
-  {
-    title: "Senior Specialty Nurse",
-
-    duration: "27 days remaing",
-    STATUS: "ACTIVE",
-    date: "20 Dec 2024",
-  },
-
-  {
-    title: "bstetric and Gynecology Nurse",
-    duration: "27 days remaing",
-    STATUS: "ACTIVE",
-    date: "20 Dec 2024",
-  },
-  {
-    title: "bstetric and Gynecology Nurse",
-    duration: "27 days remaing",
-    STATUS: "ACTIVE",
-    date: "20 Dec 2024",
-  },
-  {
-    title: "bstetric and Gynecology Nurse",
-    duration: "27 days remaing",
-    STATUS: "ACTIVE",
-    date: "20 Dec 2024",
-  },
-  {
-    title: "bstetric and Gynecology Nurse",
-    duration: "27 days remaing",
-    STATUS: "ACTIVE",
-    date: "20 Dec 2024",
-  },
-  {
-    title: "bstetric and Gynecology Nurse",
-    duration: "27 days remaing",
-    STATUS: "ACTIVE",
-    date: "20 Dec 2024",
-  },
-];
 
 const Page = () => {
   const { data: overView, isLoading: isLoadingOverView } = useGetEntity("person-overview");
   const { data, isLoading } = useGetEntity("my-profile", "my-profile");
-  const router = useRouter();
   if (isLoading || !data || isLoadingOverView) return <Spinner />;
   const dataPage = data.data;
 

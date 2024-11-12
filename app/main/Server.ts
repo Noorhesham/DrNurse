@@ -99,7 +99,8 @@ export type ResourceNameProps =
   | "subscribe"
   | "classification"
   | "classify"
-  | "cv";
+  | "cv"
+  | "download-offer";
 
 // Function to get the full URL from the resource name
 const getURL = (
@@ -296,6 +297,8 @@ const getURL = (
       return { url: `${url}/recruitment/jobs/classify`, method: "POST" };
     case "cv":
       return { url: `${url}/recruitment/cv-download`, method: "GET" };
+    case "download-offer":
+      return { url: `${url}/recruitment/job-offers/${id}/download`, method: "GET" };
     default:
       return { url, method: "GET" as MethodProps };
   }

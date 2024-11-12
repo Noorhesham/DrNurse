@@ -1,20 +1,16 @@
 "use client";
 import React, { useTransition } from "react";
-import FunctionalButton from "./FunctionalButton";
-import { useDevice } from "../context/DeviceContext";
-import cookies from "js-cookie";
-import { Paperclip } from "lucide-react";
 import { Server } from "../main/Server";
+import { Button } from "@/components/ui/button";
 
-const CVdownload = () => {
+const DownloadOffer = ({ id }: { id: string }) => {
   const [isPending, startTransition] = useTransition();
-
   return (
-    <FunctionalButton
+    <Button
       disabled={isPending}
       onClick={() => {
         startTransition(async () => {
-          const response = await Server({ resourceName: "cv" });
+          const response = await Server({ resourceName: "download-offer", id });
 
           // Check if response contains base64Data
           if (response?.base64Data) {
@@ -31,7 +27,7 @@ const CVdownload = () => {
             const downloadUrl = URL.createObjectURL(blob);
             const link = document.createElement("a");
             link.href = downloadUrl;
-            link.download = "yourFileName.pdf"; 
+            link.download = "yourFileName.pdf";
             document.body.appendChild(link);
             link.click();
             URL.revokeObjectURL(downloadUrl);
@@ -42,11 +38,13 @@ const CVdownload = () => {
           }
         });
       }}
-      className="w-full"
-      btnText="DOWNLOAD CV"
-      icon={<Paperclip className="w-5 h-5" />}
-    />
+      size={"lg"}
+      variant={"outline"}
+      className="font-semibold lg:w-[50%] text-main2 bg-light hover:bg-main2 hover:text-light duration-150"
+    >
+      DOWNLOAD OFFER
+    </Button>
   );
 };
 
-export default CVdownload;
+export default DownloadOffer;
