@@ -108,8 +108,8 @@ const jobSchema = z
 
 type JobFormValues = z.infer<typeof jobSchema>;
 
-const ProfileForm = ({ data }: { data?: any }) => {
-  console.log(data);
+const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
+  console.log(dataDefault);
   const [isPending, startTransition] = useTransition();
   const { data: countries, isLoading } = useGetEntity("countries", "countries");
   const { data: careerTypes, isLoading: loadingCareerTypes } = useGetEntities({
@@ -122,35 +122,35 @@ const ProfileForm = ({ data }: { data?: any }) => {
   const form = useZodForm({
     schema: jobSchema,
     defaultValues: {
-      main_education: data?.main_educations?.[0] || {},
-      current_job_title: data?.current_job_title || "",
-      career_type_id: data?.career_type_id || "",
-      career_specialty_id: data?.career_specialty_id || "",
-      career_level_id: data?.career_level_id || "",
+      main_education: dataDefault?.main_educations?.[0] || {},
+      current_job_title: dataDefault?.current_job_title || "",
+      career_type_id: dataDefault?.career_type_id || "",
+      career_specialty_id: dataDefault?.career_specialty_id || "",
+      career_level_id: dataDefault?.career_level_id || "",
 
-      min_salary: data?.min_salary || 0,
-      max_salary: data?.max_salary || 0,
-      show_expected_salary: data?.show_expected_salary.toString() || 0,
-      nationality_id: data?.nationality_id || "",
-      gender: data?.gender || "",
-      family_status: data?.family_status || "",
-      address: data?.address || "",
-      current_location_id: data?.current_location_id || "",
-      city_id: data?.city_id || "",
-      state_id: data?.state_id || "",
-      available: data?.available || "",
-      start_availability_at: data?.start_availability_at || "",
-      active_license_country: data?.active_license_country || "",
-      license_number: data?.license_number || "",
-      description: data?.description || "",
-      practice_license: data?.practice_license?.[0] || "",
-      identification_card: data?.identification_card?.[0] || "",
-      resume: data?.resume[0] || "",
-      identification_card_number: data?.identification_card_number || "",
+      min_salary: dataDefault?.min_salary || 0,
+      max_salary: dataDefault?.max_salary || 0,
+      show_expected_salary: dataDefault?.show_expected_salary.toString() || 0,
+      nationality_id: dataDefault?.nationality_id || "",
+      gender: dataDefault?.gender || "",
+      family_status: dataDefault?.family_status || "",
+      address: dataDefault?.address || "",
+      current_location_id: dataDefault?.current_location_id || "",
+      city_id: dataDefault?.city_id || "",
+      state_id: dataDefault?.state_id || "",
+      available: dataDefault?.available || "",
+      start_availability_at: dataDefault?.start_availability_at || "",
+      active_license_country: dataDefault?.active_license_country || "",
+      license_number: dataDefault?.license_number || "",
+      description: dataDefault?.description || "",
+      practice_license: dataDefault?.practice_license?.[0] || "",
+      identification_card: dataDefault?.identification_card?.[0] || "",
+      resume: dataDefault?.resume[0] || "",
+      identification_card_number: dataDefault?.identification_card_number || "",
       education:
-        data?.educations.length > 0
+        dataDefault?.educations.length > 0
           ? [
-              ...data?.educations.map((d: any) => {
+              ...dataDefault?.educations.map((d: any) => {
                 return { ...d, certificate: d.certificate[0], career_specialty_id: d.career_specialty_id || "" };
               }),
             ]
@@ -167,7 +167,7 @@ const ProfileForm = ({ data }: { data?: any }) => {
                 certificate: "",
               },
             ],
-      previous_experience: data?.previous_experiences || [
+      previous_experience: dataDefault?.previous_experiences || [
         {
           name: "",
           country_id: "",
@@ -178,7 +178,7 @@ const ProfileForm = ({ data }: { data?: any }) => {
           about: "",
         },
       ],
-      currency: data?.currency || "usd",
+      currency: dataDefault?.currency || "usd",
     },
   });
   const {
@@ -199,25 +199,30 @@ const ProfileForm = ({ data }: { data?: any }) => {
     control: form.control,
     name: "previous_experience",
   });
-  console.log(form.getValues());
+
   const { setDates, setLogin } = useAuth();
+  console.log(dataDefault);
   const onSubmit = (data: JobFormValues) => {
-    console.log(data);
     const formData = new FormData();
     const fileFields = ["resume", "practice_license", "identification_card", "certificate"];
     for (const key in data) {
       if (data.hasOwnProperty(key)) {
         const value = data[key as keyof JobFormValues];
-        if (fileFields.includes(key) && !(value instanceof File)) {
-          // Skip this field if it's not a file
-          continue;
-        }
+        if (fileFields.includes(key) && !(value instanceof File) && !dataDefault) continue;
+        else if (fileFields.includes(key) && !(value instanceof File) && dataDefault)
+          formData.append(`${key}`, dataDefault[key].id);
+
         if (value instanceof Array) {
           value.forEach((item, index) => {
             if (typeof item === "object" && item !== null) {
               for (const nestedKey in item) {
-                if (nestedKey === "certificate" && !(item[nestedKey] instanceof File)) continue;
-                formData.append(`${key}[${index}][${nestedKey}]`, item[nestedKey]);
+                if (nestedKey === "certificate" && !(item[nestedKey] instanceof File) && !dataDefault) continue;
+                if (nestedKey === "certificate" && !(item[nestedKey] instanceof File) && dataDefault) {
+                  const defaultIdForCertificate = dataDefault.educations[index]?.[nestedKey]?.[0]?.id;
+                  const educationId = dataDefault.educations[index]?.id;
+                  formData.append(`${key}[${index}][${nestedKey}][]`, defaultIdForCertificate);
+                  formData.append(`education[${index}][id]`, educationId);
+                } else formData.append(`${key}[${index}][${nestedKey}]`, item[nestedKey]);
               }
             } else {
               formData.append(`${key}[]`, item);
@@ -244,7 +249,6 @@ const ProfileForm = ({ data }: { data?: any }) => {
       }
     }
 
-    console.log("Form Submitted", data);
     startTransition(async () => {
       const res = await Server({
         resourceName: "add-profile",
@@ -260,7 +264,7 @@ const ProfileForm = ({ data }: { data?: any }) => {
       setLogin((l) => !l);
       if (res.status) {
         toast.success(res.message);
-        router.push("/person");
+        // router.push("/person");
       } else toast.error(res.message);
     });
   };
@@ -268,7 +272,7 @@ const ProfileForm = ({ data }: { data?: any }) => {
     if (form.getValues("available") === "yes") form.setValue("start_availability_at", format(Date.now(), "yyyy-MM-dd"));
   }, [form, form.getValues("available")]);
   if (isLoading) return <Spinner />;
-  console.log(form.formState.errors);
+
   return (
     <Form {...form}>
       <form className="flex flex-col px-5 py-2.5 w-full items-stretch gap-4" onSubmit={form.handleSubmit(onSubmit)}>
@@ -428,7 +432,7 @@ const ProfileForm = ({ data }: { data?: any }) => {
           </div>
 
           {educationFields.map((field, index) => (
-            <div key={index} className=" bg-gray-100 rounded-xl mt-2 p-2 mb-2">
+            <div key={field.id * index} className=" bg-gray-100 rounded-xl mt-2 p-2 mb-2">
               <FlexWrapper
                 max={false}
                 key={field.id}
@@ -520,7 +524,7 @@ const ProfileForm = ({ data }: { data?: any }) => {
         {/* Experience */}
         <MiniTitle form size="md" boldness="bold" text={t("Experience")} />
         {experienceFields.map((field, index) => (
-          <div key={index} className="border  bg-gray-100 rounded p-2 flex flex-col gap-2">
+          <div key={field.id} className="border  bg-gray-100 rounded p-2 flex flex-col gap-2">
             <FlexWrapper max={false}>
               <FormInput control={form.control} name={`previous_experience.${index}.name`} label={t("Hospital")} />
               <ComboboxForm

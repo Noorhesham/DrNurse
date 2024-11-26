@@ -39,7 +39,7 @@ const Applicant = ({
       <div
         className={` flex ${
           show ? "flex-col sm:flex-row " : ""
-        } justify-between flex-col sm:flex-row  gap-5 items-start md:items-center sm:justify-between`}
+        } justify-between  gap-5 md:flex-nowrap flex-wrap items-start md:items-center sm:justify-between`}
       >
         <Link
           href={
@@ -58,7 +58,7 @@ const Applicant = ({
               {classify && <SateChange defaultValue={applicant.classification} jobId={applicant.applicationId} />}
               <Link
                 href={!apply ? `/dashboard/${id}/doctor/${applicant.id}?job=${jobId}` : "/dashboard/applicant/1"}
-                className=" p-1 rounded-xl bg-main2 text-gray-50"
+                className=" p-1 m-auto rounded-xl bg-main2 text-gray-50"
               >
                 <ChevronRight />
               </Link>
