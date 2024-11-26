@@ -36,7 +36,7 @@ const page = async () => {
               <ModalCustom
                 btn={
                   <Button size={"lg"} className={cn("w-full text-base hover:text-gray-50 bg-gray-100 text-main2 ")}>
-                    CHOOSE PLAN
+                    CHOOSE PAYMENT METHOD
                   </Button>
                 }
                 content={<Payment planId={item.id} />}

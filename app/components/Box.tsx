@@ -46,25 +46,24 @@ const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; fi
   }, []);
 
   // Update URL when filters change
+  const update = () => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
 
+      // Update the params with the current filters state
+      Object.entries(filters).forEach(([key, values]) => {
+        if (values.length > 0) {
+          params.set(key, values.join(",")); // Set the new values for each filter
+        } else {
+          params.delete(key); // Remove the filter if no values are selected
+        }
+      });
+
+      router.push(`?${params.toString()}`, { scroll: false });
+    }
+  };
   useEffect(() => {
-    const update = () => {
-      if (typeof window !== "undefined") {
-        const params = new URLSearchParams(window.location.search);
-
-        // Update the params with the current filters state
-        Object.entries(filters).forEach(([key, values]) => {
-          if (values.length > 0) {
-            params.set(key, values.join(",")); // Set the new values for each filter
-          } else {
-            params.delete(key); // Remove the filter if no values are selected
-          }
-        });
-
-        router.push(`?${params.toString()}`, { scroll: false });
-      }
-    };
-
+    if (!btn) return;
     WrapperFn(update);
   }, [filters, router]);
 
@@ -97,8 +96,8 @@ const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; fi
           <AccordionTrigger>
             <h2 className="text-base font-semibold text-main2">{text}</h2>
           </AccordionTrigger>
-          <AccordionContent>
-            <ul className="pb-3 grid grid-cols-2 gap-2 border-b border-b-gray-400">
+          <AccordionContent className="flex flex-col gap-2">
+            <ul className="pb-3 grid   grid-cols-2 gap-2 border-b border-b-gray-400">
               {!btn
                 ? options?.map((option, i) => (
                     <li
@@ -139,6 +138,11 @@ const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; fi
                     );
                   })}
             </ul>
+            {!btn && (
+              <Button className=" mx-auto rounded-full" onClick={() => WrapperFn(update)}>
+                Filter
+              </Button>
+            )}
           </AccordionContent>
         </AccordionItem>
       </Accordion>

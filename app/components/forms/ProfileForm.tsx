@@ -84,7 +84,7 @@ const jobSchema = z
           from: z.string().min(1, "START date is required"),
           to: z.string().min(1, "End date is required"),
           about: z.string().optional(),
-          career_level_id: z.union([z.string().min(1, "CAEREER LEVEL is required"), z.number()]),
+          career_level: z.union([z.string().min(1, "CAEREER LEVEL is required"), z.number()]),
           present: z.union([z.boolean(), z.number()]).transform((val) => (val === true ? 1 : 0)),
         })
       )
@@ -171,7 +171,7 @@ const ProfileForm = ({ data }: { data?: any }) => {
         {
           name: "",
           country_id: "",
-          career_level_id: "",
+          career_level: "",
           career_specialty_id: "",
           from: "",
           to: "",
@@ -535,7 +535,8 @@ const ProfileForm = ({ data }: { data?: any }) => {
                 disabled={form.getValues("career_type_id") === ""}
                 loadingCareerTypes={loadingCareerTypes}
                 careerTypes={careerTypes}
-                careerLevel={`previous_experience.${index}.career_level_id`}
+                careerLevelString={true}
+                careerLevel={`previous_experience.${index}.career_level`}
                 careerSpecialty={`previous_experience.${index}.career_specialty_id`}
                 careerType="career_type_id"
               />
@@ -577,8 +578,9 @@ const ProfileForm = ({ data }: { data?: any }) => {
                 from: "",
                 to: "",
                 about: "",
-                career_level_id: "",
+                career_level: "",
                 name: "",
+                present: false,
               })
             }
           />

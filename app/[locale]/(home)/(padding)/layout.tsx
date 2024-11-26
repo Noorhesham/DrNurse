@@ -8,5 +8,5 @@ export default function RootLayout({
   params: { locale: string };
 }>) {
   unstable_setRequestLocale(locale);
-  return <section className=" pb-14 pt-40">{children}</section>;
+  return <section className=" pb-14 ">{children}</section>;
 }

@@ -6,6 +6,7 @@ import { useFormContext } from "react-hook-form";
 import { useTranslations } from "next-intl";
 import { ResourceNameProps, Server } from "@/app/main/Server";
 import FlexWrapper from "../defaults/FlexWrapper";
+import FormInput from "./FormInput";
 
 export const useGetEntities = ({
   key,
@@ -41,6 +42,7 @@ const CareerInput = ({
   loadingCareerTypes,
   onlySpeciality,
   disabled,
+  careerLevelString = false,
 }: {
   careerType: string;
   careerSpecialty: string;
@@ -49,6 +51,7 @@ const CareerInput = ({
   loadingCareerTypes?: boolean;
   onlySpeciality?: boolean;
   disabled?: boolean;
+  careerLevelString?: boolean;
 }) => {
   const form = useFormContext();
 
@@ -104,22 +107,31 @@ const CareerInput = ({
       )}
 
       {selectedCareerSpecialty &&
-        !loadingCareerTypes &&
-        !loadingCareerLevels &&
-        !loadingCareerSpecialties &&
-        careerLevel !== "" && (
+      !loadingCareerTypes &&
+      !loadingCareerLevels &&
+      !loadingCareerSpecialties &&
+      careerLevel !== "" ? (
+        careerLevelString ? (
+          <FormInput
+            disabled={loadingCareerLevels}
+            name={careerLevel}
+            label="Career Level"
+            placeholder="Select Career Level"
+          />
+        ) : (
           <ComboboxForm
             disabled={loadingCareerLevels}
             loading={loadingCareerLevels || loadingCareerSpecialties || loadingCareerTypes}
             name={careerLevel}
-            label={"Career Level"}
-            placeholder={"Select Career Level"}
+            label="Career Level"
+            placeholder="Select Career Level"
             options={careerLevels?.data.map((level: any) => ({
               label: level.title,
               value: level.id,
             }))}
           />
-        )}
+        )
+      ) : null}
     </FlexWrapper>
   );
 };

@@ -19,7 +19,17 @@ import { Job } from "../types";
 import { FaDraft2Digital } from "react-icons/fa";
 import { format } from "date-fns";
 
-export default function TableData({ offer, jobs, person }: { offer?: boolean; jobs?: any; person?: boolean }) {
+export default function TableData({
+  offer,
+  jobs,
+  person,
+  viewbtn,
+}: {
+  offer?: boolean;
+  jobs?: any;
+  person?: boolean;
+  viewbtn?: boolean;
+}) {
   const { id } = useParams();
   return (
     <Table>
@@ -62,19 +72,11 @@ export default function TableData({ offer, jobs, person }: { offer?: boolean; jo
                 </div>
               </div>
             </TableCell>
-            <TableCell className={`${person && "text-green-500"}  uppercase gap-1  my-auto  text-xs md:text-sm `}>
-              <div className="  flex items-center  justify-center ">
-                {person && !job.min_salary ? (
-                  <p className=" text-gray-500">Salary Info Was Hidden By Admin</p>
-                ) : !person && job.status === "publish" ? (
-                  <CheckCircle className=" mr-2 text-green-500  md:w-4 w-2 h-2 md:h-4" />
-                ) : job.status === "draft" ? (
-                  <FaDraft2Digital className=" mr-2  text-blue-500  md:w-4 w-2 h-2 md:h-4" />
-                ) : job.status === "closed" ? (
-                  <XCircle className=" mr-2 text-red-500  md:w-4 w-2 h-2 md:h-4" />
-                ) : (
-                  ""
-                )}
+            <TableCell
+              className={`${person && "text-green-500"}  font-semibold uppercase gap-1  my-auto  text-xs md:text-sm `}
+            >
+              <div className="  flex items-center   ">
+                {person && !job.min_salary && <p className=" text-gray-500">Salary Info Was Hidden By Admin</p>}
                 <p className=" text-xs font-semibold">
                   {person && job.min_salary && job.max_salary
                     ? `${job.min_salary} ${job.currency || "SAR"} -${job.max_salary} ${job.currency || "SAR"} /MONTH`
@@ -106,13 +108,24 @@ export default function TableData({ offer, jobs, person }: { offer?: boolean; jo
                     <Link href={`/dashboard/${id}/jobs/applications/${job.id}`}>VIEW APPLICATIONS</Link>
                   </Button>
                 )}
-                <Actions
-                  jobId={job.id}
-                  id={id}
-                  person={person}
-                  viewLink={person ? `/person/job/${job.id}` : `/dashboard/${id}/job/${job.id}`}
-                  editLink={person ? `/person/job/${job.id}` : `/dashboard/${id}/edit-job/${job.id}`}
-                />
+                {viewbtn ? (
+                  <Link href={`/person/job/${job.id}`}>
+                    <Button
+                      size={"lg"}
+                      className=" font-semibold bg-light text-main2 hover:bg-main2 hover:text-light duration-150"
+                    >
+                      VIEW JOB
+                    </Button>
+                  </Link>
+                ) : (
+                  <Actions
+                    jobId={job.id}
+                    id={id}
+                    person={person}
+                    viewLink={person ? `/person/job/${job.id}` : `/dashboard/${id}/job/${job.id}`}
+                    editLink={person ? `/person/job/${job.id}` : `/dashboard/${id}/edit-job/${job.id}`}
+                  />
+                )}
               </div>
             </TableCell>
           </TableRow>

@@ -1,5 +1,4 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import { Bookmark } from "lucide-react";
 import React, { useTransition } from "react";
 
@@ -10,6 +9,8 @@ import { useTranslations } from "next-intl"; // Import useTranslations
 import { Server } from "../main/Server";
 import { toast } from "react-toastify";
 import ModalCustom from "./defaults/ModalCustom";
+import { useQueryClient } from "@tanstack/react-query";
+import Spinner from "./Spinner";
 
 const AddToWishlist = ({
   className,
@@ -23,10 +24,10 @@ const AddToWishlist = ({
   noshare?: boolean;
 }) => {
   // const { data, isLoading } = useGetEntity("wishlistStatus", `wishlistStatus-${id}`, id);
-  const { userSettings } = useAuth();
+  const { userSettings, loading } = useAuth();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-
+  const queryClient = useQueryClient();
   const t = useTranslations("wishlistContent");
   const mutateWishlist = (action: string) => {
     try {
@@ -40,6 +41,7 @@ const AddToWishlist = ({
         });
         if (res.status) {
           toast.success(res.message);
+          queryClient.invalidateQueries({ queryKey: ["bookmarks"] });
           router.refresh();
         } else toast.error(res.message);
       });
@@ -47,12 +49,17 @@ const AddToWishlist = ({
       toast.error(error);
     }
   };
+  console.log(userSettings, "addto");
 
   return (
     <>
-      {userSettings ? (
+      {loading ? (
+        <button disabled={isPending || loading} className="flex items-center gap-1">
+          {!wishlistStatus ? <Bookmark /> : <Bookmark className="fill-main" />}
+        </button>
+      ) : userSettings ? (
         <button
-          disabled={isPending}
+          disabled={isPending || loading}
           onClick={() => {
             wishlistStatus ? mutateWishlist("remove") : mutateWishlist("add");
           }}

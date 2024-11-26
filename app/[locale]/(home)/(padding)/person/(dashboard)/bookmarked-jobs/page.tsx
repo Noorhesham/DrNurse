@@ -1,19 +1,53 @@
+"use client";
+
+import { motion, AnimatePresence } from "framer-motion";
 import JobCard from "@/app/components/JobCard";
 import { PaginationDemo } from "@/app/components/Pagination";
-import { Server } from "@/app/main/Server";
-import React from "react";
+import Spinner from "@/app/components/Spinner";
+import { useGetEntity } from "@/lib/queries";
+import React, { useState } from "react";
+import Empty from "@/app/components/Empty";
 
-const page = async ({ searchParams }: { searchParams: any }) => {
-  const queryParams = new URLSearchParams({});
-  queryParams.append("page", searchParams.page || "1");
-  queryParams.append("itemsCount", searchParams.itemsCount || "10");
-  const bookmarks = await Server({ resourceName: "bookmarks" });
+const page = ({ searchParams }: { searchParams: any }) => {
+  const { data, isLoading } = useGetEntity(
+    "bookmarks",
+    "bookmarks",
+    "",
+    {},
+    `with=country,city,state,careerType,careerSpecialty,careerLevel,branch&
+    page=${searchParams.page || "1"}&itemsCount=${searchParams.itemsCount || "1"}`
+  );
+
+  const [bookmarks, setBookmarks] = useState<any[]>([]);
+
+  React.useEffect(() => {
+    if (data?.data) setBookmarks(data.data);
+  }, [data]);
+
+  if (!data || isLoading) return <Spinner />;
+
   return (
     <main className="flex flex-col gap-3 col-span-2 lg:col-span-5">
-      {bookmarks.data.map((item: any, i: number) => (
-        <JobCard i={i} key={item.id} job={item} />
-      ))}
-      {bookmarks.data.length > 10 && <PaginationDemo />}
+      <AnimatePresence>
+        <div>
+          {bookmarks.length > 0 ? (
+            bookmarks.map((item: any, i: number) => (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1, delay: i * 0.1 }}
+                transition={{ duration: 0.3 }}
+              >
+                <JobCard bookmarked={true} i={i} job={item} />
+              </motion.div>
+            ))
+          ) : (
+            <Empty text="No bookmarked jobs found" textLink="Bookmark a Job Now !" link="/person/jobs" />
+          )}
+        </div>
+      </AnimatePresence>
+      {bookmarks.length > 10 && <PaginationDemo />}
     </main>
   );
 };

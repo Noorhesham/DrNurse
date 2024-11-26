@@ -21,7 +21,7 @@ export default function RootLayout({
     ? lastSegment.replace(/-/g, " ").replace(/\b\w/g, (char: string) => char.toUpperCase())
     : "";
   return (
-    <section id="portal" className=" flex flex-col-reverse portalele">
+    <section id="portal" className="pt-36  flex flex-col-reverse portalele">
       <div className="  relative">{children}</div>
       {!pathname.includes("doctor") && !pathname.includes("edit-offer") && (
         <BreadCrumb

@@ -24,7 +24,6 @@ const Switch = React.forwardRef<React.ElementRef<typeof SwitchPrimitives.Root>, 
             // Otherwise handle the state-based background
             "data-[state=checked]:bg-main data-[state=unchecked]:bg-gray-200": !noSwitch,
             // RTL handling
-            "rtl-switch": isRtl,
           },
           className
         )}
@@ -33,10 +32,10 @@ const Switch = React.forwardRef<React.ElementRef<typeof SwitchPrimitives.Root>, 
       >
         <SwitchPrimitives.Thumb
           className={cn(
-            "pointer-events-none block h-4 w-4 rounded-full bg-background shadow-lg ring-0 transition-transform",
+            "pointer-events-none block h-4 w-4 data-[state=checked]:translate-x-7 data-[state=unchecked]:translate-x-0 rounded-full bg-background shadow-lg ring-0 transition-transform",
             {
               "data-[state=checked]:translate-x-7 data-[state=unchecked]:translate-x-0": !isRtl,
-              "data-[state=checked]:-translate-x-7 data-[state=unchecked]:translate-x-0": isRtl, // Invert translation for RTL
+              // "data-[state=checked]:-translate-x-7 data-[state=unchecked]:translate-x-0": isRtl, // Invert translation for RTL
             }
           )}
         />

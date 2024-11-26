@@ -39,12 +39,6 @@ const OffersTable: React.FC<OffersTableProps> = ({ offers, action, person = fals
             </TableCell>
             <TableCell className=" ml-auto text-nowrap  gap-2">
               <div className="flex items-center gap-2">
-                <div className=" lg:hidden flex items-center gap-2">
-                  {" "}
-                  <Calendar />
-                  {offer.date}
-                </div>
-
                 <div className="flex items-center gap-2">
                   {offer.status.toLowerCase() === "accepted" || offer.status.toLowerCase() === "approved" ? (
                     <CheckCircle className="text-green-500" />
@@ -63,17 +57,17 @@ const OffersTable: React.FC<OffersTableProps> = ({ offers, action, person = fals
                 </div>
               </div>
             </TableCell>
-            <TableCell className=" w-full lg:table-cell hidden   gap-2">
+            <TableCell className=" w-full lg:table-cell    gap-2">
               <div className="flex items-center gap-2">
                 <div className="flex  max-w-md capitalize items-center gap-2">
-                  <Calendar />
+                  <Calendar className=" lg:block hidden w-6 h-6" />
                   {offer.details.start_date} Must be approved 7 days in advance
                 </div>
               </div>
             </TableCell>
             <TableCell className="text-right self-end lg:mr-0 ml-auto ">
               <div className="flex items-center gap-2">
-              <DownloadOffer id={offer.id} />
+                <DownloadOffer id={offer.id} />
                 {action && offer.status !== "rejected" && offer.status !== "approved" && (
                   <ModalCustom
                     btn={

@@ -14,6 +14,21 @@ interface Branch {
   country_id: number;
   city_id: number;
   state_id: number;
+  country: {
+    id: number;
+    title: string;
+    created_by: number;
+  };
+  city: {
+    id: number;
+    title: string;
+    created_by: number;
+  };
+  state: {
+    id: number;
+    title: string;
+    created_by: number;
+  };
   // You can expand this further to include other fields as needed
 }
 
@@ -27,7 +42,7 @@ interface CareerLevel {
 }
 
 export interface Job {
-  currency:string
+  currency: string;
   id: number;
   currency_id: number | null;
   benefits: string; // Consider parsing this string to an array if needed
@@ -43,6 +58,7 @@ export interface Job {
   experience_to: number;
   work_place: string | null;
   job_title: string;
+  bookmarked: boolean;
   status: string | null;
   company_id: number;
   family_status: string;
@@ -58,5 +74,18 @@ export interface Job {
   deleted_at: string | null;
   recipient_status: string;
   branch: Branch;
+  country: {
+    id: number;
+    title: string;
+  };
+  city: {
+    id: number;
+    title: string;
+  };
+  state: {
+    id: number;
+    title: string;
+  };
+
   career_level: CareerLevel;
 }

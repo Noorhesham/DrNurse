@@ -3,6 +3,7 @@ import MiniTitle from "./defaults/MiniTitle";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { format, toZonedTime } from "date-fns-tz";
+import Link from "next/link";
 
 const formatToGMT = (date: any) => {
   const gmtTime = toZonedTime(date, "Etc/UTC");
@@ -48,6 +49,7 @@ const Meet = ({ cancel, img, meet }: { cancel?: boolean; img?: boolean; meet: an
           <p className=" text-xs text-muted-foreground">Your local time : {formatToLocalTime(meet.created_at)}</p>
         </div>
       </div>
+
       {cancel && (
         <Button className=" self-center ml-auto " size={"lg"} variant={"destructive"}>
           CANCEL

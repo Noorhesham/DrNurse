@@ -32,7 +32,7 @@ const page = () => {
   const dataPage = data.data;
   const { description } = data.data;
   return (
-    <section>
+    <section className=" pt-36">
       <BreadCrumb
         linksCustom={[
           { href: "", text: "Home" },

@@ -59,7 +59,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
   };
 
   return (
-    <section>
+    <section className=" pt-36">
       <BreadCrumb
         linksCustom={[
           { href: "", text: "Home" },

@@ -25,6 +25,8 @@ const SateChange = ({ size, jobId, defaultValue }: { size?: string; jobId?: numb
       } else toast.error(res.message);
     });
   };
+  console.log(data);
+  if (!jobId) return null;
   return (
     <Select
       defaultValue={defaultValue?.id}
@@ -43,7 +45,7 @@ const SateChange = ({ size, jobId, defaultValue }: { size?: string; jobId?: numb
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          {data.data.map((item: { id: number | string; name: string }) => (
+          {data?.data?.map((item: { id: number | string; name: string }) => (
             <SelectItem key={item.id} value={item.id}>
               {item.name}
             </SelectItem>

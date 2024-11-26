@@ -18,8 +18,7 @@ export default function RootLayout({
     ? lastSegment.replace(/-/g, " ").replace(/\b\w/g, (char: string) => char.toUpperCase())
     : "";
   return (
-    <>
-      {" "}
+    <div className="  pt-36">
       <BreadCrumb
         linksCustom={[
           { href: "", text: "Home" },
@@ -35,6 +34,6 @@ export default function RootLayout({
           <div className=" relative col-span-10 lg:col-span-11">{children}</div>
         </GridContainer>
       </MaxWidthWrapper>
-    </>
+    </div>
   );
 }

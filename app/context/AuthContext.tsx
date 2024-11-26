@@ -160,6 +160,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     cookies.remove("jwt");
     queryClient.removeQueries({ queryKey: ["user_settings"] });
     queryClient.removeQueries({ queryKey: ["user2_settings"] });
+    queryClient.removeQueries({ queryKey: ["my-profile"] });
     const newDates = {
       last_update_date_general: dates.last_update_date_general,
       last_update_date_user: "",

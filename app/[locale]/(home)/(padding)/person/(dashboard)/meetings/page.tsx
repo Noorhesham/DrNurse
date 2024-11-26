@@ -28,6 +28,7 @@ const page = () => {
 
   const invitations = data.data.filter((meet: any) => meet.status === "invitation");
   const meetings = data.data.filter((meet: any) => meet.status !== "invitation");
+  console.log(meetings);
   return (
     <section className=" flex flex-col gap-8">
       <div className=" flex flex-col gap-2">
@@ -46,7 +47,7 @@ const page = () => {
                           SET DATE
                         </Button>
                       }
-                    />
+                    />{" "}
                     {meet.req_job_post_id && (
                       <Link href={`/person/job/${meet.req_job_post_id}`}>
                         <Button size={"lg"} className="  bg-light text-main2 rounded-full" variant={"outline"}>
@@ -89,8 +90,15 @@ const page = () => {
             meetings.map((meet: any) => (
               <Container>
                 <FlexWrapper max={false} className=" justify-between">
-                  <Meet meet={meet} img />
-                  <div className=" flex items-center gap-3">
+                  <Meet meet={meet} img />{" "}
+                  {meet.zoom_meeting && (
+                    <Link className="self-center mr-auto " target="_blank" href={meet.zoom_meeting.join_url}>
+                      <Button size={"lg"} className=" rounded-full">
+                        JOIN MEETING
+                      </Button>
+                    </Link>
+                  )}
+                  <div className=" lg:flex grid grid-cols-2 flex-wrap items-center gap-3">
                     {meet.status !== "cancelled" ? (
                       <ModalCustom
                         btn={
@@ -103,7 +111,7 @@ const page = () => {
                             <Paragraph
                               description={"DETERMINE WHETHER YOU WANT TO DISABLED OR RESCHEDULE THE MEETING"}
                             />
-                            <div className="flex  justify-center  items-center gap-5">
+                            <div className="flex flex-wrap lg:flex-nowrap  justify-center  items-center gap-5">
                               <Button
                                 disabled={isPending}
                                 onClick={() => {
@@ -156,13 +164,13 @@ const page = () => {
                         }
                       />
                     ) : (
-                      <Button disabled={true} variant={"destructive"} size={"lg"} className=" rounded-full">
+                      <Button disabled={true} variant={"destructive"} size={"lg"} className=" w-full lg:w-fit rounded-full">
                         CANCELED
                       </Button>
                     )}
-                    <Link href={`/person/job/${meet.req_job_post_id}`}>
+                    <Link className="w-full lg:w-fit" href={`/person/job/${meet.req_job_post_id}`}>
                       {" "}
-                      <Button size={"lg"} className="  bg-light text-main2 rounded-full" variant={"outline"}>
+                      <Button size={"lg"} className="  bg-light  text-main2 rounded-full" variant={"outline"}>
                         VIEW JOB
                       </Button>
                     </Link>
@@ -182,7 +190,7 @@ const page = () => {
                           </div>
                         }
                         btn={
-                          <Button size={"lg"} className="  bg-light text-main2 rounded-full" variant={"outline"}>
+                          <Button size={"lg"} className="w-full col-span-full lg:w-fit  bg-light text-main2 rounded-full" variant={"outline"}>
                             HOSPITAL INFO
                           </Button>
                         }

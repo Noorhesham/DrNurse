@@ -22,8 +22,12 @@ const meetingsSchema = z.object({
     z.object({
       from_date: z.union([z.string().min(1, "From date is required"), z.number()]),
       time_date: z.string().min(1, "Time is required"),
-      duration: z.string().min(1, "Duration is required").regex(/^\d{2}:\d{2}$/, "Duration must be in H:i format"),
+      duration: z
+        .string()
+        .min(1, "Duration is required")
+        .regex(/^\d{2}:\d{2}$/, "Duration must be in H:i format"),
       id: z.any().optional(),
+      manager_email: z.string().email(),
     })
   ),
 });
@@ -45,7 +49,7 @@ const MeetingForm = ({
     enabled: !!jobId,
   });
   const params = useParams();
-  console.log(jobId)
+  console.log(jobId);
   const { data, isLoading } = useGetEntity("slots", `slots-${jobId}`, jobId);
 
   const defaultMeetings = data?.data
@@ -147,7 +151,7 @@ const MeetingForm = ({
   };
 
   const watchedFields = form.watch("meetings", fields);
-  console.log(data)
+  console.log(data);
   return (
     <div>
       <MiniTitle boldness="bold" color="black" text={job?.data?.job_title || ""} />
@@ -168,6 +172,7 @@ const MeetingForm = ({
                   { value: "01:30", label: "1.5 hour" },
                 ]}
               />
+              <FormInput label="MANAGER EMAIL" control={form.control} name={`meetings.${index}.manager_email`} />
               <button
                 type="button"
                 onClick={() => {

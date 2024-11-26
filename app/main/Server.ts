@@ -270,7 +270,10 @@ const getURL = (
     case "check-bookmarks":
       return { url: `${url}/req-job-posts/entities-operations/${id}/bookmarked`, method: "GET" };
     case "bookmarks":
-      return { url: `${url}/req-job-posts/entities-operations/bookmarks/list?${queryParams}`, method: "GET" };
+      return {
+        url: `${url}/req-job-posts/entities-operations/bookmarks/list?${queryParams}`,
+        method: "GET",
+      };
     case "offer":
       return { url: `${url}/recruitment/job-offers/${id}`, method: "GET" };
     case "update-offer":
