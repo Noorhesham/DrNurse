@@ -8,7 +8,15 @@ import { useAuth } from "../context/AuthContext";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useDevice } from "../context/DeviceContext";
 
-const Socials = ({ login = false }: { login?: boolean }) => {
+const Socials = ({
+  login = false,
+  referal,
+  regiesterAs,
+}: {
+  login?: boolean;
+  referal?: string;
+  regiesterAs?: string;
+}) => {
   const t = useTranslations();
   const { generalSettings, loading } = useAuth();
   const { device_info } = useDevice();
@@ -30,7 +38,7 @@ const Socials = ({ login = false }: { login?: boolean }) => {
     ? [
         { href: social_google, Icon: FaGoogle, slug: "google" },
         { href: social_facebook, Icon: FaFacebook, slug: "facebook" },
-        { href: social_linkedin, Icon: FaLinkedin, slug: "linkedin" },
+        { href: social_linkedin, Icon: FaLinkedin, slug: "linkedin-openid" },
       ]
     : [];
   const renderButtonOrLink = (href: string, Icon: React.ElementType, slug: string = "", key: number) => {
@@ -39,7 +47,9 @@ const Socials = ({ login = false }: { login?: boolean }) => {
     if (login) {
       return (
         <Link
-          href={`https://lab.r-m.dev/auth/socialite/${slug}/login?redirect_url=http://localhost:3000/login&device_unique_id=${device_info.device_unique_id}`}
+          href={`https://lab.r-m.dev/auth/socialite/${slug}/login?redirect_url=http://localhost:3000/login&device_unique_id=${
+            device_info.device_unique_id
+          }&register_as=${regiesterAs || "doctor"}&referral_code=${referal || ""}`}
           className={commonStyles}
         >
           <Icon />

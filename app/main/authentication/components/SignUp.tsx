@@ -17,6 +17,7 @@ import Section from "@/app/components/defaults/Section";
 import { useTranslations } from "next-intl";
 import cookies from "js-cookie";
 import { useAuth } from "@/app/context/AuthContext";
+import Socials from "@/app/components/Socials";
 const initialSignupArray = [
   {
     name: "role",
@@ -181,6 +182,7 @@ const Signup = () => {
             </Link>
           </div>
         </div>
+        <Socials login referal={form.getValues("referral_code")} regiesterAs={form.getValues("register_as")} />
       </div>
     </Section>
   );

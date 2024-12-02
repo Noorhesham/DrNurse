@@ -18,15 +18,12 @@ const nextConfig = {
         hostname: "**",
       },
     ],
+    unoptimized: true,
   },
   experimental: {
     missingSuspenseWithCSRBailout: false,
   },
   reactStrictMode: false,
-
-  // images: {
-  //   unoptimized: true,
-  // },
 };
 
 export default withNextIntl(nextConfig);
