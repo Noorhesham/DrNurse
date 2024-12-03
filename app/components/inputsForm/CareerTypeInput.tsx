@@ -76,6 +76,8 @@ const CareerInput = ({
     enable: !!selectedCareerSpecialty,
     queryParams: `scope=filter&career_specialty_id=${selectedCareerSpecialty}&career_type=${selectedCareerType}&with=career_type`,
   });
+  console.log(careerSpecialties);
+
   return (
     <FlexWrapper max={false} className="flex w-full gap-4">
       {!onlySpeciality && (

@@ -100,7 +100,8 @@ export type ResourceNameProps =
   | "classification"
   | "classify"
   | "cv"
-  | "download-offer";
+  | "download-offer"
+  | "start-meet";
 
 // Function to get the full URL from the resource name
 const getURL = (
@@ -302,6 +303,8 @@ const getURL = (
       return { url: `${url}/recruitment/cv-download`, method: "GET" };
     case "download-offer":
       return { url: `${url}/recruitment/job-offers/${id}/download`, method: "GET" };
+    case "start-meet":
+      return { url: `${url}/recruitment/meetings/${id}/custom/start-url`, method: "GET" };
     default:
       return { url, method: "GET" as MethodProps };
   }
@@ -374,7 +377,6 @@ export async function Server({
     });
     if (!response.ok) throw new Error(`Error: ${response.status}`);
     const contentType = response.headers.get("Content-Type");
-    console.log(contentType);
     if (contentType && contentType.includes("application/pdf")) {
       const arrayBuffer = await response.arrayBuffer();
       const base64Data = Buffer.from(arrayBuffer).toString("base64");
@@ -390,6 +392,7 @@ export async function Server({
       redirect("/login?error=true");
     }
     // console.log(data);
+    console.log();
     return data;
   } catch (error: any) {
     if (isRedirectError(error)) {

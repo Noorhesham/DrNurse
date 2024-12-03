@@ -26,7 +26,6 @@ const page = () => {
   if (isLoading || !data || isLoadingOverView) return <Spinner />;
 
   const { title } = data.data;
-
   return (
     <>
       <MaxWidthWrapper>
@@ -57,7 +56,7 @@ const page = () => {
                 color=" text-gray-900"
                 text="Recently Posted Jobs"
               />
-              <TableData jobs={overView.data.jobs} />
+              <TableData jobs={overView.data?.jobs} />
             </div>
             <div className=" grid grid-cols-1 md:grid-cols-2 my-4 gap-5">
               <div className=" flex flex-col gap-4 bg-[#F7F9FB] px-5 py-5 rounded-lg">
@@ -97,7 +96,8 @@ const page = () => {
                       samePhone
                       items={overView.data.proposed_persons.map((doctor: any, i: number) => ({
                         card: (
-                          <Doctor key={i}
+                          <Doctor
+                            key={i}
                             link={`/dashboard/${params.id}/doctor/${doctor.user?.profile?.id}?job=${doctor.req_job_post_id}`}
                             doctor={{ ...doctor.user, image: doctor.user?.avatar_url }}
                           />

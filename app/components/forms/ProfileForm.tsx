@@ -109,14 +109,16 @@ const jobSchema = z
 type JobFormValues = z.infer<typeof jobSchema>;
 
 const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
-  console.log(dataDefault);
   const [isPending, startTransition] = useTransition();
   const { data: countries, isLoading } = useGetEntity("countries", "countries");
+
   const { data: careerTypes, isLoading: loadingCareerTypes } = useGetEntities({
     resourceName: "getEntity",
     key: "career-types",
     entityName: "career-types",
   });
+  console.log(careerTypes);
+
   const t = useTranslations();
 
   const form = useZodForm({

@@ -99,7 +99,7 @@ const page = () => {
                     </Link>
                   )}
                   <div className=" lg:flex grid grid-cols-2 flex-wrap items-center gap-3">
-                    {meet.status !== "cancelled" ? (
+                    {meet.status !== "cancelled"&&meet.status!=='completed' ? (
                       <ModalCustom
                         btn={
                           <Button size={"lg"} className=" rounded-full">
@@ -164,7 +164,12 @@ const page = () => {
                         }
                       />
                     ) : (
-                      <Button disabled={true} variant={"destructive"} size={"lg"} className=" w-full lg:w-fit rounded-full">
+                      <Button
+                        disabled={true}
+                        variant={"destructive"}
+                        size={"lg"}
+                        className=" w-full lg:w-fit rounded-full"
+                      >
                         CANCELED
                       </Button>
                     )}
@@ -190,7 +195,11 @@ const page = () => {
                           </div>
                         }
                         btn={
-                          <Button size={"lg"} className="w-full col-span-full lg:w-fit  bg-light text-main2 rounded-full" variant={"outline"}>
+                          <Button
+                            size={"lg"}
+                            className="w-full col-span-full lg:w-fit  bg-light text-main2 rounded-full"
+                            variant={"outline"}
+                          >
                             HOSPITAL INFO
                           </Button>
                         }
