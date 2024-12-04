@@ -174,7 +174,7 @@ const MeetingForm = ({
                   { value: "03:00", label: "3 hours" },
                 ]}
               />
-              <div className="flex items-center gap-1">
+              <div className="flex w-full items-center gap-1">
                 <FormInput label="MANAGER EMAIL" control={form.control} name={`meetings.${index}.manager_email`} />
                 <button
                   type="button"
