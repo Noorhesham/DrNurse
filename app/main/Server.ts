@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 // Constants
-const BASE_URL = "https://lab.r-m.dev/api";
+const BASE_URL = "https://dr.r-m.dev/api";
 const VERSION = "v1";
 
 // Types for Method and Resource Names
