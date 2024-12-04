@@ -324,9 +324,9 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
             label={t("Are you available for employment now?")}
             name="available"
             options={[
-              { label: "Yes", value: "yes" },
+              { label: "Yes", value: "yes_immediately" },
               { label: "No", value: "no" },
-              { label: "Yes From Time", value: "yes from custom time" },
+              { label: "Yes From Time", value: "yes_from_custom_time" },
             ]}
           />
           {form.getValues("available") === "yes from custom time" && (
