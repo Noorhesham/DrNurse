@@ -33,7 +33,7 @@ const Tabing = ({ defaultValue, options }: TabingProps) => {
               currentPath === option.href
                 ? " bg-main2 hover:bg-white hover:text-main2  text-gray-50"
                 : "bg-white  text-main2"
-            }  text-base flex-1  hover:bg-main2 hover:text-white border border-main2 w-fit duration-150`}
+            } text-sm  md:text-base flex-1  hover:bg-main2 hover:text-white border border-main2 w-fit duration-150`}
           >
             <div>{option.label}</div>
           </Button>

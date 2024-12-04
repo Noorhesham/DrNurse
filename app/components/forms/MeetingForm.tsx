@@ -158,7 +158,7 @@ const MeetingForm = ({
       <Form {...form}>
         <form className="mt-4 px-5 flex flex-col gap-5" onSubmit={form.handleSubmit(onSubmit)}>
           {watchedFields.map((field, index) => (
-            <div className="flex w-full items-center gap-5" key={index}>
+            <div className="flex lg:flex-nowrap flex-wrap w-full items-center gap-5" key={index}>
               <FormInput label="Start From" control={form.control} name={`meetings.${index}.from_date`} date />
               <FormInput label="Time" control={form.control} name={`meetings.${index}.time_date`} type="time" />
               <FormSelect
@@ -166,34 +166,38 @@ const MeetingForm = ({
                 control={form.control}
                 name={`meetings.${index}.duration`}
                 options={[
-                  { value: "00:15", label: "15 min" },
                   { value: "00:30", label: "30 min" },
                   { value: "01:00", label: "1 hour" },
                   { value: "01:30", label: "1.5 hour" },
+                  { value: "02:00", label: "2 hours" },
+                  { value: "02:30", label: "2.5 hour" },
+                  { value: "03:00", label: "3 hours" },
                 ]}
               />
-              <FormInput label="MANAGER EMAIL" control={form.control} name={`meetings.${index}.manager_email`} />
-              <button
-                type="button"
-                onClick={() => {
-                  remove(index);
-                  startTransition(() => {
-                    startTransition(async () => {
-                      const res = await Server({
-                        resourceName: "delete-slot",
-                        id: field.id,
+              <div className="flex items-center gap-1">
+                <FormInput label="MANAGER EMAIL" control={form.control} name={`meetings.${index}.manager_email`} />
+                <button
+                  type="button"
+                  onClick={() => {
+                    remove(index);
+                    startTransition(() => {
+                      startTransition(async () => {
+                        const res = await Server({
+                          resourceName: "delete-slot",
+                          id: field.id,
+                        });
+                        if (res.status) {
+                          toast.success(res.message);
+                          queryClient.invalidateQueries({ queryKey: [`slots-${jobId}`] });
+                        } else toast.error(res.message);
                       });
-                      if (res.status) {
-                        toast.success(res.message);
-                        queryClient.invalidateQueries({ queryKey: [`slots-${jobId}`] });
-                      } else toast.error(res.message);
                     });
-                  });
-                }}
-                className="rounded-xl self-center border-2 border-gray-600 p-1 my-auto"
-              >
-                <XIcon className="w-4 h-4" />
-              </button>
+                  }}
+                  className="rounded-xl self-center border-2 border-gray-600 p-1 my-auto"
+                >
+                  <XIcon className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           ))}
           <div className="flex items-center gap-3">

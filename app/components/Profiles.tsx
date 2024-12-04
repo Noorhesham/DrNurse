@@ -20,14 +20,14 @@ const Profiles = ({ doctors, totalPages, filters, count, jobId }: any) => {
     <GridContainer className=" mt-5 gap-4" cols={9}>
       <div className="flex order-1 lg:order-0 flex-col gap-3 col-span-2 lg:col-span-6">
         {" "}
-        <div className="flex items-start justify-between">
-          <MiniTitle boldness="normal" size="lg" color=" text-muted-foreground" text={`${count} EMPLOYEES AVAILABLE`} />
-          <Sort
+        <div className="flex items-start lg:flex-row flex-col justify-between">
+          <MiniTitle className=" text-nowrap" boldness="normal" size="lg" color=" text-muted-foreground" text={`${count} EMPLOYEES AVAILABLE`} />
+         <div className=" ml-auto mt-3"> <Sort 
             options={[
               { label: "Latest", value: "desc" },
               { label: "Earliest", value: "asc" },
             ]}
-          />
+          /></div>
         </div>
         {isLoading ? (
           Array.from({ length: 6 }).map((_, i) => (

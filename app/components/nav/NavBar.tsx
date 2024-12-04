@@ -206,7 +206,7 @@ const NavBar = () => {
                   </Link>
                 </>
               ) : (
-                <div>
+                <div className="flex gap-2">
                   <Button
                     onClick={async () => {
                       const res = await Server({ resourceName: "logout" });

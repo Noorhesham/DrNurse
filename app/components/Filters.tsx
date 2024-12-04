@@ -10,7 +10,7 @@ interface FilterOption {
 }
 const Filters = ({ colseBtn, filters, from_years }: { colseBtn?: ReactNode; filters: any[]; from_years?: any }) => {
   const renderFilterBoxes = () => {
-    return filters.map((filterObj, index) => {
+    return filters?.map((filterObj, index) => {
       const entries: [string, FilterOption[]][] = Object.entries(filterObj);
 
       const [label, filterOptions]: [string, FilterOption[]] = entries[0];

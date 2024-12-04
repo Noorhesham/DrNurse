@@ -39,7 +39,7 @@ const page = () => {
               <Container>
                 <FlexWrapper max={false} className=" justify-between">
                   <Meet meet={meet} img />
-                  <div className=" flex items-center gap-3">
+                  <div className=" flex flex-wrap lg:flex-nowrap items-center gap-3">
                     <ModalCustom
                       content={<SelectDate jobId={meet.req_job_post_id} meeting_id={meet.id} />}
                       btn={
@@ -69,7 +69,7 @@ const page = () => {
                         </div>
                       }
                       btn={
-                        <Button size={"lg"} className="  bg-light text-main2 rounded-full" variant={"outline"}>
+                        <Button size={"lg"} className=" w-full  bg-light text-main2 rounded-full" variant={"outline"}>
                           HOSPITAL INFO
                         </Button>
                       }
@@ -99,7 +99,7 @@ const page = () => {
                     </Link>
                   )}
                   <div className=" lg:flex grid grid-cols-2 flex-wrap items-center gap-3">
-                    {meet.status !== "cancelled"&&meet.status!=='completed' ? (
+                    {meet.status !== "cancelled" && meet.status !== "completed" ? (
                       <ModalCustom
                         btn={
                           <Button size={"lg"} className=" rounded-full">
@@ -107,7 +107,7 @@ const page = () => {
                           </Button>
                         }
                         content={
-                          <div className="flex items-center justify-center flex-col gap-2">
+                          <div className="flex lg:flex-nowrap flex-wrap items-center justify-center flex-col gap-2">
                             <Paragraph
                               description={"DETERMINE WHETHER YOU WANT TO DISABLED OR RESCHEDULE THE MEETING"}
                             />
