@@ -10,7 +10,7 @@ export default function RootLayout({
 }>) {
   unstable_setRequestLocale(locale);
   return (
-    <div>
+    <div className=" pt-32">
       <BreadCrumb />
       {children}
     </div>
