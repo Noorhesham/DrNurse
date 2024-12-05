@@ -21,7 +21,7 @@ const page = () => {
   const searchaParams = useSearchParams();
   const page = searchaParams.get("page");
 
-  const { data, isLoading } = useGetEntity("company-jobs", `company-jobs-${id}-${page}`);
+  const { data, isLoading } = useGetEntity("company-jobs", `company-jobs-${id}-${page}`, "", {}, `page=${page}&itemCount=10`);
   if (isLoading || !data)
     return (
       <MaxWidthWrapper className="flex flex-col gap-4">
