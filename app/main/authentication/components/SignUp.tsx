@@ -66,7 +66,6 @@ const initialSignupArray = [
     options: [
       { name: "PATIENT", value: "patient" },
       { name: "DOCTOR", value: "doctor" },
-      { name: "SPECIALIST", value: "specialist" },
     ],
   },
 ];
@@ -148,7 +147,7 @@ const Signup = () => {
             {
               name: "register_as",
               select: true,
-              options: ["doctor", "nurse"],
+              options: ["doctor", "nurse", "specialist"],
               placeholder: "Select Your Job Title...",
             },
           ];

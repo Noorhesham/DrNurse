@@ -21,7 +21,7 @@ const Socials = ({
   const t = useTranslations();
   const { generalSettings, loading } = useAuth();
   const { device_info } = useDevice();
-
+  console.log(device_info.device_unique_id)
   if (loading || !device_info.device_unique_id) return <Skeleton />;
 
   const { company_contacts, login_types } = generalSettings;
