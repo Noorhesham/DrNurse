@@ -16,6 +16,7 @@ interface OffersTableProps {
 }
 
 const OffersTable: React.FC<OffersTableProps> = ({ offers, action, person = false }) => {
+  console.log(offers);
   return (
     <Table className="">
       <TableHeader>
