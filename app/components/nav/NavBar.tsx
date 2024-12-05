@@ -99,7 +99,7 @@ const NavBar = () => {
     links = [
       {
         text: "MY PROFILE",
-        href: "/person/profile",
+        href: "/person/my-profile",
       },
 
       {
