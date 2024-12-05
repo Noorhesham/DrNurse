@@ -340,7 +340,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
             label={t("Do you have an active license?")}
             name="active_license_country"
             options={[
-              { label: "No", value: "no" },
+              // { label: "No", value: "no" },
               { label: "Saudi Arabia", value: "SA" },
               { label: "UAE", value: "AE" },
               { label: "Qatar", value: "QA" },
@@ -362,14 +362,8 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
         {/* Salary */}
         <MiniTitle form size="md" boldness="bold" text={t("Salary")} />
         <FlexWrapper max={false}>
-          <FormInput control={form.control} name="min_salary" currency label={t("Min Salary (USD)")} type="number" />
-          <FormInput
-            control={form.control}
-            name="max_salary"
-            currency
-            label={t("Max Salary (USD)")}
-            type="number"
-          />{" "}
+          <FormInput control={form.control} name="min_salary" currency label={t("Min Salary")} type="number" />
+          <FormInput control={form.control} name="max_salary" currency label={t("Max Salary")} type="number" />{" "}
           <FormSelect label={t("Currency")} name="currency" options={CURRENCY_OPTIONS} />
           <FormSelect
             label={t("Show Expected Salary")}
