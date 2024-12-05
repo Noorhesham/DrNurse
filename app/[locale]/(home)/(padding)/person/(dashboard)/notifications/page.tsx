@@ -17,15 +17,19 @@ const page = () => {
     key: `notifications-${page}`,
   });
   if (isLoading || !data)
-    return Array.from({ length: 6 }).map((_, i) => (
-      <div className="flex  gap-4  flex-col space-y-3">
-        <Skeleton className={`w-full h-[125px]  rounded-xl`} />
-        <div className="space-y-2">
-          <Skeleton className="h-4 w-[250px]" />
-          <Skeleton className="h-4 w-[200px]" />
-        </div>
+    return (
+      <div className="flex flex-col gap-4">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div className="flex  gap-4  flex-col space-y-3">
+            <Skeleton className={`w-full h-[125px]  rounded-xl`} />
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-[250px]" />
+              <Skeleton className="h-4 w-[200px]" />
+            </div>
+          </div>
+        ))}
       </div>
-    ));
+    );
   const totalPages = Math.ceil(data.count / 10);
 
   return (
