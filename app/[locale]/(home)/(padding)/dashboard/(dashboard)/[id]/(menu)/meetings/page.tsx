@@ -21,7 +21,13 @@ const page = () => {
   const searchaParams = useSearchParams();
   const page = searchaParams.get("page");
 
-  const { data, isLoading } = useGetEntity("company-jobs", `company-jobs-${id}-${page}`, "", {}, `page=${page}&itemCount=10`);
+  const { data, isLoading } = useGetEntity(
+    "company-jobs",
+    `company-jobs-${id}-${page}`,
+    "",
+    {},
+    `page=${page}&itemCount=10`
+  );
   if (isLoading || !data)
     return (
       <MaxWidthWrapper className="flex flex-col gap-4">
@@ -36,7 +42,7 @@ const page = () => {
         ))}
       </MaxWidthWrapper>
     );
-    console.log(data)
+  console.log(data);
   const totalPages = Math.ceil(data.count / 9);
 
   return (

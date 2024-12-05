@@ -35,7 +35,7 @@ const page = () => {
 
   const jobs = data?.data;
   const totalPages = Math.ceil(data.count / 9);
-    console.log(jobs,data);
+  console.log(jobs, data);
   return (
     <div className=" flex flex-col gap-4">
       <div className=" flex md:flex-row flex-col gap-4 items-start justify-between">
