@@ -67,7 +67,7 @@ const SendOffer = ({
       details: {
         job_title: defaultvals?.job_title || "",
         salary: defaultvals?.salary || 0,
-        benefits: defaultvals?.benefits || [""],
+        benefits: defaultvals?.benefits || [],
         currency: defaultvals?.currency || "usd",
         start_date: defaultvals?.start_date || "",
         address: defaultvals?.address || "",
