@@ -47,9 +47,9 @@ const Socials = ({
     if (login) {
       return (
         <Link
-          href={`https://lab.r-m.dev/auth/socialite/${slug}/login?redirect_url=http://localhost:3000/login&device_unique_id=${
+          href={`https://dr.r-m.dev/auth/socialite/${slug}/login?redirect_url=http://localhost:3000/login&device_unique_id=${
             device_info.device_unique_id
-          }&register_as=${regiesterAs || "doctor"}&referral_code=${referal || ""}`}
+          }${regiesterAs ? `register_as=${regiesterAs || "doctor"}` : ``}${referal ? `&referral_code=${referal}` : ``}`}
           className={commonStyles}
         >
           <Icon />
