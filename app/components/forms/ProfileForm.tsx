@@ -264,6 +264,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
         last_update_date_user: "",
       }));
       setLogin((l) => !l);
+
       if (res.status) {
         toast.success(res.message);
         // router.push("/person");

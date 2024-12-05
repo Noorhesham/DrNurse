@@ -27,7 +27,7 @@ const DownloadOffer = ({ id }: { id: string }) => {
             const downloadUrl = URL.createObjectURL(blob);
             const link = document.createElement("a");
             link.href = downloadUrl;
-            link.download = "yourFileName.pdf";
+            link.download = "job-offer.pdf";
             document.body.appendChild(link);
             link.click();
             URL.revokeObjectURL(downloadUrl);
