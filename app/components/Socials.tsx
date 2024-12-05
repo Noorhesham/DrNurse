@@ -22,7 +22,7 @@ const Socials = ({
   const { generalSettings, loading } = useAuth();
   const { device_info } = useDevice();
 
-  if (loading) return <Skeleton />;
+  if (loading || !device_info.device_unique_id) return <Skeleton />;
 
   const { company_contacts, login_types } = generalSettings;
   const { email, facebook, instagram, linkedin, twitter, youtube, whatsapp } = company_contacts;

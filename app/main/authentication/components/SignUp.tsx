@@ -66,6 +66,7 @@ const initialSignupArray = [
     options: [
       { name: "PATIENT", value: "patient" },
       { name: "DOCTOR", value: "doctor" },
+      { name: "SPECIALIST", value: "specialist" },
     ],
   },
 ];
