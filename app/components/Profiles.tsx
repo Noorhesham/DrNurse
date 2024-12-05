@@ -21,13 +21,22 @@ const Profiles = ({ doctors, totalPages, filters, count, jobId }: any) => {
       <div className="flex order-1 lg:order-0 flex-col gap-3 col-span-2 lg:col-span-6">
         {" "}
         <div className="flex items-start lg:flex-row flex-col justify-between">
-          <MiniTitle className=" text-nowrap" boldness="normal" size="lg" color=" text-muted-foreground" text={`${count} EMPLOYEES AVAILABLE`} />
-         <div className=" ml-auto mt-3"> <Sort 
-            options={[
-              { label: "Latest", value: "desc" },
-              { label: "Earliest", value: "asc" },
-            ]}
-          /></div>
+          <MiniTitle
+            className=" text-nowrap"
+            boldness="normal"
+            size="lg"
+            color=" text-muted-foreground"
+            text={`${count} EMPLOYEES AVAILABLE`}
+          />
+          <div className=" ml-auto mt-3">
+            {" "}
+            <Sort
+              options={[
+                { label: "Latest", value: "desc" },
+                { label: "Earliest", value: "asc" },
+              ]}
+            />
+          </div>
         </div>
         {isLoading ? (
           Array.from({ length: 6 }).map((_, i) => (
@@ -64,9 +73,11 @@ const Profiles = ({ doctors, totalPages, filters, count, jobId }: any) => {
         ) : (
           <Empty text="No Applicants Found !" textLink="Reset Filters !" link={`/dashboard/${id}/employees`} />
         )}
-        <div className="flex flex-col gap-3 col-span-2 lg:col-span-6">
-          <PaginationDemo totalPages={totalPages} />
-        </div>
+        {totalPages > 1 && (
+          <div className="flex flex-col gap-3 col-span-2 lg:col-span-6">
+            <PaginationDemo totalPages={totalPages} />
+          </div>
+        )}
       </div>{" "}
       <div className=" col-span-2 lg:col-span-3">
         <div className=" lg:block hidden ">
