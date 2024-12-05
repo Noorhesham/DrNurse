@@ -329,7 +329,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
               { label: "Yes From Time", value: "yes_from_custom_time" },
             ]}
           />
-          {form.getValues("available") === "yes from custom time" && (
+          {form.getValues("available") === "yes_from_custom_time" && (
             <FormInput control={form.control} name="start_availability_at" label={t("Start From")} date />
           )}
         </FlexWrapper>
