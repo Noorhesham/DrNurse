@@ -30,7 +30,7 @@ const page = () => {
         ))}
       </div>
     );
-  const totalPages = Math.ceil(data.count / 10);
+    const totalPages = Math.ceil(data.count / 9);
 
   return (
     <div className=" flex  flex-col gap-8">
