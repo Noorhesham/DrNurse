@@ -252,4 +252,4 @@ export const GENDER = [
   { label: "Male", value: "male" },
   { label: "Female", value: "female" },
 ];
-export const WEBSITEURL = "http://localhost:3000";
+export const WEBSITEURL = "https://dr-nurse.vercel.app";
