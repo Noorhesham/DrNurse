@@ -341,18 +341,15 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
             name="active_license_country"
             options={[
               { label: "No", value: "no" },
-              { label: "Saudi Arabia", value: "saudi_arabia" },
-              { label: "UAE", value: "uae" },
-              { label: "Qatar ", value: "qatar" },
-              { label: "Kuwait ", value: "kuwait" },
-              { label: "Bahrain ", value: "bahrain" },
-              { label: "United Kingdom", value: "united_kingdom" },
-              {
-                label: "United States of America",
-                value: "united_states_of_america",
-              },
-              { label: "Canada ", value: "canada" },
-              { label: "Australia", value: "australia" },
+              { label: "Saudi Arabia", value: "SA" },
+              { label: "UAE", value: "AE" },
+              { label: "Qatar", value: "QA" },
+              { label: "Kuwait", value: "KW" },
+              { label: "Bahrain", value: "BH" },
+              { label: "United Kingdom", value: "GB" },
+              { label: "United States of America", value: "US" },
+              { label: "Canada", value: "CA" },
+              { label: "Australia", value: "AU" },
             ]}
           />
           <FormInput

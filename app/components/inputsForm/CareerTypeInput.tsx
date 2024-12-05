@@ -116,7 +116,7 @@ const CareerInput = ({
         careerLevelString ? (
           <FormInput
             disabled={loadingCareerLevels}
-            name={careerLevel}
+            name={careerLevel} className=" w-full"
             label="Career Level"
             placeholder="Select Career Level"
           />
