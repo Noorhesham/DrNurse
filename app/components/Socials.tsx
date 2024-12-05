@@ -46,7 +46,7 @@ const Socials = ({
     : [];
   const router = useRouter();
   const renderButtonOrLink = (href: string, Icon: React.ElementType, slug: string = "", key: number) => {
-    const commonStyles = "p-1.5 w-fit px-0 !min-w-[35px] rounded-full text-lg bg-main";
+    const commonStyles = "p-1.5  text-center m-auto flex items-center !min-w-[35px] rounded-full text-lg bg-main";
     const loginUrl = `https://dr.r-m.dev/auth/socialite/${slug}/login?redirect_url=${WEBSITEURL}/login&device_unique_id=${
       device_info.device_unique_id
     }${regiesterAs ? `&register_as=${regiesterAs}` : ``}${referal ? `&referral_code=${referal}` : ``}`;
@@ -62,14 +62,14 @@ const Socials = ({
             size={"sm"}
             className={commonStyles}
           >
-            <Icon />
+            <Icon  />
           </Button>
         </div>
       );
     }
 
     return (
-      <Link target="_blank" key={key} href={href} className={commonStyles}>
+      <Link target="_blank" key={key} href={href} className={'flex items-center p-1.5 rounded-full text-lg bg-main'}>
         <Icon />
       </Link>
     );
