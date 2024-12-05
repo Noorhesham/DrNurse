@@ -191,8 +191,9 @@ const page = ({ params: { jobId, locale } }: { params: { jobId: string; locale: 
             </div>
           </div>
         </GridContainer>
-        <section>
-          <MiniTitle boldness="bold" color=" text-main2" text="RELATED JOBS" />
+        <section >
+          <MiniTitle className=" mt-5" boldness="bold" 
+           color=" text-main2" text="RELATED JOBS" />
           <div className=" grid-cols-1 grid gap-5 lg:grid-cols-2 mt-3">
             {job.related_jobs?.map((job: Job, i: number) => (
               <JobCard i={i} key={job.id} job={job} />

@@ -2,7 +2,9 @@
 import MiniTitle from "@/app/components/defaults/MiniTitle";
 import Notification from "@/app/components/defaults/Notification";
 import { useGetEntities } from "@/app/components/inputsForm/CareerTypeInput";
+import { PaginationDemo } from "@/app/components/Pagination";
 import Spinner from "@/app/components/Spinner";
+import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
 import React from "react";
 
@@ -12,7 +14,17 @@ const page = () => {
     entityName: "rmnotifications",
     key: "notifications",
   });
-  if (isLoading || !data) return <Spinner />;
+  if (isLoading || !data)
+    return Array.from({ length: 6 }).map((_, i) => (
+      <div className="flex flex-col space-y-3">
+        <Skeleton className={`w-full h-[125px]  rounded-xl`} />
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-[250px]" />
+          <Skeleton className="h-4 w-[200px]" />
+        </div>
+      </div>
+    ));
+  const totalPages = Math.ceil(data.count / 10);
 
   return (
     <div className=" flex  flex-col gap-8">
@@ -28,7 +40,10 @@ const page = () => {
           show={false}
           key={i}
         />
-      ))}
+      ))}{" "}
+      <div className="flex flex-col gap-3 col-span-2 lg:col-span-6">
+        <PaginationDemo totalPages={totalPages} />
+      </div>
     </div>
   );
 };
