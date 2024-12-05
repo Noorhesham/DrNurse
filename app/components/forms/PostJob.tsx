@@ -160,8 +160,8 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
           />
           {/* Experience */}
           <GridContainer cols={3}>
-            <FormInput control={form.control} name="experience_from" label={t("experience_from")} type="number" />
-            <FormInput control={form.control} name="experience_to" label={t("experience_to")} type="number" />
+            <FormInput control={form.control} name="experience_from" label={t("experience from")} type="number" />
+            <FormInput control={form.control} name="experience_to" label={t("experience to")} type="number" />
           </GridContainer>
           {/* Branch */}
           <FormSelect

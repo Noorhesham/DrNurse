@@ -14,6 +14,7 @@ const page = () => {
   const [page, setPage] = React.useState(1);
   const { data, isLoading } = useGetEntity("company-jobs", `company-jobs-${id}-${page}`);
   if (isLoading || !data) return <Spinner />;
+  console.log(data)
   return (
     <div className="">
       <div className=" flex items-center justify-between mb-3">
