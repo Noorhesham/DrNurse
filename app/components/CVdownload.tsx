@@ -6,7 +6,7 @@ import cookies from "js-cookie";
 import { Paperclip } from "lucide-react";
 import { Server } from "../main/Server";
 
-const CVdownload = () => {
+const CVdownload = ({ name }: { name: string }) => {
   const [isPending, startTransition] = useTransition();
 
   return (
@@ -31,7 +31,7 @@ const CVdownload = () => {
             const downloadUrl = URL.createObjectURL(blob);
             const link = document.createElement("a");
             link.href = downloadUrl;
-            link.download = "cv.pdf"; 
+            link.download = `${name}.pdf`;
             document.body.appendChild(link);
             link.click();
             URL.revokeObjectURL(downloadUrl);

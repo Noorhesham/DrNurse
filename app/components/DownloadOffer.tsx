@@ -3,7 +3,7 @@ import React, { useTransition } from "react";
 import { Server } from "../main/Server";
 import { Button } from "@/components/ui/button";
 
-const DownloadOffer = ({ id }: { id: string }) => {
+const DownloadOffer = ({ id, name }: { id: string; name?: string }) => {
   const [isPending, startTransition] = useTransition();
   return (
     <Button
@@ -27,7 +27,7 @@ const DownloadOffer = ({ id }: { id: string }) => {
             const downloadUrl = URL.createObjectURL(blob);
             const link = document.createElement("a");
             link.href = downloadUrl;
-            link.download = "job-offer.pdf";
+            link.download = `${name}.pdf`;
             document.body.appendChild(link);
             link.click();
             URL.revokeObjectURL(downloadUrl);

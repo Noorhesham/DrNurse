@@ -58,7 +58,7 @@ const page = () => {
             }}
           >
             <div className="flex  justify-end  items-center gap-2">
-              <CVdownload/>
+              <CVdownload name={dataPage?.name}/>
               <FunctionalButton
                 className=" w-full"
                 btnText="EDIT"

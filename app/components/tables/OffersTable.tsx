@@ -67,7 +67,7 @@ const OffersTable: React.FC<OffersTableProps> = ({ offers, action, person = fals
             </TableCell>
             <TableCell className="text-right self-end lg:mr-0 ml-auto ">
               <div className="flex items-center gap-2">
-                <DownloadOffer id={offer.id} />
+                <DownloadOffer name={offer.details.job_title} id={offer.id} />
                 {action && offer.status !== "rejected" && offer.status !== "approved" && (
                   <ModalCustom
                     btn={
