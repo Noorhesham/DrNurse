@@ -46,11 +46,11 @@ const page = () => {
           key={i}
         />
       ))}{" "}
-      {
+      {totalPages > 1 && (
         <div className="flex flex-col gap-3 col-span-2 lg:col-span-6">
           <PaginationDemo totalPages={totalPages} />
         </div>
-      }
+      )}
     </div>
   );
 };

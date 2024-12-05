@@ -3,7 +3,6 @@ import MiniTitle from "@/app/components/defaults/MiniTitle";
 import Notification from "@/app/components/defaults/Notification";
 import { useGetEntities } from "@/app/components/inputsForm/CareerTypeInput";
 import { PaginationDemo } from "@/app/components/Pagination";
-import Spinner from "@/app/components/Spinner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
 import { useSearchParams } from "next/navigation";
@@ -44,9 +43,11 @@ const page = () => {
           key={i}
         />
       ))}{" "}
-      <div className="flex flex-col gap-3 col-span-2 lg:col-span-6">
-        <PaginationDemo totalPages={totalPages} />
-      </div>
+      {totalPages > 1 && (
+        <div className="flex flex-col gap-3 col-span-2 lg:col-span-6">
+          <PaginationDemo totalPages={totalPages} />
+        </div>
+      )}
     </div>
   );
 };
