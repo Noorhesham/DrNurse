@@ -6,8 +6,6 @@ import FunctionalButton from "@/app/components/FunctionalButton";
 import { PaginationDemo } from "@/app/components/Pagination";
 import { useParams, useSearchParams } from "next/navigation";
 import { useGetEntity } from "@/lib/queries";
-import Spinner from "@/app/components/Spinner";
-
 import OffersTable from "@/app/components/tables/OffersTable";
 import { Skeleton } from "@/components/ui/skeleton";
 import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";

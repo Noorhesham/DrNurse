@@ -209,7 +209,7 @@ const getURL = (
     case "wishlistStatus":
       return { url: `${url}/req-job-posts/entities-operations/${id}/bookmarked`, method: "GET" };
     case "company-jobs":
-      return { url: `${url}/recruitment/req-job-posts/jobs`, method: "GET" };
+      return { url: `${url}/recruitment/req-job-posts/jobs?${queryParams}`, method: "GET" };
     case "job":
       return { url: `${url}/recruitment/jobs/${id}`, method: "GET" };
     case "lock-job":
