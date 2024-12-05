@@ -20,7 +20,7 @@ const page = () => {
   });
   if (isLoading || !data)
     return Array.from({ length: 6 }).map((_, i) => (
-      <div className="flex flex-col space-y-3">
+      <div className="flex gap-4 flex-col space-y-3">
         <Skeleton className={`w-full h-[125px]  rounded-xl`} />
         <div className="space-y-2">
           <Skeleton className="h-4 w-[250px]" />
