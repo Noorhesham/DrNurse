@@ -245,7 +245,7 @@ const getURL = (
     case "sendInvite":
       return { url: `${url}/recruitment/meetings/invite`, method: "POST" };
     case "cancelInvite":
-      return { url: `${url}/recruitment/meetings/cancel`, method: "GET" };
+      return { url: `${url}/recruitment/meetings/cancel`, method: "POST" };
     case "person-slots":
       return { url: `${url}/recruitment/person/meetings/slots?job_id=${id}`, method: "GET" };
     case "book":
