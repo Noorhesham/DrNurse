@@ -9,14 +9,36 @@ import { CheckCircle, XCircle } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { useGetEntity } from "@/lib/queries";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import Spinner from "@/app/components/Spinner";
 import { FaDraft2Digital } from "react-icons/fa";
+import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
+import { Skeleton } from "@/components/ui/skeleton";
+import { PaginationDemo } from "@/app/components/Pagination";
 
 const page = () => {
   const { id } = useParams();
-  const { data, isLoading } = useGetEntity("company-jobs", `company-jobs-${id}`);
-  if (isLoading || !data) return <Spinner />;
+  const searchaParams = useSearchParams();
+  const page = searchaParams.get("page");
+
+  const { data, isLoading } = useGetEntity("company-jobs", `company-jobs-${id}-${page}`);
+  if (isLoading || !data)
+    return (
+      <MaxWidthWrapper className="flex flex-col gap-4">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div className="flex  gap-4  flex-col space-y-3">
+            <Skeleton className={`w-full h-[125px]  rounded-xl`} />
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-[250px]" />
+              <Skeleton className="h-4 w-[200px]" />
+            </div>
+          </div>
+        ))}
+      </MaxWidthWrapper>
+    );
+    console.log(data)
+  const totalPages = Math.ceil(data.count / 9);
+
   return (
     <div>
       <Table>
@@ -104,7 +126,12 @@ const page = () => {
             </TableRow>
           ))}
         </TableBody>
-      </Table>
+      </Table>{" "}
+      {totalPages > 1 && (
+        <div className="flex flex-col gap-3 col-span-2 lg:col-span-6">
+          <PaginationDemo totalPages={totalPages} />
+        </div>
+      )}
     </div>
   );
 };
