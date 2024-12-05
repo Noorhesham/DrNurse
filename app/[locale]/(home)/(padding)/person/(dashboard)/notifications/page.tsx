@@ -6,13 +6,16 @@ import { PaginationDemo } from "@/app/components/Pagination";
 import Spinner from "@/app/components/Spinner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
+import { useSearchParams } from "next/navigation";
 import React from "react";
 
 const page = () => {
+  const searchaParams = useSearchParams();
+  const page = searchaParams.get("page");
   const { data, isLoading } = useGetEntities({
     resourceName: "getEntity",
     entityName: "rmnotifications",
-    key: "notifications",
+    key: `notifications-${page}`,
   });
   if (isLoading || !data)
     return Array.from({ length: 6 }).map((_, i) => (
