@@ -8,6 +8,9 @@ import { useAuth } from "../context/AuthContext";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useDevice } from "../context/DeviceContext";
 import { WEBSITEURL } from "../constants";
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 const Socials = ({
   login = false,
@@ -21,9 +24,8 @@ const Socials = ({
   const t = useTranslations();
   const { generalSettings, loading } = useAuth();
   const { device_info } = useDevice();
-  console.log(device_info.device_unique_id)
-  if (loading || !device_info.device_unique_id) return <Skeleton />;
 
+  if (loading || !device_info.device_unique_id) return <Skeleton />;
   const { company_contacts, login_types } = generalSettings;
   const { email, facebook, instagram, linkedin, twitter, youtube, whatsapp } = company_contacts;
   const { social_facebook, social_linkedin, social_google } = login_types;
@@ -37,24 +39,32 @@ const Socials = ({
   ];
   const loginBtns = login_types
     ? [
-        { href: social_google, Icon: FaGoogle, slug: "google" },
-        { href: social_facebook, Icon: FaFacebook, slug: "facebook" },
-        { href: social_linkedin, Icon: FaLinkedin, slug: "linkedin-openid" },
+        { href: "", Icon: FaGoogle, slug: "google" },
+        { href: "", Icon: FaFacebook, slug: "facebook" },
+        { href: "", Icon: FaLinkedin, slug: "linkedin-openid" },
       ]
     : [];
+  const router = useRouter();
   const renderButtonOrLink = (href: string, Icon: React.ElementType, slug: string = "", key: number) => {
-    const commonStyles = "p-1.5 rounded-full text-lg bg-main";
+    const commonStyles = "p-1.5 w-fit px-0 !min-w-[35px] rounded-full text-lg bg-main";
+    const loginUrl = `https://dr.r-m.dev/auth/socialite/${slug}/login?redirect_url=http://localhost:3000/login&device_unique_id=${
+      device_info.device_unique_id
+    }${regiesterAs ? `&register_as=${regiesterAs}` : ``}${referal ? `&referral_code=${referal}` : ``}`;
+
     // &referral_code=asdfs56&register_as=doctor&job_title=newdoc
     if (login) {
       return (
-        <Link
-          href={`https://dr.r-m.dev/auth/socialite/${slug}/login?redirect_url=${WEBSITEURL}/login&device_unique_id=${
-            device_info.device_unique_id
-          }${regiesterAs ? `register_as=${regiesterAs || "doctor"}` : ``}${referal ? `&referral_code=${referal}` : ``}`}
-          className={commonStyles}
-        >
-          <Icon />
-        </Link>
+        <div>
+          <Button
+            onClick={() => {
+              device_info.device_unique_id && router.push(loginUrl);
+            }}
+            size={"sm"}
+            className={commonStyles}
+          >
+            <Icon />
+          </Button>
+        </div>
       );
     }
 

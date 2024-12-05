@@ -182,7 +182,9 @@ const Signup = () => {
             </Link>
           </div>
         </div>
-        <Socials login referal={form.getValues("referral_code")} regiesterAs={form.getValues("register_as")} />
+        {device_info.device_unique_id && (
+          <Socials login referal={form.getValues("referral_code")} regiesterAs={form.getValues("register_as")} />
+        )}
       </div>
     </Section>
   );
