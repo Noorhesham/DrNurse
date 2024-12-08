@@ -169,7 +169,7 @@ const page = async () => {
                   <MotionItem>
                     <Link
                       className=" w-full block aspect-square h-52 relative"
-                      href={`/dashboard/employees?Career-type=${specialty.career_specialty_id}`}
+                      href={`/dashboard/jobs?career_specialty_id=${specialty.career_specialty_id}`}
                     >
                       <Image
                         fill
