@@ -62,17 +62,19 @@ const Socials = ({
             size={"sm"}
             className={commonStyles}
           >
-            <Icon  />
+            <Icon />
           </Button>
         </div>
       );
     }
 
-    return (
-      <Link target="_blank" key={key} href={href} className={'flex items-center p-1.5 rounded-full text-lg bg-main'}>
-        <Icon />
-      </Link>
-    );
+    if (href !== "") {
+      return (
+        <Link target="_blank" key={key} href={href} className={"flex items-center p-1.5 rounded-full text-lg bg-main"}>
+          <Icon />
+        </Link>
+      );
+    }
   };
   const arr = login ? loginBtns : socialLinks;
   return (

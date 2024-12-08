@@ -64,7 +64,7 @@ const Footer = () => {
                 className=" text-white   mb-3 after:w-full after:lg:block after:hidden after:left-[110%] after:top-1/2 after:rounded-2xl after:bg-white after:absolute after:h-[2px] 
           relative text-base md:text-xl"
               >
-                {t("jobs")}
+                {t("MORE JOBS")}
               </h4>
               <ul
                 className=" lg:list-disc grid grid-cols-1 lg:grid-cols-2 w-full items-center lg:place-items-start

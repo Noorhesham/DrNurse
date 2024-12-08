@@ -391,8 +391,7 @@ export async function Server({
     ) {
       redirect("/login?error=true");
     }
-    // console.log(data);
-    console.log();
+
     return data;
   } catch (error: any) {
     if (isRedirectError(error)) {
