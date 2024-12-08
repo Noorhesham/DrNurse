@@ -23,7 +23,7 @@ const page = async () => {
   const data = await Server({ resourceName: "home", id: "persons-home" });
 
   const page = data.page;
-
+  console.log(page.keywords_jobs);
   return (
     <main>
       <section className={`w-full h-screen relative bg-no-repeat bg-cover  `}>
@@ -193,13 +193,12 @@ const page = async () => {
           <Head1 size="lg" text={page.Keywords_title} />
           <MotionContainer className=" grid grid-cols-1 md:grid-cols-2 items-stretch  gap-3 lg:grid-cols-5 my-5">
             {page.keywords_jobs.map((keyword: any) => {
-       
               return (
                 <MotionItem className=" uppercase h-full self-stretch">
                   <CardContainer customPadding="h-full w-full  px-4 py-3 ">
                     <Link
                       className="flex flex-col"
-                      href={`/person/jobs?career_specialty_id=${keyword.career_specialty_id}`}
+                      href={`/person/jobs?career_specialty_id=${keyword.career_specialty.id}`}
                     >
                       <p className=" text-xs text-muted-foreground">{keyword.job_title}</p>
                       <p className="  font-semibold leading-5  text-base  text-gray-800 ">
