@@ -6,7 +6,7 @@ const VideoZoom = ({ btn, src, content }: { btn: ReactNode; src?: string; conten
     <Dialog>
       <DialogTrigger asChild>{btn}</DialogTrigger>
 
-      <DialogContent className={`  w-full bg-transparent outline-none border-none h-auto sm:max-w-7xl `}>
+      <DialogContent className={`w  w-full bg-transparent outline-none border-none h-auto sm:max-w-7xl `}>
         <div className="select-none relative h-auto w-full">{content}</div>
       </DialogContent>
     </Dialog>

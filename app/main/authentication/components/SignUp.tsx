@@ -98,10 +98,10 @@ const Signup = () => {
     }
     const role = searchParams.get("role");
     form.setValue("role", role === "doctor");
-    if (!role) form.setValue("register_as", "hospital");
+    if (!role) form.setValue("register_as", "");
     else form.setValue("register_as", "doctor");
   }, []);
-  console.log(form.formState.errors);
+  console.log(form.getValues('register_as'));
   const onSubmit = async (data: z.infer<typeof singup>) => {
     form.clearErrors();
     localStorage.removeItem("referal");
