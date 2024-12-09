@@ -28,7 +28,7 @@ const FormSelect = ({ name, label, placeholder, description, id, options, select
               <SelectContent>
                 {filteredOptions &&
                   filteredOptions.map((option, i) => (
-                    <SelectItem
+                    <SelectItem className=" capitalize"
                       key={i + `${option.label} ${option.value}`}
                       value={option._id || option.value || option}
                     >
