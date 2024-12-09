@@ -144,15 +144,6 @@ const FormInput = ({
             </FormLabel>
           )}
           <div className={`relative  w-full inline-flex items-center justify-center ${className}`}>
-            {" "}
-            {password && field.value && (
-              <span
-                className=" absolute left-2 top-[40%]  cursor-pointer hover:text-gray-900 text-gray-800"
-                onClick={togglePasswordVisibility}
-              >
-                {showPassword ? <EyeIcon className="w-4 h-4" /> : <EyeOffIcon className="w-4 h-4" />}
-              </span>
-            )}
             {!optional && !switchToggle && !currency && (
               <span className={`absolute right-1 -top-[-13px]  z-10   font-normal text-red-600`}>*</span>
             )}
@@ -257,6 +248,14 @@ const FormInput = ({
                 </div>
               )}
             </FormControl>
+            {password && field.value && (
+              <span
+                className=" absolute left-2 top-[13px]  cursor-pointer hover:text-gray-900 text-gray-800"
+                onClick={togglePasswordVisibility}
+              >
+                {showPassword ? <EyeIcon className="w-4 h-4" /> : <EyeOffIcon className="w-4 h-4" />}
+              </span>
+            )}
           </div>
           {desc && <FormDescription className=" text-sm text-muted-foreground">{desc}</FormDescription>}
           <FormMessage className=" text-sm dark:text-red-500" />

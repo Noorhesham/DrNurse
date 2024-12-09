@@ -11,6 +11,7 @@ const Head1 = ({
   size,
   alignment,
   headingClasses,
+  animation = true,
 }: {
   text: string;
   text2?: string;
@@ -20,6 +21,7 @@ const Head1 = ({
   size?: "sm" | "lg";
   alignment?: "left" | "center" | "right";
   headingClasses?: string;
+  animation?: boolean;
 }) => {
   return (
     <div
@@ -29,14 +31,18 @@ const Head1 = ({
         alignment === "left" || alignment === "right" ? "text-start" : "text-center mx-auto  "
       }    max-w-4xl   uppercase text-main2  line-clamp-5`}
     >
-      <motion.h2
-        initial={{ opacity: 0, y: 20, rotateX: -90 }}
-        whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        className={`${headingClasses} `}
-      >
-        {text}
-      </motion.h2>
+      {animation ? (
+        <motion.h2
+          initial={{ opacity: 0, y: 20, rotateX: -90 }}
+          whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          className={`${headingClasses} `}
+        >
+          {text}
+        </motion.h2>
+      ) : (
+        <h2 className={`${headingClasses} `}>{text}</h2>
+      )}
       {secondText && <h2>{secondText}</h2>}
       {paragraph && <Paragraph className=" text-center" maxWidth description={paragraph} />}
       {text2 && <span className=" text-main">{text2}</span>}

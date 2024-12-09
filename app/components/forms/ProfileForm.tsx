@@ -267,7 +267,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
 
       if (res.status) {
         toast.success(res.message);
-        // router.push("/person");
+        router.push("/person");
       } else toast.error(res.message);
     });
   };
@@ -317,7 +317,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
         {/* Address */}
         <MiniTitle form size="md" boldness="bold" text={t("Current Address")} />
         <CountriesInput countryName="current_location_id" stateName="state_id" cityName="city_id" />
-        <FormInput control={form.control} name="address" label="ADDRESS" placeholder={t("WRITE MAIN ADDRESS")} />
+        <FormInput control={form.control} name="address" label="ADDRESS" placeholder={t("Write Your Address")} />
         {/* Employment Availability */}
         <MiniTitle form size="md" boldness="bold" text={t("Available for Employment")} />
         <FlexWrapper className=" items-center" max={false}>

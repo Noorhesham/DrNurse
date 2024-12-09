@@ -272,7 +272,12 @@ const page = async () => {
               <h3 className=" text-main2 text-lg md:text-xl uppercase font-medium ">
                 {page.employer_section_small_title}
               </h3>
-              <Head1 alignment="left" className=" text-left" text={page.employer_section_main_title} />
+              <Head1
+                animation={false}
+                alignment="left"
+                className=" text-left"
+                text={page.employer_section_main_title}
+              />
               <div
                 dangerouslySetInnerHTML={{ __html: convertToHTML(page.employer_section_content) }}
                 className={`lg:max-w-4xl text-black lg:text-base text-sm  font-medium my-2 leading-[1.7] `}
