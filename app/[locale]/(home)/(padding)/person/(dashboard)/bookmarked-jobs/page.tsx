@@ -29,7 +29,7 @@ const page = ({ searchParams }: { searchParams: any }) => {
   return (
     <main className="flex flex-col gap-3 col-span-2 lg:col-span-5">
       <AnimatePresence>
-        <div>
+        <div className="flex flex-col gap-3">
           {bookmarks.length > 0 ? (
             bookmarks.map((item: any, i: number) => (
               <motion.div
