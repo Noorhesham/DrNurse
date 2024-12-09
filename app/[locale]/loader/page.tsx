@@ -14,7 +14,7 @@ import React, { useEffect } from "react";
 const page = () => {
   const { userSettings, loading } = useAuth();
   const router = useRouter();
-  if (loading||!userSettings) return <Spinner />;
+  if (loading || !userSettings) return <Spinner />;
   const isAccountOlderThan10Days = () => {
     const createdAt = new Date(userSettings.created_at);
     const currentDate = new Date();
@@ -97,18 +97,10 @@ const page = () => {
           </div>
         )
       )}
-      {(userSettings.role.includes("nurse") || userSettings.role.includes("doctor")) && (
-        <>
-          <Link href="/person">
-            <Button size="lg" className=" px-8  rounded-full">
-              Continue as Medical Staff
-            </Button>
-          </Link>
-          {HasProfile()}
-        </>
-      )}
+      {(userSettings.role.includes("nurse") || userSettings.role.includes("doctor")) && <>{HasProfile()}</>}
       {userSettings.role.includes("hospital") && (
-        <ModalCustom isOpen={true}
+        <ModalCustom
+          isOpen={true}
           btn={
             <Button size="lg" className=" px-8  rounded-full">
               Continue as Hospital Manager

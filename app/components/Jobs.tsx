@@ -28,6 +28,7 @@ const JobsList = ({ jobs, totalPages, filters, query }: JobsListProps) => {
   const { isLoading } = useLoading();
   const { WrapperFn } = useSetLoading();
   const router = useRouter();
+  const currentUrl = new URL(window.location.href);
   const handleChangeQuery = (value: string) => {
     const currentUrl = new URL(window.location.href);
     const params = new URLSearchParams(currentUrl.search);
@@ -55,7 +56,7 @@ const JobsList = ({ jobs, totalPages, filters, query }: JobsListProps) => {
         ) : jobs.length > 0 ? (
           jobs.map((job: Job, i: number) => <JobCard i={i} key={job.id} job={job} />)
         ) : (
-          <Empty text="No Jobs Found !" textLink="Reset Filters !" link="/jobs" />
+          <Empty text="No Jobs Found !" textLink="Reset Filters !" link={currentUrl.pathname} />
         )}
 
         <PaginationDemo totalPages={totalPages} />
