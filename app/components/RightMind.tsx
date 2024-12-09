@@ -19,9 +19,9 @@ const RightMind = () => {
             whileInView={{ scale: 1.2, rotate: 0, opacity: 1 }}
             initial={{ scale: 1, rotate: 40, opacity: 0 }}
             exit={{ scale: 1, rotate: 40, opacity: 0 }}
-            className=" w-16 p-3  bg-white rounded-full  z-50 h-16 aspect-square -top-14 left-36  absolute"
+            className=" w-16 p-3  bg-white rounded-full  z-50 h-16 aspect-square -top-20 right-16  absolute"
           >
-            <Image src={"/brain.svg"} alt={"brain"} fill className={"object-cover scale-95"} />
+            <Image src={"/brain.svg"} alt={"brain"} fill className={"object-cover  p-1"} />
           </MotionItem>
         )}
       </AnimatePresence>
