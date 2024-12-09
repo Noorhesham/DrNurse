@@ -196,7 +196,7 @@ const page = async () => {
             items={page.specialties.map((specialty: any) => {
               return {
                 card: (
-                  <div className=" overflow-auto">
+                  <MotionItem className=" pt-4 overflow-auto">
                     <Link
                       className=" z-20 w-full block aspect-square h-52 relative"
                       href={`/person/jobs?career_specialty_id=${specialty.career_specialty_id}`}
@@ -211,7 +211,7 @@ const page = async () => {
                     <h1 className=" text-center font-semibold text-main2 uppercase py-2 bg-white">
                       {specialty.specialty_title}
                     </h1>
-                  </div>
+                  </MotionItem>
                 ),
               };
             })}

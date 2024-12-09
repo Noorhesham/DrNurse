@@ -166,7 +166,7 @@ const SearchBox = ({
               className=" text-main duration-150 hover:underline"
               href={jobs?.length > 1 ? `/jobs?search=${query}` : "/jobs"}
             >
-              {`${jobs?.length > 1 ? `Browse All Products For ${query}` : "View All JOBS"}`}
+              {`${jobs?.length > 1 ? `Browse All Jobs For ${query}` : "View All JOBS"}`}
             </Link>
           </MotionItem>
         )}
