@@ -30,7 +30,7 @@ const page = () => {
         ))}
       </div>
     );
-    const totalPages = Math.ceil(data.count / 9);
+  const totalPages = Math.ceil(data.count / 9);
 
   return (
     <div className=" flex  flex-col gap-8">
@@ -39,7 +39,7 @@ const page = () => {
         <Notification
           notification={{
             name: doc.title,
-            image: doc.main_thumbnail[0].file || "",
+            image: doc.main_thumbnail.length ? doc.main_thumbnail[0].file : "/3177336.png",
             speciality: format(new Date(doc.created_at), "dd/MM/yyyy"),
             content: doc.content,
           }}

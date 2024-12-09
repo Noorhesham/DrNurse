@@ -20,6 +20,7 @@ export default function RootLayout({
   const formattedLastSegment = lastSegment
     ? lastSegment.replace(/-/g, " ").replace(/\b\w/g, (char: string) => char.toUpperCase())
     : "";
+    console.log(data)
   return (
     <section id="portal" className="pt-36  flex flex-col-reverse portalele">
       <div className="  relative">{children}</div>
