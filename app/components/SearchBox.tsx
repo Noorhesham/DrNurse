@@ -149,7 +149,7 @@ const SearchBox = ({
                 <Link
                   ref={(el) => (itemRefs.current[index] = el)}
                   key={item.id}
-                  href={`/person/job/${item.id}`}
+                  href={`/job/${item.id}`}
                   className={`${
                     selectedResult === index ? "bg-gray-100" : ""
                   }  hover:bg-gray-100 rounded-xl py-2 text-base px-4 duration-150 w-full flex items-center gap-2`}
