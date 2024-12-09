@@ -111,6 +111,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             device_id: device_info.device_unique_id,
           },
         });
+        console.log(res);
         if (!res.check_auth && userSettings) handleLogout();
 
         updateFn({

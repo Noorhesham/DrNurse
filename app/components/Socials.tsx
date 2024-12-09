@@ -7,7 +7,7 @@ import { SlSocialLinkedin, SlSocialFacebook } from "react-icons/sl";
 import { useAuth } from "../context/AuthContext";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useDevice } from "../context/DeviceContext";
-import { WEBSITEURL } from "../constants";
+import { APIURL, WEBSITEURL } from "../constants";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
@@ -47,7 +47,7 @@ const Socials = ({
   const router = useRouter();
   const renderButtonOrLink = (href: string, Icon: React.ElementType, slug: string = "", key: number) => {
     const commonStyles = "p-1.5  text-center m-auto flex items-center !min-w-[35px] rounded-full text-lg bg-main";
-    const loginUrl = `https://dr.r-m.dev/auth/socialite/${slug}/login?redirect_url=${WEBSITEURL}/login&device_unique_id=${
+    const loginUrl = `${APIURL}/auth/socialite/${slug}/login?redirect_url=${WEBSITEURL}/login&device_unique_id=${
       device_info.device_unique_id
     }${regiesterAs ? `&register_as=${regiesterAs}` : ``}${referal ? `&referral_code=${referal}` : ``}`;
 

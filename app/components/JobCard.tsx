@@ -14,7 +14,10 @@ const JobCard = ({ job, i, bookmarked }: { job: Job; i: number; bookmarked?: boo
   return (
     <MotionItem exit={{ opacity: 0, scale: 0.3 }} className=" ">
       <div className="shadow-sm hover:bg-gradient-to-r from-light to-white  duration-150  bg-white rounded-2xl w-full gap-2   border-2 border-input px-6 md:px-10 py-3 md:py-7 flex flex-col">
-        <Link href={`/person/job/${job.id}`} className=" font-semibold text-base lg:text-2xl text-gray-900  uppercase">
+        <Link
+          href={`/person/job/${job.id}`}
+          className=" line-clamp-1 font-semibold text-base lg:text-2xl text-gray-900  uppercase"
+        >
           {job.job_title}
         </Link>
         <Link href={`/person/job/${job.id}`} className=" flex  gap-4 items-center ">
@@ -33,13 +36,13 @@ const JobCard = ({ job, i, bookmarked }: { job: Job; i: number; bookmarked?: boo
           <div className=" w-12 h-12 relative">
             <Image alt="hospital" fill src={`/job-${imageIndex}.png`} className=" object-cover" />
           </div>
-          <div className=" p-1 flex flex-col text-sm sm:text-base lg:text-lg items-start gap-1">
+          <div className=" p-1 flex flex-col text-sm sm:text-base lg:text-lg items-start">
             <h3>#Hospital : {job.company_id}</h3>
             {job.branch?.country?.title ||
               (job.country && (
                 <div className=" flex text-sm  items-center gap-2">
                   <Location sizes={{ width: 14, height: 14 }} />
-                  <p>
+                  <p className=" text-sm">
                     {job.branch?.country?.title || job.country.title},{job.branch?.state?.title || job.state.title},
                     {job.branch?.city?.title || job.city.title}
                   </p>

@@ -20,7 +20,7 @@ const BreadCrumb = ({ linksCustom }: { linksCustom?: { href: string; text: strin
   const router = useRouter();
   const pathName = usePathname();
   const links: any = linksCustom || pathName.split("/").filter((link) => !["ar", "en"].includes(link));
-  
+
   const current = links[links.length - 1];
   const dark =
     pathName.includes("doctor") ||
@@ -55,7 +55,13 @@ const BreadCrumb = ({ linksCustom }: { linksCustom?: { href: string; text: strin
                   >
                     {index === 0 && <FaHome />}
 
-                    {link.text ? link.text : link === "" ? "HOME" : link.replace("-", "  ").toLowerCase()}
+                    {link.text
+                      ? link.text.length > 10
+                        ? `${link.text.slice(0, 10)}...`
+                        : link.text
+                      : link === ""
+                      ? "HOME"
+                      : link.replace("-", "  ").toLowerCase()}
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 {!isLast && <BreadcrumbSeparator />}

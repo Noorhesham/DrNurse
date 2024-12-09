@@ -15,7 +15,7 @@ const page = async ({ params: { locale }, searchParams }: { params: { locale: st
     sort,
     career_specialty_id,
     career_levels,
-    search,
+    query,
   } = searchParams;
 
   const queryParams = new URLSearchParams({
@@ -24,6 +24,7 @@ const page = async ({ params: { locale }, searchParams }: { params: { locale: st
     experience_to: experience_to || "",
     career_type_id: career_type_id || "",
     career_specialty_id: career_specialty_id || "",
+    search: query || "",
   });
   if (country_ids) {
     const countryIdsArray = country_ids.split(",");
@@ -54,7 +55,7 @@ const page = async ({ params: { locale }, searchParams }: { params: { locale: st
   return (
     <MaxWidthWrapper>
       <LoadingProvider>
-        <JobsList filters={filters} jobs={jobs} totalPages={totalPages} />
+        <JobsList query={query} filters={filters} jobs={jobs} totalPages={totalPages} />
       </LoadingProvider>
     </MaxWidthWrapper>
   );

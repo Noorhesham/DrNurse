@@ -37,15 +37,15 @@ const Page = async ({ params: { locale } }: { params: { locale: string } }) => {
     .filter((field: any) => field !== undefined);
 
   return (
-    <main className=" ">
+    <main className="  ">
       <MaxWidthWrapper>
-        <div className=" flex flex-col  gap-4 lg:gap-2 md:grid items-center lg:items-start  md:grid-cols-4">
+        <div className=" flex flex-col   gap-4 lg:gap-2 md:grid items-center lg:items-start  md:grid-cols-4">
           <Section
-            CustomePadding="px-0  lg:px-0"
+            CustomePadding="px-0  !py-0 lg:px-0"
             className="  w-full col-span-2 flex flex-col gap-4"
             heading={t("contact.title")}
           >
-            <Paragraph description={t("contact.description")} />
+            <Paragraph className="capitalize" description={t("contact.description")} />
             <Address />
 
             <div className=" flex flex-col items-start mt-2">

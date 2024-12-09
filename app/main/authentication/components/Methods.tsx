@@ -21,13 +21,14 @@ const Methods = ({
     email: tfa === "true" ? t("SEND_TFA_CODE_EMAIL") : t("SEND_PASSWORD_RESET_EMAIL"),
     sms: tfa === "true" ? t("SEND_TFA_CODE_SMS") : t("SEND_PASSWORD_RESET_SMS"),
     whats_app_otp: tfa === "true" ? t("SEND_TFA_CODE_WHATSAPP") : t("SEND_PASSWORD_RESET_WHATSAPP"),
+    whatsapp_otp: tfa === "true" ? t("SEND_TFA_CODE_WHATSAPP") : t("SEND_PASSWORD_RESET_WHATSAPP"),
     auth_app: t("SEND_TFA_CODE_AUTHAPP"),
   };
   return (
     <Suspense>
       <h1 className=" text-center text-xl mt-8 font-bold text-main2">{tfa ? t("2fadesc") : t("resetmessage")}</h1>
       <MaxWidthWrapper className="  mx-auto">
-        {Object.keys(methods).filter(m=>m!=='apps').map(
+        {Object.keys(methodLabels).filter(m=>m!=='apps').map(
           (method) =>
             methods[method] && ( // If method value exists
               <div

@@ -19,6 +19,7 @@ import { AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import ModalCustom from "../defaults/ModalCustom";
 import MyHospitals from "../MyHospitals";
+import { useLocale } from "next-intl";
 
 const NavBar = () => {
   const [isScrollingDown, setIsScrollingDown] = useState(false);
@@ -136,6 +137,8 @@ const NavBar = () => {
       },
     ];
   }
+  const locale = useLocale();
+  console.log(pathName.replace(`/${locale}`, "/"));
   return (
     <header className=" w-full">
       <nav
@@ -201,7 +204,19 @@ const NavBar = () => {
                       LOGIN
                     </Button>
                   </Link>
-                  <Link href={user ? "/dashboard" : isPerson ? "/signup?role=doctor" : "/signup?role=hospital"}>
+                  <Link
+                    href={
+                      !user
+                        ? pathName.replace(`/${locale}`, "/") === "/"
+                          ? "/signup?role=doctor"
+                          : "/"
+                        : user
+                        ? "/dashboard"
+                        : isPerson
+                        ? "/signup?role=doctor"
+                        : "/signup?role=hospital"
+                    }
+                  >
                     <Button className="  px-4 lg:px-8 rounded-full">GET STARTED</Button>
                   </Link>
                 </>

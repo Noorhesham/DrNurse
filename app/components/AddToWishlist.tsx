@@ -79,7 +79,7 @@ const AddToWishlist = ({
               href={"/login"}
               className="text-2xl hover:underline duration-150 py-10 text-main uppercase font-semibold text-center"
             >
-              {t("loginPrompt")}
+              YOU HAVE TO LOGIN TO ADD TO BOOKMARK
             </Link>
           }
         />

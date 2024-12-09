@@ -387,7 +387,8 @@ export async function Server({
     if (
       data.message === "Device token mismatch" ||
       data.message === "Login again please" ||
-      data.message === "تسجيل الدخول مرة أخرى من فضلك"
+      data.message === "تسجيل الدخول مرة أخرى من فضلك" ||
+      response.status === 401
     ) {
       redirect("/login?error=true");
     }

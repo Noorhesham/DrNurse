@@ -30,15 +30,11 @@
     "mad": "Junior Pediatric Nurse in AL Madinah",
     "copyright": "Copyright © 2024 Dr Nurse .Design by "
   },
-  "contact": {
-    "title": "CONTACT INFO",
-    "description": "you can contact us anytime via email or phone.",
-    "book": "LEARN ANOUT OUR MOST IMPORTANT",
-    "branches": "BRANCHES AND DISTRIBUTERS",
-    "contact": "SOCIAL MEDIA",
-    "question": "DO YOU HAVE ANY QUESTIONS ?",
-    "send": "SEND MESSAGE",
-    "contactDescription": "CONNECT WITH US VIA SOCAIL MEDIA"
+  "address": {
+    "title": "Address",
+    "phone": "Phone",
+    "hotline": "Hotline",
+    "email": "Email Address"
   },
   "Submit": "CONFIRM",
   "cancel": "CANCEL",
@@ -85,7 +81,6 @@
   "benefits": "BENEFITS",
   "write": "WRITE",
   "addBenefit": "ADD BENEFITS",
-  "address": "ADDRESS",
   "addJobOffer": "ADD JOB OFFER",
   "startDate": "START DATE",
   "startDatePlaceholder": "START DATE",
@@ -257,5 +252,15 @@
   "social_google": "Google",
   "social_apple": "Apple",
   "social_youtube": "YouTube",
-  "social_telegram": "Telegram"
+  "social_telegram": "Telegram",
+  "contact": {
+    "title": "CONTACT INFO",
+    "description": "you can contact us anytime via email or phone.",
+    "book": "LEARN ABOUT OUR MOST IMPORTANT",
+    "branches": "BRANCHES AND DISTRIBUTERS",
+    "contact": "SOCIAL MEDIA",
+    "question": "DO YOU HAVE ANY QUESTIONS ?",
+    "send": "SEND MESSAGE",
+    "contactDescription": "Connect With Us Via Social Media"
+  }
 }

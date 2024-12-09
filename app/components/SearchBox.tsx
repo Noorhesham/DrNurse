@@ -1,14 +1,15 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { AnimatePresence } from "framer-motion";
-import { useLocale, useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
 import { useGetEntity } from "@/lib/queries";
 import debounce from "lodash.debounce";
 import Link from "next/link";
 import MotionItem from "./defaults/MotionItem";
 import { Button } from "@/components/ui/button";
 import { SearchIcon, XIcon } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
 const SearchBox = ({
   bg,
@@ -17,20 +18,41 @@ const SearchBox = ({
   active,
   setIsActive,
   nonactive,
+  btn = true,
+  onClose,
+  className,
+  defaultQuery,
 }: {
   bg?: string;
   icon?: any;
   onSearch?: (value: string) => void;
-  active: boolean;
+  active?: boolean;
   setIsActive?: (value: boolean) => void;
   nonactive?: boolean;
+  btn?: boolean;
+  onClose?: () => void;
+  className?: string;
+  defaultQuery?: string;
 }) => {
-  const [val, setVal] = useState("");
+  //2 states to handle the debounced search
+  const [val, setVal] = useState(defaultQuery || "");
   const [query, setQuery] = useState<string>("");
+
+  //state to track down the activity of the results (if the box is shown or not)
+  const [resultActive, setResultActive] = useState(false);
+  //the selected result state to adda visual effect when moving with keys
+  const [selectedResult, setSelectedResult] = useState(0);
+
+  const locale = useLocale();
+  const router = useRouter();
+  const searchParams = new URLSearchParams();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+  const { userSettings, loading } = useAuth();
   useEffect(() => {
     searchParams.set("search", query);
   }, [query]);
-  const searchParams = new URLSearchParams();
   const { data, isLoading } = useGetEntity(
     "getJobs",
     `job_title=${query}`,
@@ -38,24 +60,7 @@ const SearchBox = ({
     { enabled: query.length > 3 },
     `job_title=${query}&itemsCount=10`
   );
-  const pathname = usePathname();
-  const inputRef = useRef<HTMLInputElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [isLg, setIsLg] = useState(false);
-  const t = useTranslations();
-  // Track screen size
-  useEffect(() => {
-    const handleResize = () => {
-      setIsLg(window.innerWidth >= 1024);
-    };
 
-    handleResize(); // Set initial value
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
   const search = React.useCallback(
     debounce((newsearch) => {
       setQuery(newsearch);
@@ -68,7 +73,7 @@ const SearchBox = ({
     if (!nonactive && (event.target.value.includes("%") || event.target.value.length < 3))
       return setResultActive(false);
     setResultActive(true);
-    onSearch && onSearch(event.target.value);
+    onSearch && debounce(onSearch, 500)(event.target.value);
     if (!nonactive) search(event.target.value);
   };
 
@@ -92,17 +97,41 @@ const SearchBox = ({
       inputRef.current?.focus();
     }
   }, [active]);
-  const locale = useLocale();
-  const router = useRouter();
-  const [resultActive, setResultActive] = useState(false);
+
+  const jobs = data?.data?.jobs;
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter" && data) {
-      data.products.length > 0 ? router.push(`/shop?search=${query}`) : router.push(`/shop`);
+    console.log(event.key, jobs);
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      setSelectedResult((prev) => {
+        const next = (prev + 1) % jobs.length;
+        itemRefs.current[next]?.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+        });
+        return next;
+      });
+    }
+    if (event.key === "escape") setResultActive(false);
+    if (event.key === "ArrowUp") {
+      event.preventDefault();
+      setSelectedResult((prev) => {
+        const next = (prev - 1 + jobs.length) % jobs.length;
+        itemRefs.current[next]?.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+        });
+        return next;
+      });
+    }
+
+    if (event.key === "Enter" && jobs) {
+      if (selectedResult)
+        router.push(userSettings ? `/person/job/${jobs[selectedResult].id}` : `/job/${jobs[selectedResult].id}`);
     }
   };
-
   return (
-    <div ref={containerRef} className=" w-full relative md:w-[80%] flex flex-col gap-4  ">
+    <div ref={containerRef} className={`${className || " md:w-[80%]"} w-full relative flex flex-col gap-4  `}>
       {" "}
       <AnimatePresence>
         {data && resultActive && (
@@ -113,14 +142,17 @@ const SearchBox = ({
             exit={{ opacity: 0, height: 0 }}
             className={`${
               locale === "ar" ? "right-0" : "left-0"
-            } flex w-full items-start  xl:w-full bg-white absolute gap-2  top-[104%] py-4 px-8 rounded-md  max-h-[14rem] overflow-y-scroll flex-col `}
+            } flex w-full  bg-white items-start  xl:w-full  absolute gap-2  top-[104%] py-4 px-8 rounded-md  max-h-[14rem] overflow-y-scroll flex-col `}
           >
-            {(data && data.data?.length > 0) || query.length > 4 ? (
-              data?.data?.jobs.map((item: any) => (
+            {(jobs && jobs.length > 0) || query.length > 4 ? (
+              jobs?.map((item: any, index: number) => (
                 <Link
+                  ref={(el) => (itemRefs.current[index] = el)}
                   key={item.id}
                   href={`/person/job/${item.id}`}
-                  className=" hover:bg-gray-100 rounded-xl py-2 text-base px-4 duration-150 w-full flex items-center gap-2"
+                  className={`${
+                    selectedResult === index ? "bg-gray-100" : ""
+                  }  hover:bg-gray-100 rounded-xl py-2 text-base px-4 duration-150 w-full flex items-center gap-2`}
                 >
                   <div className=" flex flex-col">
                     <h2 className=" text-blackline-clamp-1 font-medium rounded-xl">{item.job_title}</h2>
@@ -152,18 +184,21 @@ const SearchBox = ({
           />{" "}
           <XIcon
             onClick={() => {
+              onClose && onClose();
               setVal("");
               setResultActive(false);
             }}
             className=" cursor-pointer hover:text-main duration-150 mr-2"
           />
         </div>
-        <Link href={data?.products?.length > 1 ? `/jobs?search=${query}` : "/jobs"}>
-          <Button className="  text-center m-auto  lg:flex hidden" size={"lg"}>
-            SEARCH MY JOB
-          </Button>
-          <SearchIcon className="  w-10 h-10 p-2 bg-main rounded-full hover:bg-main/70 duration-150 text-white block lg:hidden" />
-        </Link>
+        {btn && (
+          <Link href={jobs?.length > 1 ? `/jobs?query=${query}` : "/jobs"}>
+            <Button className="  text-center m-auto  lg:flex hidden" size={"lg"}>
+              SEARCH MY JOB
+            </Button>
+            <SearchIcon className="  w-10 h-10 p-2 bg-main rounded-full hover:bg-main/70 duration-150 text-white block lg:hidden" />
+          </Link>
+        )}
       </div>
     </div>
   );

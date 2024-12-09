@@ -1,6 +1,7 @@
+"use client";
 import React from "react";
 import Paragraph from "./defaults/Paragraph";
-
+import { motion } from "framer-motion";
 const Head1 = ({
   text,
   text2,
@@ -28,8 +29,15 @@ const Head1 = ({
         alignment === "left" || alignment === "right" ? "text-start" : "text-center mx-auto  "
       }    max-w-4xl   uppercase text-main2  line-clamp-5`}
     >
-      <h1 className={headingClasses || ""}>{text}</h1>
-      {secondText && <h1>{secondText}</h1>}
+      <motion.h2
+        initial={{ opacity: 0, y: 20, rotateX: -90 }}
+        whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        className={`${headingClasses} `}
+      >
+        {text}
+      </motion.h2>
+      {secondText && <h2>{secondText}</h2>}
       {paragraph && <Paragraph className=" text-center" maxWidth description={paragraph} />}
       {text2 && <span className=" text-main">{text2}</span>}
     </div>

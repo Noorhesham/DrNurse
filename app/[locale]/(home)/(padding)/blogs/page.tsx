@@ -17,14 +17,22 @@ const page = async ({ params: { locale } }: { params: { locale: string } }) => {
   });
 
   return (
-    <section className=" min-h-screen  ">
-      <MaxWidthWrapper className="flex flex-col items-center   justify-center">
-        <MotionContainer className=" w-full  gap-4 grid grid-cols-1 md:grid-cols-2    lg:grid-cols-3">
-          {data.data.map((item: any) => (
-            <CardHuge item={item} href={`/blog/${item.id}`} key={item.id} />
-          ))}
-        </MotionContainer>
-      </MaxWidthWrapper>
+    <section className="  min-h-screen  ">
+      <div className="pt-36 ">
+        <BreadCrumb
+          linksCustom={[
+            { href: "", text: "Home" },
+            { href: "/blogs", text: "BLOGS" },
+          ]}
+        />{" "}
+        <MaxWidthWrapper className="flex flex-col  items-center   justify-center">
+          <MotionContainer className=" w-full  gap-4 grid grid-cols-1 md:grid-cols-2    lg:grid-cols-3">
+            {data.data.map((item: any) => (
+              <CardHuge item={item} href={`/blog/${item.id}`} key={item.id} />
+            ))}
+          </MotionContainer>
+        </MaxWidthWrapper>
+      </div>
     </section>
   );
 };

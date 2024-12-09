@@ -31,7 +31,7 @@ const Footer = () => {
           className=" flex z-10 lg:bg-none  bg-gradient-to-b from-[#224982] to-[#0C1D37]  flex-col items-start  pb-5 lg:pt-32"
         >
           <GridContainer
-            className=" pb-5   text-center lg:text-justify  border-white border-b-2 justify-between gap-y-5 md:gap-y-10 lg:gap-20 "
+            className=" pb-5   text-center lg:text-justify  border-white border-b justify-between gap-y-5 md:gap-y-10 lg:gap-20 "
             cols={11}
           >
             <div className=" col-span-4 lg:col-span-3 flex flex-col  items-center">
@@ -61,10 +61,10 @@ const Footer = () => {
 
             <div className=" col-span-full lg:col-span-6 self-end flex flex-col items-center lg:items-start">
               <h4
-                className=" text-white   mb-3 after:w-full after:lg:block after:hidden after:left-[110%] after:top-1/2 after:rounded-2xl after:bg-white after:absolute after:h-[2px] 
+                className=" text-white   mb-3 after:w-full after:lg:block after:hidden after:left-[110%] after:top-1/2 after:rounded-2xl after:bg-white after:absolute after:h-[1px] 
           relative text-base md:text-xl"
               >
-                {t("MORE JOBS")}
+                MORE JOBS
               </h4>
               <ul
                 className=" lg:list-disc grid grid-cols-1 lg:grid-cols-2 w-full items-center lg:place-items-start

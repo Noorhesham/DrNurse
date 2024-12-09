@@ -66,9 +66,9 @@ const PriceFilter = ({ from_years }: { from_years?: any }) => {
               type="radio"
               id={filter.value}
               checked={
+                experience_to &&
                 priceFilter?.range?.[0] === filter.value?.[0] &&
-                priceFilter?.range?.[1] === filter.value?.[1] &&
-                !priceFilter?.isCustom
+                priceFilter?.range?.[1] === filter.value?.[1]
               }
               onChange={() => {
                 handlePriceChange({

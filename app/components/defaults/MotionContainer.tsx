@@ -63,7 +63,7 @@ const MotionContainer = ({
       className={className}
       variants={container || variantsCustom}
       initial="hidden"
-      viewport={{ once: true }}
+      viewport={{ once: true, amount: 0.3 }}
       whileInView="visible"
     >
       {childrenArray.map((child, index) =>

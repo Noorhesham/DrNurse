@@ -32,12 +32,7 @@ const initialSignupArray = [
     phone: true,
     returnFullPhone: false,
   },
-  {
-    name: "sms",
-    label: "ACTIVE BY SMS",
-    label2: "ACTIVE BY WHATSAPP",
-    switchToggle: true,
-  },
+
   {
     name: "password",
     type: "password",
@@ -56,7 +51,7 @@ const initialSignupArray = [
   {
     name: "referral_code",
     optional: true,
-    placeholder: "REFERRAL CODE ...",
+    placeholder: "Referral Code ...",
   },
   {
     name: "register_as",
@@ -102,11 +97,12 @@ const Signup = () => {
       form.setValue("referral_code", referal);
     }
     const role = searchParams.get("role");
+    form.setValue("role", role === "doctor");
     if (role === "hospital") form.setValue("register_as", "hospital");
     if (role === "doctor") form.setValue("register_as", "doctor");
   }, []);
   const onSubmit = async (data: z.infer<typeof singup>) => {
-    console.log(data);
+    form.clearErrors();
     if (data.phone) data.country_key = data.phone.country_key;
     if (data.phone) data.phone = data.phone.phone;
     startTransition(async () => {
@@ -128,9 +124,14 @@ const Signup = () => {
           localStorage.removeItem("referal");
           redirect(`/login?uuid=${res.activation_uuid}`);
         } else {
-          cookies.set("jwt", res.token);
-          setLogin(true);
-          router.push("/loader");
+          if (res.token) {
+            cookies.set("jwt", res.token);
+            setLogin(true);
+            router.push("/loader");
+          } else {
+            toast.success(`${res.message} ...`);
+            router.push("/login");
+          }
         }
       }
     });
@@ -155,8 +156,7 @@ const Signup = () => {
         return prev;
       });
     } else {
-      setSignupArray((prev) => prev.filter((input) => input.name !== "register_as"));
-      form.setValue("register_as", "hospital");
+      setSignupArray((prev) => prev.filter((input) => input.name !== "register_as" && input.name !== "referral_code"));
     }
   }, [role]);
   console.log(form.getValues("register_as"));

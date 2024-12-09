@@ -16,7 +16,7 @@ export async function middleware(req: NextRequest, res: NextResponse) {
   // Access cookies
   const token = req.cookies.get("jwt")?.value;
   const lang = req.cookies.get("NEXT_LOCALE")?.value;
-  console.log("token", token);
+  
   // Access the requested path
   const path = req.nextUrl;
   // if (req.nextUrl.pathname.includes("api")) return req;

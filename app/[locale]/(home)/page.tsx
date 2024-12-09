@@ -18,7 +18,37 @@ import { getYouTubeEmbedUrl } from "@/app/helpers/utils";
 import { convertToHTML } from "@/lib/utils";
 import SearchBox from "@/app/components/SearchBox";
 import { Button } from "@/components/ui/button";
-
+import { WEBSITEURL } from "@/app/constants";
+export const generateMetadata = async () => {
+  const { page } = await Server({
+    resourceName: "home",
+    id: "persons-home",
+  });
+  return {
+    title: `${page.title} `,
+    canonical: WEBSITEURL,
+    openGraph: {
+      title: "drnurse",
+      url: "/logodark.webp",
+      images: [
+        {
+          url: "/logodark.webp",
+          alt: "drnurse",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "drnurse",
+      images: [
+        {
+          url: "/logodark.webp",
+          title: "drnurse",
+        },
+      ],
+    },
+  };
+};
 const page = async () => {
   const data = await Server({ resourceName: "home", id: "persons-home" });
 
@@ -160,16 +190,16 @@ const page = async () => {
           <SwiperCards
             autoplay={true}
             slidesPerView={5}
-            className=" h-full"
+            className=" h-auto "
             contain
             logo
             items={page.specialties.map((specialty: any) => {
               return {
                 card: (
-                  <MotionItem>
+                  <div className=" overflow-auto">
                     <Link
-                      className=" w-full block aspect-square h-52 relative"
-                      href={`/dashboard/jobs?career_specialty_id=${specialty.career_specialty_id}`}
+                      className=" z-20 w-full block aspect-square h-52 relative"
+                      href={`/person/jobs?career_specialty_id=${specialty.career_specialty_id}`}
                     >
                       <Image
                         fill
@@ -181,7 +211,7 @@ const page = async () => {
                     <h1 className=" text-center font-semibold text-main2 uppercase py-2 bg-white">
                       {specialty.specialty_title}
                     </h1>
-                  </MotionItem>
+                  </div>
                 ),
               };
             })}
@@ -196,10 +226,7 @@ const page = async () => {
               return (
                 <MotionItem className=" uppercase h-full self-stretch">
                   <CardContainer customPadding="h-full w-full  px-4 py-3 ">
-                    <Link
-                      className="flex flex-col"
-                      href={`/person/jobs?career_specialty_id=${keyword.career_specialty.id}`}
-                    >
+                    <Link className="flex flex-col" href={`/person/job/${keyword.id}`}>
                       <p className=" text-xs text-muted-foreground">{keyword.job_title}</p>
                       <p className="  font-semibold leading-5  text-base  text-gray-800 ">
                         {keyword.branch?.country?.title || ""},{keyword.branch?.state?.title || ""}

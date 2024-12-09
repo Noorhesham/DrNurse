@@ -59,6 +59,7 @@ const Login = () => {
     if (param !== "") setActivate(true);
   }, [param]);
   const onSubmit = async (data: z.infer<typeof loginSchemaa>) => {
+    form.clearErrors();
     startTransition(async () => {
       try {
         const res = await Server({
@@ -78,7 +79,7 @@ const Login = () => {
           setServerError(null);
           toast.success(`${res.message} ...`);
           if (res.require_activation || res.tfa) {
-            set2fa(true);
+            if (res.tfa) set2fa(true);
             setTimeout(() => {
               setActivate(true);
             }, 300);

@@ -20,7 +20,6 @@ const LoadingProvider = ({ children }: { children: React.ReactNode }) => {
     </LoadingContext.Provider>
   );
 };
-/******  9eea10b0-34d7-4c06-9405-1f7f9f3c0083  *******/
 const useLoading = () => {
   const context = useContext(LoadingContext);
   if (!context) {

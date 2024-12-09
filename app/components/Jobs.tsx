@@ -11,18 +11,37 @@ import GridContainer from "./defaults/GridContainer";
 import Filters from "./Filters";
 import FilterMobile from "./FilterPhone";
 import { useLoading } from "../context/LoadingContext";
+import Paragraph from "./defaults/Paragraph";
+import { XIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import SearchBox from "./SearchBox";
+import { useSetLoading } from "../hooks/useSetLoadingt";
 
 interface JobsListProps {
   jobs: Job[];
   totalPages: number;
   filters?: any;
+  query?: string;
 }
 
-const JobsList = ({ jobs, totalPages, filters }: JobsListProps) => {
+const JobsList = ({ jobs, totalPages, filters, query }: JobsListProps) => {
   const { isLoading } = useLoading();
+  const { WrapperFn } = useSetLoading();
+  const router = useRouter();
+  const handleChangeQuery = (value: string) => {
+    const currentUrl = new URL(window.location.href);
+    const params = new URLSearchParams(currentUrl.search);
+    params.set("query", value);
+    router.push(`${currentUrl.pathname}?${params.toString()}`);
+  };
   return (
     <GridContainer className=" mt-5 gap-4" cols={9}>
       <div className="flex order-1 lg:order-0 flex-col gap-3 col-span-2 lg:col-span-6">
+        {query && (
+          <div className="flex items-center justify-between">
+            <Paragraph size="lg" description={`Search Results For ${query} is ${jobs.length}`} />
+          </div>
+        )}
         {isLoading ? (
           Array.from({ length: 6 }).map((_, i) => (
             <div className="flex flex-col space-y-3">
@@ -43,9 +62,30 @@ const JobsList = ({ jobs, totalPages, filters }: JobsListProps) => {
       </div>{" "}
       <div className=" col-span-2 lg:col-span-3">
         <div className=" lg:block hidden ">
+          <SearchBox
+            defaultQuery={query}
+            className="md:w-full"
+            onClose={() => handleChangeQuery("")}
+            onSearch={(value: string) => {
+              WrapperFn(() => handleChangeQuery(value));
+            }}
+            nonactive
+            btn={false}
+          />
           <Filters from_years={false} filters={filters} />
         </div>
-        <FilterMobile from_years={false} filters={filters} />
+        <div className=" lg:hidden flex flex-col gap-2">
+          <SearchBox
+            defaultQuery={query}
+            onClose={() => handleChangeQuery("")}
+            onSearch={(value: string) => {
+              WrapperFn(() => handleChangeQuery(value));
+            }}
+            nonactive
+            btn={false}
+          />
+          <FilterMobile from_years={false} filters={filters} />
+        </div>
       </div>
     </GridContainer>
   );

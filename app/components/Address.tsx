@@ -33,14 +33,17 @@ const Address = () => {
   return (
     <div>
       <IconWidget paragraph={address} header={t("address.title")} icon={<Location />} />
-      <IconWidget
-        paragraph={`${t("address.hotline")} 19842 ${company_contacts.phone}`}
-        header={t("address.phone")}
-        icon={<Phone />}
-      />
+      <Link target="_blank" href={`tel:${company_contacts.phone}`}>
+        <IconWidget
+          paragraph={`${t("address.hotline")}  ${company_contacts.phone}`}
+          header={t("address.phone")}
+          icon={<Phone />}
+        />
+      </Link>
+
       <Link href={`mailto:${company_contacts.email || "info@orient-paints.com"}`}>
         <IconWidget
-          paragraph="info@orient-paints.com"
+          paragraph={company_contacts.email || "info@orient-paints.com"}
           header={t("address.email")}
           icon={<MdEmail className=" text-main" />}
         />

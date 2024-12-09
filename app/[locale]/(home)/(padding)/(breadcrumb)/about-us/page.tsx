@@ -36,7 +36,7 @@ const page = async () => {
                 </div>
                 <div className=" my-2 items-start flex flex-col text-main2  font-semibold">
                   <h2 className=" text-xl lg:text-2xl">0{i + 1}</h2>
-                  <h1 className=" text-main2 font-bold text-xl uppercase lg:text-2xl mt-2">{service.vision_title}</h1>
+                  <h3 className=" text-main2 font-bold text-xl uppercase lg:text-2xl mt-2">{service.vision_title}</h3>
                 </div>
                 <div
                   dangerouslySetInnerHTML={{ __html: convertToHTML(service.vision_content) }}
