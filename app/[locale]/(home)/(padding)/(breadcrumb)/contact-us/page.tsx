@@ -56,7 +56,7 @@ const Page = async ({ params: { locale } }: { params: { locale: string } }) => {
           </Section>
 
           <div className="w-full flex  flex-col items-start col-span-2">
-            <Head1 size="sm" alignment="left" text={t("contact.question")} />
+            <Head1 animation={false} size="sm" alignment="left" text={t("contact.question")} />
             <FormContainer server submit={"submitForm"} btnText={t("contact.send")} formArray={fields} />
           </div>
         </div>
