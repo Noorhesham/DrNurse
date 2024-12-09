@@ -98,6 +98,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (referal) localStorage.setItem("referal", referal);
   }, [userSettings]);
   useEffect(() => {
+    if (userSettings && !token) handleLogout();
+  }, [userSettings]);
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await Server({
