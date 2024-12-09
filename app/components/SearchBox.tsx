@@ -164,9 +164,9 @@ const SearchBox = ({
             )}
             <Link
               className=" text-main duration-150 hover:underline"
-              href={data.products?.length > 1 ? `/jobs?search=${query}` : "/jobs"}
+              href={jobs?.length > 1 ? `/jobs?search=${query}` : "/jobs"}
             >
-              {`${data.products?.length > 1 ? `Browse All Products For ${query}` : "View All JOBS"}`}
+              {`${jobs?.length > 1 ? `Browse All Products For ${query}` : "View All JOBS"}`}
             </Link>
           </MotionItem>
         )}
