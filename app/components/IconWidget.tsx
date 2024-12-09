@@ -1,16 +1,34 @@
 import React, { ReactNode } from "react";
+import Link from "next/link";
+import MotionItem from "./defaults/MotionItem";
 import Paragraph from "./defaults/Paragraph";
 
-const IconWidget = ({ icon, header, paragraph }: { icon: ReactNode; header: string; paragraph: string }) => {
+const IconWidget = ({
+  icon,
+  header,
+  paragraph,
+  link,
+}: {
+  icon: ReactNode;
+  header?: string;
+  paragraph: string;
+  link?: string;
+}) => {
   return (
-    <div className=" flex my-2 gap-2 items-start">
+    <MotionItem nohover className=" flex  gap-2 items-start">
       {icon}
-      <div className=" max-w-[15rem] flex flex-col ">
-        <h2 className="capitalize text-main2 font-semibold">{header}</h2>
+      <div className=" max-w-[15rem] flex  gap-2 flex-col ">
+        {header && <h2 className=" text-main2 font-semibold">{header}</h2>}
 
-        <Paragraph size="sm" description={paragraph} />
+        {link ? (
+          <Link className={` text-black text-sm self-start lg:max-w-2xl font-medium  leading-[1.7] `} href={link}>
+            {paragraph}
+          </Link>
+        ) : (
+          <Paragraph className=" mt-0 mb-0" size="sm" description={paragraph} />
+        )}
       </div>
-    </div>
+    </MotionItem>
   );
 };
 

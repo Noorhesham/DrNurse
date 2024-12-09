@@ -60,6 +60,8 @@ const Login = () => {
   }, [param]);
   const onSubmit = async (data: z.infer<typeof loginSchemaa>) => {
     form.clearErrors();
+    setServerError(null);
+
     startTransition(async () => {
       try {
         const res = await Server({

@@ -98,11 +98,14 @@ const Signup = () => {
     }
     const role = searchParams.get("role");
     form.setValue("role", role === "doctor");
-    if (role === "hospital") form.setValue("register_as", "hospital");
-    if (role === "doctor") form.setValue("register_as", "doctor");
+    if (!role) form.setValue("register_as", "hospital");
+    else form.setValue("register_as", "doctor");
   }, []);
+  console.log(form.formState.errors);
   const onSubmit = async (data: z.infer<typeof singup>) => {
     form.clearErrors();
+    localStorage.removeItem("referal");
+    setServerError(null);
     if (data.phone) data.country_key = data.phone.country_key;
     if (data.phone) data.phone = data.phone.phone;
     startTransition(async () => {
@@ -145,6 +148,11 @@ const Signup = () => {
         if (!jobTitleExists) {
           return [
             ...prev,
+            {
+              name: "referral_code",
+              optional: true,
+              placeholder: "Referral Code ...",
+            },
             {
               name: "register_as",
               select: true,

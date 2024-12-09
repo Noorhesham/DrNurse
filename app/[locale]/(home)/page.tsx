@@ -107,7 +107,7 @@ const page = async () => {
                 </div>
               }
               content={
-                <div className="relative w-full h-auto overflow-hidden" style={{ paddingBottom: "56.25%" }}>
+                <div className="relative w-full dynamic-padding h-auto overflow-hidden" >
                   <iframe
                     className="absolute top-0 left-0 w-full h-full"
                     src={getYouTubeEmbedUrl(page.video_1_youtube_url)}
@@ -130,7 +130,7 @@ const page = async () => {
                 </div>
               }
               content={
-                <div className="relative w-full h-auto overflow-hidden" style={{ paddingBottom: "56.25%" }}>
+                <div className="relative w-full h-auto overflow-hidden" >
                   <iframe
                     className="absolute top-0 left-0 w-full h-full"
                     src={getYouTubeEmbedUrl(page.video_2_youtube_url)}

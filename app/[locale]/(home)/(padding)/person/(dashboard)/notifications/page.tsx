@@ -14,7 +14,7 @@ const page = () => {
   const { data, isLoading } = useGetEntities({
     resourceName: "getEntity",
     entityName: "rmnotifications",
-    key: `notifications-${page}`,
+    key: `notifications-${page}`,queryParams: `page=${page}` || "page=1",
   });
   if (isLoading || !data)
     return (
