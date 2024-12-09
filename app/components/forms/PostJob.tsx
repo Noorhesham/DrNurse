@@ -26,6 +26,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useGetEntity } from "@/lib/queries";
 import { useParams, useRouter } from "next/navigation";
 // Define Zod schema
+const salaryRegex = /^[1-9]\d*$/;
+
 const jobSchema = z
   .object({
     job_title: z.string().min(1, "Job title is required"),
@@ -35,8 +37,20 @@ const jobSchema = z
     experience_from: z.union([z.string().min(1, "Experience From is required"), z.number()]),
     experience_to: z.union([z.string().min(1, " Experience To is required"), z.number()]),
     branch_id: z.string().min(1, "Branch is required"),
-    min_salary: z.union([z.string().min(1, "Min Salary is required"), z.number()]),
-    max_salary: z.union([z.string().min(1, "Max Salary is required"), z.number()]),
+    min_salary: z.union([
+      z
+        .string()
+        .regex(salaryRegex, "Min Salary must be a positive number and cannot start with 0")
+        .min(1, "Min Salary is required"),
+      z.number(),
+    ]),
+    max_salary: z.union([
+      z
+        .string()
+        .regex(salaryRegex, "Min Salary must be a positive number and cannot start with 0")
+        .min(1, "Max Salary is required"),
+      z.number(),
+    ]),
     hide_salary: z.string().min(1, "Hide Salary? is required"),
     nationality_id: z.union([z.string().min(1, "Nationality is required"), z.number()]),
     gender: z.string().min(1, "Gender is required"),

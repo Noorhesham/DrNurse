@@ -23,6 +23,7 @@ import { Label } from "@/components/ui/label";
 import FlexWrapper from "../defaults/FlexWrapper";
 import { useParams, useRouter } from "next/navigation";
 import { FaExclamationCircle } from "react-icons/fa";
+const salaryRegex = /^[1-9]\d*$/;
 
 const offerSchema = z.object({
   employeeName: z.string().min(1, "Name is required"),
@@ -31,7 +32,13 @@ const offerSchema = z.object({
   state_id: z.union([z.string().min(1, "State is required"), z.number()]),
   details: z.object({
     job_title: z.string().min(1, "Job Title is required"),
-    salary: z.union([z.string().min(1, "Salary is required"), z.number()]),
+    salary: z.union([
+      z
+        .string()
+        .regex(salaryRegex, "Min Salary must be a positive number and cannot start with 0")
+        .min(1, "Salary is required"),
+      z.number(),
+    ]),
     benefits: z.array(z.string().min(1, "Benefit is required")).optional(),
     currency: z.union([z.string().min(1, "Currency is required"), z.number()]),
     start_date: z.string().min(1, "Start Date is required"),

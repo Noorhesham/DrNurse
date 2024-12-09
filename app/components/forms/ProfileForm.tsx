@@ -25,7 +25,7 @@ import { format } from "date-fns";
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
-
+const salaryRegex = /^[1-9]\d*$/;
 const jobSchema = z
   .object({
     current_job_title: z.string().min(1, "Job title is required"),
@@ -34,8 +34,20 @@ const jobSchema = z
     career_level_id: z.union([z.string().min(1, "Career Level is required"), z.number()]),
     // experienceFrom: z.string().min(1, "Start date is required"),
     // experienceTo: z.string().min(1, "End date is required"),
-    min_salary: z.union([z.string().min(1, "Min Salary is required"), z.number().min(1, "Min salary is required")]),
-    max_salary: z.union([z.string().min(1, "Max Salary is required"), z.number().min(1, "Min salary is required")]),
+    min_salary: z.union([
+      z
+        .string()
+        .regex(salaryRegex, "Min Salary must be a positive number and cannot start with 0")
+        .min(1, "Min Salary is required"),
+      z.number().refine((val) => val > 0, { message: "Min Salary must be a positive number" }),
+    ]),
+    max_salary: z.union([
+      z
+        .string()
+        .regex(salaryRegex, "Max Salary must be a positive number and cannot start with 0")
+        .min(1, "Max Salary is required"),
+      z.number().refine((val) => val > 0, { message: "Max Salary must be a positive number" }),
+    ]),
     show_expected_salary: z.union([z.string().min(1, "Expected Salary is required"), z.number().min(1, "required")]),
     nationality_id: z.union([z.string().min(1, "Nationality Salary is required"), z.number().min(1, "required")]),
     gender: z.string().min(1, "Gender is required"),
