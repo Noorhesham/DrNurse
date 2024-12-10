@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useContext, useEffect, useLayoutEffect, useState } from "react";
+import { createContext, use, useContext, useEffect, useLayoutEffect, useState } from "react";
 import cookies from "js-cookie";
 import { Server } from "../main/Server";
 import { QueryClient, useQueryClient } from "@tanstack/react-query";
@@ -68,7 +68,10 @@ const updateFn = ({ checker, setState, key, dateKey, setDates, queryClient, stat
     }));
   } else {
     // Keep the current state if no updates
-    setState((prev: any) => prev || queryClient.getQueryData([key]));
+    setState((prev: any) => {
+      console.log(`prev vs local storgage`, prev, queryClient.getQueryData([key]));
+      return prev || queryClient.getQueryData([key]);
+    });
   }
 };
 
@@ -88,11 +91,16 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [generalSettings, setGeneralSettings] = useState<any>(() => queryClient.getQueryData(["general_settings"]));
   const [userSettings, setUserSettings] = useState<any>(() => queryClient.getQueryData(["user_settings"]));
   const [user2Settings, setUser2Settings] = useState<any>(() => queryClient.getQueryData(["user2_settings"]));
+  useEffect(() => {
+    setGeneralSettings(queryClient.getQueryData(["general_settings"]));
+    setUserSettings(queryClient.getQueryData(["user_settings"]));
+    setUser2Settings(queryClient.getQueryData(["user2_settings"]));
+  }, []);
   const [cartCount, setCartCount] = useLocalStorageState(0, "cartCount");
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
   const referal = searchParams.get("referal");
-  // console.log("auth context", generalSettings, userSettings, user2Settings, "cartcount", cartCount);
+  console.log("auth context", generalSettings, userSettings, user2Settings);
   useEffect(() => {
     if (userSettings?.active === false) handleLogout();
     if (referal) localStorage.setItem("referal", referal);
