@@ -85,8 +85,12 @@ const SelectDate = ({ meeting_id, jobId = "" }: { meeting_id: string; jobId: str
       </RadioGroup>
       <div className="flex items-center gap-4">
         <FunctionalButton disabled={isPending} btnText="Book" onClick={() => handleSelect(selected)} />
-        <DialogClose className="mx-auto flex items-center gap-5">
-          {<div className={buttonVariants({ variant: "outline", size: "lg" })}>Close</div>}
+        <DialogClose asChild className="mx-auto flex items-center gap-5">
+          {
+            <Button className=" rounded-full" variant={"outline"}>
+              Close
+            </Button>
+          }
         </DialogClose>
       </div>
     </div>

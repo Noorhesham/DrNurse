@@ -98,7 +98,7 @@ const page = () => {
                       </Button>
                     </Link>
                   )}
-                  <div className=" lg:flex grid grid-cols-2 flex-wrap items-center gap-3">
+                  <div className=" lg:grid grid-cols-2 flex-wrap items-center gap-3">
                     {meet.status !== "cancelled" && meet.status !== "completed" ? (
                       <ModalCustom
                         btn={
