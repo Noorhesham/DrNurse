@@ -35,7 +35,7 @@ const Head1 = ({
         <motion.h2
           initial={{ opacity: 0, y: 20, rotateX: -90 }}
           whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true, }}
           className={`${headingClasses} `}
         >
           {text}

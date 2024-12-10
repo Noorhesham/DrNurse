@@ -13,8 +13,9 @@ const formatToGMT = (date: any) => {
 const formatToLocalTime = (date: any) => {
   return format(date, "dd/MM/yyyy hh:mmaaa");
 };
-const Meet = ({ cancel, img, meet }: { cancel?: boolean; img?: boolean; meet: any }) => {
+const Meet = ({ cancel, img, meet, id }: { cancel?: boolean; img?: boolean; meet: any; id?: string }) => {
   if (!meet) return null;
+
   return (
     <div className=" flex  gap-1 items-stretch">
       <div className="flex flex-col items-center  px-2 py-2  rounded-xl bg-main2 text-gray-50 ">
@@ -41,7 +42,14 @@ const Meet = ({ cancel, img, meet }: { cancel?: boolean; img?: boolean; meet: an
               text={meet.req_job_post?.job_title || meet.invited?.name}
             />
             {meet?.company && <h2 className=" text-black font-semibold text-base">{meet.company.title}</h2>}
-            {meet?.invited && <h2 className=" text-gray-600">{meet.invited.email}</h2>}
+            {meet?.invited && (
+              <Link
+                href={`/dashboard/${id}/doctor/${meet.invited?.id}`}
+                className=" text-gray-600"
+              >
+                {meet.invited.name}
+              </Link>
+            )}
           </div>
         </div>
         <div className=" flex flex-col ">

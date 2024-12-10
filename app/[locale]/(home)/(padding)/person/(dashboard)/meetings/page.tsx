@@ -91,14 +91,14 @@ const page = () => {
               <Container>
                 <FlexWrapper max={false} className=" justify-between">
                   <Meet meet={meet} img />{" "}
-                  {meet.zoom_meeting && (
-                    <Link className="self-center mr-auto " target="_blank" href={meet.zoom_meeting.join_url}>
-                      <Button size={"lg"} className=" rounded-full">
-                        JOIN MEETING
-                      </Button>
-                    </Link>
-                  )}
-                  <div className=" lg:grid grid-cols-2 flex-wrap items-center gap-3">
+                  <div className=" md:grid grid-cols-2 flex-wrap items-center gap-3">
+                    {meet.zoom_meeting && (
+                      <Link className="self-center w-full " target="_blank" href={meet.zoom_meeting.join_url}>
+                        <Button size={"lg"} className=" w-full rounded-full">
+                          JOIN MEETING
+                        </Button>
+                      </Link>
+                    )}
                     {meet.status !== "cancelled" && meet.status !== "completed" ? (
                       <ModalCustom
                         btn={
@@ -172,14 +172,13 @@ const page = () => {
                       >
                         CANCELED
                       </Button>
-                    )}
-                    <Link className="w-full lg:w-fit" href={`/person/job/${meet.req_job_post_id}`}>
+                    )}{" "}
+                    <Link className="w-full" href={`/person/job/${meet.req_job_post_id}`}>
                       {" "}
-                      <Button size={"lg"} className="  bg-light  text-main2 rounded-full" variant={"outline"}>
+                      <Button size={"lg"} className=" w-full  bg-light  text-main2 rounded-full" variant={"outline"}>
                         VIEW JOB
                       </Button>
                     </Link>
-
                     {meet.company && (
                       <ModalCustom
                         content={
@@ -195,11 +194,7 @@ const page = () => {
                           </div>
                         }
                         btn={
-                          <Button
-                            size={"lg"}
-                            className="w-full col-span-full lg:w-fit  bg-light text-main2 rounded-full"
-                            variant={"outline"}
-                          >
+                          <Button size={"lg"} className="w-full   bg-light text-main2 rounded-full" variant={"outline"}>
                             HOSPITAL INFO
                           </Button>
                         }

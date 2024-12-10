@@ -32,7 +32,8 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
   if (isLoading || !data) return <Spinner />;
 
   const dataPage = data.data;
-  const education = [...dataPage.main_education, ...dataPage.education];
+  const education = [...dataPage?.main_education, ...dataPage?.education];
+  console.log(data)
   return (
     <section>
       <BreadCrumb
