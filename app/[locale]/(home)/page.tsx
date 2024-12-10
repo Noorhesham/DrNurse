@@ -81,7 +81,7 @@ const page = async () => {
       </section>{" "}
       <MaxWidthWrapper className=" mt-5 flex flex-col gap-20">
         <div className="flex flex-col gap-5">
-          <Head1 text={page.hospital_logos_title} />
+          <Head1 animation={false} text={page.hospital_logos_title} />
           <SwiperCards
             autoplay={true}
             slidesPerView={5.3}
@@ -107,7 +107,7 @@ const page = async () => {
                 </div>
               }
               content={
-                <div className="relative w-full dynamic-padding h-auto overflow-hidden" >
+                <div className="relative w-full dynamic-padding h-auto overflow-hidden">
                   <iframe
                     className="absolute top-0 left-0 w-full h-full"
                     src={getYouTubeEmbedUrl(page.video_1_youtube_url)}
@@ -130,7 +130,7 @@ const page = async () => {
                 </div>
               }
               content={
-                <div className="relative w-full dynamic-padding h-auto overflow-hidden" >
+                <div className="relative w-full dynamic-padding h-auto overflow-hidden">
                   <iframe
                     className="absolute top-0 left-0 w-full h-full"
                     src={getYouTubeEmbedUrl(page.video_2_youtube_url)}
@@ -147,7 +147,7 @@ const page = async () => {
       <div className="bg-[#F2F5FF] mt-5">
         <MaxWidthWrapper className=" ">
           <div className=" flex items-center lg:gap-4 gap-2 flex-col">
-            <Head1 className=" my-0 mt-0" text={page.latest_job_title} />
+            <Head1 animation={false} className=" my-0 mt-0" text={page.latest_job_title} />
             <div
               dangerouslySetInnerHTML={{ __html: convertToHTML(page.latest_jobs_content || "") }}
               className={`lg:max-w-4xl text-center text-black lg:text-base text-sm  font-medium my-2 leading-[1.7] `}
@@ -162,7 +162,7 @@ const page = async () => {
       </div>
       <MaxWidthWrapper>
         <div className=" flex items-center gap-2 lg:gap-4 flex-col">
-          <Head1 text={page.specialties_title} />
+          <Head1 animation={false} text={page.specialties_title} />
           <div
             dangerouslySetInnerHTML={{ __html: convertToHTML(page.specialties_content || "") }}
             className={`lg:max-w-4xl text-center text-black lg:text-base text-sm  font-medium  leading-[1.7] `}
@@ -220,7 +220,7 @@ const page = async () => {
       </MaxWidthWrapper>
       <MaxWidthWrapper className="">
         <div className=" flex flex-col gap-2 lg:gap-3">
-          <Head1 size="lg" text={page.Keywords_title} />
+          <Head1   animation={false}  size="lg" text={page.Keywords_title} />
           <MotionContainer className=" grid grid-cols-1 md:grid-cols-2 items-stretch  gap-3 lg:grid-cols-5 my-5">
             {page.keywords_jobs.map((keyword: any) => {
               return (
