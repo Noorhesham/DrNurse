@@ -97,50 +97,54 @@ const page = async () => {
         </div>
         <FlexWrapper max={false} className=" h-full">
           <div className="  rounded-[2.5rem] overflow-hidden flex-1 relative aspect-square">
-            <VideoZoom
-              btn={
-                <div className=" cursor-pointer">
-                  <div className="overflow-visible absolute z-10 top-3 right-3">
-                    <PlayIcon />
+            {page?.video_1_youtube_url && (
+              <VideoZoom
+                btn={
+                  <div className=" cursor-pointer">
+                    <div className="overflow-visible absolute z-10 top-3 right-3">
+                      <PlayIcon />
+                    </div>
+                    <Image alt="image" fill className="object-cover " src={page.video_1_image[0]?.file} />
                   </div>
-                  <Image alt="image" fill className="object-cover " src={page.video_1_image[0].file} />
-                </div>
-              }
-              content={
-                <div className="relative w-full dynamic-padding h-auto overflow-hidden">
-                  <iframe
-                    className="absolute top-0 left-0 w-full h-full"
-                    src={getYouTubeEmbedUrl(page.video_1_youtube_url)}
-                    title="YouTube video player"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    frameBorder="0"
-                  ></iframe>
-                </div>
-              }
-            />
+                }
+                content={
+                  <div className="relative w-full dynamic-padding h-auto overflow-hidden">
+                    <iframe
+                      className="absolute top-0 left-0 w-full h-full"
+                      src={getYouTubeEmbedUrl(page.video_1_youtube_url)}
+                      title="YouTube video player"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      frameBorder="0"
+                    ></iframe>
+                  </div>
+                }
+              />
+            )}
           </div>
           <div className="  rounded-[2.5rem] overflow-hidden flex-1  relative aspect-square">
-            <VideoZoom
-              btn={
-                <div className=" cursor-pointer">
-                  <Image alt="image" fill className="object-cover w-full h-full " src={page.video_2_image[0].file} />
-                  <div className="cursor-pointer absolute z-10 top-3 right-3">
-                    <PlayIcon />
+            {page?.video_2_youtube_url && (
+              <VideoZoom
+                btn={
+                  <div className=" cursor-pointer">
+                    <Image alt="image" fill className="object-cover w-full h-full " src={page.video_2_image[0].file} />
+                    <div className="cursor-pointer absolute z-10 top-3 right-3">
+                      <PlayIcon />
+                    </div>
                   </div>
-                </div>
-              }
-              content={
-                <div className="relative w-full dynamic-padding h-auto overflow-hidden">
-                  <iframe
-                    className="absolute top-0 left-0 w-full h-full"
-                    src={getYouTubeEmbedUrl(page.video_2_youtube_url)}
-                    title="YouTube video player"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    frameBorder="0"
-                  ></iframe>
-                </div>
-              }
-            />
+                }
+                content={
+                  <div className="relative w-full dynamic-padding h-auto overflow-hidden">
+                    <iframe
+                      className="absolute top-0 left-0 w-full h-full"
+                      src={getYouTubeEmbedUrl(page.video_2_youtube_url)}
+                      title="YouTube video player"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      frameBorder="0"
+                    ></iframe>
+                  </div>
+                }
+              />
+            )}
           </div>
         </FlexWrapper>
       </MaxWidthWrapper>
@@ -204,7 +208,7 @@ const page = async () => {
                       <Image
                         fill
                         alt="image"
-                        src={specialty.specialty_image?.[0].file}
+                        src={specialty?.specialty_image?.[0]?.file}
                         className=" object-cover object-top"
                       />
                     </Link>
@@ -220,7 +224,7 @@ const page = async () => {
       </MaxWidthWrapper>
       <MaxWidthWrapper className="">
         <div className=" flex flex-col gap-2 lg:gap-3">
-          <Head1   animation={false}  size="lg" text={page.Keywords_title} />
+          <Head1 animation={false} size="lg" text={page.Keywords_title} />
           <MotionContainer className=" grid grid-cols-1 md:grid-cols-2 items-stretch  gap-3 lg:grid-cols-5 my-5">
             {page.keywords_jobs.map((keyword: any) => {
               return (
@@ -290,7 +294,7 @@ const page = async () => {
             </div>
           </div>
           <div className=" rounded-2xl flex-1 overflow-hidden aspect-square relative w-full h-full">
-            <Image alt="image" fill className="object-contain " src={page.employer_section_image[0].file} />
+            <Image alt="image" fill className="object-contain " src={page?.employer_section_image?.[0]?.file} />
           </div>
         </section>
       </MaxWidthWrapper>
