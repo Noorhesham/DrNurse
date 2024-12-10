@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 import { Server } from "@/app/main/Server";
 import { format } from "date-fns";
 import { DialogClose } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import FunctionalButton from "../FunctionalButton";
 const formatToGMT = (dateStr) => {
   const date = new Date(dateStr);
@@ -86,11 +86,7 @@ const SelectDate = ({ meeting_id, jobId = "" }: { meeting_id: string; jobId: str
       <div className="flex items-center gap-4">
         <FunctionalButton disabled={isPending} btnText="Book" onClick={() => handleSelect(selected)} />
         <DialogClose className="mx-auto flex items-center gap-5">
-          {
-            <div className="text-xs py-3 text-center  flex-grow mr-auto min-w-[150px] self-center mx-0 hover:bg-main2 hover:text-white rounded-full flex items-center gap-2 px-6 border border-main2 bg-white text-main2">
-              Close
-            </div>
-          }
+          {<div className={buttonVariants({ variant: "outline", size: "lg" })}>Close</div>}
         </DialogClose>
       </div>
     </div>

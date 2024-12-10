@@ -25,6 +25,7 @@ const page = async ({ params: { locale }, searchParams }: { params: { locale: st
     career_type_id: career_type_id || "",
     career_specialty_id: career_specialty_id || "",
     search: query || "",
+    order_dir: "desc",
   });
   if (country_ids) {
     const countryIdsArray = country_ids.split(",");
