@@ -15,7 +15,7 @@ const page = () => {
     resourceName: "getEntity",
     entityName: "rmnotifications",
     key: `notifications-${page}`,
-    queryParams: `page=${page}` || "page=1",
+    queryParams: `page=${page}&order_dir=desc` || "page=1",
   });
   if (isLoading || !data)
     return (

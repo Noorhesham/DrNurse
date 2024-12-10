@@ -20,7 +20,7 @@ const page = () => {
     `company-jobs-${id}-${page}`,
     "",
     {},
-    `page=${page}&itemCount=10`
+    `page=${page}&itemCount=10&order_dir=desc`
   );
   if (isLoading || !data)
     return (
