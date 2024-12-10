@@ -72,12 +72,14 @@ const JobsList = ({ jobs, totalPages, filters, query }: JobsListProps) => {
             onClose={() => handleChangeQuery("")}
             onSearch={debouncedOnSearch}
             nonactive
+            active={false}
             btn={false}
           />
           <Filters from_years={false} filters={filters} />
         </div>
         <div className=" lg:hidden flex flex-col gap-2">
           <SearchBox
+            active={false}
             defaultQuery={query}
             onClose={() => handleChangeQuery("")}
             onSearch={debouncedOnSearch}

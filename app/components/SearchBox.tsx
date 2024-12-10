@@ -57,7 +57,7 @@ const SearchBox = ({
     "getJobs",
     `job_title=${query}`,
     "",
-    { enabled: query.length > 3 && nonactive },
+    { enabled: query.length > 3 && active },
     `job_title=${query}&itemsCount=10`
   );
 
@@ -135,7 +135,7 @@ const SearchBox = ({
     <div ref={containerRef} className={`${className || " md:w-[80%]"} w-full relative flex flex-col gap-4  `}>
       {" "}
       <AnimatePresence>
-        {data && resultActive && (
+        {data && resultActive && active && (
           <MotionItem
             nohover
             initial={{ opacity: 0, height: 0 }}

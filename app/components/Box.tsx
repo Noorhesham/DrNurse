@@ -88,7 +88,7 @@ const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; fi
     router.push(`?${params.toString()}`, { scroll: false });
   };
   return (
-    <div className="flex px-3 py-1.5 font-medium text-sm bg-white capitalize flex-col">
+    <div className="flex px-3 py-1.5 font-medium text-sm bg-white   capitalize flex-col">
       <Accordion
         type="single"
         value={accordionValue} // Control the accordion value
@@ -101,7 +101,7 @@ const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; fi
             <h2 className="text-base font-semibold text-main2">{text}</h2>
           </AccordionTrigger>
           <AccordionContent className="flex flex-col gap-2">
-            <ul className="pb-3 grid   grid-cols-2 gap-2 border-b border-b-gray-400">
+            <ul className="pb-3 grid   grid-cols-1 lg:grid-cols-2 gap-2 border-b border-b-gray-400">
               {!btn
                 ? options?.map((option, i) => (
                     <li
@@ -126,7 +126,7 @@ const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; fi
                       <Button
                         size={"lg"}
                         className={cn(
-                          "w-full lg:text-xs bg-gray-100 text-main2 ",
+                          "w-full lg:text-xs  col-span-2 xl:col-span-1 bg-gray-100 text-main2 ",
                           filters[filter]?.includes(option.id.toString())
                             ? "bg-main2 hover:bg-main2  hover:text-white text-gray-50"
                             : ""
