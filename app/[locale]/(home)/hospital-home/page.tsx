@@ -194,7 +194,7 @@ export default async function Home() {
               <h3 className=" text-main2 text-lg uppercase font-medium my-1">
                 {page.start_to_end_section_small_title}
               </h3>
-              <Head1 alignment="left" className=" text-left" text={page.start_to_end_section_main_title} />
+              <Head1 alignment="left" animation={false} className=" text-left" text={page.start_to_end_section_main_title} />
               <div
                 dangerouslySetInnerHTML={{ __html: convertToHTML(page.start_to_end_section_content) }}
                 className={`lg:max-w-2xl text-black text-sm  font-medium my-2 leading-[1.7] `}
