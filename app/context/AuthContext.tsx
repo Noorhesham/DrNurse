@@ -70,7 +70,7 @@ const updateFn = ({ checker, setState, key, dateKey, setDates, queryClient, stat
     // Keep the current state if no updates
     setState((prev: any) => {
       console.log(`prev vs local storgage`, prev, queryClient.getQueryData([key]));
-      return prev || queryClient.getQueryData([key]);
+      return  queryClient.getQueryData([key]);
     });
   }
 };
