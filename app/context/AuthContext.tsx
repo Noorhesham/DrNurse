@@ -47,15 +47,15 @@ interface UpdateFnParams {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const updateFn = ({ checker, setState, key, dateKey, setDates, queryClient, status, dates }: UpdateFnParams) => {
-  console.log(queryClient.getQueryData([key]));
   // if some of the data is missed  from local storage the n set its date to empty string so that i can ask the server for it again
-  if (!queryClient.getQueryData([key])) {
-    setDates((prevDates: any) => ({
-      ...prevDates,
-      [dateKey]: checker?.last_update_date,
-    }));
-    localStorage.setItem("dates", JSON.stringify({ ...dates, [dateKey]: checker?.last_update_date }));
-  }
+  // if (!queryClient.getQueryData([key])) {
+  //   console.log("trueeeeeeeeeeeeeeeeeeeee", queryClient.getQueryData([key]));
+  //   setDates((prevDates: any) => ({
+  //     ...prevDates,
+  //     [dateKey]: checker?.last_update_date,
+  //   }));
+  //   // localStorage.setItem("dates", JSON.stringify({ ...dates, [dateKey]: checker?.last_update_date }));
+  // }
   // i want to see whether there is data returend from the server or not and  i want
   //to check  if there is then i will replace
   // if i do not  have a query of that data  and status is true then it is the first time then i will set it
@@ -69,8 +69,7 @@ const updateFn = ({ checker, setState, key, dateKey, setDates, queryClient, stat
   } else {
     // Keep the current state if no updates
     setState((prev: any) => {
-      console.log(`prev vs local storgage`, prev, queryClient.getQueryData([key]));
-      return  queryClient.getQueryData([key]);
+      return queryClient.getQueryData([key]);
     });
   }
 };
@@ -92,15 +91,22 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [userSettings, setUserSettings] = useState<any>(() => queryClient.getQueryData(["user_settings"]));
   const [user2Settings, setUser2Settings] = useState<any>(() => queryClient.getQueryData(["user2_settings"]));
   useEffect(() => {
-    setGeneralSettings(queryClient.getQueryData(["general_settings"]));
-    setUserSettings(queryClient.getQueryData(["user_settings"]));
-    setUser2Settings(queryClient.getQueryData(["user2_settings"]));
-  }, []);
+    const keyWords = ["last_update_date_general", "last_update_date_user", "last_update_date_user2"];
+    if (!queryClient) return;
+    console.log(queryClient);
+    keyWords.forEach((key) => {
+      if (!queryClient.getQueryData([key])) {
+        setDates((prevDates: any) => ({
+          ...prevDates,
+          [key]: "",
+        }));
+      }
+    });
+  }, [queryClient]);
   const [cartCount, setCartCount] = useLocalStorageState(0, "cartCount");
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
   const referal = searchParams.get("referal");
-  console.log("auth context", generalSettings, userSettings, user2Settings);
   useEffect(() => {
     if (userSettings?.active === false) handleLogout();
     if (referal) localStorage.setItem("referal", referal);
@@ -111,6 +117,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log(userSettings, user2Settings, generalSettings, "before server");
+        console.log(dates, "dates before server");
         const res = await Server({
           resourceName: "MGS",
           body: {
@@ -155,7 +163,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           status: res.user2_settings?.status,
           dates,
         });
-        console.log(res.user_settings, res.user2_settings, res.general_settings);
       } catch (error) {
         console.error("Error fetching settings:", error);
       } finally {
@@ -163,8 +170,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     };
 
-    fetchData();
-  }, [login]);
+    if (queryClient) fetchData();
+  }, [login,queryClient]);
+  console.log(userSettings, user2Settings, generalSettings, "after server");
 
   const handleLogout = () => {
     setCartCount(0);
