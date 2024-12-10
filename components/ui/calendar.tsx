@@ -19,7 +19,7 @@ const MonthDropdown: React.FC = () => {
   }));
 
   return (
-    <Select
+    <Select 
       onValueChange={(newval) => {
         const newMonth = parseInt(newval);
         goToMonth(setMonth(currentMonth, newMonth));
@@ -27,7 +27,7 @@ const MonthDropdown: React.FC = () => {
       value={currentMonth.getMonth().toString()}
     >
       <SelectTrigger>{format(currentMonth, "MMMM")}</SelectTrigger>
-      <SelectContent>
+      <SelectContent >
         {selectItems.map((item) => (
           <SelectItem key={item.value} value={item.value}>
             {item.label}
@@ -53,11 +53,11 @@ const YearDropdown: React.FC = () => {
       onValueChange={(newval) => {
         const newYear = parseInt(newval);
         goToMonth(setYear(currentMonth, newYear));
-      }}
+      }} 
       value={currentMonth.getFullYear().toString()}
     >
       <SelectTrigger>{currentMonth.getFullYear()}</SelectTrigger>
-      <SelectContent>
+      <SelectContent className=" relative !z-50 ">
         {selectItems.map((item) => (
           <SelectItem key={item.value} value={item.value}>
             {item.label}

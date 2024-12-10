@@ -25,8 +25,16 @@ const page = () => {
   useEffect(() => {
     if (isAccountOlderThan10Days() && !userSettings?.role.includes("admin")) {
       router.push("/person");
+    } else if (
+      userSettings.has_profile &&
+      (userSettings.role.includes("nurse") || userSettings.role.includes("doctor"))
+    ) {
+      router.push("/person");
+    } else if (userSettings.role.includes("hospital") && userSettings?.companies === 1) {
+      router.push(`/dashboard/${userSettings.companies[0].id}`);
     }
   }, [router]);
+
   const HasProfile = () => {
     if (userSettings.has_profile)
       return (

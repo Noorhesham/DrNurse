@@ -31,6 +31,7 @@ const page = () => {
   else if (!data.data && !isLoading) redirect("/person/create-profile");
   const dataPage = data.data;
   const { description } = data.data;
+  console.log(data);
   return (
     <section className=" pt-36">
       <BreadCrumb
@@ -58,7 +59,7 @@ const page = () => {
             }}
           >
             <div className="flex  justify-end  items-center gap-2">
-              <CVdownload name={dataPage?.name}/>
+              <CVdownload name={dataPage?.name} />
               <FunctionalButton
                 className=" w-full"
                 btnText="EDIT"
@@ -141,7 +142,7 @@ const page = () => {
                                 </p>
                                 <span className=" text-sm">
                                   {formatDate(experience.from, "dd MMM yyyy")}-
-                                  {formatDate(experience.to, "dd MMM yyyy")}
+                                  {experience.present === 1 ? "Currently present" : formatDate(experience.to, "dd MMM yyyy")}
                                 </span>
                               </div>
                             </FlexWrapper>

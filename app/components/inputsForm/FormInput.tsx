@@ -125,8 +125,6 @@ const FormInput = ({
     return (
       <Suspense>
         <div className=" relative w-full">
-          {!optional && <span className={`absolute right-2 -top-[-40px]  z-10   font-normal text-red-600`}>*</span>}
-
           <CalendarComponent disabled={disabled} label={label} name={name || ""} control={control} />
         </div>
       </Suspense>
@@ -139,14 +137,15 @@ const FormInput = ({
       render={({ field }) => (
         <FormItem className={`${width || "w-full"} ${check && "flex items-center "} relative`}>
           {!switchToggle && label !== "" && (
-            <FormLabel className={`uppercase ${check && "text-nowrap mt-2"}`}>
+            <FormLabel className={`uppercase relative w-fit ${check && "text-nowrap mt-2"}`}>
+              {" "}
+              {!optional && !date && !switchToggle && !currency && label && (
+                <span className={`absolute -right-3 top-0  z-10   font-normal text-red-600`}>*</span>
+              )}
               {label} {icon}
             </FormLabel>
           )}
           <div className={`relative  w-full inline-flex items-center justify-center ${className}`}>
-            {!optional && !switchToggle && !currency && (
-              <span className={`absolute right-1 -top-[-13px]  z-10   font-normal text-red-600`}>*</span>
-            )}
             <FormControl className={`  ${switchToggle ? "" : "   duration-200"} `}>
               {area ? (
                 <Textarea placeholder={"MESSAGE"} className="resize-none" {...field} />

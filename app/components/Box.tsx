@@ -82,9 +82,13 @@ const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; fi
       };
     });
   };
-
+  const resetFilters = () => {
+    const params = new URLSearchParams(window.location.search);
+    params.delete(filter);
+    router.push(`?${params.toString()}`, { scroll: false });
+  };
   return (
-    <div className="flex px-3 py-1.5 font-medium text-sm bg-white uppercase flex-col">
+    <div className="flex px-3 py-1.5 font-medium text-sm bg-white capitalize flex-col">
       <Accordion
         type="single"
         value={accordionValue} // Control the accordion value
@@ -139,9 +143,23 @@ const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; fi
                   })}
             </ul>
             {!btn && (
-              <Button className=" mx-auto rounded-full" onClick={() => WrapperFn(update)}>
-                Filter
-              </Button>
+              <div className="flex gap-2 items-center mt-2 ml-auto">
+                <button className=" py-1 text-white  px-4 bg-main  rounded-full" onClick={() => WrapperFn(update)}>
+                  Filter
+                </button>
+                <button
+                  className=" py-1 text-white  px-4 bg-main  rounded-full"
+                  onClick={() => {
+                    setFilters((prevFilters) => ({
+                      ...prevFilters,
+                      [filter]: [],
+                    }));
+                    WrapperFn(resetFilters);
+                  }}
+                >
+                  Reset
+                </button>
+              </div>
             )}
           </AccordionContent>
         </AccordionItem>

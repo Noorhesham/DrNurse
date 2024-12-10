@@ -61,14 +61,14 @@ const jobSchema = z
     active_license_country: z.string().min(1, "Active License status is required"),
     license_number: z.string().optional(),
     benefits: z.array(z.string().min(1, "Benefit is required")).optional(),
-    description: z.string().min(20, "Description is too short"),
+    description: z.string().optional(),
     identification_card_number: z.string().min(1, "Identification Card Number is required"),
     main_education: z.object({
       university_name: z.string().min(1, "University Name is required"),
       country_id: z.union([z.string().min(1, "Country is required"), z.number()]),
       career_specialty_id: z.union([z.string().min(1, "Specialty is required"), z.number()]),
       date: z.string().min(1, " date is required"),
-      date_to: z.string().min(1, " date is required"),
+      date_to: z.string(),
       present: z.union([z.boolean(), z.number()]).transform((val) => (val === true ? 1 : 0)),
     }),
     education: z
@@ -77,7 +77,7 @@ const jobSchema = z
           country_id: z.union([z.string().min(1, "Country is required"), z.number()]),
           career_specialty_id: z.union([z.string().min(1, "Specialty is required"), z.number()]),
           date: z.string().min(1, " date is required"),
-          date_to: z.string().min(1, " date is required"),
+          date_to: z.string(),
           present: z.union([z.boolean(), z.number()]).transform((val) => (val === true ? 1 : 0)),
           certificate_name: z.string().min(1, "Certificate Name is required"),
           training_center: z.string().optional(),
@@ -94,7 +94,7 @@ const jobSchema = z
           country_id: z.union([z.string().min(1, "Country is required"), z.number()]),
           career_specialty_id: z.union([z.string().min(1, "Specialty is required"), z.number()]),
           from: z.string().min(1, "START date is required"),
-          to: z.string().min(1, "End date is required"),
+          to: z.string(),
           about: z.string().optional(),
           career_level: z.union([z.string().min(1, "CAEREER LEVEL is required"), z.number()]),
           present: z.union([z.boolean(), z.number()]).transform((val) => (val === true ? 1 : 0)),
@@ -195,6 +195,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
       currency: dataDefault?.currency || "usd",
     },
   });
+  console.log(form.formState.errors);
   const {
     append: appendEducation,
     remove: removeEducation,
@@ -213,7 +214,11 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
     control: form.control,
     name: "previous_experience",
   });
-
+  useEffect(() => {
+    if (Object.keys(form.formState.errors).length > 0) {
+      toast.error("Please fix form errors first");
+    }
+  }, [form.formState.errors]);
   const { setDates, setLogin } = useAuth();
   console.log(dataDefault);
   const onSubmit = (data: JobFormValues) => {
@@ -316,8 +321,8 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
         />
         {/* Personal Data */}
         <FlexWrapper max={false}>
-          <FormSelect label={t("Family Status")} options={FAMILYSTATUS} name="family_status" />
-          <FormSelect label={t("Gender")} options={GENDER} name="gender" />
+          <FormSelect label={t("FAMILY STATUS")} options={FAMILYSTATUS} name="family_status" />
+          <FormSelect label={t("GENDER")} options={GENDER} name="gender" />
         </FlexWrapper>
         <ComboboxForm
           disabled={isLoading}
@@ -375,9 +380,9 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
         {/* Salary */}
         <MiniTitle form size="md" boldness="bold" text={t("Salary")} />
         <FlexWrapper max={false}>
+          <FormSelect label={t("Currency")} name="currency" options={CURRENCY_OPTIONS} />
           <FormInput control={form.control} name="min_salary" currency label={t("Min Salary")} type="number" />
           <FormInput control={form.control} name="max_salary" currency label={t("Max Salary")} type="number" />{" "}
-          <FormSelect label={t("Currency")} name="currency" options={CURRENCY_OPTIONS} />
           <FormSelect
             label={t("Show Expected Salary")}
             name="show_expected_salary"
@@ -394,6 +399,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
         {/* Description */} <MiniTitle form size="md" boldness="bold" text={t("More Info")} />
         <FormInput
           area
+          optional
           control={form.control}
           name="description"
           label={t("Description")}
@@ -428,85 +434,88 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
           </FlexWrapper>
           <div className="flex w-full  lg:flex-row flex-col items-center gap-4">
             <FormInput control={form.control} name={`main_education.date`} label={t("FROM Date")} date />
-            <FormInput control={form.control} name={`main_education.date_to`} label={t("TO DATE")} date />
+            {!form.watch(`main_education.present`) && (
+              <FormInput control={form.control} name={`main_education.date_to`} label={t("TO DATE")} date />
+            )}
             <FormInput
               control={form.control}
               name={`main_education.present`}
               label={t("ARE YOU CRRUNTLEY PRESENT ?")}
               check
+              optional
             />{" "}
           </div>
-
-          {educationFields.map((field, index) => (
-            <div key={field.id * index} className=" bg-gray-100 rounded-xl mt-2 p-2 mb-2">
-              <FlexWrapper
-                max={false}
-                key={field.id}
-                className=" flex items-center gap-2  bg-gray-100 rounded p-2 mb-2"
-              >
-                {" "}
-                <FormInput
-                  control={form.control}
-                  name={`education.${index}.certificate_name`}
-                  label={t("Bachelor's/Master/Board certificate Name")}
-                />
-                <FormInput
-                  control={form.control}
-                  name={`education.${index}.training_center`}
-                  label={t("Training Center")}
-                />{" "}
-              </FlexWrapper>
-              <FlexWrapper
-                max={false}
-                key={field.id}
-                className=" flex items-center gap-2  bg-gray-100 rounded p-2 mb-2"
-              >
-                <ComboboxForm
-                  name={`education.${index}.country_id`}
-                  label={t("Country")}
-                  disabled={isLoading}
-                  placeholder={t("nationality")}
-                  options={countries?.data.map((country: any) => ({ label: country.title, value: country.id }))}
-                />
-                <CareerInput
-                  onlySpeciality
-                  disabled={form.getValues("career_type_id") === ""}
-                  loadingCareerTypes={loadingCareerTypes}
-                  careerTypes={careerTypes}
-                  careerLevel={`education.${index}.career_level_id`}
-                  careerSpecialty={`education.${index}.career_specialty_id`}
-                  careerType="career_type_id"
-                />
-              </FlexWrapper>{" "}
-              <FlexWrapper className=" w-full" max={false}>
-                <div className="flex flex-col lg:flex-row w-full items-center gap-4">
-                  <FormInput control={form.control} name={`education.${index}.date`} label={t("FROM Date")} date />
-                  <FormInput
-                    control={form.control}
-                    name={`education.${index}.date_to`}
-                    label={t("TO DATE")}
-                    date
-                  />{" "}
-                  <FormInput
-                    control={form.control}
-                    name={`education.${index}.present`}
-                    label={t("ARE YOU CRRUNTLEY PRESENT ?")}
-                    check
-                  />{" "}
-                </div>
-              </FlexWrapper>
-              <div className="flex gap-2 px-3 py-2 items-center">
-                <FormInput type="file" label={t("Upload certificate")} name={`education.${index}.certificate`} />
-                <button
-                  className=" border-2  rounded-lg p-1  mt-auto border-gray-800 justify-end"
-                  type="button"
-                  onClick={() => removeEducation(index)}
+          <div className=" flex flex-col gap-4 mt-5">
+            <MiniTitle form size="md" className="" boldness="bold" text={t("OTHER EDUCATION")} />
+            {educationFields.map((field, index) => (
+              <div key={field.id} className=" bg-gray-100 rounded-xl mt-2 p-2 mb-2">
+                <FlexWrapper
+                  max={false}
+                  key={field.id}
+                  className=" flex items-center gap-2  bg-gray-100 rounded p-2 mb-2"
                 >
-                  <XIcon />
-                </button>
+                  {" "}
+                  <FormInput
+                    control={form.control}
+                    name={`education.${index}.certificate_name`}
+                    label={t("Bachelor's/Master/Board certificate Name")}
+                  />
+                  <FormInput
+                    control={form.control}
+                    name={`education.${index}.training_center`}
+                    label={t("Training Center")}
+                  />{" "}
+                </FlexWrapper>
+                <FlexWrapper
+                  max={false}
+                  key={field.id}
+                  className=" flex items-center gap-2  bg-gray-100 rounded p-2 mb-2"
+                >
+                  <ComboboxForm
+                    name={`education.${index}.country_id`}
+                    label={t("Country")}
+                    disabled={isLoading}
+                    placeholder={t("Country")}
+                    options={countries?.data.map((country: any) => ({ label: country.title, value: country.id }))}
+                  />
+                  <CareerInput
+                    onlySpeciality
+                    disabled={form.getValues("career_type_id") === ""}
+                    loadingCareerTypes={loadingCareerTypes}
+                    careerTypes={careerTypes}
+                    careerLevel={`education.${index}.career_level_id`}
+                    careerSpecialty={`education.${index}.career_specialty_id`}
+                    careerType="career_type_id"
+                  />
+                </FlexWrapper>{" "}
+                <FlexWrapper className=" p-2 w-full" max={false}>
+                  <div className="flex flex-col lg:flex-row w-full items-center gap-4">
+                    <FormInput control={form.control} name={`education.${index}.date`} label={t("FROM Date")} date />
+                    {!form.watch(`education.${index}.present`) && (
+                      <FormInput control={form.control} name={`education.${index}.date_to`} label={t("TO DATE")} date />
+                    )}
+                    <FormInput
+                      optional
+                      control={form.control}
+                      name={`education.${index}.present`}
+                      label={t("ARE YOU CRRUNTLEY PRESENT ?")}
+                      check
+                    />{" "}
+                  </div>
+                </FlexWrapper>
+                <div className="flex gap-2 px-3 py-2 items-center">
+                  <FormInput type="file" label={t("Upload certificate")} name={`education.${index}.certificate`} />
+                  <button
+                    className=" border-2  rounded-lg p-1  mt-auto border-gray-800 justify-end"
+                    type="button"
+                    onClick={() => removeEducation(index)}
+                  >
+                    <XIcon />
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
         <div className="my-4">
           <FunctionalButton
@@ -558,14 +567,18 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
                 label={t("Start Date")}
                 date
               />
-              <FormInput
-                control={form.control}
-                name={`previous_experience.${index}.present`}
-                label={t("ARE YOU CRRUNTLEY PRESENT ?")}
-                check
-              />{" "}
-              <div className="flex w-full items-center gap-2">
+              {!form.watch(`previous_experience.${index}.present`) && (
                 <FormInput control={form.control} name={`previous_experience.${index}.to`} label={t("End Date")} date />
+              )}
+
+              <div className="flex w-full items-center gap-2">
+                <FormInput
+                  control={form.control}
+                  optional
+                  name={`previous_experience.${index}.present`}
+                  label={t("ARE YOU CRRUNTLEY PRESENT ?")}
+                  check
+                />
                 <button
                   className=" border-2  rounded-lg p-1  mt-auto border-gray-800 justify-end"
                   type="button"
@@ -617,7 +630,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
             disabled={isPending}
             onClick={form.handleSubmit(onSubmit)}
             size="lg"
-            btnText={t("Post Job")}
+            btnText={dataDefault ? t("UPDATE PROFILE") : t("CREATE PROFILE")}
             type="submit"
             className="w-full"
           />

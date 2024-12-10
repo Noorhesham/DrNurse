@@ -57,7 +57,7 @@ const SearchBox = ({
     "getJobs",
     `job_title=${query}`,
     "",
-    { enabled: query.length > 3 },
+    { enabled: query.length > 3 && nonactive },
     `job_title=${query}&itemsCount=10`
   );
 
@@ -73,7 +73,7 @@ const SearchBox = ({
     if (!nonactive && (event.target.value.includes("%") || event.target.value.length < 3))
       return setResultActive(false);
     setResultActive(true);
-    onSearch && debounce(onSearch, 500)(event.target.value);
+    onSearch && onSearch(event.target.value);
     if (!nonactive) search(event.target.value);
   };
 
@@ -101,6 +101,7 @@ const SearchBox = ({
   const jobs = data?.data?.jobs;
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     console.log(event.key, jobs);
+    if (jobs?.length < 1 || nonactive) return;
     if (event.key === "ArrowDown") {
       event.preventDefault();
       setSelectedResult((prev) => {

@@ -13,13 +13,14 @@ import Spinner from "@/app/components/Spinner";
 import Empty from "@/app/components/Empty";
 import TableData from "@/app/components/TableData";
 import BreadCrumb from "@/app/components/BreadCrumb";
+import Link from "next/link";
 
 const Page = () => {
   const { data: overView, isLoading: isLoadingOverView } = useGetEntity("person-overview");
   const { data, isLoading } = useGetEntity("my-profile", "my-profile");
   if (isLoading || !data || isLoadingOverView) return <Spinner />;
   const dataPage = data.data;
-  console.log(overView)
+  console.log(overView);
   return (
     <div className="pt-40 ">
       <BreadCrumb
@@ -63,9 +64,22 @@ const Page = () => {
                 />
                 <TableData viewbtn person jobs={overView.data.recomended_jobs} />
               </div>
-              <div className=" flex flex-col gap-2">
-                <MiniTitle link="#" className="capitalizes" boldness="bold" color="text-gray-900" text="Offers" />
-                <OffersTable person offers={overView.data.job_offers} />
+              <div className="my-5">
+                {" "}
+                {overView.data.job_offers.length > 0 ? (
+                  <div className=" flex flex-col  gap-2">
+                    <MiniTitle
+                      link="/person/job-offers"
+                      className="capitalizes"
+                      boldness="bold"
+                      color="text-gray-900"
+                      text="Offers"
+                    />
+                    <OffersTable person offers={overView.data.job_offers} />
+                  </div>
+                ) : (
+                  <Empty text="No Job Offers Yet !" />
+                )}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-5 my-4 gap-5">
                 <div className="flex col-span-2 flex-col gap-4 bg-[#F7F9FB] px-5 py-5 rounded-lg">
@@ -76,9 +90,9 @@ const Page = () => {
                     <Empty text="No Meetings Yet !" />
                   )}
                 </div>
-                <div className=" col-span-3 relative w-full h-96">
+                <Link href="/person/jobs" className=" col-span-3 relative w-full h-96">
                   <Image src={"/find.jpg"} alt={"doctor"} fill className={"object-cover rounded-2xl"} />
-                </div>
+                </Link>
               </div>
             </section>
           )}

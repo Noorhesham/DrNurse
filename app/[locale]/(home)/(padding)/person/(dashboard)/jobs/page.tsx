@@ -15,7 +15,7 @@ const page = async ({ params: { locale }, searchParams }: { params: { locale: st
     sort,
     career_specialty_id,
     career_levels,
-    search,
+    query,
   } = searchParams;
 
   const queryParams = new URLSearchParams({
@@ -24,6 +24,7 @@ const page = async ({ params: { locale }, searchParams }: { params: { locale: st
     experience_to: experience_to || "",
     career_type_id: career_type_id || "",
     career_specialty_id: career_specialty_id || "",
+    search: query || "",
   });
   if (country_ids) {
     const countryIdsArray = country_ids.split(",");
@@ -47,14 +48,14 @@ const page = async ({ params: { locale }, searchParams }: { params: { locale: st
   const totalPages = Math.ceil(data.data.count / 10);
   const filters = [
     { "Career Type": career_types, filter: "career_type_id" },
-    { Country: countries, arr: true, filter: "country_ids" },
     { "Career Specialty": career_specialties, arr: true, filter: "career_specialty_id" },
     { "Career Level": career_levelsfilter, arr: true, filter: "career_levels" },
+    { Country: countries, arr: true, filter: "country_ids" },
   ];
   return (
     <div>
       <LoadingProvider>
-        <JobsList filters={filters} jobs={jobs} totalPages={totalPages} />
+        <JobsList filters={filters} query={query} jobs={jobs} totalPages={totalPages} />
       </LoadingProvider>
     </div>
   );

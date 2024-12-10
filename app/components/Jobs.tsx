@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import JobCard from "@/app/components/JobCard";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -12,10 +11,10 @@ import Filters from "./Filters";
 import FilterMobile from "./FilterPhone";
 import { useLoading } from "../context/LoadingContext";
 import Paragraph from "./defaults/Paragraph";
-import { XIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+
 import SearchBox from "./SearchBox";
 import { useSetLoading } from "../hooks/useSetLoadingt";
+import debounce from "lodash.debounce";
 
 interface JobsListProps {
   jobs: Job[];
@@ -35,6 +34,10 @@ const JobsList = ({ jobs, totalPages, filters, query }: JobsListProps) => {
     params.set("query", value);
     router.push(`${currentUrl.pathname}?${params.toString()}`);
   };
+  const debouncedOnSearch = debounce((value: string) => {
+    if (!value) return;
+    WrapperFn(() => handleChangeQuery(value));
+  }, 500);
   return (
     <GridContainer className=" mt-5 gap-4" cols={9}>
       <div className="flex order-1 lg:order-0 flex-col gap-3 col-span-2 lg:col-span-6">
@@ -67,9 +70,7 @@ const JobsList = ({ jobs, totalPages, filters, query }: JobsListProps) => {
             defaultQuery={query}
             className="md:w-full"
             onClose={() => handleChangeQuery("")}
-            onSearch={(value: string) => {
-              WrapperFn(() => handleChangeQuery(value));
-            }}
+            onSearch={debouncedOnSearch}
             nonactive
             btn={false}
           />
@@ -79,9 +80,7 @@ const JobsList = ({ jobs, totalPages, filters, query }: JobsListProps) => {
           <SearchBox
             defaultQuery={query}
             onClose={() => handleChangeQuery("")}
-            onSearch={(value: string) => {
-              WrapperFn(() => handleChangeQuery(value));
-            }}
+            onSearch={debouncedOnSearch}
             nonactive
             btn={false}
           />

@@ -3,6 +3,7 @@ import React from "react";
 import SideNav from "./SideNav";
 import {
   BadgeCheck,
+  BellIcon,
   BookmarkIcon,
   BriefcaseBusiness,
   CalendarClock,
@@ -13,8 +14,9 @@ import {
   User,
   Users,
 } from "lucide-react";
-import { MdAddCircle, MdNotifications } from "react-icons/md";
+import { MdAddCircle, MdNotifications, MdNotificationsNone } from "react-icons/md";
 import { useParams } from "next/navigation";
+import { TbNotification } from "react-icons/tb";
 const iconsStyles = "w-5 h-5";
 
 const SideBar = ({ iconsOnly = false, person }: { iconsOnly?: boolean; person?: boolean }) => {
@@ -44,7 +46,7 @@ const SideBar = ({ iconsOnly = false, person }: { iconsOnly?: boolean; person?: 
     {
       link: appendId(`${origin}/notifications`),
       text: "NOTIFICATIONS",
-      icon: <MdNotifications className={iconsStyles} />,
+      icon: <BellIcon className={iconsStyles} />,
     },
 
     { link: appendId(`${origin}/meetings`), text: "MEETINGS", icon: <CalendarClock className={iconsStyles} /> },
@@ -78,7 +80,7 @@ const SideBar = ({ iconsOnly = false, person }: { iconsOnly?: boolean; person?: 
       : [{ link: `${origin}/points`, text: "Points", icon: <BadgeCheck className={iconsStyles} /> }]),
     // Settings and logout
     { link: `${origin}/settings`, text: "SETTINGS", icon: <SlidersHorizontal className={iconsStyles} /> },
-    { link: "", text: "LOG-OUT", icon: <LogOutIcon  className={iconsStyles} /> },
+    { link: "", text: "LOG-OUT", icon: <LogOutIcon className={iconsStyles} /> },
   ];
 
   return (

@@ -359,6 +359,7 @@ export async function Server({
   try {
     // Get the URL and method from the resource name
     const { url, method: resolvedMethod } = getURL(resourceName, id, entityName, queryParams);
+    console.log(url)
     // Fetch data from the server
     let requestBody;
     if (formData) requestBody = body;

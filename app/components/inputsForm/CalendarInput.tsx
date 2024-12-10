@@ -26,7 +26,7 @@ const CalendarInput = ({
       disabled={disabled}
       render={({ field }) => {
         return (
-          <FormItem className={` relative z-[60] w-full`}>
+          <FormItem className={` relative w-full`}>
             <FormLabel className="duration-200 uppercase">{label || "Date"}</FormLabel>
             <Popover>
               <PopoverTrigger asChild>
@@ -47,9 +47,9 @@ const CalendarInput = ({
                   </Button>
                 </FormControl>
               </PopoverTrigger>
-              <PopoverContent sideOffset={-40} className="w-full  relative z-[9999] p-0" align="end">
+              <PopoverContent sideOffset={-40} className="w-full  relative  p-0" align="end">
                 <Calendar
-                  className=" relative z-[9999] w-full"
+                  className=" relative w-full"
                   mode="single"
                   captionLayout="dropdown-buttons"
                   fromYear={1990}

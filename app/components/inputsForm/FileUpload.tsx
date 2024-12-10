@@ -41,11 +41,11 @@ const FileUpload: React.FC<FileUploadProps> = ({
       }
     }
   }, [defaultFile]);
+  console.log(preview);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     const file = files ? files[0] : null;
-
     if (file) {
       setValue(name, multiple ? files : file, { shouldValidate: true });
 
@@ -60,7 +60,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
         };
         reader.readAsDataURL(file); // Read the file as a Data URL
       } else if (fileType === "application/pdf") {
-        setPreview(null); // No image preview for PDFs
+        setPreview(file); // No image preview for PDFs
         setIsPdf(true); // Set PDF state
         setHasDefault(false); // New file, no default
       }
@@ -104,6 +104,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
                 {isPdf ? (
                   <div className="flex flex-col items-center">
                     <FileIcon size={40} />
+                    <span className="text-xs mt-2">{(preview as any)?.name || ""}</span>
                     <span className="text-xs mt-2">{(defaultFile as any)?.title || ""}</span>
                   </div>
                 ) : (
