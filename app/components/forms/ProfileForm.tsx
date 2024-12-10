@@ -67,7 +67,7 @@ const jobSchema = z
       university_name: z.string().min(1, "University Name is required"),
       country_id: z.union([z.string().min(1, "Country is required"), z.number()]),
       career_specialty_id: z.union([z.string().min(1, "Specialty is required"), z.number()]),
-      date: z.string().min(1, " date is required"),
+      date: z.string(),
       date_to: z.string(),
       present: z.union([z.boolean(), z.number()]).transform((val) => (val === true ? 1 : 0)),
     }),
@@ -289,7 +289,8 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
     });
   };
   useEffect(() => {
-    if (form.getValues("available") === "yes") form.setValue("start_availability_at", format(Date.now(), "yyyy-MM-dd"));
+    if (form.getValues("available") === "yes_from_custom_time")
+      form.setValue("start_availability_at", format(Date.now(), "yyyy-MM-dd"));
   }, [form, form.getValues("available")]);
   if (isLoading) return <Spinner />;
 

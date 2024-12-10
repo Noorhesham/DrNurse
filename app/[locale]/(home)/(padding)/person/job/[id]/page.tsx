@@ -36,7 +36,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
   const job = data.data;
   const doctor = {
     name: job.job_title,
-    image: "/job.svg",
+    image: "/Frame 48097786 (2).svg",
     speciality: [job?.career_type?.title, job?.career_specialty?.title, job?.career_level?.title]
       .filter(Boolean)
       .join(", "),
@@ -57,7 +57,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
       else toast.error(res.message);
     });
   };
-
+  console.log(job.related_jobs)
   return (
     <section className=" pt-36">
       <BreadCrumb
@@ -184,7 +184,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
           <MiniTitle boldness="bold" color=" text-main2" text="RELATED JOBS" />
           <div className=" grid-cols-1 grid gap-5 lg:grid-cols-2 mt-3">
             {job.related_jobs?.map((job: Job, i: number) => (
-              <JobCard i={i} key={job.id} job={job} />
+              <JobCard bookmarked={job.bookmarked} i={i} key={job.id} job={job} />
             ))}
           </div>
         </section>
