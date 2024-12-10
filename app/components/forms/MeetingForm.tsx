@@ -156,7 +156,8 @@ const MeetingForm = ({
     <div>
       <MiniTitle boldness="bold" color="black" text={job?.data?.job_title || ""} />
       <Form {...form}>
-        <form className="mt-4 px-5 flex flex-col gap-5" onSubmit={form.handleSubmit(onSubmit)}>
+        {" "}
+        <form className="mt-4 px-5  relative flex flex-col gap-5" onSubmit={form.handleSubmit(onSubmit)}>
           {watchedFields.map((field, index) => (
             <div className="flex lg:flex-nowrap flex-wrap w-full items-center gap-5" key={index}>
               <FormInput label="Start From" control={form.control} name={`meetings.${index}.from_date`} date />

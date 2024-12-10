@@ -101,7 +101,7 @@ const Signup = () => {
     if (!role) form.setValue("register_as", "");
     else form.setValue("register_as", "doctor");
   }, []);
-  console.log(form.getValues('register_as'));
+  console.log(form.getValues("register_as"));
   const onSubmit = async (data: z.infer<typeof singup>) => {
     form.clearErrors();
     localStorage.removeItem("referal");
@@ -163,8 +163,10 @@ const Signup = () => {
         }
         return prev;
       });
+      form.setValue("register_as", "");
     } else {
       setSignupArray((prev) => prev.filter((input) => input.name !== "register_as" && input.name !== "referral_code"));
+      form.setValue("register_as", "hospital");
     }
   }, [role]);
   console.log(form.getValues("register_as"));

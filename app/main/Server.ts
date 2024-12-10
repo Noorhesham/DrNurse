@@ -359,7 +359,7 @@ export async function Server({
   try {
     // Get the URL and method from the resource name
     const { url, method: resolvedMethod } = getURL(resourceName, id, entityName, queryParams);
-    console.log(url)
+    console.log(url);
     // Fetch data from the server
     let requestBody;
     if (formData) requestBody = body;
@@ -376,7 +376,7 @@ export async function Server({
         tags: cache ? [`${resourceName}`] : [],
       },
     });
-    if (!response.ok) throw new Error(`Error: ${response.status}`);
+    // if (!response.ok) throw new Error(`Error: ${response.status}`);
     const contentType = response.headers.get("Content-Type");
     if (contentType && contentType.includes("application/pdf")) {
       const arrayBuffer = await response.arrayBuffer();
@@ -396,13 +396,13 @@ export async function Server({
 
     return data;
   } catch (error: any) {
+    console.log("Server request error:", error);
     if (isRedirectError(error)) {
       throw error;
     }
-    if (error.message === "Device token mismatch" || error.message === "Login again please") {
+    if (error.message === "Device token mismatch" || error.message === "Login again please" || error.status === 401) {
       redirect("/login?error=true");
     }
-    console.error("Server request error:", error);
     throw new Error(`Error: ${error.message}`);
   }
 }

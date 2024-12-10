@@ -27,7 +27,7 @@ const MonthDropdown: React.FC = () => {
       value={currentMonth.getMonth().toString()}
     >
       <SelectTrigger>{format(currentMonth, "MMMM")}</SelectTrigger>
-      <SelectContent >
+      <SelectContent className=" relative !z-[60] " >
         {selectItems.map((item) => (
           <SelectItem key={item.value} value={item.value}>
             {item.label}
@@ -57,7 +57,7 @@ const YearDropdown: React.FC = () => {
       value={currentMonth.getFullYear().toString()}
     >
       <SelectTrigger>{currentMonth.getFullYear()}</SelectTrigger>
-      <SelectContent className=" relative !z-50 ">
+      <SelectContent className=" relative !z-[60] ">
         {selectItems.map((item) => (
           <SelectItem key={item.value} value={item.value}>
             {item.label}
