@@ -261,7 +261,7 @@ const HospitalProfileSettings = ({ defaultData }: { defaultData?: any }) => {
         <div className="  flex flex-col gap-4">
           <MiniTitle className=" uppercase" boldness="bold" color={"text-black"} text={t("Social Media")} />
           {["social_facebook", "social_linkedin", "social_instagram", "social_twitter"].map((platform) => (
-            <FormInput key={platform} control={form.control} name={`${platform}`} label={t(platform)} />
+            <FormInput key={platform} control={form.control} name={`${platform}`} optional label={t(platform)} />
           ))}
         </div>
         {/* Logo, Banner,  */}

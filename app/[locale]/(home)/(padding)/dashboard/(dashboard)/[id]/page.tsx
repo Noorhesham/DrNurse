@@ -48,15 +48,21 @@ const page = () => {
               </div>
               <FunctionalButton btnText="POST A JOB" link={`/dashboard/${params.id}/post-job`} />
             </div>
-            <div className=" mt-2 gap-2 flex flex-col">
-              <MiniTitle
-                link="/person/jobs"
-                className=" capitalizes"
-                boldness="bold"
-                color=" text-gray-900"
-                text="Recently Posted Jobs"
-              />
-              <TableData jobs={overView.data?.jobs} />
+            <div className=" my-5">
+            {overView.data?.jobs.length > 0 ? (
+              <div className=" mt-2 gap-2 flex flex-col">
+                <MiniTitle
+                  link={`/dashboard/${params.id}/jobs`}
+                  className=" capitalizes"
+                  boldness="bold"
+                  color=" text-gray-900"
+                  text="Recently Posted Jobs"
+                />
+                <TableData jobs={overView.data?.jobs} />
+              </div>
+            ) : (
+              <Empty text="No Jobs Yet !" />
+            )}
             </div>
             <div className=" grid grid-cols-1 md:grid-cols-2 my-4 gap-5">
               <div className=" flex flex-col gap-4 bg-[#F7F9FB] px-5 py-5 rounded-lg">
