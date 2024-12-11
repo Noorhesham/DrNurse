@@ -44,7 +44,7 @@ const SelectDate = ({ meeting_id, jobId = "" }: { meeting_id: string; jobId: str
         },
       });
       console.log(res);
-      if (res.status) {
+      if (res?.status) {
         toast.success(res.message);
         queryCLient.invalidateQueries({ queryKey: [`person-meetings`] });
       } else toast.error(res.message);

@@ -7,10 +7,12 @@ import { MdNotifications } from "react-icons/md";
 import { Server } from "../../Server";
 import { useDevice } from "@/app/context/DeviceContext";
 import { toast } from "react-toastify";
-const notifications = [{ name: "active", label: "DEACTIVATE", label2: "ACTIVATE", switchToggle: true }];
+import useFcmToken from "@/app/hooks/useFcmToken";
+const notifications = [{ name: "active", label: "ACTIVATE", label2: "DEACTIVATE", switchToggle: true,noSwitch:false }];
 
 const UpdateNotifications = () => {
   const { device_info } = useDevice();
+  const { token } = useFcmToken();
   const UpdateNotificationsSubmit = async (val: any) => {
     const res = await Server({
       resourceName: "languageUpdate",
@@ -21,6 +23,19 @@ const UpdateNotifications = () => {
         device_info,
       },
     });
+    const sendVal = async () => {
+      const res = await Server({
+        resourceName: "languageUpdate",
+        body: {
+          action: "set",
+          key: "notification_token",
+          value: token,
+          device_info,
+        },
+      });
+      console.log(res,token)
+    };
+    if (val.active) sendVal();
     if (res.status) toast.success(res.message);
     else toast.error(res.message);
   };

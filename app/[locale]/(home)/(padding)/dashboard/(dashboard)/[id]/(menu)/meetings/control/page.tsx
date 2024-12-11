@@ -86,7 +86,7 @@ const page = () => {
                         <ModalCustom
                           btn={
                             <Button size={"lg"} className=" rounded-full">
-                              CHANGE MEETING STATUS
+                              CHANGE STATUS
                             </Button>
                           }
                           content={
@@ -161,9 +161,9 @@ const page = () => {
                             });
                           }}
                           size={"lg"}
-                          className="self-center mr-auto  rounded-full"
+                          className="self-center mr-auto bg-main2  rounded-full"
                         >
-                          JOIN MEETING
+                          START MEETING
                         </Button>
                       </div>
                     ) : (

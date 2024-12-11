@@ -29,6 +29,9 @@ async function getNotificationPermissionAndToken() {
   console.log("Notification permission not granted.");
   return null;
 }
+function stripHtmlTags(str: string) {
+  return str.replace(/<[^>]*>/g, "");
+}
 
 const useFcmToken = () => {
   const router = useRouter(); // Initialize the router for navigation.
@@ -101,13 +104,20 @@ const useFcmToken = () => {
         if (Notification.permission !== "granted") return;
 
         console.log("Foreground push notification received:", Notification);
+
+        // Sanitize title and body
+        const title = stripHtmlTags(payload.notification?.title || "New message");
+        const body = stripHtmlTags(payload.notification?.body || "This is a new message");
+
         const link = payload.fcmOptions?.link || payload.data?.link;
-        const n = new Notification(payload.notification?.title || "New message", {
-          body: payload.notification?.body || "This is a new message",
+
+        // Show native browser notification
+        const n = new Notification(title, {
+          body,
           data: link ? { url: link } : undefined,
         });
 
-        // Step 10: Handle notification click event to navigate to a link if present.
+        // Handle notification click event
         n.onclick = (event) => {
           event.preventDefault();
           const link = (event.target as any)?.data?.url;
@@ -117,32 +127,32 @@ const useFcmToken = () => {
             console.log("No link found in the notification payload");
           }
         };
-        if (link) {
-          toast(
-            `${payload.notification?.title || "New message"}: ${payload.notification?.body || "This is a new message"}`,
-            {
-              onClick: () => {
-                if (link) {
-                  router.push(link);
-                }
-              },
-              autoClose: false, // Keeps the toast open until the user interacts with it
-              closeOnClick: true, // Closes the toast when clicked
+
+        // Show toast notification
+        toast(`${title}: ${body}`, {
+          onClick: () => {
+            if (link) {
+              router.push(link);
             }
-          );
-        } else {
-          toast.info(`${payload.notification?.title}: ${payload.notification?.body}`);
+          },
+          autoClose: 10000, // Keep toast visible for 10 seconds
+          closeOnClick: true,
+          pauseOnHover: true, // Allow hover to pause the timer
+        });
+
+        // If the tab is inactive, ensure the native notification grabs the user's attention
+        if (document.hidden && Notification.permission === "granted") {
+          n.onclick = () => {
+            window.focus();
+            if (link) {
+              router.push(link);
+            }
+          };
         }
-
-        // --------------------------------------------
-        // Disable this if you only want toast notifications.
-
-        // --------------------------------------------
       });
 
       return unsubscribe;
     };
-
     let unsubscribe: Unsubscribe | null = null;
 
     setupListener().then((unsub) => {
