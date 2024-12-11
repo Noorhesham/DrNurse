@@ -41,6 +41,18 @@ const QueryProvider = ({ children }: { children: ReactNode }) => {
       persistOptions={{ persister }}
       onSuccess={() => {
         console.log("Cache successfully restored!");
+        const keyWords = ["last_update_date_general", "last_update_date_user", "last_update_date_user2"];
+        const queryData = ["general_settings", "user_settings", "user2_settings"];
+        if (!queryClient) return;
+        keyWords.forEach((key, index) => {
+          console.log(key, queryClient.getQueryData([queryData[index]]));
+          if (!queryClient.getQueryData([queryData[index]])) {
+            const dates = JSON.parse(localStorage.getItem("dates") || "{}");
+            dates[key] = "";
+            localStorage.setItem("dates", JSON.stringify(dates));
+          }
+        });
+        console.log("Initial query data for general_settings:", queryClient.getQueryData(["general_settings"]));
       }}
       onError={(error) => {
         console.error("Cache restore failed:", error);

@@ -13,6 +13,7 @@ import { useGetEntity } from "@/lib/queries";
 import Spinner from "@/app/components/Spinner";
 import { useParams } from "next/navigation";
 import Empty from "@/app/components/Empty";
+import { Link } from "lucide-react";
 
 const page = () => {
   const params = useParams();
@@ -73,6 +74,9 @@ const page = () => {
                 ) : (
                   <Empty text="No Meetings Yet !" />
                 )}
+                <Link href={`/dashboard/${params.id}/meetings`} className="underline flex items-center gap-2">
+                  <span>View All Meetings</span>
+                </Link>
               </div>
               <div className=" flex flex-col gap-4 bg-[#F7F9FB] px-5 py-5 rounded-lg">
                 <MiniTitle

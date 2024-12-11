@@ -22,7 +22,7 @@ const useGetEntities = ({
 }) => {
   const { data, isLoading } = useQuery({
     queryKey: [key, queryParams, id],
-    queryFn: async () => await Server({ resourceName: resourceName, id, cache: 100 * 24 * 60 * 60 }),
+    queryFn: async () => await Server({ resourceName: resourceName, id, cache: 1000 * 24 * 60 * 60 }),
     enabled: enable,
   });
   return { data, isLoading };

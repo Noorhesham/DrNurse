@@ -68,7 +68,7 @@ const jobSchema = z
       country_id: z.union([z.string().min(1, "Country is required"), z.number()]),
       career_specialty_id: z.union([z.string().min(1, "Specialty is required"), z.number()]),
       date: z.string(),
-      date_to: z.string(),
+      date_to: z.string().optional(),
       present: z.union([z.boolean(), z.number()]).transform((val) => (val === true ? 1 : 0)),
     }),
     education: z
@@ -77,7 +77,7 @@ const jobSchema = z
           country_id: z.union([z.string().min(1, "Country is required"), z.number()]),
           career_specialty_id: z.union([z.string().min(1, "Specialty is required"), z.number()]),
           date: z.string().min(1, " date is required"),
-          date_to: z.string(),
+          date_to: z.any(),
           present: z.union([z.boolean(), z.number()]).transform((val) => (val === true ? 1 : 0)),
           certificate_name: z.string().min(1, "Certificate Name is required"),
           training_center: z.string().optional(),
@@ -94,7 +94,7 @@ const jobSchema = z
           country_id: z.union([z.string().min(1, "Country is required"), z.number()]),
           career_specialty_id: z.union([z.string().min(1, "Specialty is required"), z.number()]),
           from: z.string().min(1, "START date is required"),
-          to: z.string(),
+          to: z.any(),
           about: z.string().optional(),
           career_level: z.union([z.string().min(1, "CAEREER LEVEL is required"), z.number()]),
           present: z.union([z.boolean(), z.number()]).transform((val) => (val === true ? 1 : 0)),
@@ -224,6 +224,16 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
   const onSubmit = (data: JobFormValues) => {
     const formData = new FormData();
     const fileFields = ["resume", "practice_license", "identification_card", "certificate"];
+    if (data.available !== "yes_from_custom_time") {
+      delete data.start_availability_at;
+    }
+    if (data.previous_experience && Array.isArray(data.previous_experience)) {
+      data.previous_experience.forEach((exp, index) => {
+        if (exp.present === 1) {
+          delete data.previous_experience[index].to;
+        }
+      });
+    }
     for (const key in data) {
       if (data.hasOwnProperty(key)) {
         const value = data[key as keyof JobFormValues];
@@ -278,6 +288,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
       queryClient.invalidateQueries({ queryKey: ["my-profile"] });
       setDates((prevDates: any) => ({
         ...prevDates,
+
         last_update_date_user: "",
       }));
       setLogin((l) => !l);
@@ -359,7 +370,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
             label={t("Do you have an active license?")}
             name="active_license_country"
             options={[
-              // { label: "No", value: "no" },
+              { label: "No", value: "no" },
               { label: "Saudi Arabia", value: "SA" },
               { label: "UAE", value: "AE" },
               { label: "Qatar", value: "QA" },

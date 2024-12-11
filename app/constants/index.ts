@@ -245,12 +245,14 @@ export const FAMILYSTATUS = [
   { label: "Single", value: "single" },
   { label: "Divorced", value: "divorced" },
   { label: "Widowed", value: "widowed" },
+  { label: "Not specified", value: "" },
 
   { label: "Other", value: "Other" },
 ];
 export const GENDER = [
   { label: "Male", value: "male" },
   { label: "Female", value: "female" },
+  { label: "Not specified", value: "" },
 ];
 export const WEBSITEURL = "http://localhost:3001";
 export const APIURL = "https://dr.r-m.dev";

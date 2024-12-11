@@ -46,31 +46,15 @@ interface UpdateFnParams {
  */
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-const updateFn = ({ checker, setState, key, dateKey, setDates, queryClient, status, dates }: UpdateFnParams) => {
-  // if some of the data is missed  from local storage the n set its date to empty string so that i can ask the server for it again
-  // if (!queryClient.getQueryData([key])) {
-  //   console.log("trueeeeeeeeeeeeeeeeeeeee", queryClient.getQueryData([key]));
-  //   setDates((prevDates: any) => ({
-  //     ...prevDates,
-  //     [dateKey]: checker?.last_update_date,
-  //   }));
-  //   // localStorage.setItem("dates", JSON.stringify({ ...dates, [dateKey]: checker?.last_update_date }));
-  // }
-  // i want to see whether there is data returend from the server or not and  i want
-  //to check  if there is then i will replace
-  // if i do not  have a query of that data  and status is true then it is the first time then i will set it
-  if (checker || (!queryClient.getQueryData([key]) && status !== false)) {
-    setState(checker);
+const updateFn = ({ checker, setState, key, dateKey, setDates, queryClient, status }: UpdateFnParams) => {
+  if (status && checker) {
     queryClient.setQueryData([key], checker);
-    setDates((prevDates: any) => ({
-      ...prevDates,
-      [dateKey]: checker?.last_update_date,
-    }));
+    setDates((prevDates: any) => ({ ...prevDates, [dateKey]: checker.last_update_date }));
+    setState(checker);
+  } else if (!checker && queryClient.getQueryData([key])) {
+    setState(queryClient.getQueryData([key]));
   } else {
-    // Keep the current state if no updates
-    setState((prev: any) => {
-      return queryClient.getQueryData([key]);
-    });
+    console.warn(`No data available for ${key}`);
   }
 };
 
@@ -87,22 +71,10 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     "dates"
   );
   const token = cookies.get("jwt");
-  const [generalSettings, setGeneralSettings] = useState<any>(() => queryClient.getQueryData(["general_settings"]));
-  const [userSettings, setUserSettings] = useState<any>(() => queryClient.getQueryData(["user_settings"]));
-  const [user2Settings, setUser2Settings] = useState<any>(() => queryClient.getQueryData(["user2_settings"]));
-  useEffect(() => {
-    const keyWords = ["last_update_date_general", "last_update_date_user", "last_update_date_user2"];
-    if (!queryClient) return;
-    console.log(queryClient);
-    keyWords.forEach((key) => {
-      if (!queryClient.getQueryData([key])) {
-        setDates((prevDates: any) => ({
-          ...prevDates,
-          [key]: "",
-        }));
-      }
-    });
-  }, [queryClient]);
+  const [generalSettings, setGeneralSettings] = useState<any>();
+  const [userSettings, setUserSettings] = useState<any>();
+  const [user2Settings, setUser2Settings] = useState<any>();
+
   const [cartCount, setCartCount] = useLocalStorageState(0, "cartCount");
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
@@ -171,7 +143,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     if (queryClient) fetchData();
-  }, [login,queryClient]);
+  }, [login, queryClient]);
   console.log(userSettings, user2Settings, generalSettings, "after server");
 
   const handleLogout = () => {
