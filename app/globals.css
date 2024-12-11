@@ -197,6 +197,7 @@
   max-width: 60rem !important;
 }
 .content-text h2,
-.content-text h3 {
+.content-text h3,
+.content-text h4 {
   @apply capitalize   text-main2 text-left font-semibold max-w-5xl;
 }
