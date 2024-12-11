@@ -65,7 +65,6 @@ const page = () => {
           <div className=" order-2 lg:order-[0] col-span-2 lg:col-span-6">
             <section className=" flex flex-col gap-2 ">
               <MiniTitle boldness="bold" color=" text-main2" text="ABOUT ME" />{" "}
-              <VerificationStatus userSettings={userSettings} />
               <div
                 dangerouslySetInnerHTML={{ __html: convertToHTML(description) }}
                 className={`lg:max-w-4xl  text-black lg:text-base text-sm  font-medium my-2 leading-[1.7] `}
@@ -79,6 +78,7 @@ const page = () => {
               </div>
             </div>
             <MiniTitle color="black" text="HOSPITAL INFO" />
+            <VerificationStatus userSettings={userSettings} />
 
             <div className="  flex flex-col gap-5">
               <InfoItem icon={<CalendarIcon className=" w-5 h-5" />} title="YEAR FOUNDED" description={year_founded} />
