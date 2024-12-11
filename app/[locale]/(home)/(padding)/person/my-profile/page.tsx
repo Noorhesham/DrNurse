@@ -24,10 +24,13 @@ import Paragraph from "@/app/components/defaults/Paragraph";
 import { GoLocation, GoPeople } from "react-icons/go";
 import { Server } from "@/app/main/Server";
 import CVdownload from "@/app/components/CVdownload";
+import { useAuth } from "@/app/context/AuthContext";
+import VerificationStatus from "@/app/components/VerficationStatus";
 
 const page = () => {
   const { data, isLoading } = useGetEntity("my-profile", "my-profile");
-  if (isLoading || !data) return <Spinner />;
+  const { userSettings, loading } = useAuth();
+  if (isLoading || !data || loading) return <Spinner />;
   else if (!data.data && !isLoading) redirect("/person/create-profile");
   const dataPage = data.data;
   const { description } = data.data;
@@ -142,7 +145,9 @@ const page = () => {
                                 </p>
                                 <span className=" text-sm">
                                   {formatDate(experience.from, "dd MMM yyyy")}-
-                                  {experience.present === 1 ? "Currently present" : formatDate(experience.to, "dd MMM yyyy")}
+                                  {experience.present === 1
+                                    ? "Currently present"
+                                    : formatDate(experience.to, "dd MMM yyyy")}
                                 </span>
                               </div>
                             </FlexWrapper>
@@ -159,7 +164,7 @@ const page = () => {
           </div>
           <div className="flex col-span-full lg:col-span-2 px-5 py-5 pb-10 rounded-xl flex-col gap-3  bg-light">
             <MiniTitle color="black" text="MY INFO" />
-
+            <VerificationStatus userSettings={userSettings} />
             <div className=" flex flex-col gap-5">
               <InfoItem
                 icon={<DashboardIcon className=" w-5 h-5" />}

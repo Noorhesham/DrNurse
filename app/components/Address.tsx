@@ -30,22 +30,18 @@ const Address = ({ className }: { className?: String }) => {
   const { company_contacts } = generalSettings;
   const { branches } = company_contacts;
   return (
-    <MotionContainer serverAnimate className={cn(" flex-col gap-2 flex ", className)}>
+    <MotionContainer className={cn(" flex-col gap-2 flex ", className)}>
       {branches.map((branch: any, i: number) => (
         <Link target="_blank" key={i} href={`${branch.co_info_location_url}`}>
           <IconWidget paragraph={branch.co_info_address[locale]} header={branch.title[locale]} icon={<Location />} />
         </Link>
       ))}
       <Link target="_blank" href={`tel:${company_contacts.phone}`}>
-        <IconWidget
-          paragraph={`${t("address.hotline")}  ${company_contacts.phone}`}
-          header={t("address.phone")}
-          icon={<Phone />}
-        />
+        <IconWidget paragraph={`${company_contacts.phone}`} header={t("address.phone")} icon={<Phone />} />
       </Link>
-      <Link href={`mailto:${company_contacts.email || "info@orient-paints.com"}`}>
+      <Link href={`mailto:${company_contacts?.branches?.[0]?.co_info_email}`}>
         <IconWidget
-          paragraph={company_contacts?.email || "info@orient-paints.com"}
+          paragraph={company_contacts?.branches?.[0]?.co_info_email}
           header={t("address.email")}
           icon={<FaMailBulk className=" text-main" />}
         />
