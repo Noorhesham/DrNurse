@@ -13,7 +13,7 @@ import { useGetEntity } from "@/lib/queries";
 import Spinner from "@/app/components/Spinner";
 import { useParams } from "next/navigation";
 import Empty from "@/app/components/Empty";
-import { Link } from "lucide-react";
+import Link from "next/link";
 
 const page = () => {
   const params = useParams();

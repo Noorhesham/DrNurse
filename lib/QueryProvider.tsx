@@ -10,13 +10,9 @@ const QueryProvider = ({ children }: { children: ReactNode }) => {
       new QueryClient({
         defaultOptions: {
           queries: {
-            refetchOnWindowFocus: true,
-            refetchOnMount: true,
-            refetchOnReconnect: true,
-            staleTime: 0,
-            onError: (error) => {
-              console.error("Query Error:", error);
-            },
+            refetchOnWindowFocus: false, // Does not refetch on window focus
+            refetchOnReconnect: false,
+            gcTime: Infinity,
           },
         },
       })
