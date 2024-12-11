@@ -61,7 +61,7 @@ export default async function Home() {
       </section>
       <MaxWidthWrapper className=" my-4 lg:my-10 flex flex-col gap-20">
         <div className="flex flex-col gap-5">
-          <Head1 text={page.hospital_logos_title} />
+          <Head1 animation={false} text={page.hospital_logos_title} />
 
           <SwiperCards
             autoplay={true}
@@ -158,7 +158,7 @@ export default async function Home() {
       <div className="my-4 lg:my-10 bg-[#F2F5FF]">
         <MaxWidthWrapper>
           <div className=" flex flex-col gap-5 my-4 ">
-            <Head1 className=" mx-auto" text="HOW DOCTOR NURSE WORK" />
+            <Head1 animation={false} className=" mx-auto" text="HOW DOCTOR NURSE WORK" />
             <GridContainer motion className="relative mt-5" cols={4}>
               <InfoCard
                 arrow

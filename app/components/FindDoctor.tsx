@@ -34,7 +34,7 @@ const FindDoctor = ({
         <div className="flex flex-col items-start gap-10 justify-between  flex-1">
           <div className="flex flex-col items-start">
             <h3 className=" text-main2  uppercase  font-semibold">{miniTitle}</h3>
-            <Head1 headingClasses=" text-left " alignment="left" text={title} />
+            <Head1 animation={false} headingClasses=" text-left " alignment="left" text={title} />
             <div
               dangerouslySetInnerHTML={{ __html: convertToHTML(paragraph || "") }}
               className={`lg:max-w-2xl text-black lg:text-base text-sm  font-medium my-2 leading-[1.7] `}
