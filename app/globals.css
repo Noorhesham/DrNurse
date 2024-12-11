@@ -193,7 +193,10 @@
     padding-bottom: 56%;
   }
 }
-.w{
+.w {
   max-width: 60rem !important;
-
+}
+.content-text h2,
+.content-text h3 {
+  @apply capitalize mb-4 text-4xl text-main2 text-left font-semibold max-w-5xl;
 }

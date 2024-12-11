@@ -6,7 +6,6 @@ import { convertToHTML } from "@/lib/utils";
 import { CalendarHeartIcon, LayoutDashboardIcon } from "lucide-react";
 import Image from "next/image";
 import React from "react";
-
 const page = async ({ params }: { params: { locale: string; id: string } }) => {
   const data = await Server({ resourceName: "getSingleEntity", id: params.id, entityName: "blogs" });
   const item: any = data.item;
@@ -14,7 +13,7 @@ const page = async ({ params }: { params: { locale: string; id: string } }) => {
   const contentHTML = content ? convertToHTML(content) : "";
 
   return (
-    <section className="  min-h-screen  ">
+    <section className="content-text  min-h-screen  ">
       <div className="pt-36 ">
         <BreadCrumb
           linksCustom={[
