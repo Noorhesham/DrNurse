@@ -3,7 +3,6 @@ import FindDoctor from "@/app/components/FindDoctor";
 import FlexWrapper from "@/app/components/defaults/FlexWrapper";
 import GridContainer from "@/app/components/defaults/GridContainer";
 import Head1 from "@/app/components/Head1";
-import Paragraph from "@/app/components/defaults/Paragraph";
 import React from "react";
 import CounterAnimation from "@/app/components/CounterAnimation";
 import { Server } from "@/app/main/Server";
@@ -16,14 +15,14 @@ import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
 const page = async () => {
   const data = await Server({ resourceName: "about-us" });
   const page = data.page;
-
+  console.log(page);
   return (
     <div>
       <FindDoctor
         images={page.main_section_images}
         miniTitle={page.history_section_small_title}
         paragraph={page.history_section_content}
-        title={page.history_section_small_title}
+        title={page.history_section_main_title}
         reverse
       />
       <div className=" bg-[#F2F5FF]">
@@ -59,7 +58,7 @@ const page = async () => {
         <GridContainer className="  flex-1" cols={2}>
           {page.important_number.map((numb: any) => (
             <div className=" flex items-center flex-col gap-4 relative">
-              <span className=" absolute  -top-5 text-main2 right-10">{numb.prefix}</span>
+              {/* <span className=" absolute  -top-5 text-main2 right-10">{numb.prefix}</span> */}
               <CounterAnimation from={0} to={parseInt(numb.number)} />
               <p className=" text-gray-800 capitalize  font-semibold">{numb.important_number_title}</p>
             </div>

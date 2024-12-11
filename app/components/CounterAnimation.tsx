@@ -15,8 +15,8 @@ const CounterAnimation = ({
   const ref = useRef<HTMLHeadingElement>(null);
   const isInView = useInView(ref, { once: true });
   useIsomorphicLayoutEffect(() => {
-    if (!ref.current ) return;
-    if(!isInView) return
+    if (!ref.current) return;
+    if (!isInView) return;
     ref.current.textContent = String(from);
     const controls = animate(from, to, {
       duration: 1.5,
@@ -24,10 +24,7 @@ const CounterAnimation = ({
       onUpdate: (val) => (ref.current.textContent = String(val.toFixed(0))),
     });
   }, [ref, isInView, from, to]);
-  return (
-    <h1 ref={ref} className=" font-mono text-main2 font-bold  text-5xl"/>
-   
-  );
+  return <h1 ref={ref} className=" font-mono text-main2 font-bold  text-5xl" />;
 };
 
 export default CounterAnimation;
