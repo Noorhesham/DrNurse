@@ -21,8 +21,8 @@ const page = async () => {
       <FindDoctor
         images={page.main_section_images}
         miniTitle={page.title}
-        paragraph={page.history_section_content}
-        title={page.history_section_small_title}
+        paragraph={page.content}
+        title={page.main_section_title}
         reverse
       />
       <div className=" bg-[#F2F5FF]">
@@ -48,10 +48,10 @@ const page = async () => {
       </div>{" "}
       <FlexWrapper className=" py-4 justify-between flex items-center">
         <div className="flex flex-1 flex-col items-start">
-          <h3 className=" text-main2 uppercase text-lg font-medium my-1">{page.history_section_main_title}</h3>
-          <Head1 alignment="left" className=" text-left" text={page.main_section_title} />
+          <h3 className=" text-main2 uppercase text-lg font-medium my-1">{page.history_section_small_title}</h3>
+          <Head1 alignment="left" className=" text-left" text={page.history_section_main_title} />
           <div
-            dangerouslySetInnerHTML={{ __html: convertToHTML(page.content) }}
+            dangerouslySetInnerHTML={{ __html: convertToHTML(page.history_section_content) }}
             className={`lg:max-w-2xl text-black lg:text-base text-sm  font-medium my-2 leading-[1.7] `}
           />
         </div>
