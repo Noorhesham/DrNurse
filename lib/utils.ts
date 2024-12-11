@@ -4,7 +4,7 @@ import { twMerge } from "tailwind-merge";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
-export function convertToHTML(input:string) {
+export function convertToHTML(input: string) {
   let html = input;
 
   // Convert <strong> and <em> tags
@@ -21,6 +21,12 @@ export function convertToHTML(input:string) {
 
   // Convert <h2> tags with class attributes
   html = html.replace(/<h2 class="([^"]+)" levels="2">([^<]+)<\/h2>/g, '<h2 class="$1">$2</h2>');
+
+  // Convert <h3> tags with class attributes
+  html = html.replace(/<h3 class="([^"]+)" levels="3">([^<]+)<\/h3>/g, '<h3 class="$1">$2</h3>');
+
+  // Convert <h4> tags with class attributes
+  html = html.replace(/<h4 class="([^"]+)" levels="4">([^<]+)<\/h4>/g, '<h4 class="$1">$2</h4>');
 
   // Convert <div> tags with class attributes
   html = html.replace(/<div class="([^"]+)">([^<]+)<\/div>/g, '<div class="$1">$2</div>');

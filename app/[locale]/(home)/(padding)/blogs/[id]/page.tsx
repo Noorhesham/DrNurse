@@ -11,7 +11,7 @@ const page = async ({ params }: { params: { locale: string; id: string } }) => {
   const item: any = data.item;
   const { main_gallery, title, content } = item;
   const contentHTML = content ? convertToHTML(content) : "";
-
+  console.log(data.main_gallery)
   return (
     <section className="  min-h-screen  ">
       <div className="pt-36 ">
@@ -26,7 +26,7 @@ const page = async ({ params }: { params: { locale: string; id: string } }) => {
           {" "}
           {main_gallery.length > 0 && (
             <div className=" relative w-full h-96 lg:h-[750px]">
-              <Image src={main_gallery?.[0]?.sizes.large} alt="blog" className=" object-contain lg:object-cover" fill />
+              <Image src={main_gallery?.[0]?.file} alt="blog" className=" object-contain lg:object-cover" fill />
             </div>
           )}
           <div className=" flex items-start mr-auto my-10 gap-3">
