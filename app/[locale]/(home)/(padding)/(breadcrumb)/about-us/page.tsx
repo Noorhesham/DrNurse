@@ -58,7 +58,7 @@ const page = async () => {
         <GridContainer className="  flex-1" cols={2}>
           {page.important_number.map((numb: any) => (
             <div className=" flex items-center flex-col gap-4 relative">
-              {/* <span className=" absolute  -top-5 text-main2 right-10">{numb.prefix}</span> */}
+              <span className=" absolute  -top-5 text-main2 right-10">{numb.prefix}</span>
               <CounterAnimation from={0} to={parseInt(numb.number)} />
               <p className=" text-gray-800 capitalize  font-semibold">{numb.important_number_title}</p>
             </div>
