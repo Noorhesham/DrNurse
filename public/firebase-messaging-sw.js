@@ -2,15 +2,14 @@ importScripts("https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js");
 importScripts("https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js");
 
 firebase.initializeApp({
-  apiKey: "AIzaSyAp-Tn74eshiw5wCVNfksVFM96_bW0TWOg",
-  authDomain: "drnurse-817f4.firebaseapp.com",
-  projectId: "drnurse-817f4",
-  storageBucket: "drnurse-817f4.appspot.com",
-  messagingSenderId: "651306014180",
-  appId: "1:651306014180:web:8c5bd34ee57f0a6dac63f1",
-  measurementId: "G-8YVP1MFJNN",
+  apiKey: "AIzaSyBYIaGc1S7xRaAC9s925_6FN5GBoiYoEi8",
+  authDomain: "scoial-login-test.firebaseapp.com",
+  projectId: "scoial-login-test",
+  storageBucket: "scoial-login-test.firebasestorage.app",
+  messagingSenderId: "169006394731",
+  appId: "1:169006394731:web:5eeb4b967eb6879cc1302e",
+  // measurementId: "G-8YVP1MFJNN",
 });
-
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
