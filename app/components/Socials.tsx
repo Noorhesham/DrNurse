@@ -1,7 +1,7 @@
 "use client";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { FaFacebook, FaGoogle, FaInstagram, FaLinkedin, FaWhatsapp, FaYoutube } from "react-icons/fa";
+import { FaFacebook, FaGoogle, FaInstagram, FaLinkedin, FaTiktok, FaWhatsapp, FaYoutube } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { SlSocialLinkedin, SlSocialFacebook } from "react-icons/sl";
 import { useAuth } from "../context/AuthContext";
@@ -27,7 +27,7 @@ const Socials = ({
 
   if (loading || !device_info.device_unique_id) return <Skeleton />;
   const { company_contacts, login_types } = generalSettings;
-  const { email, facebook, instagram, linkedin, twitter, youtube, whatsapp } = company_contacts;
+  const { email, facebook, instagram, linkedin, twitter, youtube, whatsapp, tiktok } = company_contacts;
   const { social_facebook, social_linkedin, social_google } = login_types;
   const socialLinks = [
     { href: facebook, Icon: SlSocialFacebook },
@@ -36,6 +36,7 @@ const Socials = ({
     { href: twitter, Icon: FaXTwitter },
     { href: instagram, Icon: FaInstagram },
     { href: youtube, Icon: FaYoutube },
+    { href: tiktok, Icon: FaTiktok },
   ];
   const loginBtns = login_types
     ? [

@@ -14,11 +14,14 @@ import { useGetEntity } from "@/lib/queries";
 import Spinner from "@/app/components/Spinner";
 import { convertToHTML } from "@/lib/utils";
 import { GoPeople } from "react-icons/go";
+import VerificationStatus from "@/app/components/VerficationStatus";
+import { useAuth } from "@/app/context/AuthContext";
 
 const page = () => {
   const { id } = useParams();
   const { data, isLoading } = useGetEntity("company", `company-${id}`, `${id}`);
-  if (!data || isLoading) return <Spinner />;
+  const { userSettings, loading } = useAuth();
+  if (isLoading || !data || loading) return <Spinner />;
   const {
     title,
     description,
@@ -61,7 +64,8 @@ const page = () => {
         <GridContainer className=" gap-8" cols={8}>
           <div className=" order-2 lg:order-[0] col-span-2 lg:col-span-6">
             <section className=" flex flex-col gap-2 ">
-              <MiniTitle boldness="bold" color=" text-main2" text="ABOUT ME" />
+              <MiniTitle boldness="bold" color=" text-main2" text="ABOUT ME" />{" "}
+              <VerificationStatus userSettings={userSettings} />
               <div
                 dangerouslySetInnerHTML={{ __html: convertToHTML(description) }}
                 className={`lg:max-w-4xl  text-black lg:text-base text-sm  font-medium my-2 leading-[1.7] `}
