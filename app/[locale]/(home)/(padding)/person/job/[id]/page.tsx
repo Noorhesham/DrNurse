@@ -160,7 +160,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
           </div>
           <div className="flex col-span-full lg:col-span-2 px-5 py-5 pb-10 rounded-xl flex-col gap-3  bg-light">
             <MiniTitle color="black" text="OVERVIEW" />
-            <MiniTitle color="black" text="EMPLOYEE INFO" />
+            <MiniTitle color="black" text="JOB INFO" />
             <div className=" flex flex-col gap-5">
               <InfoItem icon={<PersonIcon />} title="GENDER" description={job.gender} />
               {job.hide_salary === 0 && (

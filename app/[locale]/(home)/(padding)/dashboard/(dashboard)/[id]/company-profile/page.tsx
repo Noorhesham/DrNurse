@@ -74,7 +74,7 @@ const page = () => {
                 <MiniTitle color="black" text="OVERVIEW" />
               </div>
             </div>
-            <MiniTitle color="black" text="EMPLOYEE INFO" />
+            <MiniTitle color="black" text="HOSPITAL INFO" />
 
             <div className="  flex flex-col gap-5">
               <InfoItem icon={<CalendarIcon className=" w-5 h-5" />} title="YEAR FOUNDED" description={year_founded} />
