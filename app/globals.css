@@ -198,5 +198,5 @@
 }
 .content-text h2,
 .content-text h3 {
-  @apply capitalize mb-4 text-4xl text-main2 text-left font-semibold max-w-5xl;
+  @apply capitalize   text-main2 text-left font-semibold max-w-5xl;
 }

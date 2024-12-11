@@ -4,7 +4,6 @@ import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import CardHuge from "@/app/components/CardHuge";
 import MotionContainer from "@/app/components/defaults/MotionContainer";
 import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
-import Heading from "@/app/components/Heading";
 import { Server } from "@/app/main/Server";
 
 const page = async ({ params: { locale } }: { params: { locale: string } }) => {

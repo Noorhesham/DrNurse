@@ -13,7 +13,7 @@ const page = async ({ params }: { params: { locale: string; id: string } }) => {
   const contentHTML = content ? convertToHTML(content) : "";
 
   return (
-    <section className="content-text  min-h-screen  ">
+    <section className="  min-h-screen  ">
       <div className="pt-36 ">
         <BreadCrumb
           linksCustom={[
@@ -31,17 +31,17 @@ const page = async ({ params }: { params: { locale: string; id: string } }) => {
           )}
           <div className=" flex items-start mr-auto my-10 gap-3">
             <div className=" flex items-center gap-2">
-              <CalendarHeartIcon />
-              <p className=" text-xs font-medium text-[#475156]">1 FEB,2025</p>
+              <CalendarHeartIcon className=" w-5 h-5" />
+              <p className=" text-xs font-medium text-[#475156]">{item.created_at}</p>
             </div>
             <div className=" flex items-center gap-2">
-              <LayoutDashboardIcon />
+              <LayoutDashboardIcon className=" w-5 h-5" />
               <p className=" text-xs font-medium text-[#475156]">Blog</p>
             </div>
           </div>
           <h2 className=" capitalize mb-4 text-4xl text-main2 text-left font-semibold max-w-5xl">{title}</h2>
           {contentHTML ? (
-            <div className=" font-[300] text-base" dangerouslySetInnerHTML={{ __html: contentHTML }} />
+            <div className="content-text font-[300] text-base" dangerouslySetInnerHTML={{ __html: contentHTML }} />
           ) : (
             <Empty text="No Content Added Yet" />
           )}
