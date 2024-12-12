@@ -150,6 +150,8 @@ const getURL = (
       return { url: `${url}/rm_users/${VERSION}/devices/stop`, method: "POST" };
     case "languageUpdate":
       return { url: `${url}/rm_users/${VERSION}/device_sys`, method: "POST" };
+    // case "my-device":
+    //   return { url: `${url}/rm_users/${VERSION}/device_sys`, method: "POST" };
     case "getEntity":
       return {
         url: `${url}/${entityName}/entities-operations${queryParams ? `?${queryParams.toString()}` : ""}`,
