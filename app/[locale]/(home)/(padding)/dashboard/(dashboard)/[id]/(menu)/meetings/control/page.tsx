@@ -28,12 +28,12 @@ const page = () => {
     navigator.clipboard.writeText(text);
     toast.success("Copied to clipboard");
   };
-  // const invitations = data.data.filter((meet: any) => meet.status === "invitation");
+  const invitations = data.data.filter((meet: any) => meet.status === "invitation");
   const meetings = data.data.filter((meet: any) => meet.status !== "invitation");
   console.log(meetings, data);
   return (
     <section className=" flex flex-col gap-8">
-      {/* <div className=" flex flex-col gap-2">
+      <div className=" flex flex-col gap-2">
         <MiniTitle text="INVITATIONS" />
         <div className=" flex flex-col gap-3 mt-4">
           {invitations.length > 0 ? (
@@ -74,7 +74,7 @@ const page = () => {
             <Empty text="NO INVITATIONS" />
           )}
         </div>
-      </div> */}
+      </div>
       <div className=" flex flex-col gap-2">
         <MiniTitle text="MEETINGS" />
         <div className=" flex flex-col gap-3 mt-4">
@@ -168,7 +168,11 @@ const page = () => {
                         >
                           START MEETING
                         </Button>
-                        <Button onClick={() => copyToClipboard(meet.invite_url)} size={"lg"} className=" rounded-full">
+                        <Button
+                          onClick={() => copyToClipboard(meet.zoom_meeting.start_url)}
+                          size={"lg"}
+                          className=" rounded-full"
+                        >
                           Copy Invitaion Link
                         </Button>
                       </div>
