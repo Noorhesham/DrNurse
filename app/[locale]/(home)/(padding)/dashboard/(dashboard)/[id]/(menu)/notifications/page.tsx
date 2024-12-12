@@ -43,7 +43,7 @@ const page = () => {
         <Notification
           notification={{
             name: doc.title,
-            image: doc.main_thumbnail?.[0]?.file || "",
+            image: doc.main_thumbnail?.[0]?.file || "/3177336.png",
             speciality: format(new Date(doc.created_at), "dd/MM/yyyy"),
             content: doc.content,
           }}
