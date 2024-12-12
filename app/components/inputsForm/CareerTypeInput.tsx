@@ -63,7 +63,7 @@ const CareerInput = ({
     id: selectedCareerType,
     entityName: "career-specialties",
     enable: !!selectedCareerType,
-    queryParams: `with=careerTypes&career_type=${selectedCareerType}`,
+    queryParams: `with=careerTypes&career_type=${selectedCareerType}&itemsCount=200`,
   });
 
   const selectedCareerSpecialty = form.getValues(careerSpecialty);
@@ -74,7 +74,7 @@ const CareerInput = ({
     entityName: "career-levels",
     id: selectedCareerSpecialty,
     enable: !!selectedCareerSpecialty,
-    queryParams: `scope=filter&career_specialty_id=${selectedCareerSpecialty}&career_type=${selectedCareerType}&with=career_type`,
+    queryParams: `scope=filter&career_specialty_id=${selectedCareerSpecialty}&career_type=${selectedCareerType}&with=career_type&itemsCount=200`,
   });
   console.log(careerSpecialties);
 

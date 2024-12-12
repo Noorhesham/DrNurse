@@ -134,7 +134,7 @@ const page = ({ params: { jobId, locale } }: { params: { jobId: string; locale: 
                   ))}
                 </div>
               )}
-              <div className="flex gap-1 items-start flex-col">
+              <div className="flex gap-1 mt-5 items-start flex-col">
                 <MiniTitle boldness="bold" color=" text-main2" text="Responsibilities" />
                 <div
                   dangerouslySetInnerHTML={{ __html: convertToHTML(job.job_requirements || "") }}

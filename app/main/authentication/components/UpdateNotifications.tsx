@@ -2,17 +2,39 @@ import FormContainer from "@/app/components/forms/FormContainer";
 
 import ModalCustom from "@/app/components/defaults/ModalCustom";
 import UpdateCard from "@/app/components/UpdateCard";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MdNotifications } from "react-icons/md";
 import { Server } from "../../Server";
 import { useDevice } from "@/app/context/DeviceContext";
 import { toast } from "react-toastify";
 import useFcmToken from "@/app/hooks/useFcmToken";
-const notifications = [{ name: "active", label: "ACTIVATE", label2: "DEACTIVATE", switchToggle: true,noSwitch:false }];
+import { useGetEntity } from "@/lib/queries";
+import Spinner from "@/app/components/Spinner";
+const notifications = [
+  { name: "active", label: "ACTIVATE", label2: "DEACTIVATE", switchToggle: true, noSwitch: false },
+];
 
 const UpdateNotifications = () => {
   const { device_info } = useDevice();
   const { token } = useFcmToken();
+  const [notificationStatus, setNotificationStatus] = useState(0);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const getNotifications = async () => {
+      const res = await Server({
+        resourceName: "languageUpdate",
+        body: {
+          action: "get",
+          key: "notification_token_status",
+          device_info,
+        },
+      });
+      console.log(res);
+      setNotificationStatus(res.device.notification_token_status);
+      setLoading(false);
+    };
+    getNotifications();
+  }, []);
   const UpdateNotificationsSubmit = async (val: any) => {
     const res = await Server({
       resourceName: "languageUpdate",
@@ -33,7 +55,7 @@ const UpdateNotifications = () => {
           device_info,
         },
       });
-      console.log(res,token)
+      console.log(res, token);
     };
     if (val.active) sendVal();
     if (res.status) toast.success(res.message);
@@ -51,16 +73,21 @@ const UpdateNotifications = () => {
         </div>
       }
       content={
-        <div className=" px-5 lg:px-20 py-5">
-          <FormContainer
-            cancel={true}
-            submit={UpdateNotificationsSubmit}
-            btnStyles={"w-full"}
-            btnText="SAVE CHANGES"
-            formArray={notifications}
-            title="CUSTOMIZE  NOTIFICATIONS"
-          />
-        </div>
+        loading ? (
+          <Spinner />
+        ) : (
+          <div className=" px-5 lg:px-20 py-5">
+            <FormContainer
+              defaultValues={notificationStatus}
+              cancel={true}
+              submit={UpdateNotificationsSubmit}
+              btnStyles={"w-full"}
+              btnText="SAVE CHANGES"
+              formArray={notifications}
+              title="CUSTOMIZE  NOTIFICATIONS"
+            />
+          </div>
+        )
       }
     />
   );

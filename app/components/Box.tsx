@@ -100,7 +100,7 @@ const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; fi
           <AccordionTrigger>
             <h2 className="text-base font-semibold text-main2">{text}</h2>
           </AccordionTrigger>
-          <AccordionContent className="flex flex-col gap-2">
+          <AccordionContent className=" max-h-[10rem] overflow-scroll flex flex-col gap-2">
             <ul className="pb-3 grid   grid-cols-1 lg:grid-cols-2 gap-2 border-b border-b-gray-400">
               {!btn
                 ? options?.map((option, i) => (

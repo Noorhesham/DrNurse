@@ -93,11 +93,13 @@ const JobPage = ({ id }: { id: string }) => {
                   </p>
                 ))}
               </div>
-              <MiniTitle boldness="bold" color=" text-main2" text="Responsibilities" />
-              <div
-                dangerouslySetInnerHTML={{ __html: convertToHTML(job.job_requirements || "") }}
-                className={`lg:max-w-4xl  text-black lg:text-base text-sm  font-medium  leading-[1.7] `}
-              />
+              <div className="flex gap-1 mt-5 items-start flex-col">
+                <MiniTitle boldness="bold" color=" text-main2" text="Responsibilities" />
+                <div
+                  dangerouslySetInnerHTML={{ __html: convertToHTML(job.job_requirements || "") }}
+                  className={`lg:max-w-4xl  text-black lg:text-base text-sm  font-medium leading-[1.7] `}
+                />
+              </div>
               {job && (
                 <div className=" flex items-center lg:flex-nowrap flex-wrap gap-2 mt-2">
                   <p className=" font-medium">SHARE THIS JOB</p>

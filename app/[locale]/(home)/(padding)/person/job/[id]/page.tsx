@@ -57,7 +57,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
       else toast.error(res.message);
     });
   };
-  console.log(job.related_jobs)
+  console.log(job.related_jobs);
   return (
     <section className=" pt-36">
       <BreadCrumb
@@ -129,11 +129,13 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
                   </p>
                 ))}
               </div>
-              <MiniTitle boldness="bold" color=" text-main2" text="Responsibilities" />
-              <div
-                dangerouslySetInnerHTML={{ __html: convertToHTML(job.job_requirements || "") }}
-                className={`lg:max-w-4xl  text-black lg:text-base text-sm  font-medium  leading-[1.7] `}
-              />
+              <div className="flex gap-1 mt-5 items-start flex-col">
+                <MiniTitle boldness="bold" color=" text-main2" text="Responsibilities" />
+                <div
+                  dangerouslySetInnerHTML={{ __html: convertToHTML(job.job_requirements || "") }}
+                  className={`lg:max-w-4xl  text-black lg:text-base text-sm  font-medium leading-[1.7] `}
+                />
+              </div>
               {job && (
                 <div className=" flex items-center lg:flex-nowrap flex-wrap gap-2 mt-2">
                   <p className=" font-medium">SHARE THIS JOB</p>
@@ -180,7 +182,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
             </div>
           </div>
         </GridContainer>
-        <section className="mt-5" >
+        <section className="mt-5">
           <MiniTitle boldness="bold" color=" text-main2" text="RELATED JOBS" />
           <div className=" grid-cols-1 grid gap-5 lg:grid-cols-2 mt-3">
             {job.related_jobs?.map((job: Job, i: number) => (

@@ -170,7 +170,7 @@ const getURL = (
     case "countries":
       return { url: `${url}/countries/entities-operations?itemsCount=200&${queryParams}`, method: "GET" };
     case "cities":
-      return { url: `${url}/info-cities/entities-operations?state_id=${id}`, method: "GET" };
+      return { url: `${url}/info-cities/entities-operations?state_id=${id}&itemsCount=200`, method: "GET" };
     case "states":
       return {
         url: `${url}/states/entities-operations?itemsCount=200&country_id=${id}`,

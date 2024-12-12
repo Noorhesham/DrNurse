@@ -129,7 +129,7 @@ const Signup = () => {
         } else {
           if (res.token) {
             cookies.set("jwt", res.token);
-            setLogin(true);
+            setLogin((l) => !l);
             router.push("/loader");
           } else {
             toast.success(`${res.message} ...`);

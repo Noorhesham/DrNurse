@@ -33,7 +33,7 @@ const CardHuge = ({ h1, h2, href, item }: { h1?: string; h2?: string; href?: str
       <div className="rounded-2xl   hover:opacity-80 duration-200  overflow-hidden relative w-full h-96">
         <Link href={item.id ? `/blogs/${item.id}` : "#"} className="  rounded-2xl w-full   h-full  ">
           <Image
-            src={main_thumbnail.length > 0 ? main_thumbnail[0]?.sizes.medium : "/drdefault.jpg"}
+            src={main_thumbnail.length > 0 ? main_thumbnail[0]?.sizes.large : "/drdefault.jpg"}
             fill
             className="group-hover:scale-110  duration-200 group-hover:opacity-90 object-cover"
             alt={main_gallery[0]?.alt || "post"}

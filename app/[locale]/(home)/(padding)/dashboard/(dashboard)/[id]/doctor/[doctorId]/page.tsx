@@ -33,7 +33,7 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
 
   const dataPage = data.data;
   const education = [...dataPage?.main_education, ...dataPage?.education];
-  console.log(data)
+  console.log(data);
   return (
     <section>
       <BreadCrumb
@@ -141,8 +141,8 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
                                   {experience?.career_Specialty?.title} , {experience?.career_level?.title}
                                 </p>
                                 <span className=" text-sm">
-                                  {formatDate(experience.from, "dd MMM yyyy")}-
-                                  {formatDate(experience.to, "dd MMM yyyy")}
+                                  {experience && formatDate(experience.from, "dd MMM yyyy")}-
+                                  {experience.to && formatDate(experience.to, "dd MMM yyyy")}
                                 </span>
                               </div>
                             </FlexWrapper>

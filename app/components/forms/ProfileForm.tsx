@@ -69,7 +69,10 @@ const jobSchema = z
       career_specialty_id: z.union([z.string().min(1, "Specialty is required"), z.number()]),
       date: z.string(),
       date_to: z.string().optional(),
-      present: z.union([z.boolean(), z.number()]).transform((val) => (val === true ? 1 : 0)),
+      present: z
+        .union([z.boolean(), z.number()])
+        .transform((val) => (val === true ? 1 : 0))
+        .optional(),
     }),
     education: z
       .array(
@@ -78,7 +81,10 @@ const jobSchema = z
           career_specialty_id: z.union([z.string().min(1, "Specialty is required"), z.number()]),
           date: z.string().min(1, " date is required"),
           date_to: z.any(),
-          present: z.union([z.boolean(), z.number()]).transform((val) => (val === true ? 1 : 0)),
+          present: z
+            .union([z.boolean(), z.number()])
+            .transform((val) => (val === true ? 1 : 0))
+            .optional(),
           certificate_name: z.string().min(1, "Certificate Name is required"),
           training_center: z.string().optional(),
           career_level_id: z.union([z.string(), z.number()]),
@@ -97,7 +103,10 @@ const jobSchema = z
           to: z.any(),
           about: z.string().optional(),
           career_level: z.union([z.string().min(1, "CAEREER LEVEL is required"), z.number()]),
-          present: z.union([z.boolean(), z.number()]).transform((val) => (val === true ? 1 : 0)),
+          present: z
+            .union([z.boolean(), z.number()])
+            .transform((val) => (val === true ? 1 : 0))
+            .optional(),
         })
       )
       .optional(),
@@ -236,7 +245,10 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
     }
     for (const key in data) {
       if (data.hasOwnProperty(key)) {
-        const value = data[key as keyof JobFormValues];
+        let value = data[key as keyof JobFormValues];
+        if (value === null) {
+          return (value = "");
+        }
         if (fileFields.includes(key) && !(value instanceof File) && !dataDefault) continue;
         else if (fileFields.includes(key) && !(value instanceof File) && dataDefault)
           formData.append(`${key}`, dataDefault[key].id);
@@ -245,6 +257,10 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
           value.forEach((item, index) => {
             if (typeof item === "object" && item !== null) {
               for (const nestedKey in item) {
+                console.log(item);
+                // if (item[nestedKey] === null) {
+                //   return (item[nestedKey] = "");
+                // }
                 if (nestedKey === "certificate" && !(item[nestedKey] instanceof File) && !dataDefault) continue;
                 if (nestedKey === "certificate" && !(item[nestedKey] instanceof File) && dataDefault) {
                   const defaultIdForCertificate = dataDefault.educations[index]?.[nestedKey]?.[0]?.id;
@@ -431,7 +447,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
               name="main_education.country_id"
               label={t("Country")}
               disabled={isLoading}
-              placeholder={t("nationality")}
+              placeholder={t("Country")}
               options={countries?.data.map((country: any) => ({ label: country.title, value: country.id }))}
             />
             <CareerInput
@@ -553,6 +569,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
         {experienceFields.map((field, index) => (
           <div key={field.id} className="border  bg-gray-100 rounded p-2 flex flex-col gap-2">
             <FlexWrapper max={false}>
+              {" "}
               <FormInput control={form.control} name={`previous_experience.${index}.name`} label={t("Hospital")} />
               <ComboboxForm
                 name={`previous_experience.${index}.country_id`}
@@ -561,6 +578,8 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
                 placeholder={t("Country")}
                 options={countries?.data.map((country: any) => ({ label: country.title, value: country.id }))}
               />
+            </FlexWrapper>
+            <FlexWrapper max={false}>
               <CareerInput
                 onlySpeciality
                 disabled={form.getValues("career_type_id") === ""}

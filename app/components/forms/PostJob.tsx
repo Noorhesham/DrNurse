@@ -186,9 +186,9 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
           />
           {/* Salary */}
           <FormFlexContainer title={t("Salary")}>
+            <FormSelect label={t("Currency")} name="currency" options={CURRENCY_OPTIONS} />
             <FormInput control={form.control} name="min_salary" currency label={t("Min Salary")} type="number" />
             <FormInput control={form.control} name="max_salary" currency label={t("Max Salary")} type="number" />
-            <FormSelect label={t("Currency")} name="currency" options={CURRENCY_OPTIONS} />
             <FormSelect
               options={[
                 { value: "1", label: "yes" },

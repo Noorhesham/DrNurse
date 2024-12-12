@@ -181,7 +181,7 @@ export function InputOTPPattern({
             <div className="mt-4  flex items-center gap-2">
               {!activate && (
                 <Button
-                  disabled={resending}
+                  disabled={resending||isPending}
                   type="button"
                   className="rounded-full relative min-w-[150px] bg-white border-main border  text-main hover:text-white flex-1 px-8"
                   onClick={(e) => {

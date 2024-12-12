@@ -140,7 +140,7 @@ const FormInput = ({
             <FormLabel className={`uppercase relative w-fit ${check && "text-nowrap mt-2"}`}>
               {" "}
               {!optional && !date && !switchToggle && !currency && label && (
-                <span className={`absolute -right-3 top-0  z-10   font-normal text-red-600`}>*</span>
+                <span className={`absolute -right-3 top-0   font-normal text-red-600`}>*</span>
               )}
               {label} {icon}
             </FormLabel>
