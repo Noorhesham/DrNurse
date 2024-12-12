@@ -34,48 +34,6 @@ const page = () => {
   return (
     <section className=" flex flex-col gap-8">
       <div className=" flex flex-col gap-2">
-        <MiniTitle text="INVITATIONS" />
-        <div className=" flex flex-col gap-3 mt-4">
-          {invitations.length > 0 ? (
-            invitations.map((meet: any) => (
-              <Container>
-                <FlexWrapper max={false} className=" justify-between">
-                  <Meet meet={meet} img />{" "}
-                  <Button
-                    disabled={isPending}
-                    onClick={() => {
-                      startTransition(async () => {
-                        const res = await Server({
-                          resourceName: "cancel-book",
-                          body: {
-                            meeting_id: meet.id,
-                            cancelled: true,
-                          },
-                        });
-                        if (res.status) {
-                          toast.success(res.message);
-                          router.refresh();
-                          queryClient.invalidateQueries({
-                            queryKey: ["person-slots", `person-meetings`, `meetings-${jobId}`],
-                          });
-                        } else toast.error(res.message);
-                      });
-                    }}
-                    variant={"destructive"}
-                    size={"lg"}
-                    className=" rounded-full"
-                  >
-                    CANCEL MEETING
-                  </Button>
-                </FlexWrapper>
-              </Container>
-            ))
-          ) : (
-            <Empty text="NO INVITATIONS" />
-          )}
-        </div>
-      </div>
-      <div className=" flex flex-col gap-2">
         <MiniTitle text="MEETINGS" />
         <div className=" flex flex-col gap-3 mt-4">
           {meetings.length > 0 ? (
@@ -187,6 +145,48 @@ const page = () => {
             ))
           ) : (
             <Empty text="NO MEETINGS" />
+          )}
+        </div>
+      </div>{" "}
+      <div className=" flex flex-col gap-2">
+        <MiniTitle text="INVITATIONS" />
+        <div className=" flex flex-col gap-3 mt-4">
+          {invitations.length > 0 ? (
+            invitations.map((meet: any) => (
+              <Container>
+                <FlexWrapper max={false} className=" justify-between">
+                  <Meet meet={meet} img />{" "}
+                  <Button
+                    disabled={isPending}
+                    onClick={() => {
+                      startTransition(async () => {
+                        const res = await Server({
+                          resourceName: "cancel-book",
+                          body: {
+                            meeting_id: meet.id,
+                            cancelled: true,
+                          },
+                        });
+                        if (res.status) {
+                          toast.success(res.message);
+                          router.refresh();
+                          queryClient.invalidateQueries({
+                            queryKey: ["person-slots", `person-meetings`, `meetings-${jobId}`],
+                          });
+                        } else toast.error(res.message);
+                      });
+                    }}
+                    variant={"destructive"}
+                    size={"lg"}
+                    className=" rounded-full"
+                  >
+                    CANCEL INVITATION
+                  </Button>
+                </FlexWrapper>
+              </Container>
+            ))
+          ) : (
+            <Empty text="NO INVITATIONS" />
           )}
         </div>
       </div>
