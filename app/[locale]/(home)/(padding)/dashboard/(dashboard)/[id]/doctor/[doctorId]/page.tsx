@@ -158,12 +158,7 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
             />
           </div>
           <div className="flex col-span-full lg:col-span-2 px-5 py-5 pb-10 rounded-xl flex-col gap-3  bg-light">
-            <div className=" flex justify-between items-center gap-4">
-              <div className="flex text-sm items-center">
-                <MiniTitle color="black" text="STATES" />
-                <h3> :ARCHIVE</h3>
-              </div>
-            </div>
+   
             <MiniTitle color="black" text="EMPLOYEE INFO" />
             <div className=" flex flex-col gap-5">
               <InfoItem
