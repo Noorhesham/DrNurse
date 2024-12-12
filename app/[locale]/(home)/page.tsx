@@ -25,7 +25,7 @@ export const generateMetadata = async () => {
     id: "persons-home",
   });
   return {
-    title: `${page.title}  -Dr Nurse`,
+    title: `${page.title}`,
     canonical: WEBSITEURL,
     openGraph: {
       title: "drnurse",
