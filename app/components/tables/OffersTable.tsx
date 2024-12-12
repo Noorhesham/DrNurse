@@ -32,7 +32,11 @@ const OffersTable: React.FC<OffersTableProps> = ({ offers, action, person = fals
           <TableRow className="" key={i}>
             <TableCell className=" w-fit text-nowrap md:w-[30%] font-medium">
               <div className="flex flex-col items-start">
-                <h1 className="text-gray-900 text-base font-semibold">{offer.details.job_title}</h1>
+                <h2 className="text-gray-900 text-base font-semibold">
+                  {offer.details.job_title.length > 70
+                    ? `${offer.details.job_title.slice(0, 70)}...}`
+                    : offer.details.job_title}
+                </h2>
                 <div className="flex items-center gap-3 text-muted-foreground">
                   <span>{offer.duration}</span>
                 </div>

@@ -89,9 +89,11 @@ const Page = () => {
                   ) : (
                     <Empty text="No Meetings Yet !" />
                   )}
-                  <Link href={`/person/meetings`} className=" underline flex items-center gap-2">
-                    <span>View All Meetings</span>
-                  </Link>
+                  {overView.data.meetings.length > 0 && (
+                    <Link href={`/person/meetings`} className=" underline flex items-center gap-2">
+                      <span>View All Meetings</span>
+                    </Link>
+                  )}
                 </div>
                 <Link href="/person/jobs" className=" col-span-3 relative w-full h-96">
                   <Image src={"/find.jpg"} alt={"doctor"} fill className={"object-cover rounded-2xl"} />

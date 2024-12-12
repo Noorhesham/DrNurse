@@ -2,16 +2,28 @@ import BreadCrumb from "@/app/components/BreadCrumb";
 import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
 import Empty from "@/app/components/Empty";
 import { Server } from "@/app/main/Server";
-import { convertToHTML } from "@/lib/utils";
+import { convertToHTML, generateMetadataCustom } from "@/lib/utils";
 import { CalendarHeartIcon, LayoutDashboardIcon } from "lucide-react";
 import Image from "next/image";
 import React from "react";
+export async function generateMetadata({ params }: { params: { id: string; locale: string } }) {
+  const data = await Server({ resourceName: "getSingleEntity", id: params.id, entityName: "blogs" });
+  const item: any = data.item;
+  const { title, main_gallery, content } = item;
+
+  return generateMetadataCustom({
+    title,
+    description: content.slice(0, 150) || "Discover insightful content on Dr.Nurse blogs.",
+    url: `https://your-site.com/blogs/${params.id}`,
+    image: main_gallery?.[0]?.file || "/default-image.png",
+  });
+}
 const page = async ({ params }: { params: { locale: string; id: string } }) => {
   const data = await Server({ resourceName: "getSingleEntity", id: params.id, entityName: "blogs" });
   const item: any = data.item;
   const { main_gallery, title, content } = item;
   const contentHTML = content ? convertToHTML(content) : "";
-  console.log(data.main_gallery)
+  console.log(data.main_gallery);
   return (
     <section className="  min-h-screen  ">
       <div className="pt-36 ">

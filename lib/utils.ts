@@ -33,3 +33,47 @@ export function convertToHTML(input: string) {
 
   return html;
 }
+// utils/seo.ts
+type MetadataProps = {
+  title: string;
+  description: string;
+  url: string;
+  image?: string; // Optional: For Open Graph and Twitter cards
+  type?: string; // Default to "article" for blog pages
+};
+
+
+export function generateMetadataCustom({
+  title,
+  description,
+  url,
+  image = "/default-image.png", // Fallback image URL
+  type = "article",
+}: MetadataProps) {
+  const fullTitle = `${title} | Dr.Nurse`;
+
+  return {
+    title: fullTitle,
+    description,
+    openGraph: {
+      title: fullTitle,
+      description,
+      url,
+      type,
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: fullTitle,
+      description,
+      images: [image],
+    },
+  };
+}

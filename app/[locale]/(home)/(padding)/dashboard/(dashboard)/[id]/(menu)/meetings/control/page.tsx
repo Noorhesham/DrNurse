@@ -24,7 +24,10 @@ const page = () => {
   const router = useRouter();
   const { data, isLoading } = useGetEntity("meetings", `meetings-${jobId}`, jobId || "0" || "");
   if (isLoading || !data) return <Spinner />;
-
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    toast.success("Copied to clipboard");
+  };
   // const invitations = data.data.filter((meet: any) => meet.status === "invitation");
   const meetings = data.data.filter((meet: any) => meet.status !== "invitation");
   console.log(meetings, data);
@@ -164,6 +167,9 @@ const page = () => {
                           className="self-center mr-auto bg-main2  rounded-full"
                         >
                           START MEETING
+                        </Button>
+                        <Button onClick={() => copyToClipboard(meet.invite_url)} size={"lg"} className=" rounded-full">
+                          Copy Invitaion Link
                         </Button>
                       </div>
                     ) : (

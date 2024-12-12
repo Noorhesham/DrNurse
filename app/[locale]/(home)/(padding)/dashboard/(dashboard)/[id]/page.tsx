@@ -74,9 +74,11 @@ const page = () => {
                 ) : (
                   <Empty text="No Meetings Yet !" />
                 )}
-                <Link href={`/dashboard/${params.id}/meetings`} className="underline flex items-center gap-2">
-                  <span>View All Meetings</span>
-                </Link>
+                {overView.data.meetings.length > 0 && (
+                  <Link href={`/dashboard/${params.id}/meetings`} className="underline flex items-center gap-2">
+                    <span>View All Meetings</span>
+                  </Link>
+                )}
               </div>
               <div className=" flex flex-col gap-4 bg-[#F7F9FB] px-5 py-5 rounded-lg">
                 <MiniTitle
