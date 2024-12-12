@@ -161,7 +161,7 @@ const page = () => {
                     onClick={() => {
                       startTransition(async () => {
                         const res = await Server({
-                          resourceName: "cancel-book",
+                          resourceName: "cancelInvite",
                           body: {
                             meeting_id: meet.id,
                             cancelled: true,
