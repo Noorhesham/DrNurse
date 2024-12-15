@@ -151,7 +151,7 @@ const SendOffer = ({
         <div className="mt-4">
           <FlexWrapper max={false}>
             <FormInput
-              label={`${t("salary")} ${form.getValues("details.currency")}`}
+              label={`${t("Yearly Salary")} ${form.getValues("details.currency")}`}
               type="number"
               placeholder={t("salaryPlaceholder")}
               name={`details.salary`}
