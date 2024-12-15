@@ -39,7 +39,7 @@ const Methods = ({
   };
   return (
     <Suspense>
-      <h1 className=" text-center text-xl mt-8 font-bold text-main2">{tfa ? t("2fadesc") : t("resetmessage")}</h1>
+      <h3 className=" text-center text-xl mt-8 font-bold text-main2">{tfa ? t("2fadesc") : t("resetmessage")}</h3>
       <div className=" my-5 relative  mx-auto">
         {isPending && <Spinner  />}
         {Object.keys(methodLabels)

@@ -173,23 +173,6 @@ const page = async () => {
           />
         </div>
 
-        {/* <div className=" hidden  mt-4 lg:grid">
-          <MotionContainer className=" grid grid-cols-2   gap-5 lg:grid-cols-5">
-            {page.specialties.map((specialty: any) => (
-              <MotionItem>
-                <Link
-                  className="  w-full  block aspect-square h-52  overflow-hidden relative"
-                  href={`/dashboard/employees?career_specialty_id=${specialty.career_specialty_id}`}
-                >
-                  <Image fill alt="image" src={specialty.specialty_image?.[0].file} className=" object-contain" />
-                </Link>
-                <h1 className="shadow-md -mt-4 z-10 relative w-fit px-6  rounded-xl self-center mx-auto text-center font-semibold text-main2 uppercase py-2 bg-white">
-                  {specialty.specialty_title}
-                </h1>
-              </MotionItem>
-            ))}
-          </MotionContainer>
-        </div> */}
         <div className=" mt-4 lg:mt-14  block">
           <SwiperCards
             autoplay={true}
@@ -212,9 +195,9 @@ const page = async () => {
                         className=" object-cover object-top"
                       />
                     </Link>
-                    <h1 className=" text-center font-semibold text-main2 uppercase py-2 bg-white">
+                    <h2 className=" text-center font-semibold text-main2 uppercase py-2 bg-white">
                       {specialty.specialty_title}
-                    </h1>
+                    </h2>
                   </MotionItem>
                 ),
               };
@@ -254,7 +237,7 @@ const page = async () => {
               src={"/bg.jpg"}
             />
             <div className="flex p-4 max-w-xl relative -top-10 lg:top-24 lg:left-[40%]  gap-2 lg:absolute z-30 flex-col ">
-              <h1 className=" text-white text-2xl md:text-3xl lg:text-5xl font-semibold">{page.download_app_title}</h1>
+              <h2 className=" text-white text-2xl md:text-3xl lg:text-5xl font-semibold">{page.download_app_title}</h2>
               <div
                 dangerouslySetInnerHTML={{ __html: convertToHTML(page.download_app_content || "") }}
                 className={`lg:max-w-4xl text-white text-base  leading-[1.7] `}

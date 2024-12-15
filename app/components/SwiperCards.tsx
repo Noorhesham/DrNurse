@@ -99,9 +99,9 @@ const SwiperCards = ({
                     } ${contain && !cover ? " object-contain" : "object-contain  2xl:object-cover"}`}
                   />
                   {text && (
-                    <h1 className="text-white text-5xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-semibold">
+                    <h2 className="text-white text-5xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-semibold">
                       {text}
-                    </h1>
+                    </h2>
                   )}
                   {text && (
                     <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-[95%] h-[97%] border-2 border-white"></div>

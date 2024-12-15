@@ -122,7 +122,7 @@ const page = () => {
               <TableRow key={i}>
                 <TableCell className="font-medium">
                   <div className=" flex flex-col items-start">
-                    <h1 className=" text-gray-900 font-semibold">{job.title}</h1>
+                    <h2 className=" text-gray-900 font-semibold">{job.title}</h2>
                   </div>
                 </TableCell>
 

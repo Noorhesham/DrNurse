@@ -30,7 +30,7 @@ const JobsTable: React.FC<JobsTableProps> = ({ jobs }) => {
           <TableRow key={i}>
             <TableCell className="font-medium">
               <div className="flex flex-col items-start">
-                <h1 className="text-gray-900  text-base font-semibold">{job.name}</h1>
+                <h2 className="text-gray-900  text-base font-semibold">{job.name}</h2>
                 <p className="text-muted-foreground">{job.hospital}</p>
               </div>
             </TableCell>

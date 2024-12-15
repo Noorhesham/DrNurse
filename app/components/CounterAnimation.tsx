@@ -24,7 +24,7 @@ const CounterAnimation = ({
       onUpdate: (val) => (ref.current.textContent = String(val.toFixed(0))),
     });
   }, [ref, isInView, from, to]);
-  return <h1 ref={ref} className=" font-mono text-main2 font-bold  text-5xl" />;
+  return <h3 ref={ref} className=" font-mono text-main2 font-bold  text-5xl" />;
 };
 
 export default CounterAnimation;

@@ -58,7 +58,7 @@ const Devices = () => {
                           )}
                           {val.device_type === "phone" && <HiPhone className=" text-main w-5 h-5" />}
                           {val.device_type === "mobile" && <Laptop className=" text-main w-8 h-8" />}
-                          <h1 className=" font-semibold text-sm text-gray-900">{val?.device_type}</h1>
+                          <h3 className=" font-semibold text-sm text-gray-900">{val?.device_type}</h3>
                           {val.unique_id === device_info.device_unique_id && (
                             <p className=" rounded-2xl text-[10px]  py-2 px-4 uppercase border border-gray-100 font-semibold">
                               {t("thisdevice")}

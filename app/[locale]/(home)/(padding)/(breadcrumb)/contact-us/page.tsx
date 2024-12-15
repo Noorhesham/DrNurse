@@ -49,7 +49,7 @@ const Page = async ({ params: { locale } }: { params: { locale: string } }) => {
             <Address />
 
             <div className=" flex flex-col items-start mt-2">
-              <h1 className="  text-left font-semibold text-main">{t("contact.contact")}</h1>
+              <h2 className="  text-left font-semibold text-main">{t("contact.contact")}</h2>
               <Paragraph description={t("contact.contactDescription")} />
               <Socials />
             </div>

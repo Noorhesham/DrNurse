@@ -18,7 +18,7 @@ const MyHospitals = () => {
     <MaxWidthWrapper>
       {companies?.length === 0 ? (
         <div className=" flex items-center flex-col gap-2">
-          <h1 className=" text-2xl font-bold text-main ">CREATE HOSPITAL PROFILE</h1>
+          <h2 className=" text-2xl font-bold text-main ">CREATE HOSPITAL PROFILE</h2>
           <Paragraph description="Complete your profile, so you can appear in search results and apply for jobs" />
           <Link href="/dashboard/create-hospital">
             <Button size="lg" className=" px-8  rounded-full">
@@ -29,7 +29,7 @@ const MyHospitals = () => {
       ) : (
         <>
           <div className="flex items-center flex-col gap-2">
-            <h1 className=" text-2xl font-bold uppercase text-main ">Select hospital profile</h1>
+            <h3 className=" text-2xl font-bold uppercase text-main ">Select hospital profile</h3>
             <Paragraph description="Complete your profile, so you can appear in search results and apply for jobs" />
             <div className=" flex w-full  px-4 mt-2 lg:px-8 flex-col gap-4">
               {companies?.map((item: any,i:number) => (

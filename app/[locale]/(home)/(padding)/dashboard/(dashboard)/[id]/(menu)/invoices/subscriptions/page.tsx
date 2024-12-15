@@ -27,7 +27,7 @@ const page = async () => {
                   </p>
                 ))}
               </div>
-              <h1 className=" text-2xl font-bold text-main2 mt-auto">{item.price} SAR</h1>
+              <h3 className=" text-2xl font-bold text-main2 mt-auto">{item.price} SAR</h3>
             </div>
             <div className="px-8 mt-auto py-4 flex flex-col gap-5">
               <div className=" flex items-center gap-2">
