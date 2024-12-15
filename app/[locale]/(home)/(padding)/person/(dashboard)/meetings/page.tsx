@@ -61,7 +61,7 @@ const page = () => {
                           <MainProfile
                             user={{
                               name: meet.company?.title,
-                              image: meet.company?.logo?.[0]?.file || "/nanana.svg",
+                              image: meet.company_logo?.[0]?.file || "/nanana.svg",
                               address: meet.company?.business,
                             }}
                           />
