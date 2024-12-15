@@ -51,7 +51,7 @@ const jobSchema = z
       z.number(),
     ]),
     hide_salary: z.string().min(1, "Hide Salary? is required"),
-    nationality_id: z.union([z.string().min(1, "Nationality is required"), z.number()]),
+    nationality_id: z.union([z.string().min(1, "Nationality is required").optional(), z.number().optional()]),
     gender: z.string().min(1, "Gender is required"),
     family_status: z.string().min(1, "Family Status is required"),
     benefits: z.array(z.string().min(1, "Benefit is required")).optional(),
