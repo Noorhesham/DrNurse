@@ -12,6 +12,7 @@ const UserCard = ({
   className,
   edu,
   id,
+  h1,
 }: {
   applicant: any;
   show?: boolean;
@@ -19,6 +20,7 @@ const UserCard = ({
   className?: string;
   id?: string;
   edu?: boolean;
+  h1: boolean;
 }) => {
   return !edu ? (
     <div className={`${className || ""} flex items-center gap-3`}>
@@ -26,7 +28,7 @@ const UserCard = ({
         <Image alt="image" fill className="object-cover" src={applicant.image} />
       </div>
       <div className=" flex ml-2 flex-col gap-1">
-        <MiniTitle
+        <MiniTitle h1={h1}
           boldness="bold"
           size={show ? "2xl" : "lg"}
           color={show ? " text-main2 " : "text-gray-700"}

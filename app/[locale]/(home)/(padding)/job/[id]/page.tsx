@@ -48,7 +48,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
       />
       <div className=" bg-light ">
         <MaxWidthWrapper>
-          <MainProfile user={doctor}>
+          <MainProfile h1={true} user={doctor}>
             <div className="flex  items-center gap-2">
               <FunctionalButton
                 btnText={"APPLY FOR JOB"}

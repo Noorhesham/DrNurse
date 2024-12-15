@@ -50,7 +50,7 @@ const page = ({ params: { jobId, locale } }: { params: { jobId: string; locale: 
     <section>
       <div className=" bg-light ">
         <MaxWidthWrapper>
-          <MainProfile user={doctor}>
+          <MainProfile h1={true}  user={doctor}>
             <div className="flex  items-center gap-4">
               <FunctionalButton
                 className=" rounded-2xl"
