@@ -144,10 +144,12 @@ const page = () => {
                                     .join(", ")}
                                 </p>
                                 <span className=" text-sm">
-                                  {formatDate(experience.from, "dd MMM yyyy")}-
+                                  {experience.from && formatDate(experience.from, "dd MMM yyyy")}-
                                   {experience.present === 1
                                     ? "Currently present"
-                                    : formatDate(experience.to, "dd MMM yyyy")}
+                                    : experience.to
+                                    ? formatDate(experience.to, "dd MMM yyyy")
+                                    : ""}
                                 </span>
                               </div>
                             </FlexWrapper>
