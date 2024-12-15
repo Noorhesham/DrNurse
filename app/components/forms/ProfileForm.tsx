@@ -68,7 +68,7 @@ const jobSchema = z
       country_id: z.union([z.string().min(1, "Country is required"), z.number()]),
       career_specialty_id: z.union([z.string().min(1, "Specialty is required"), z.number()]),
       date: z.string(),
-      date_to: z.string().optional(),
+      date_to: z.any().optional(),
       present: z
         .union([z.boolean(), z.number()])
         .transform((val) => (val === true ? 1 : 0))
