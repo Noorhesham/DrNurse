@@ -214,7 +214,7 @@ const Login = () => {
         <Suspense fallback={<Spinner />}>
           {activate && !isCode && (
             <Methods
-              tfa={!fa || searchParams.get("tfa") || ""}
+              tfa={(fa && "true") || searchParams.get("tfa") || ""}
               handleSend={handleSend}
               message={message}
               methods={methods}
@@ -231,7 +231,7 @@ const Login = () => {
                 sendType={isCode}
                 handleSend={handleSend}
               />{" "}
-              <Link href="/" className="hover:underline duration-150 mt-2 text-main  font-semibold">
+              <Link href="/" className="hover:underline duration-150 mt-4 text-main  font-semibold">
                 {" "}
                 {t("backtowebsite")}{" "}
               </Link>

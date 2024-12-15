@@ -17,6 +17,7 @@ import { useQueryClient } from "@tanstack/react-query";
 
 const UpdatePersonalInfo = () => {
   const t = useTranslations();
+  const [open, setOpen] = useState(false);
   const locale = useLocale();
   const router = useRouter();
   const personal = [
@@ -54,6 +55,7 @@ const UpdatePersonalInfo = () => {
     toast.success(res.message);
     setError(null);
     setLogin((l: any) => !l);
+    setOpen(false);
   };
   const queryClient = useQueryClient();
   const updateEmailInfo = async (data: any, setError: any) => {
@@ -82,14 +84,16 @@ const UpdatePersonalInfo = () => {
 
       router.push(`?${updatedParams.toString()}`, { scroll: false });
       setLogin((l: any) => !l);
+      setOpen(false);
     }
   };
 
   return (
     <>
-      <ModalCustom
+      <ModalCustom 
+        title={t("updateEmail")}
         btn={
-          <div>
+          <div >
             <UpdateCard
               text={t("updateEmail")}
               desc={user?.email}
@@ -118,6 +122,7 @@ const UpdatePersonalInfo = () => {
         }
       />
       <ModalCustom
+        isOpen={open}
         btn={
           <div>
             <UpdateCard
@@ -156,6 +161,7 @@ const UpdatePersonalInfo = () => {
         }
       />
       <ModalCustom
+        isOpen={open}
         btn={
           <div>
             <UpdateCard

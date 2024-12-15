@@ -22,7 +22,7 @@ const Notifications = () => {
           device_info,
         },
       });
-      setDeviceData(res.device.notification_token);
+      setDeviceData(res?.device.notification_token);
       setLoading(false);
     };
     getDeviceData();

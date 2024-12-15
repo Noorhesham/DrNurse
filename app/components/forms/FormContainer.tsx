@@ -92,7 +92,7 @@ interface Formcontainer {
   submit?: any;
   server?: boolean;
   children?: React.ReactNode;
-  id?: string;
+  id?: string;closeAfter?:boolean
 }
 
 const FormContainer: React.FC<Formcontainer> = ({
@@ -105,7 +105,7 @@ const FormContainer: React.FC<Formcontainer> = ({
   children,
   submit,
   server,
-  id,
+  id,closeAfter
 }) => {
   const t = useTranslations("form");
 
@@ -151,7 +151,7 @@ const FormContainer: React.FC<Formcontainer> = ({
         }
       } else if (submit) {
         submit(data, setServerError);
-        form.reset({});
+        
         setServerError(null);
       }
     });
@@ -165,7 +165,7 @@ const FormContainer: React.FC<Formcontainer> = ({
   return (
     <div className="  w-full min-h-[20vh]">
       {!resetFormData ? (
-        <CustomForm
+        <CustomForm closeAfter={closeAfter||false}
           serverError={serverError}
           btnText={btnText || t("Submit")}
           form={form}

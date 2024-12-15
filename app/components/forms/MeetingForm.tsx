@@ -27,7 +27,7 @@ const meetingsSchema = z.object({
         .min(1, "Duration is required")
         .regex(/^\d{2}:\d{2}$/, "Duration must be in H:i format"),
       id: z.any().optional(),
-      manager_email: z.string().email(),
+      manager_email: z.string().email().optional(),
     })
   ),
 });
@@ -176,7 +176,7 @@ const MeetingForm = ({
                 ]}
               />
               <div className="flex w-full items-center gap-1">
-                <FormInput label="MANAGER EMAIL" control={form.control} name={`meetings.${index}.manager_email`} />
+                <FormInput label="MANAGER EMAIL" optional control={form.control} name={`meetings.${index}.manager_email`} />
                 <button
                   type="button"
                   onClick={() => {

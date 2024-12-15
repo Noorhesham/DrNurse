@@ -63,6 +63,7 @@ export interface InputProps {
   disabled?: boolean;
   stateName?: string | any;
   noSwitch?: boolean;
+  closeAfter?: boolean;
 }
 const CustomForm = ({
   inputs,
@@ -109,9 +110,11 @@ const CustomForm = ({
           <div className={cn("flex gap-2 mt-5 items-center", { "self-center w-full lg:w-[60%]": cancel })}>
             <div className={`${btnStyles} flex-1 flex items-center flex-col`}>
               {link && linkText && <MyLink link={link} text={linkText} />}
-              <div className=" w-full">
-                <SubmitButton btnStyles={btnStyles} text={btnText || t("Submit")} isPending={isPending || disabled} />
-              </div>
+              {
+                <div className=" w-full">
+                  <SubmitButton btnStyles={btnStyles} text={btnText || t("Submit")} isPending={isPending || disabled} />
+                </div>
+              }
             </div>
             {cancel && (
               <DialogClose className=" mx-auto flex-1 w-full flex  items-center gap-5  ">
