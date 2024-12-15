@@ -9,17 +9,21 @@ import { MailIcon, PhoneIcon } from "lucide-react";
 import { InputOTPPattern } from "./OTP";
 import { useLocale, useTranslations } from "next-intl";
 import { format } from "date-fns";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import ModalCustom from "@/app/components/defaults/ModalCustom";
 import FormContainer from "@/app/components/forms/FormContainer";
 import { useQueryClient } from "@tanstack/react-query";
+import Paragraph from "@/app/components/defaults/Paragraph";
+import { Button } from "@/components/ui/button";
 
 const UpdatePersonalInfo = () => {
   const t = useTranslations();
   const [open, setOpen] = useState(false);
   const locale = useLocale();
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const [verify, setVerify] = useState(false);
   const personal = [
     { name: "name", placeholder: t("name") },
     { name: "birth_day", placeholder: t("birth_day"), date: true },
@@ -30,7 +34,11 @@ const UpdatePersonalInfo = () => {
   const searchParams = useSearchParams();
   const { setLogin, userSettings: user, loading } = useAuth();
   const [OtpError, setOtpError] = useState<string | null>(null);
-
+  const updateParams = (key: string, value: string) => {
+    const updatedParams = new URLSearchParams(searchParams);
+    updatedParams.set(key, value);
+    router.push(`?${updatedParams.toString()}`, { scroll: false });
+  };
   const updatePersonalInfro = async (data: any, setError: any) => {
     const formData = new FormData();
     Object.keys(data).forEach((key) => {
@@ -67,7 +75,7 @@ const UpdatePersonalInfo = () => {
     };
 
     const res = await Server({ resourceName: "update_profile", body: updatedData });
-
+    console.log(res);
     if (!res.status) {
       setError(res.errors?.length > 0 ? res.errors.join(", ") : res.errors?.email || res.message);
       return;
@@ -88,12 +96,27 @@ const UpdatePersonalInfo = () => {
     }
   };
 
+  const verifyAccount = async (send_by: string) => {
+    const updatedParams = new URLSearchParams(searchParams);
+    updatedParams.set("vefiy", "true");
+    updatedParams.set("type", send_by === "sms" ? "phone" : "email");
+    startTransition(async () => {
+      setVerify(true);
+      const res = await Server({ resourceName: "create-verification", body: { send_by } });
+      console.log(res);
+      if (res.status) {
+        toast.success(res.message);
+        updatedParams.set("uuid", res.uuid);
+        router.push(`?${updatedParams.toString()}`, { scroll: false });
+      }
+      // if (!res.status) toast.error(res.message);
+    });
+  };
   return (
     <>
-      <ModalCustom 
-        title={t("updateEmail")}
+      <ModalCustom
         btn={
-          <div >
+          <div>
             <UpdateCard
               text={t("updateEmail")}
               desc={user?.email}
@@ -115,7 +138,28 @@ const UpdatePersonalInfo = () => {
                 formArray={email}
                 title={t("updateEmail")}
               />
-              {searchParams.get("uuid") && <InputOTPPattern setServerError={setOtpError} email sendType="email" />}
+              {searchParams.get("uuid") && searchParams.get("type") === "email" && (
+                <InputOTPPattern
+                  setServerError={setOtpError}
+                  verify={searchParams.get("vefiy") === "true"}
+                  email
+                  sendType="email"
+                />
+              )}{" "}
+              {user.email_verified_at ? (
+                <p className="text-green-500 text-center mt-3 m-auto self-center text-sm">{t("EMAIL VERIFIED")}</p>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  <Button
+                    size={"lg"}
+                    variant={"outline"}
+                    className=" w-fit mt-5 mx-auto rounded-full"
+                    onClick={() => verifyAccount("email")}
+                  >
+                    {t("verify")}
+                  </Button>
+                </div>
+              )}
               {OtpError && <p className="text-red-500 text-center mt-3 m-auto self-center text-sm">{OtpError}</p>}
             </div>
           )
@@ -152,8 +196,29 @@ const UpdatePersonalInfo = () => {
                 formArray={phone}
                 title={t("updatePhone")}
               />
-              {searchParams.get("uuid") && (
-                <InputOTPPattern setServerError={setOtpError} sendType="" phone country_key={user.country_key} />
+              {searchParams.get("uuid") && searchParams.get("type") === "phone" && (
+                <InputOTPPattern 
+                  verify={searchParams.get("vefiy") === "true"}
+                  setServerError={setOtpError}
+                  sendType=""
+                  phone
+                  country_key={user.country_key}
+                />
+              )}{" "}
+              {user.phone_verified_at ? (
+                <p className="text-green-500 text-center mt-3 m-auto self-center text-sm">{t("PHONE VERIFIED")}</p>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  {/* <Paragraph description="choose a way to verify your phone number" /> */}
+                  <Button
+                    size={"lg"}
+                    variant={"outline"}
+                    className=" w-fit mt-5 mx-auto rounded-full"
+                    onClick={() => verifyAccount("sms")}
+                  >
+                    {t("verify")}
+                  </Button>
+                </div>
               )}
               {OtpError && <p className="text-red-500 text-center mt-3 m-auto self-center text-sm">{OtpError}</p>}
             </div>

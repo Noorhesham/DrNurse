@@ -57,6 +57,7 @@ const CountriesInput = ({
     key: "cities",
     enable: !!selectedStateCode && cityName !== "",
   });
+
   return (
     <FlexWrapper max={false} className="flex  w-full gap-4">
       {
@@ -76,7 +77,7 @@ const CountriesInput = ({
           name={stateName}
           label={t("stateLabel")}
           placeholder={t("selectState")}
-          options={states?.data.map((country: any) => ({ label: country.title, value: country.id }))}
+          options={states?.data?.map((country: any) => ({ label: country.title, value: country.id }))}
         />
       )}
       {selectedStateCode && cityName && (
@@ -86,7 +87,7 @@ const CountriesInput = ({
           name={cityName}
           label={t("cityLabel")}
           placeholder={t("selectCity")}
-          options={cities?.data.map((country: any) => ({ label: country.title, value: country.id }))}
+          options={cities?.data?.map((country: any) => ({ label: country.title, value: country.id }))}
         />
       )}
     </FlexWrapper>

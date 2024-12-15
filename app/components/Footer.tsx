@@ -9,6 +9,7 @@ import DownloadButtons from "./DownloadButtons";
 import FlexWrapper from "./defaults/FlexWrapper";
 import Link from "next/link";
 import RightMind from "./RightMind";
+import JobsFooter from "./JobsFooter";
 
 const Footer = () => {
   const t = useTranslations("footer");
@@ -66,17 +67,7 @@ const Footer = () => {
               >
                 MORE JOBS
               </h4>
-              <ul
-                className=" lg:list-disc grid grid-cols-1 lg:grid-cols-2 w-full items-center lg:place-items-start
-               place-items-center  text-white gap-3 "
-              >
-                <li className="lg:border-none border-b border-gray-50 w-fit pb-2 ">{t("senior")}</li>
-                <li className="lg:border-none border-b border-gray-50 w-fit pb-2 ">{t("jr")}</li>
-                <li className="lg:border-none border-b border-gray-50 w-fit pb-2 ">{t("predicate")}</li>
-                <li className="lg:border-none border-b border-gray-50 w-fit pb-2 ">{t("fresh")}</li>
-                <li className="lg:border-none border-b border-gray-50 w-fit pb-2 ">{t("mad")}</li>
-                <li className="lg:border-none border-b border-gray-50 w-fit pb-2 ">{t("predicate")}</li>
-              </ul>
+           <JobsFooter/>
             </div>
           </GridContainer>
           <FlexWrapper max={false} className=" w-full mt-5 gap-5 flex justify-between items-center">

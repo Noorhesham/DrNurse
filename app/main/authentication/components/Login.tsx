@@ -134,7 +134,6 @@ const Login = () => {
         toast.success(searchParams.get("message"));
         if (token) cookies.set("jwt", token || "");
         setLogin((l) => !l);
-
         router.push(redirect || "/loader");
       }
     }

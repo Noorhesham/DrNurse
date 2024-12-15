@@ -14,10 +14,13 @@ import Empty from "@/app/components/Empty";
 import TableData from "@/app/components/TableData";
 import BreadCrumb from "@/app/components/BreadCrumb";
 import Link from "next/link";
+import VerificationStatus from "@/app/components/VerficationStatus";
+import { useAuth } from "@/app/context/AuthContext";
 
 const Page = () => {
   const { data: overView, isLoading: isLoadingOverView } = useGetEntity("person-overview");
   const { data, isLoading } = useGetEntity("my-profile", "my-profile");
+  const { userSettings, loading } = useAuth();
   if (isLoading || !data || isLoadingOverView) return <Spinner />;
   const dataPage = data.data;
   console.log(overView);
@@ -32,6 +35,7 @@ const Page = () => {
       <MaxWidthWrapper>
         <div className="flex flex-col lg:grid lg:grid-cols-8 gap-5">
           <SideBar person />
+
           {!data.status ? (
             <div className="col-span-6">
               {" "}
@@ -39,6 +43,8 @@ const Page = () => {
             </div>
           ) : (
             <section className="col-span-6">
+              <VerificationStatus verification_type={userSettings.verification_type} />
+
               <div className="flex mb-5 justify-between">
                 <div className="flex text-main2 font-semibold flex-col">
                   <span className="text-xl tracking-widest">HELLO,</span>

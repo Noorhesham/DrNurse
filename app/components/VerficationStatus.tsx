@@ -1,7 +1,7 @@
 import { FaCheckCircle, FaTimesCircle, FaQuestionCircle } from "react-icons/fa";
 
-const VerificationStatus = ({ userSettings }) => {
-  const getStatusIcon = (status) => {
+const VerificationStatus = ({ verification_type }: { verification_type: string }) => {
+  const getStatusIcon = (status: string) => {
     switch (status) {
       case "auto-approved":
       case "manual-approved":
@@ -11,6 +11,8 @@ const VerificationStatus = ({ userSettings }) => {
         return <FaTimesCircle style={{ color: "red" }} />; // Rejected icon (red)
       case "pending":
         return <FaQuestionCircle style={{ color: "blue" }} />; // Pending icon (blue)
+      case null:
+        return <FaQuestionCircle style={{ color: "blue" }} />;
       case "re-review":
         return <FaQuestionCircle style={{ color: "orange" }} />; // Re-review icon (orange)
       default:
@@ -18,7 +20,7 @@ const VerificationStatus = ({ userSettings }) => {
     }
   };
 
-  const getStatusLabel = (status) => {
+  const getStatusLabel = (status: string) => {
     switch (status) {
       case "auto-approved":
         return "Auto Approved";
@@ -30,6 +32,8 @@ const VerificationStatus = ({ userSettings }) => {
         return "Manual Rejected";
       case "pending":
         return "Pending";
+      case null:
+        return "Pending";
       case "re-review":
         return "Re-review";
       default:
@@ -38,11 +42,11 @@ const VerificationStatus = ({ userSettings }) => {
   };
 
   return (
-    <div className="flex items-center gap-3">
-      <h3 className="text-main2 font-semibold text-sm lg:text-base">
-        Account Status: {getStatusLabel(userSettings.verification_type)}
+    <div className="flex  w-full bg-light rounded-xl py-2 px-4 my-2 items-center gap-3">
+      <h3 className="text-main2 text-nowrap font-semibold text-sm lg:text-base">
+        Account Status: {getStatusLabel(verification_type)}
       </h3>
-      <div>{getStatusIcon(userSettings.verification_type)}</div>
+      <div>{getStatusIcon(verification_type)}</div>
     </div>
   );
 };

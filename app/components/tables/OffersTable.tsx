@@ -8,6 +8,7 @@ import Negotiation from "../Negotiation";
 import Paragraph from "../defaults/Paragraph";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import DownloadOffer from "../DownloadOffer";
+import { format } from "date-fns";
 
 interface OffersTableProps {
   offers: any[];
@@ -66,7 +67,7 @@ const OffersTable: React.FC<OffersTableProps> = ({ offers, action, person = fals
               <div className="flex items-center gap-2">
                 <div className="flex  max-w-md capitalize items-center gap-2">
                   <Calendar className=" lg:block hidden w-6 h-6" />
-                  {offer.details.start_date} Must be approved 7 days in advance
+                  {format(new Date(offer.created_at), "dd-MM-yyyy")} Must be approved 7 days in advance
                 </div>
               </div>
             </TableCell>

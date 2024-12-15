@@ -105,8 +105,10 @@ const page = () => {
           </div>
         )
       )}
-      {(userSettings.role.includes("nurse") || userSettings.role.includes("doctor")) && <>{HasProfile()}</>}
-      {userSettings.role.includes("hospital") && (
+      {(userSettings.role.includes("nurse") ||
+        userSettings.role.includes("doctor") ||
+        userSettings.role.includes("specialist")) && <>{HasProfile()}</>}
+      {userSettings.role.includes("hospital") && !userSettings.role.includes("admin") && (
         <ModalCustom
           isOpen={true}
           btn={

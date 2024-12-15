@@ -30,6 +30,7 @@ export function InputOTPPattern({
   phone,
   country_key,
   isPending2,
+  verify,
 }: {
   handleSend?: any;
   sendType: string;
@@ -41,6 +42,7 @@ export function InputOTPPattern({
   revalidate?: any;
   phone?: boolean;
   country_key?: string;
+  verify?: boolean;
   isPending2?: boolean;
 }) {
   const { setLogin } = useAuth();
@@ -66,32 +68,36 @@ export function InputOTPPattern({
   const t = useTranslations();
   const Resend = async () => {
     try {
-      setResending(true);
-      const res = await Server({
-        resourceName: forgot
-          ? "reset"
-          : tfa
-          ? "tfaValidate"
-          : email || phone
-          ? "update_profile"
-          : activate
-          ? "tfaActivate"
-          : "validate",
-        id: searchParams.get("uuid") || "",
-        body: {
-          send_type: sendType,
-          send_by: sendType,
-          email: email && searchParams.get("email"),
-          phone: phone && searchParams.get("phone"),
-          type: "verify",
-          email_uuid: email && searchParams.get("uuid"),
-          device_info: device_info,
-          phone_uuid: phone && searchParams.get("uuid"),
-          country_key: phone && country_key,
-        },
+      startTransition(async () => {
+        setResending(true);
+        const res = await Server({
+          resourceName: forgot
+            ? "reset"
+            : tfa
+            ? "tfaValidate"
+            : verify
+            ? "create-verification"
+            : email || phone
+            ? "update_profile"
+            : activate
+            ? "tfaActivate"
+            : "validate",
+          id: searchParams.get("uuid") || "",
+          body: {
+            send_type: sendType,
+            send_by: sendType || "sms",
+            email: email && searchParams.get("email"),
+            phone: phone && searchParams.get("phone"),
+            type: "verify",
+            email_uuid: email && searchParams.get("uuid"),
+            device_info: device_info,
+            phone_uuid: phone && searchParams.get("uuid"),
+            country_key: phone && country_key,
+          },
+        });
+        if (!res.status) setServerError(res.message);
+        if (res.status) toast.success(res.message);
       });
-      if (!res.status) setServerError(res.message);
-      if (res.status) toast.success(res.message);
     } catch (error) {
       setServerError(error);
     } finally {
@@ -105,6 +111,8 @@ export function InputOTPPattern({
           ? "reset"
           : tfa
           ? "tfaValidate"
+          : verify
+          ? "verify-account"
           : email || phone
           ? "update_profile"
           : activate
@@ -113,7 +121,7 @@ export function InputOTPPattern({
         id: searchParams.get("uuid") || "",
         body: {
           send_type: sendType,
-          send_by: sendType,
+          send_by: sendType||'sms',
           code: data?.code,
           uuid: searchParams.get("uuid"),
           username: searchParams.get("username"),
@@ -181,7 +189,7 @@ export function InputOTPPattern({
             <div className="mt-4  flex items-center gap-2">
               {!activate && (
                 <Button
-                  disabled={resending||isPending}
+                  disabled={resending || isPending}
                   type="button"
                   className="rounded-full relative min-w-[150px] bg-white border-main border  text-main hover:text-white flex-1 px-8"
                   onClick={(e) => {

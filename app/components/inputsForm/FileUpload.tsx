@@ -67,14 +67,14 @@ const FileUpload: React.FC<FileUploadProps> = ({
     }
   };
 
-  const handleRemove = () => {
+  const t = useTranslations();
+  const handleRemove = (e: any) => {
+    e.stopPropagation();
     setPreview(null);
     setIsPdf(false);
     setHasDefault(false);
-    setValue(name, multiple ? [] : null, { shouldValidate: true });
+    setValue(name, multiple ? [] : "", { shouldValidate: true }); // Set the value to an empty string
   };
-
-  const t = useTranslations();
 
   return (
     <div className="flex flex-col gap-2 items-start">
@@ -127,6 +127,12 @@ const FileUpload: React.FC<FileUploadProps> = ({
                   className="absolute top-2 z-40 right-2 bg-main2 text-white rounded-full p-1 !important"
                 >
                   <ReplaceIcon size={16} />
+                </button>{" "}
+                <button
+                  onClick={handleRemove}
+                  className="absolute top-2 right-10 bg-red-600 text-white rounded-full p-1"
+                >
+                  <Trash2Icon size={16} />
                 </button>
               </>
             ) : (

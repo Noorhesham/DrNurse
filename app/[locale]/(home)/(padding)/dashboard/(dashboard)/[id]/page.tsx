@@ -14,6 +14,7 @@ import Spinner from "@/app/components/Spinner";
 import { useParams } from "next/navigation";
 import Empty from "@/app/components/Empty";
 import Link from "next/link";
+import VerificationStatus from "@/app/components/VerficationStatus";
 
 const page = () => {
   const params = useParams();
@@ -23,6 +24,7 @@ const page = () => {
     `company-overview-${params.id}`,
     ""
   );
+
   const { data, isLoading } = useGetEntity("company", `company-${params.id}`, params.id || "", { enabled: !params.id });
   if (isLoading || !data || isLoadingOverView) return <Spinner />;
 
@@ -34,6 +36,8 @@ const page = () => {
         <div className="  flex flex-col lg:grid lg:grid-cols-9 gap-4 lg:gap-8">
           <SideBar />
           <section className=" col-span-7">
+            <VerificationStatus verification_type={data.data.verification_type || "pending"} />
+
             <div className=" flex md:flex-row flex-col md:gap-0 gap-3 md:mb-0 mb-2  justify-between">
               <div className="flex text-main2 font-semibold flex-col ">
                 <span className=" text-xl tracking-widest">HELLO,</span>

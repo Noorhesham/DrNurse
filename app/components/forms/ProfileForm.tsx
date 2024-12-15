@@ -126,13 +126,26 @@ const jobSchema = z
       path: ["min_salary"],
     }
   );
+const replaceUndefinedOrNull = (obj: any): any => {
+  if (obj instanceof File) return obj;
+  if (Array.isArray(obj)) {
+    return obj.map((item) => (typeof item === "object" && item !== null ? replaceUndefinedOrNull(item) : item ?? ""));
+  } else if (typeof obj === "object" && obj !== null) {
+    return Object.keys(obj).reduce((acc, key) => {
+      const value = obj[key];
+      acc[key] =
+        value === null || value === undefined ? "" : typeof value === "object" ? replaceUndefinedOrNull(value) : value;
+      return acc;
+    }, {} as any);
+  }
+  return obj ?? "";
+};
 
 type JobFormValues = z.infer<typeof jobSchema>;
 
 const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
   const [isPending, startTransition] = useTransition();
   const { data: countries, isLoading } = useGetEntity("countries", "countries");
-
   const { data: careerTypes, isLoading: loadingCareerTypes } = useGetEntities({
     resourceName: "getEntity",
     key: "career-types",
@@ -229,24 +242,26 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
     }
   }, [form.formState.errors]);
   const { setDates, setLogin } = useAuth();
-  console.log(dataDefault);
+
   const onSubmit = (data: JobFormValues) => {
     const formData = new FormData();
     const fileFields = ["resume", "practice_license", "identification_card", "certificate"];
-    if (data.available !== "yes_from_custom_time") {
-      delete data.start_availability_at;
+    const sanitizedData = replaceUndefinedOrNull(data);
+
+    if (sanitizedData.available !== "yes_from_custom_time") {
+      delete sanitizedData.start_availability_at;
     }
-    if (data.previous_experience && Array.isArray(data.previous_experience)) {
-      data.previous_experience.forEach((exp, index) => {
+    if (sanitizedData.previous_experience && Array.isArray(sanitizedData.previous_experience)) {
+      sanitizedData.previous_experience.forEach((exp, index) => {
         if (exp.present === 1) {
-          delete data.previous_experience[index].to;
+          delete sanitizedData.previous_experience[index].to;
         }
       });
     }
-    for (const key in data) {
-      if (data.hasOwnProperty(key)) {
-        let value = data[key as keyof JobFormValues];
-        if (value === null) {
+    for (const key in sanitizedData) {
+      if (sanitizedData.hasOwnProperty(key)) {
+        let value = sanitizedData[key as keyof JobFormValues];
+        if (value === null || value === "undefined" || value === undefined) {
           return (value = "");
         }
         if (fileFields.includes(key) && !(value instanceof File) && !dataDefault) continue;
@@ -273,7 +288,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
               formData.append(`${key}[]`, item);
             }
           });
-        } else if (typeof value === "object" && value !== null && !(value instanceof File)) {
+        } else if (typeof value === "object" && value !== null && !(value instanceof File) && value !== undefined) {
           // If the value is an object, but not a file, iterate through its properties
           for (const nestedKey in value) {
             if (value instanceof File) {
@@ -357,7 +372,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
           name={"nationality_id"}
           label={t("nationality")}
           placeholder={t("nationality")}
-          options={countries?.data.map((country: any) => ({ label: country.title, value: country.id }))}
+          options={countries?.data?.map((country: any) => ({ label: country.title, value: country.id }))}
         />
         {/* Address */}
         <MiniTitle form size="md" boldness="bold" text={t("Current Address")} />
@@ -448,7 +463,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
               label={t("Country")}
               disabled={isLoading}
               placeholder={t("Country")}
-              options={countries?.data.map((country: any) => ({ label: country.title, value: country.id }))}
+              options={countries?.data?.map((country: any) => ({ label: country.title, value: country.id }))}
             />
             <CareerInput
               disabled={!form.getValues("career_type_id")}
@@ -504,7 +519,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
                     label={t("Country")}
                     disabled={isLoading}
                     placeholder={t("Country")}
-                    options={countries?.data.map((country: any) => ({ label: country.title, value: country.id }))}
+                    options={countries?.data?.map((country: any) => ({ label: country.title, value: country.id }))}
                   />
                   <CareerInput
                     onlySpeciality
@@ -576,7 +591,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
                 label={t("Country")}
                 disabled={isLoading}
                 placeholder={t("Country")}
-                options={countries?.data.map((country: any) => ({ label: country.title, value: country.id }))}
+                options={countries?.data?.map((country: any) => ({ label: country.title, value: country.id }))}
               />
             </FlexWrapper>
             <FlexWrapper max={false}>

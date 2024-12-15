@@ -101,7 +101,9 @@ export type ResourceNameProps =
   | "classify"
   | "cv"
   | "download-offer"
-  | "start-meet";
+  | "start-meet"
+  | "create-verification"
+  | "verify-account";
 
 // Function to get the full URL from the resource name
 const getURL = (
@@ -296,7 +298,7 @@ const getURL = (
     case "subscribe":
       return { url: `${url}/rm_subscriptions_system/v1/subscriptions/subscribe`, method: "POST" };
     case "pay-invoice":
-      return { url: `${url}/rm_invoices_system/v1/invoices/${id}/pay`, method: "POST" };
+      return { url: `${url}/rm_invoices_system/${VERSION}/invoices/${id}/pay`, method: "POST" };
     case "classification":
       return { url: `${url}/classifications/entities-operations`, method: "GET" };
     case "classify":
@@ -307,6 +309,10 @@ const getURL = (
       return { url: `${url}/recruitment/job-offers/${id}/download`, method: "GET" };
     case "start-meet":
       return { url: `${url}/recruitment/meetings/${id}/custom/start-url`, method: "GET" };
+    case "create-verification":
+      return { url: `${url}/rm_users/${VERSION}/account_verification/create`, method: "POST" };
+    case "verify-account":
+      return { url: `${url}/rm_users/${VERSION}/account_verification/${id}/validate-account-code`, method: "POST" };
     default:
       return { url, method: "GET" as MethodProps };
   }
