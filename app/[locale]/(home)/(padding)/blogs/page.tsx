@@ -5,7 +5,33 @@ import CardHuge from "@/app/components/CardHuge";
 import MotionContainer from "@/app/components/defaults/MotionContainer";
 import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
 import { Server } from "@/app/main/Server";
-
+import { WEBSITEURL } from "@/app/constants";
+export const generateMetadata = async () => {
+  return {
+    title: `Blogs`,
+    canonical: `${WEBSITEURL}/blogs`,
+    openGraph: {
+      title: "drnurse",
+      url: "/logodark.webp",
+      images: [
+        {
+          url: "/logodark.webp",
+          alt: "drnurse",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "drnurse",
+      images: [
+        {
+          url: "/logodark.webp",
+          title: "drnurse",
+        },
+      ],
+    },
+  };
+};
 const page = async ({ params: { locale } }: { params: { locale: string } }) => {
   unstable_setRequestLocale(locale);
   const t = await getTranslations();
