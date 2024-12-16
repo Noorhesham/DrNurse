@@ -11,7 +11,35 @@ import MotionItem from "@/app/components/defaults/MotionItem";
 import { convertToHTML } from "@/lib/utils";
 import MotionContainer from "@/app/components/defaults/MotionContainer";
 import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
+import { WEBSITEURL } from "@/app/constants";
+export const generateMetadata = async () => {
+  const data = await Server({ resourceName: "about-us" });
 
+  return {
+    title: `${data.page.title}`,
+    canonical: `${WEBSITEURL}/about-us`,
+    openGraph: {
+      title: "drnurse",
+      url: "/logodark.webp",
+      images: [
+        {
+          url: "/logodark.webp",
+          alt: "drnurse",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "drnurse",
+      images: [
+        {
+          url: "/logodark.webp",
+          title: "drnurse",
+        },
+      ],
+    },
+  };
+};
 const page = async () => {
   const data = await Server({ resourceName: "about-us" });
   const page = data.page;
