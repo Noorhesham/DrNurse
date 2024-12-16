@@ -1,6 +1,7 @@
 import BreadCrumb from "@/app/components/BreadCrumb";
 import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
 import Empty from "@/app/components/Empty";
+import Share from "@/app/components/Share";
 import { Server } from "@/app/main/Server";
 import { convertToHTML, generateMetadataCustom } from "@/lib/utils";
 import { CalendarHeartIcon, LayoutDashboardIcon } from "lucide-react";
@@ -57,6 +58,7 @@ const page = async ({ params }: { params: { locale: string; id: string } }) => {
           ) : (
             <Empty text="No Content Added Yet" />
           )}
+          <Share title={title} image={main_gallery?.[0]?.file} />
         </MaxWidthWrapper>
       </div>
     </section>

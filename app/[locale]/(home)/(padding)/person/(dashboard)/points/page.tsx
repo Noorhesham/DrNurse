@@ -19,6 +19,7 @@ import FormContainer from "@/app/components/forms/FormContainer";
 import { Server } from "@/app/main/Server";
 import { toast } from "react-toastify";
 import { WEBSITEURL } from "@/app/constants";
+import Empty from "@/app/components/Empty";
 
 const page = () => {
   const { data: terms, isLoading: isLoadingTerms } = useGetEntity("home", "terms-points", "terms-and-conditions");
@@ -58,87 +59,96 @@ const page = () => {
         <div className=" flex w-full items-center   gap-1">
           <div className=" flex  w-full flex-col gap-2">
             <Label>Invite a friend</Label>
-            <Input disabled className={` bg-white shadow-sm w-full `} placeholder={userSettings.referral_code} />
+            <div className=" flex items-center gap-2 justify-between">
+              <Input disabled className={` bg-white shadow-sm w-full `} placeholder={userSettings.referral_code} />
+              <button
+                onClick={() => handelCopy(userSettings.referral_code)}
+                className=" m-auto text-sm text-main2 font-medium "
+              >
+                COPY
+              </button>
+            </div>
           </div>
-          <button onClick={() => handelCopy(userSettings.referral_code)} className=" text-sm text-main2 font-medium ">
-            COPY
-          </button>
         </div>
         <div className=" flex items-center  w-full gap-1">
-          <div className=" flex  w-full items-center flex-col gap-2">
-            <Label>Invite a friend</Label>
-            <Input
-              disabled
-              className={` bg-white shadow-sm w-full `}
-              placeholder={`${WEBSITEURL}?referal=${userSettings.referral_code}`}
-            />
+          <div className=" flex  w-full  flex-col gap-2">
+            <Label>Invite a friend</Label>{" "}
+            <div className=" flex items-center gap-2 justify-between">
+              <Input
+                disabled
+                className={` bg-white shadow-sm w-full `}
+                placeholder={`${WEBSITEURL}?referal=${userSettings.referral_code}`}
+              />{" "}
+              <button
+                onClick={() => handelCopy(userSettings.referral_code)}
+                className=" m-auto text-sm text-main2 font-medium "
+              >
+                COPY
+              </button>
+            </div>
           </div>
-          <button
-            onClick={() => handelCopy(`${WEBSITEURL}?referal=${userSettings.referral_code}`)}
-            className="text-sm text-main2 font-medium "
-          >
-            COPY
-          </button>
         </div>
       </FlexWrapper>
-      <div className=" flex flex-col gap-2 mt-10">
-        <FlexWrapper max={false} className=" justify-between">
-          <div className=" flex flex-col gap-2">
-            <Head1 alignment="left" text={`${user2Settings.points.available} Points`} />
-            <h2 className=" font-semibold text-black">from {user2Settings.points.total}</h2>
-          </div>
+      {points > 0 ? 
+        <div className=" flex flex-col gap-2 mt-10">
+          <FlexWrapper max={false} className=" justify-between">
+            <div className=" flex flex-col gap-2">
+              <Head1 alignment="left" text={`${user2Settings.points.available} Points`} />
+              <h2 className=" font-semibold text-black">from {user2Settings.points.total}</h2>
+            </div>
 
-          <FunctionalButton
-            icon={<PaperclipIcon className="w-5 h-5" />}
-            btnText="REDEEM NOW"
-            content={
-              <MaxWidthWrapper className=" flex flex-col ">
-                <FormContainer
-                  submit={async (data: any) => {
-                    const res = await Server({
-                      resourceName: "reedem",
-                      body: data,
-                    });
-                    if (res.status) toast.success(res.message);
-                    else toast.error(res.message);
-                  }}
-                  formArray={[{ name: "prize", select: true, options: prizes.prizes.map((prize: string) => prize) }]}
-                />
-              </MaxWidthWrapper>
-            }
-          />
-        </FlexWrapper>
-        <Table className=" mt-2">
-          <TableHeader className=" bg-light">
-            <TableRow>
-              <TableHead className="w-[35%]">Title</TableHead>
-              <TableHead>Redeem Date</TableHead>
-              <TableHead className="w-[25%]">Number of points</TableHead>
-              <TableHead className="">Purpose of replacement</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {points.history.map((job, i) => (
-              <TableRow key={i}>
-                <TableCell className="font-medium">
-                  <div className=" flex flex-col items-start">
-                    <h2 className=" text-gray-900 font-semibold">{job.title}</h2>
-                  </div>
-                </TableCell>
-
-                <TableCell className="  gap-2 ">{format(job.created_at, "mmm dd, yyyy")}</TableCell>
-                <TableCell
-                  className={`${job.operation !== "deposit" ? "text-red-500" : " text-main2"} font-semibold  gap-2 `}
-                >
-                  {job.operation !== "deposit" && "-"}
-                  {job.points}
-                </TableCell>
-                <TableCell className=" text-main2 font-semibold  gap-2 ">{job.type}</TableCell>
+            <FunctionalButton
+              icon={<PaperclipIcon className="w-5 h-5" />}
+              btnText="REDEEM NOW"
+              content={
+                <MaxWidthWrapper className=" flex flex-col ">
+                  <FormContainer
+                    submit={async (data: any) => {
+                      const res = await Server({
+                        resourceName: "reedem",
+                        body: data,
+                      });
+                      if (res.status) toast.success(res.message);
+                      else toast.error(res.message);
+                    }}
+                    formArray={[{ name: "prize", select: true, options: prizes.prizes.map((prize: string) => prize) }]}
+                  />
+                </MaxWidthWrapper>
+              }
+            />
+          </FlexWrapper>
+          <Table className=" mt-2">
+            <TableHeader className=" bg-light">
+              <TableRow>
+                <TableHead className="w-[35%]">Title</TableHead>
+                <TableHead>Redeem Date</TableHead>
+                <TableHead className="w-[25%]">Number of points</TableHead>
+                <TableHead className="">Purpose of replacement</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+            </TableHeader>
+            <TableBody>
+              {points.history.map((job, i) => (
+                <TableRow key={i}>
+                  <TableCell className="font-medium">
+                    <div className=" flex flex-col items-start">
+                      <h2 className=" text-gray-900 font-semibold">{job.title}</h2>
+                    </div>
+                  </TableCell>
+
+                  <TableCell className="  gap-2 ">{format(job.created_at, "mmm dd, yyyy")}</TableCell>
+                  <TableCell
+                    className={`${job.operation !== "deposit" ? "text-red-500" : " text-main2"} font-semibold  gap-2 `}
+                  >
+                    {job.operation !== "deposit" && "-"}
+                    {job.points}
+                  </TableCell>
+                  <TableCell className=" text-main2 font-semibold  gap-2 ">{job.type}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>:<div className="mt-8"><Empty text="You don't have any points yet"/></div>
+      }
     </section>
   );
 };

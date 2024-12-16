@@ -4,6 +4,7 @@ import FunctionalButton from "@/app/components/FunctionalButton";
 import InfoItem from "@/app/components/InfoDoc";
 import JobCard from "@/app/components/JobCard";
 import MainProfile from "@/app/components/MainProfile";
+import Share from "@/app/components/Share";
 import Spinner from "@/app/components/Spinner";
 import GridContainer from "@/app/components/defaults/GridContainer";
 import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
@@ -19,19 +20,15 @@ import { PersonIcon } from "@radix-ui/react-icons";
 import { useQueryClient } from "@tanstack/react-query";
 import { Briefcase, DollarSign, XCircle } from "lucide-react";
 import Link from "next/link";
-import React, { useEffect, useState, useTransition } from "react";
-import { FaExclamationCircle, FaFacebook, FaPinterest } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
+import { useTransition } from "react";
+import { FaExclamationCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
 
 const page = ({ params: { id } }: { params: { id: string } }) => {
-  const [currentUrl, setCurrentUrl] = useState<string | null>(null);
   const { data, isLoading } = useGetEntity("job", `job-${id}`, id, { nocompany: true });
   const [isPending, startTransition] = useTransition();
   const { userSettings, loading } = useAuth();
-  useEffect(() => {
-    setCurrentUrl(window.location.href);
-  }, []);
+
   if (isLoading || !data || loading || !userSettings) return <Spinner />;
   const job = data.data;
   const doctor = {
@@ -136,28 +133,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
                   className={`lg:max-w-4xl  text-black lg:text-base text-sm  font-medium leading-[1.7] `}
                 />
               </div>
-              {job && (
-                <div className=" flex items-center lg:flex-nowrap flex-wrap gap-2 mt-2">
-                  <p className=" font-medium">SHARE THIS JOB</p>
-                  <div className="flex items-center gap-2">
-                    <Link href={`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`} target="_blank">
-                      <Button className=" flex  px-4 items-center gap-2" variant={"outline"}>
-                        <FaFacebook /> FACEBOOK
-                      </Button>
-                    </Link>
-                    <Link href={`https://twitter.com/intent/tweet?url=${currentUrl}`} target="_blank">
-                      <Button className=" flex  px-4 items-center gap-2" variant={"outline"}>
-                        <FaXTwitter /> TWITTER
-                      </Button>
-                    </Link>
-                    <Link href={`https://pinterest.com/pin/create/button/?url=${currentUrl}`} target="_blank">
-                      <Button className=" flex  px-4 items-center gap-2" variant={"outline"}>
-                        <FaPinterest /> PINTREST
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              )}
+              {job && <Share title={job.job_title} image={doctor.image} />}
             </section>
           </div>
           <div className="flex col-span-full lg:col-span-2 px-5 py-5 pb-10 rounded-xl flex-col gap-3  bg-light">

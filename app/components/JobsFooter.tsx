@@ -10,10 +10,11 @@ const JobsFooter = () => {
   const { latest_jobs } = generalSettings;
   return (
     <div>
-      <ul className=" lg:list-disc grid grid-cols-1 lg:grid-cols-2 w-full items-center lg:place-items-start place-items-center  text-white gap-2 ">
+      <ul className=" lg:list-disc grid grid-cols-1 lg:grid-cols-3
+        w-full items-center lg:place-items-start place-items-center  text-white  gap-x-8 ">
         {latest_jobs.map((job: any) => (
           <Link
-            className="lg:border-none border-b border-gray-50 w-fit pb-2"
+            className="lg:border-none  w-fit pb-2"
             href={`/job/${job.id}`}
             target="_blank"
             key={job.id}
