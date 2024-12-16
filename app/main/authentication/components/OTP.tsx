@@ -47,18 +47,18 @@ export function InputOTPPattern({
 }) {
   const { setLogin } = useAuth();
   const [resending, setResending] = useState(false);
-  const [timer, setTimer] = useState<number>(TIMER_DURATION);
-  const [activeTimer, setActiveTimer] = useState(true);
-  useEffect(() => {
-    if (!activeTimer) return;
-    if (timer === 0) {
-      setActiveTimer(false);
-    }
-    const timeout = setInterval(() => {
-      setTimer((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-    return () => clearInterval(timeout);
-  }, [timer]);
+  // const [timer, setTimer] = useState<number>(TIMER_DURATION);
+  // const [activeTimer, setActiveTimer] = useState(true);
+  // useEffect(() => {
+  //   if (!activeTimer) return;
+  //   if (timer === 0) {
+  //     setActiveTimer(false);
+  //   }
+  //   const timeout = setInterval(() => {
+  //     setTimer((prev) => (prev > 0 ? prev - 1 : 0));
+  //   }, 1000);
+  //   return () => clearInterval(timeout);
+  // }, [timer]);
   const otpSchema = z.object({
     code: z.string().min(6).max(6),
     password: !forgot
@@ -197,21 +197,22 @@ export function InputOTPPattern({
             <div className="mt-4  flex items-center gap-2">
               {!activate && (
                 <Button
-                  disabled={resending || isPending || activeTimer}
+                  disabled={resending || isPending}
                   type="button"
                   className="rounded-full relative min-w-[150px] bg-white border-main border  text-main hover:text-white flex-1 px-8"
                   onClick={(e) => {
                     startTransition(async () => {
                       e.stopPropagation();
-                      setTimer(TIMER_DURATION);
-                      setActiveTimer(true);
+                      // setTimer(TIMER_DURATION);
+                      // setActiveTimer(true);
                       handleSend ? handleSend(sendType) : Resend();
                     });
                   }}
                 >
-                  {timer ? (
+                  {/* timer ? (
                     `${timer} s`
-                  ) : resending || isPending ? (
+                  ) : */}
+                  {resending || isPending ? (
                     <Spinner className=" border-[5px] border-[#3a4f91] m-auto" />
                   ) : (
                     t("resend_code")
