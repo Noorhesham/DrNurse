@@ -104,7 +104,6 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
               </div>
               {job && (
                 <div className=" flex items-center lg:flex-nowrap flex-wrap gap-2 mt-2">
-                  <p className=" font-medium">SHARE THIS JOB</p>
                   <Share title={job.job_title} image={job.image} />
                 </div>
               )}
