@@ -21,7 +21,7 @@ const Page = () => {
   const { data: overView, isLoading: isLoadingOverView } = useGetEntity("person-overview");
   const { data, isLoading } = useGetEntity("my-profile", "my-profile");
   const { userSettings, loading } = useAuth();
-  if (isLoading || !data || isLoadingOverView) return <Spinner />;
+  if (isLoading || !data || isLoadingOverView||loading) return <Spinner />;
   const dataPage = data.data;
   console.log(overView);
   return (

@@ -11,13 +11,13 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/app/context/AuthContext";
-import { Suspense, useState, useTransition } from "react";
+import { Suspense, useEffect, useState, useTransition } from "react";
 import Spinner from "@/app/components/Spinner";
 import { useDevice } from "@/app/context/DeviceContext";
 
 import { useTranslations } from "next-intl";
 import FormInput from "@/app/components/inputsForm/FormInput";
-
+const TIMER_DURATION = 10;
 export function InputOTPPattern({
   handleSend,
   sendType,
@@ -47,8 +47,18 @@ export function InputOTPPattern({
 }) {
   const { setLogin } = useAuth();
   const [resending, setResending] = useState(false);
-  const [timer, setTimer] = useState(true);
-
+  const [timer, setTimer] = useState<number>(TIMER_DURATION);
+  const [activeTimer, setActiveTimer] = useState(true);
+  useEffect(() => {
+    if (!activeTimer) return;
+    if (timer === 0) {
+      setActiveTimer(false);
+    }
+    const timeout = setInterval(() => {
+      setTimer((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(timeout);
+  }, [timer]);
   const otpSchema = z.object({
     code: z.string().min(6).max(6),
     password: !forgot
@@ -68,36 +78,34 @@ export function InputOTPPattern({
   const t = useTranslations();
   const Resend = async () => {
     try {
-      startTransition(async () => {
-        setResending(true);
-        const res = await Server({
-          resourceName: forgot
-            ? "reset"
-            : tfa
-            ? "tfaValidate"
-            : verify
-            ? "create-verification"
-            : email || phone
-            ? "update_profile"
-            : activate
-            ? "tfaActivate"
-            : "validate",
-          id: searchParams.get("uuid") || "",
-          body: {
-            send_type: sendType,
-            send_by: sendType || "sms",
-            email: email && searchParams.get("email"),
-            phone: phone && searchParams.get("phone"),
-            type: "verify",
-            email_uuid: email && searchParams.get("uuid"),
-            device_info: device_info,
-            phone_uuid: phone && searchParams.get("uuid"),
-            country_key: phone && country_key,
-          },
-        });
-        if (!res.status) setServerError(res.message);
-        if (res.status) toast.success(res.message);
+      setResending(true);
+      const res = await Server({
+        resourceName: forgot
+          ? "reset"
+          : tfa
+          ? "tfaValidate"
+          : verify
+          ? "create-verification"
+          : email || phone
+          ? "update_profile"
+          : activate
+          ? "tfaActivate"
+          : "validate",
+        id: searchParams.get("uuid") || "",
+        body: {
+          send_type: sendType,
+          send_by: sendType || "sms",
+          email: email && searchParams.get("email"),
+          phone: phone && searchParams.get("phone"),
+          type: "verify",
+          email_uuid: email && searchParams.get("uuid"),
+          device_info: device_info,
+          phone_uuid: phone && searchParams.get("uuid"),
+          country_key: phone && country_key,
+        },
       });
+      if (!res.status) setServerError(res.message);
+      if (res.status) toast.success(res.message);
     } catch (error) {
       setServerError(error);
     } finally {
@@ -121,7 +129,7 @@ export function InputOTPPattern({
         id: searchParams.get("uuid") || "",
         body: {
           send_type: sendType,
-          send_by: sendType||'sms',
+          send_by: sendType || "sms",
           code: data?.code,
           uuid: searchParams.get("uuid"),
           username: searchParams.get("username"),
@@ -189,16 +197,25 @@ export function InputOTPPattern({
             <div className="mt-4  flex items-center gap-2">
               {!activate && (
                 <Button
-                  disabled={resending || isPending}
+                  disabled={resending || isPending || activeTimer}
                   type="button"
                   className="rounded-full relative min-w-[150px] bg-white border-main border  text-main hover:text-white flex-1 px-8"
                   onClick={(e) => {
-                    e.stopPropagation();
-                    handleSend ? handleSend(sendType) : Resend();
-                    setTimer(true);
+                    startTransition(async () => {
+                      e.stopPropagation();
+                      setTimer(TIMER_DURATION);
+                      setActiveTimer(true);
+                      handleSend ? handleSend(sendType) : Resend();
+                    });
                   }}
                 >
-                  {resending ? <Spinner className=" border-[5px] border-[#3a4f91] m-auto" /> : t("resend_code")}
+                  {timer ? (
+                    `${timer} s`
+                  ) : resending || isPending ? (
+                    <Spinner className=" border-[5px] border-[#3a4f91] m-auto" />
+                  ) : (
+                    t("resend_code")
+                  )}
                 </Button>
               )}
               <Button disabled={isPending} className="  relative flex-1 rounded-full px-8" type="submit">
