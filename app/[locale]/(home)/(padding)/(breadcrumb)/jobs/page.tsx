@@ -4,7 +4,34 @@ import { Server } from "@/app/main/Server";
 
 import JobsList from "@/app/components/Jobs";
 import { LoadingProvider } from "@/app/context/LoadingContext";
+import { WEBSITEURL } from "@/app/constants";
 
+export const generateMetadata = async () => {
+  return {
+    title: `Jobs`,
+    canonical: `${WEBSITEURL}/jobs`,
+    openGraph: {
+      title: "drnurse",
+      url: "/logodark.webp",
+      images: [
+        {
+          url: "/logodark.webp",
+          alt: "drnurse",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "drnurse",
+      images: [
+        {
+          url: "/logodark.webp",
+          title: "drnurse",
+        },
+      ],
+    },
+  };
+};
 const page = async ({ params: { locale }, searchParams }: { params: { locale: string }; searchParams: any }) => {
   const {
     experience_from,

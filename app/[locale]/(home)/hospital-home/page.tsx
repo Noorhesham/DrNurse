@@ -15,7 +15,34 @@ import { Server } from "@/app/main/Server";
 import { getYouTubeEmbedUrl } from "@/app/helpers/utils";
 import { convertToHTML } from "@/lib/utils";
 import LoaderBtn from "@/app/components/LoaderBtn";
-
+import { WEBSITEURL } from "@/app/constants";
+export const generateMetadata = async () => {
+  const { page } = await Server({ resourceName: "home", id: "company-home" });
+  return {
+    title: `${page.title}`,
+    canonical: `${WEBSITEURL}/hospital-home`,
+    openGraph: {
+      title: "drnurse",
+      url: "/logodark.webp",
+      images: [
+        {
+          url: "/logodark.webp",
+          alt: "drnurse",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "drnurse",
+      images: [
+        {
+          url: "/logodark.webp",
+          title: "drnurse",
+        },
+      ],
+    },
+  };
+};
 export default async function Home() {
   const data = await Server({ resourceName: "home", id: "company-home" });
 
