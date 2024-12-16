@@ -4,6 +4,7 @@ import FunctionalButton from "@/app/components/FunctionalButton";
 import InfoItem from "@/app/components/InfoDoc";
 import JobCard from "@/app/components/JobCard";
 import MainProfile from "@/app/components/MainProfile";
+import Share from "@/app/components/Share";
 import Spinner from "@/app/components/Spinner";
 import GridContainer from "@/app/components/defaults/GridContainer";
 import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
@@ -104,23 +105,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
               {job && (
                 <div className=" flex items-center lg:flex-nowrap flex-wrap gap-2 mt-2">
                   <p className=" font-medium">SHARE THIS JOB</p>
-                  <div className="flex items-center gap-2">
-                    <Link href={`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`} target="_blank">
-                      <Button className=" flex  px-4 items-center gap-2" variant={"outline"}>
-                        <FaFacebook /> FACEBOOK
-                      </Button>
-                    </Link>
-                    <Link href={`https://twitter.com/intent/tweet?url=${currentUrl}`} target="_blank">
-                      <Button className=" flex  px-4 items-center gap-2" variant={"outline"}>
-                        <FaXTwitter /> TWITTER
-                      </Button>
-                    </Link>
-                    <Link href={`https://pinterest.com/pin/create/button/?url=${currentUrl}`} target="_blank">
-                      <Button className=" flex  px-4 items-center gap-2" variant={"outline"}>
-                        <FaPinterest /> PINTREST
-                      </Button>
-                    </Link>
-                  </div>
+                  <Share title={job.job_title} image={job.image} />
                 </div>
               )}
             </section>
@@ -147,7 +132,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
             </div>
           </div>
         </GridContainer>
-        <section>
+        <section className=" mt-20">
           <MiniTitle boldness="bold" color=" text-main2" text="RELATED JOBS" />
           <div className=" grid-cols-1 grid gap-5 lg:grid-cols-2 mt-3">
             {job.related_jobs?.map((job: Job, i: number) => (
