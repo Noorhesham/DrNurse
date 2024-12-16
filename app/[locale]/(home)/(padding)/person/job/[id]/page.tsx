@@ -133,7 +133,12 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
                   className={`lg:max-w-4xl  text-black lg:text-base text-sm  font-medium leading-[1.7] `}
                 />
               </div>
-              {job && <Share title={job.job_title} image={doctor.image} />}
+              {job && (
+                <div className=" flex items-center lg:flex-nowrap flex-wrap gap-2 mt-2">
+                  <p className=" font-medium">SHARE THIS JOB</p>
+                  <Share title={job.job_title} image={job.image} />
+                </div>
+              )}
             </section>
           </div>
           <div className="flex col-span-full lg:col-span-2 px-5 py-5 pb-10 rounded-xl flex-col gap-3  bg-light">
