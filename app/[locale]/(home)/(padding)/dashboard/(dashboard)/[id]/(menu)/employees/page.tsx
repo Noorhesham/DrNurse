@@ -33,28 +33,35 @@ const page = async ({ searchParams }: { searchParams: any }) => {
     salary_from: salary_from || "",
     salary_to: salary_to || "",
     page: page || "",
-    itemsCount: itemsCount || "",
+    itemsCount: itemsCount || 10 || "",
     active_license_country: active_license_country || "",
     from_years: from_years || "",
     to_years: to_years || "",
     sort: sort || "",
     gender: gender || "",
   });
+
   if (nationality_id) {
-    const nationalityIdsArray = Array.isArray(nationality_id) ? nationality_id : [nationality_id];
-    nationalityIdsArray.forEach((id: string) => queryParams.append("nationality_id[]", id));
-  }
-  if (current_location_id) {
-    const currentLocationIdsArray = Array.isArray(current_location_id) ? current_location_id : [current_location_id];
-    currentLocationIdsArray.forEach((id: string) => queryParams.append("current_location_id[]", id));
+    const nationality_ids = nationality_id.split(",");
+    nationality_ids.forEach((value: string) => {
+      queryParams.append("nationality_id[]", value);
+    });
   }
 
+  if (current_location_id) {
+    const currentLocationIdsArray = current_location_id.split(",");
+    currentLocationIdsArray.forEach((value: string) => {
+      queryParams.append("current_location_id[]", value);
+    });
+  }
   if (career_levels) {
-    const careerLevelsArray = Array.isArray(career_levels) ? career_levels : [career_levels];
-    careerLevelsArray.forEach((level: string) => queryParams.append("career_levels[]", level));
+    const careerLevelsArray = career_levels.split(",");
+    careerLevelsArray.forEach((value: string) => {
+      queryParams.append("career_levels[]", value);
+    });
   }
   queryParams.append("scope", "filter");
-  const data = await Server({ resourceName: "getProfiles", queryParams });
+  const data = await Server({ resourceName: "getProfiles", queryParams, cache: 0 });
   const profiles = data.data.profiles;
   const career_types = data.data.career_types;
   const career_levelsfilter = data.data.career_levels;
@@ -66,14 +73,14 @@ const page = async ({ searchParams }: { searchParams: any }) => {
   const totalPages = Math.ceil(data.data.count / 10);
   const filters = [
     { "Career Type": career_types, filter: "career_type_id" },
+    { "Career Specialty": career_specialties, arr: true, filter: "career_specialty_id" },
+    { "Career Level": career_levelsfilter, arr: true, filter: "career_levels" },
     { Availability: availavility, filter: "available" },
     { "Current Location": locations, arr: true, filter: "current_location_id" },
     { Nationality: nationalities, arr: true, filter: "nationality_id" },
-    { Gender: genders, arr: true, filter: "gender" },
-    { "Career Specialty": career_specialties, arr: true, filter: "career_specialty_id" },
-    { "Career Level": career_levelsfilter, arr: true, filter: "career_levels" },
+    { Gender: genders, arr: false, filter: "gender" },
   ];
-
+  console.log(profiles.map((p) => p.name));
   return (
     <LoadingProvider>
       <Profiles count={data.data.count} doctors={profiles} totalPages={totalPages} filters={filters} />

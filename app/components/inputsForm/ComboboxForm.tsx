@@ -17,6 +17,7 @@ export default function ComboboxForm({
   onChange,
   disabled,
   loading,
+  optional,
 }: {
   options: any;
   name: string;
@@ -25,6 +26,7 @@ export default function ComboboxForm({
   onChange?: any;
   disabled?: boolean;
   loading?: boolean;
+  optional?: boolean;
 }) {
   const form = useFormContext();
 
@@ -36,7 +38,15 @@ export default function ComboboxForm({
         name={name}
         render={({ field }) => (
           <FormItem className={`relative  w-full`}>
-            {label && <FormLabel className="uppercase">{label}</FormLabel>}
+            {label && (
+              <FormLabel className="uppercase relative">
+                {" "}
+                {!optional && (
+                  <span className={`absolute -right-5 -top-[1px]  z-10   font-normal text-red-600`}>*</span>
+                )}
+                {label}
+              </FormLabel>
+            )}
             <Popover>
               <PopoverTrigger disabled={disabled} className="w-full" asChild>
                 <FormControl className="w-full">

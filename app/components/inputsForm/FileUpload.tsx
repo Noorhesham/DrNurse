@@ -1,6 +1,6 @@
 import { CloudUploadIcon, FileIcon, ReplaceIcon, Trash2Icon } from "lucide-react"; // Import Trash2Icon for the remove button
 import { useTranslations } from "next-intl";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 import MiniTitle from "../defaults/MiniTitle";
 import { Input } from "@/components/ui/input";
@@ -22,27 +22,23 @@ const FileUpload: React.FC<FileUploadProps> = ({
   noicon = false,
   mimeTypes = ["image/*", "application/pdf"], // Accept images and PDFs by default
 }) => {
-  const { setValue, getValues, formState } = useFormContext();
-  const [preview, setPreview] = useState<string | null>(null); // State to store file preview URL or icon
+  const { setValue, getValues, formState, watch } = useFormContext();
+  const [preview, setPreview] = useState<string | File | null>(null); // State to store file preview URL or icon
   const [isPdf, setIsPdf] = useState(false); // State to track if the file is a PDF
-  const [hasDefault, setHasDefault] = useState<boolean>(false); // State to check if there's a default file
-
-  const defaultFile = getValues(name) || formState.defaultValues?.[name]; // Get default file
-
+  const fileRef = useRef<HTMLInputElement>(null);
+  const defaultFile = watch(name) || formState.defaultValues?.[name]; // Get default file
+  const [forceRender, setForceRender] = useState(false);
   useEffect(() => {
     // If there is a default file, handle the preview
     if (defaultFile && typeof defaultFile === "object") {
       if (defaultFile.thumbnail) {
         setPreview(defaultFile.thumbnail);
-        setHasDefault(true);
       } else if (defaultFile.type === "application/pdf") {
         setIsPdf(true);
-        setHasDefault(true);
       }
     }
   }, [defaultFile]);
-  console.log(preview);
-
+  useEffect(() => {}, [forceRender]);
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     const file = files ? files[0] : null;
@@ -56,25 +52,18 @@ const FileUpload: React.FC<FileUploadProps> = ({
         reader.onloadend = () => {
           setPreview(reader.result as string); // Set preview URL for image
           setIsPdf(false); // Reset PDF state
-          setHasDefault(false); // New file, no default
         };
         reader.readAsDataURL(file); // Read the file as a Data URL
       } else if (fileType === "application/pdf") {
         setPreview(file); // No image preview for PDFs
         setIsPdf(true); // Set PDF state
-        setHasDefault(false); // New file, no default
       }
     }
   };
 
   const t = useTranslations();
-  const handleRemove = (e: any) => {
-    e.stopPropagation();
-    setPreview(null);
-    setIsPdf(false);
-    setHasDefault(false);
-    setValue(name, multiple ? [] : "", { shouldValidate: true }); // Set the value to an empty string
-  };
+
+  console.log(preview, getValues(name));
 
   return (
     <div className="flex flex-col gap-2 items-start">
@@ -89,8 +78,13 @@ const FileUpload: React.FC<FileUploadProps> = ({
           onChange={handleFileChange}
         />
       ) : (
-        <label className="px-4 py-2 cursor-pointer flex flex-col w-full">
+        <div
+          onClick={() => !preview && fileRef.current?.click()}
+          className="px-4 py-2 cursor-pointer flex flex-col w-full"
+        >
           <input
+            key={forceRender ? "key" : ""}
+            ref={fileRef}
             type="file"
             name={name}
             accept={mimeTypes.join(", ")} // Accept both images and PDFs
@@ -99,7 +93,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
             className="hidden"
           />
           <div className="border-2 rounded-xl flex-col border-dashed border-gray-400 w-full h-44 bg-gray-100 flex items-center justify-center text-center text-gray-500 hover:bg-gray-100 relative">
-            {preview || isPdf ? (
+            {preview !== null || isPdf ? (
               <>
                 {isPdf ? (
                   <div className="flex flex-col items-center">
@@ -116,36 +110,45 @@ const FileUpload: React.FC<FileUploadProps> = ({
                   >
                     <Image
                       fill
-                      src={preview || ""}
+                      src={typeof preview === "string" ? preview : URL.createObjectURL(preview as File) || ""}
                       alt="Selected file preview"
                       className="object-contain  rounded-xl"
                     />
                   </Link>
                 )}
-                <button
-                  onClick={handleRemove}
+                <span
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    fileRef.current?.click();
+                  }}
                   className="absolute top-2 z-40 right-2 bg-main2 text-white rounded-full p-1 !important"
                 >
                   <ReplaceIcon size={16} />
-                </button>{" "}
+                </span>{" "}
                 <button
-                  onClick={handleRemove}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPreview(null);
+                    setValue(name, "", { shouldValidate: true });
+                    setIsPdf(false);
+                    setForceRender((prev) => !prev);
+                  }}
                   className="absolute top-2 right-10 bg-red-600 text-white rounded-full p-1"
                 >
                   <Trash2Icon size={16} />
                 </button>
               </>
             ) : (
-              <>
+              <div className="flex flex-col items-center">
                 <CloudUploadIcon size={45} />
                 <span className="text-xs text-gray-500">
                   <strong>Browse photo</strong> or drop here
                 </span>
                 <p className="text-[12px] mt-1 max-w-40 text-muted-foreground">{t("imageUploadDesc")}</p>
-              </>
+              </div>
             )}
           </div>
-        </label>
+        </div>
       )}
     </div>
   );

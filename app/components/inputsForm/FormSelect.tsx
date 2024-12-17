@@ -3,7 +3,17 @@ import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessa
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { InputProps } from "../forms/CustomForm";
 
-const FormSelect = ({ name, label, placeholder, description, id, options, selected, className }: InputProps) => {
+const FormSelect = ({
+  name,
+  label,
+  placeholder,
+  description,
+  id,
+  options,
+  selected,
+  className,
+  optional,
+}: InputProps) => {
   const form = useFormContext();
   const selectedValue = form.watch(name);
 
@@ -17,9 +27,12 @@ const FormSelect = ({ name, label, placeholder, description, id, options, select
         const selected = options?.find((p) => p._id === form.getValues(name)?._id || p._id === selectedValue);
         return (
           <FormItem className={`${className || ""} relative w-full `} id={id || ""}>
-            <FormLabel className="  capitalize">{label}</FormLabel>
+            <FormLabel className=" relative  capitalize">
+              {" "}
+              {!optional && <span className={`absolute -right-5 -top-[1px]  z-10   font-normal text-red-600`}>*</span>}
+              {label}
+            </FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
-              {/* {!optional && <span className={`absolute right-8 -top-[-32px]  z-10   font-normal text-red-600`}>*</span>} */}
               <FormControl>
                 <SelectTrigger className=" capitalize shadow-sm">
                   <SelectValue placeholder={placeholder || "SELECT"}>{selected && selected.name}</SelectValue>
@@ -28,7 +41,8 @@ const FormSelect = ({ name, label, placeholder, description, id, options, select
               <SelectContent>
                 {filteredOptions &&
                   filteredOptions.map((option, i) => (
-                    <SelectItem className=" capitalize"
+                    <SelectItem
+                      className=" capitalize"
                       key={i + `${option.label} ${option.value}`}
                       value={option._id || option.value || option}
                     >

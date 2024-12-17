@@ -52,7 +52,7 @@ const jobSchema = z
     ]),
     hide_salary: z.string().min(1, "Hide Salary? is required"),
     nationality_id: z.union([z.string().min(1, "Nationality is required").optional(), z.number().optional()]),
-    gender: z.string().min(1, "Gender is required"),
+    gender: z.string().optional(),
     family_status: z.string().min(1, "Family Status is required"),
     benefits: z.array(z.string().min(1, "Benefit is required")).optional(),
     job_description: z.string().min(20, "Description is too short").optional(),
@@ -67,6 +67,10 @@ const jobSchema = z
   })
   .refine((data) => Number(data.min_salary) < Number(data.max_salary), {
     message: "'Min Salary' must be less than 'Max Salary'",
+    path: ["max_salary"],
+  })
+  .refine((data) => Number(data.min_salary) < Number(data.max_salary), {
+    message: "'Max Salary' must be greater than 'Min Salary'",
     path: ["max_salary"],
   });
 
@@ -207,7 +211,7 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
               placeholder={t("nationality")}
               options={countries?.data.map((country: any) => ({ label: country.title, value: country.id }))}
             />
-            <FormSelect label={t("Gender")} name="gender" options={GENDER} />
+            <FormSelect label={t("Gender")} name="gender" optional options={GENDER} />
             <FormSelect label={t("Family Status")} name="family_status" options={FAMILYSTATUS} />
           </FormFlexContainer>
           {/* Benefits */}

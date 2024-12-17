@@ -9,9 +9,11 @@ import { Arrow } from "./Icons";
 import { ArrowRight } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { DialogClose } from "@/components/ui/dialog";
+import { useRouter } from "next/navigation";
 
 const MyHospitals = () => {
   const { userSettings, loading } = useAuth();
+  const router = useRouter();
   if (loading) return <Spinner />;
   const companies = userSettings?.companies;
   return (
@@ -32,25 +34,26 @@ const MyHospitals = () => {
             <h3 className=" text-2xl font-bold uppercase text-main ">Select hospital profile</h3>
             <Paragraph description="Complete your profile, so you can appear in search results and apply for jobs" />
             <div className=" flex w-full  px-4 mt-2 lg:px-8 flex-col gap-4">
-              {companies?.map((item: any,i:number) => (
-                <DialogClose key={i}>
-                  <Link
-                    onClick={() => cookies.set("hospitalId", item.id)}
-                    href={`/dashboard/${item.id}`}
-                    className=" flex justify-between items-center gap-2"
-                  >
+              {companies?.map((item: any, i: number) => (
+                <DialogClose
+                  onClick={() => {
+                    cookies.set("hospitalId", item.id);
+                    router.push(`/dashboard/${item.id}`);
+                  }}
+                  key={i}
+                >
+                  <p className=" flex justify-between items-center gap-2">
                     <h3 className=" text-xl font-semibold text-black">{item.title}</h3>
                     <ArrowRight />
-                  </Link>
+                  </p>
                 </DialogClose>
               ))}{" "}
-              <DialogClose>
-                {" "}
-                <Link className=" w-full" href={"/dashboard/create-hospital"}>
-                  <div  className=" px-8 py-2 bg-main text-white mt-3 duration-150 hover:bg-main/80  w-full rounded-full">
+              <DialogClose onClick={() => router.push("/dashboard/create-hospital")}>
+                <p className=" w-full">
+                  <div className=" px-8 py-2 bg-main text-white mt-3 duration-150 hover:bg-main/80  w-full rounded-full">
                     CREATE HOSPITAL
                   </div>
-                </Link>
+                </p>
               </DialogClose>
             </div>
           </div>

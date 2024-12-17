@@ -142,11 +142,7 @@ const Profile2 = () => {
         <FormInput control={form.control} name="jobTitle" label="CURRENT JOB TITLE" placeholder="Enter Job Title" />
         {/* Personal Data */}
         <FlexWrapper max={false}>
-          <FormSelect
-            label="FAMILY STATUS"
-            options={FAMILYSTATUS}
-            name="familyStatus"
-          />
+          <FormSelect label="FAMILY STATUS" options={FAMILYSTATUS} name="familyStatus" />
           <FormSelect
             label="GENDER"
             options={[
@@ -177,12 +173,15 @@ const Profile2 = () => {
               { label: "Australia", value: "america" },
             ]}
           />
-          <FormInput
-            control={form.control}
-            name="licenseNumber"
-            label="License Number"
-            placeholder="Enter License Number"
-          />
+          {form.watch("licenseActive") !== "no" && (
+            <FormInput
+              control={form.control}
+              name="licenseNumber"
+              label="License Number"
+              type="number"
+              placeholder="Enter License Number"
+            />
+          )}
         </FlexWrapper>
         {/* Salary */}
         <MiniTitle size="md" boldness="bold" text="Salary" />

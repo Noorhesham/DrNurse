@@ -41,6 +41,7 @@ export interface InputProps {
   placeholder?: string;
   description?: string;
   label?: string;
+  optional?: boolean;
   id?: string;
   options?: any[];
   select?: boolean;

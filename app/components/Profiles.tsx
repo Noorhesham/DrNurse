@@ -55,18 +55,18 @@ const Profiles = ({ doctors, totalPages, filters, count, jobId }: any) => {
               jobId={jobId || ""}
               notification
               show={false}
-              key={doc.name}
+              key={doc.id || ""}
               applicant={{
                 name: doc.name,
                 image: doc.avatar,
                 speciality: [doc?.career_type?.title, doc?.career_specialty?.title, doc?.career_level?.title]
                   .filter(Boolean)
                   .join(", "),
-                address: `${doc.current_location?.title}`,
-                duration: `${doc.years_of_experience} of experience`,
+                address: `${doc.current_location?.title || ""}`,
+                duration: doc.years_of_experience ? `${doc.years_of_experience} of experience` : "No Experience",
                 id: doc.id,
                 applicationId: doc?.job_application_id || "",
-                classification: doc?.application_classification,
+                classification: doc?.application_classification || "",
               }}
             />
           ))
@@ -90,3 +90,24 @@ const Profiles = ({ doctors, totalPages, filters, count, jobId }: any) => {
 };
 
 export default Profiles;
+{
+  /* <Applicant
+classify={true}
+jobId={jobId || ""}
+notification
+show={false}
+key={doc.name || ""}
+applicant={{
+  name: doc.name,
+  image: doc.avatar,
+  speciality: [doc?.career_type?.title, doc?.career_specialty?.title, doc?.career_level?.title]
+    .filter(Boolean)
+    .join(", "),
+  address: `${doc.current_location?.title || ""}`,
+  duration: doc.years_of_experience ? `${doc.years_of_experience} of experience` : "No Experience",
+  id: doc.id,
+  applicationId: doc?.job_application_id || "",
+  classification: doc?.application_classification || "",
+}}
+/> */
+}

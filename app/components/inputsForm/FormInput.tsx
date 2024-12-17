@@ -10,7 +10,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import PhotoInput from "./PhotoInput";
 import { Textarea } from "@/components/ui/textarea";
 import { useFormContext } from "react-hook-form";
-import MotionItem from "../defaults/MotionItem";
 import Image from "next/image";
 import Link from "next/link";
 import { getPasswordStrength } from "@/app/helpers/utils";
@@ -20,6 +19,7 @@ interface FormInputProps {
   name: string;
   label?: string;
   width?: string;
+  toYear?: number;
   type?: string;
   phone?: boolean;
   check?: boolean;
@@ -43,7 +43,9 @@ interface FormInputProps {
   area?: boolean;
   photo?: boolean;
   noimg?: boolean;
+  monthOnly?: boolean;
   noSwitch?: boolean;
+  monthsOnly?: boolean;
   currency?: boolean;
 }
 export interface PhoneProps {
@@ -84,6 +86,8 @@ const FormInput = ({
   width,
   noSwitch = false,
   check = false,
+  toYear,
+  monthOnly,
 }: FormInputProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [PhoneSearchComponent, setPhoneSearchComponent] = useState<PhoneSearchComponentType>();
@@ -125,7 +129,15 @@ const FormInput = ({
     return (
       <Suspense>
         <div className=" relative w-full">
-          <CalendarComponent disabled={disabled} label={label} name={name || ""} control={control} />
+          <CalendarComponent
+            optional={optional}
+            disabled={disabled}
+            monthOnly={monthOnly}
+            label={label}
+            name={name || ""}
+            toYear={toYear}
+            control={control}
+          />
         </div>
       </Suspense>
     );
@@ -139,7 +151,7 @@ const FormInput = ({
           {!switchToggle && label !== "" && (
             <FormLabel className={`uppercase relative w-fit ${check && "text-nowrap mt-2"}`}>
               {" "}
-              {!optional && !date && !switchToggle && !currency && label && (
+              {!optional && !date && !switchToggle && label && (
                 <span className={`absolute -right-3 top-0   font-normal text-red-600`}>*</span>
               )}
               {label} {icon}
@@ -181,6 +193,7 @@ const FormInput = ({
                 <div className=" flex flex-col gap-2 w-full items-start">
                   {type === "file" && form.getValues(name) && !(form.getValues(name) instanceof File) && (
                     <Link
+                      target="_blank"
                       href={form.getValues(name)?.file || "#"}
                       className="flex gap-2 justify-between w-full bg-white rounded-xl hover:bg-sky-100 duration-150  
                      px-4 py-2 items-center"

@@ -381,7 +381,7 @@ export async function Server({
       body: requestBody,
       next: {
         revalidate: cache ? cache : 0,
-        tags: cache ? [`${resourceName}`] : [],
+        tags: cache ? [`${resourceName}-${queryParams}`] : [],
       },
     });
     // if (!response.ok) throw new Error(`Error: ${response.status}`);

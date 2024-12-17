@@ -38,6 +38,7 @@ const page = () => {
     image: logo?.[0]?.file || "/nanana.svg",
     address: business,
   };
+  console.log(data);
   return (
     <section>
       <div className=" bg-light ">
@@ -63,13 +64,17 @@ const page = () => {
       <MaxWidthWrapper className=" ">
         <GridContainer className=" gap-8" cols={8}>
           <div className=" order-2 lg:order-[0] col-span-2 lg:col-span-6">
-            <section className=" flex flex-col gap-2 ">
-              <MiniTitle boldness="bold" color=" text-main2" text="ABOUT ME" />{" "}
-              <div
-                dangerouslySetInnerHTML={{ __html: convertToHTML(description) }}
-                className={`lg:max-w-4xl  text-black lg:text-base text-sm  font-medium my-2 leading-[1.7] `}
-              />
-            </section>
+            {description && (
+              <section className=" flex flex-col gap-2 ">
+                <MiniTitle boldness="bold" color=" text-main2" text="ABOUT ME" />{" "}
+                {
+                  <div
+                    dangerouslySetInnerHTML={{ __html: convertToHTML(description || "") }}
+                    className={`lg:max-w-4xl  text-black lg:text-base text-sm  font-medium my-2 leading-[1.7] `}
+                  />
+                }
+              </section>
+            )}
           </div>
           <div className="flex col-span-full lg:col-span-2 px-5 py-5 pb-10 rounded-xl flex-col gap-3  bg-light">
             <div className=" flex justify-between items-center gap-4">
@@ -78,7 +83,7 @@ const page = () => {
               </div>
             </div>
             <MiniTitle color="black" text="HOSPITAL INFO" />
-            <VerificationStatus verification_type={userSettings.verification_type} />
+            <VerificationStatus verification_type={userSettings?.verification_type} />
 
             <div className="  flex flex-col gap-5">
               <InfoItem icon={<CalendarIcon className=" w-5 h-5" />} title="YEAR FOUNDED" description={year_founded} />

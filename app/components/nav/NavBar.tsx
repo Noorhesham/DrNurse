@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 import ModalCustom from "../defaults/ModalCustom";
 import MyHospitals from "../MyHospitals";
 import { useLocale } from "next-intl";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const NavBar = () => {
   const [isScrollingDown, setIsScrollingDown] = useState(false);
@@ -60,6 +61,7 @@ const NavBar = () => {
   const isHome = pathName === "/ar" || pathName === "/en" || pathName.includes("/hospital-home");
   const isPerson = pathName.includes("/person");
   const isDashboard = pathName.includes("/dashboard");
+  const hospitalHome = pathName.includes("hospital-home");
   let links;
 
   if (isHome) {
@@ -194,7 +196,13 @@ const NavBar = () => {
               </ul>
             </div>
             <div className="  flex items-center gap-2 ">
-              {!user && !loading ? (
+              {loading ? (
+                <div className="flex items-center gap-2">
+                  {" "}
+                  <Skeleton className=" h-12 rounded-full w-[150px]" />
+                  <Skeleton className=" h-12 rounded-full w-[150px]" />
+                </div>
+              ) : !user ? (
                 <>
                   <Link href="/login">
                     <Button
@@ -206,13 +214,9 @@ const NavBar = () => {
                   </Link>
                   <Link
                     href={
-                      !user
-                        ? pathName.replace(`/${locale}`, "/") === "/"
-                          ? "/signup?role=doctor"
-                          : "/"
-                        : user
-                        ? "/dashboard"
-                        : isPerson
+                      pathName.replace(`/${locale}`, "/") === "/"
+                        ? "/signup?role=doctor"
+                        : !hospitalHome
                         ? "/signup?role=doctor"
                         : "/signup?role=hospital"
                     }

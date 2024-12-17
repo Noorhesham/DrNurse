@@ -33,8 +33,9 @@ const page = () => {
   if (isLoading || !data || loading) return <Spinner />;
   else if (!data.data && !isLoading) redirect("/person/create-profile");
   const dataPage = data.data;
-  const { description } = data.data;
+  const { description, educations, main_educations } = data.data;
   console.log(data);
+  const education = [...educations, ...main_educations];
   return (
     <section className=" pt-36">
       <BreadCrumb
@@ -82,7 +83,9 @@ const page = () => {
                 {
                   href: "about-me",
                   label: "About Me",
-                  content: (
+                  content: description ? (
+                    ""
+                  ) : (
                     <div
                       dangerouslySetInnerHTML={{ __html: convertToHTML(description || "") }}
                       className={`lg:max-w-2xl text-black text-sm  font-medium my-2 leading-[1.7] `}
@@ -94,13 +97,18 @@ const page = () => {
                   label: "EDUCATION",
                   content: (
                     <section className="flex flex-col gap-4 ">
-                      {dataPage.educations.length > 0 ? (
-                        dataPage.educations?.map((edu: any, index: any) => (
+                      {education.length > 0 ? (
+                        education?.map((edu: any, index: any) => (
                           <Education
                             key={index}
                             edu={{
                               image: "/Vector (10).svg",
-                              name: `${edu.training_center} , ${edu.certificate_name}`,
+                              name: `${
+                                edu.certificate_name || edu.university_name
+                                  ? `${edu.certificate_name || edu.university_name || ""}, `
+                                  : ""
+                              }${edu.training_center || ""}`.trim(),
+
                               speciality: [
                                 dataPage?.career_type?.title,
                                 dataPage?.career_specialty?.title,
@@ -108,8 +116,8 @@ const page = () => {
                               ]
                                 .filter(Boolean)
                                 .join(", "),
-                              date: edu.date,
-                              address: edu?.country?.title,
+                              date: (edu.date && edu?.date) || "",
+                              address: edu?.country?.title || "",
                             }}
                           />
                         ))
@@ -132,9 +140,9 @@ const page = () => {
                                 edu={true}
                                 show={false}
                                 applicant={{
-                                  name: experience.name,
+                                  name: experience.name || "",
                                   image: "/Experience.svg",
-                                  address: experience?.country?.title,
+                                  address: experience?.country?.title || "",
                                 }}
                               />
                               <div className=" ml-auto self-end   font-medium text-gray-600">
@@ -166,7 +174,7 @@ const page = () => {
           </div>
           <div className="flex col-span-full lg:col-span-2 px-5 py-5 pb-10 rounded-xl flex-col gap-3  bg-light">
             <MiniTitle color="black" text="MY INFO" />
-            <VerificationStatus verification_type={userSettings.verification_type} />
+            <VerificationStatus verification_type={userSettings.verification_type || ""} />
             <div className=" flex flex-col gap-5">
               <InfoItem
                 icon={<DashboardIcon className=" w-5 h-5" />}
@@ -176,7 +184,9 @@ const page = () => {
               <InfoItem
                 icon={<DollarSign className=" w-5 h-5" />}
                 title="SALARY EXPECTATIONS"
-                description={`${dataPage.min_salary} ${dataPage.currency} -${dataPage.max_salary} ${dataPage.currency} /MONTH`}
+                description={`${dataPage?.min_salary} ${dataPage?.currenc || ""} -${dataPage?.max_salary} ${
+                  dataPage?.currency || ""
+                } /MONTH`}
               />
               <InfoItem
                 icon={<Briefcase className=" w-5 h-5" />}
@@ -196,12 +206,12 @@ const page = () => {
               <InfoItem
                 icon={<LanguagesIcon className=" w-5 h-5" />}
                 title="NATIONALITY"
-                description={dataPage?.nationality.title || "Unknown Department"}
+                description={dataPage?.nationality?.title || "Unknown Department"}
               />
               <InfoItem
                 icon={<GoLocation className=" w-6 h-6" />}
                 title="CURRENT LOCATION"
-                description={`${dataPage?.current_location.title},${dataPage?.state?.title || ""},${
+                description={`${dataPage?.current_location?.title},${dataPage?.state?.title || ""},${
                   dataPage?.city?.title || ""
                 }`}
               />

@@ -196,7 +196,7 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
               <InfoItem
                 icon={<GoLocation className=" w-6 h-6" />}
                 title="CURRENT LOCATION"
-                description={`${dataPage?.current_location.title},${dataPage?.state?.title || ""},${
+                description={`${dataPage?.current_location?.title},${dataPage?.state?.title || ""},${
                   dataPage?.city?.title || ""
                 }`}
               />

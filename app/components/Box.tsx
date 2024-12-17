@@ -58,7 +58,7 @@ const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; fi
           params.delete(key); // Remove the filter if no values are selected
         }
       });
-
+      params.set("page", "1");
       router.push(`?${params.toString()}`, { scroll: false });
     }
   };

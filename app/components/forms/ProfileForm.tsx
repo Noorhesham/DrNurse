@@ -52,7 +52,7 @@ const jobSchema = z
     nationality_id: z.union([z.string().min(1, "Nationality Salary is required"), z.number().min(1, "required")]),
     gender: z.string().min(1, "Gender is required"),
     family_status: z.string().min(1, "Family Status is required"),
-    address: z.string().min(1, "Current Address is required"),
+    address: z.string().optional(),
     current_location_id: z.union([z.string().min(1, "Country is required"), z.number()]),
     city_id: z.union([z.string().min(1, "City is required"), z.number().min(1, "required")]),
     state_id: z.union([z.string().min(1, "State is required"), z.number().min(1, "required")]),
@@ -125,6 +125,26 @@ const jobSchema = z
       message: "Minimum salary must be less than maximum salary",
       path: ["min_salary"],
     }
+  )
+  .refine(
+    (data) => {
+      const minSalary = Number(data.min_salary);
+      const maxSalary = Number(data.max_salary);
+      return minSalary < maxSalary;
+    },
+    {
+      message: "Minimum salary must be less than maximum salary",
+      path: ["max_salary"],
+    }
+  )
+  .refine(
+    (data) => {
+      return data.active_license_country === "no" || data.license_number;
+    },
+    {
+      message: "License number is required when the license country is not 'no'.",
+      path: ["license_number"],
+    }
   );
 const replaceUndefinedOrNull = (obj: any): any => {
   if (obj instanceof File) return obj;
@@ -144,6 +164,7 @@ const replaceUndefinedOrNull = (obj: any): any => {
 type JobFormValues = z.infer<typeof jobSchema>;
 
 const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
+  console.log(dataDefault);
   const [isPending, startTransition] = useTransition();
   const { data: countries, isLoading } = useGetEntity("countries", "countries");
   const { data: careerTypes, isLoading: loadingCareerTypes } = useGetEntities({
@@ -203,17 +224,25 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
                 certificate: "",
               },
             ],
-      previous_experience: dataDefault?.previous_experiences || [
-        {
-          name: "",
-          country_id: "",
-          career_level: "",
-          career_specialty_id: "",
-          from: "",
-          to: "",
-          about: "",
-        },
-      ],
+      previous_experience:
+        dataDefault?.previous_experiences?.length > 0
+          ? dataDefault.previous_experiences.map((ex) => ({
+              ...ex,
+              present: ex.present === 1 ? true : false,
+            }))
+          : [
+              {
+                name: "",
+                country_id: "",
+                career_level: "",
+                career_specialty_id: "",
+                from: "",
+                to: "",
+                about: "",
+                present: false,
+              },
+            ],
+
       currency: dataDefault?.currency || "usd",
     },
   });
@@ -247,7 +276,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
     const formData = new FormData();
     const fileFields = ["resume", "practice_license", "identification_card", "certificate"];
     const sanitizedData = replaceUndefinedOrNull(data);
-
+    console.log(data);
     if (sanitizedData.available !== "yes_from_custom_time") {
       delete sanitizedData.start_availability_at;
     }
@@ -330,10 +359,10 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
       } else toast.error(res.message);
     });
   };
-  useEffect(() => {
-    if (form.getValues("available") === "yes_from_custom_time")
-      form.setValue("start_availability_at", format(Date.now(), "yyyy-MM-dd"));
-  }, [form, form.getValues("available")]);
+  // useEffect(() => {
+  //   if (form.getValues("available") === "yes_from_custom_time" && !form.getValues("start_availability_at"))
+  //     form.setValue("start_availability_at", format(Date.now(), "yyyy-MM-dd"));
+  // }, [form, form.getValues("available")]);
   if (isLoading) return <Spinner />;
 
   return (
@@ -377,7 +406,13 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
         {/* Address */}
         <MiniTitle form size="md" boldness="bold" text={t("Current Address")} />
         <CountriesInput countryName="current_location_id" stateName="state_id" cityName="city_id" />
-        <FormInput control={form.control} name="address" label="ADDRESS" placeholder={t("Write Your Address")} />
+        <FormInput
+          control={form.control}
+          optional
+          name="address"
+          label="ADDRESS"
+          placeholder={t("Write Your Address")}
+        />
         {/* Employment Availability */}
         <MiniTitle form size="md" boldness="bold" text={t("Available for Employment")} />
         <FlexWrapper className=" items-center" max={false}>
@@ -391,7 +426,15 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
             ]}
           />
           {form.getValues("available") === "yes_from_custom_time" && (
-            <FormInput control={form.control} name="start_availability_at" label={t("Start From")} date />
+            <FormInput
+              monthOnly
+              control={form.control}
+              name="start_availability_at"
+              toYear={new Date().getFullYear() + 4}
+              label={t("Start From")}
+              monthsOnly
+              date
+            />
           )}
         </FlexWrapper>
         {/* License */}
@@ -413,12 +456,15 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
               { label: "Australia", value: "AU" },
             ]}
           />
-          <FormInput
-            control={form.control}
-            name="license_number"
-            label={t("License Number")}
-            placeholder={t("Enter License Number")}
-          />
+          {form.watch("active_license_country") !== "no" && (
+            <FormInput
+              control={form.control}
+              name="license_number"
+              type="number"
+              label={t("License Number")}
+              placeholder={t("Enter License Number")}
+            />
+          )}
         </FlexWrapper>
         {/* Salary */}
         <MiniTitle form size="md" boldness="bold" text={t("Salary")} />
@@ -476,9 +522,16 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
             />
           </FlexWrapper>
           <div className="flex w-full  lg:flex-row flex-col items-center gap-4">
-            <FormInput control={form.control} name={`main_education.date`} label={t("FROM Date")} date />
+            <FormInput control={form.control} monthsOnly name={`main_education.date`} label={t("FROM Date")} date />
             {!form.watch(`main_education.present`) && (
-              <FormInput control={form.control} name={`main_education.date_to`} label={t("TO DATE")} date />
+              <FormInput
+                control={form.control}
+                name={`main_education.date_to`}
+                optional={true}
+                monthsOnly
+                label={t("TO DATE")}
+                date
+              />
             )}
             <FormInput
               control={form.control}
@@ -535,7 +588,14 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
                   <div className="flex flex-col lg:flex-row w-full items-center gap-4">
                     <FormInput control={form.control} name={`education.${index}.date`} label={t("FROM Date")} date />
                     {!form.watch(`education.${index}.present`) && (
-                      <FormInput control={form.control} name={`education.${index}.date_to`} label={t("TO DATE")} date />
+                      <FormInput
+                        control={form.control}
+                        optional={true}
+                        name={`education.${index}.date_to`}
+                        label={t("TO DATE")}
+                        date
+                        monthsOnly={true}
+                      />
                     )}
                     <FormInput
                       optional
@@ -612,9 +672,17 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
                 name={`previous_experience.${index}.from`}
                 label={t("Start Date")}
                 date
+                monthsOnly
               />
               {!form.watch(`previous_experience.${index}.present`) && (
-                <FormInput control={form.control} name={`previous_experience.${index}.to`} label={t("End Date")} date />
+                <FormInput
+                  control={form.control}
+                  optional={true}
+                  name={`previous_experience.${index}.to`}
+                  label={t("End Date")}
+                  date
+                  monthsOnly
+                />
               )}
 
               <div className="flex w-full items-center gap-2">

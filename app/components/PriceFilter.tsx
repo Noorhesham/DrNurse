@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState, useTransition } from "react";
 import { useLoading } from "../context/LoadingContext";
 import { useSetLoading } from "../hooks/useSetLoadingt";
+import { Button } from "@/components/ui/button";
 
 const PriceFilter = ({ from_years }: { from_years?: any }) => {
   const fromName = from_years ? "from_years" : "experience_from";
@@ -49,45 +50,56 @@ const PriceFilter = ({ from_years }: { from_years?: any }) => {
     WrapperFn(update);
   }, [priceFilter, replace]);
   const handlePriceChange = ({ range, isCustom }: any) => setPriceFilter({ range, isCustom });
+  const reset = () => {
+    const url = new URL(window.location.href);
 
+    url.searchParams.delete(fromName);
+    url.searchParams.delete(toName);
+    replace(url.toString(), { scroll: false });
+  };
   return (
-    <ul className="space-y-1 filter border-b px-5 border-gray-200 pb-6 text-sm font-medium text-gray-900">
-      <li className="flex items-center  flex-row flex-wrap  lg:flex-col gap-4">
-        <div className="self-start flex items-center gap-2 ">
-          <label htmlFor={"price-custom"} className="text-base font-semibold text-main2">
-            EXPERIENCE
-          </label>
-        </div>
-      </li>
-      <div className="flex mt-2  flex-row flex-wrap gap-3   text-sm font-medium lg:flex-col">
-        {PRICE_FILTERS.map((filter: any, i: number) => (
-          <li key={i} className={` flex items-center gap-2`}>
-            <input
-              type="radio"
-              id={filter.value}
-              checked={
-                experience_to &&
-                priceFilter?.range?.[0] === filter.value?.[0] &&
-                priceFilter?.range?.[1] === filter.value?.[1]
-              }
-              onChange={() => {
-                handlePriceChange({
-                  range: filter.value,
-                  isCustom: filter.isCustom,
-                  debounce: false,
-                });
-              }}
-            />
-            <label
-              htmlFor={filter.value}
-              className="leading-none text-xs text-main2 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              {filter.label}
+    <div className="flex flex-col items-end">
+      <ul className="space-y-1 w-full filter border-b px-5 border-gray-200 pb-6 text-sm font-medium text-gray-900">
+        <li className="flex items-center  flex-row flex-wrap  lg:flex-col gap-4">
+          <div className="self-start flex items-center gap-2 ">
+            <label htmlFor={"price-custom"} className="text-base font-semibold text-main2">
+              EXPERIENCE
             </label>
-          </li>
-        ))}
-      </div>
-    </ul>
+          </div>
+        </li>
+        <div className="flex mt-2  flex-row flex-wrap gap-3   text-sm font-medium lg:flex-col">
+          {PRICE_FILTERS.map((filter: any, i: number) => (
+            <li key={i} className={` flex items-center gap-2`}>
+              <input
+                type="radio"
+                id={filter.value}
+                checked={
+                  experience_to &&
+                  priceFilter?.range?.[0] === filter.value?.[0] &&
+                  priceFilter?.range?.[1] === filter.value?.[1]
+                }
+                onChange={() => {
+                  handlePriceChange({
+                    range: filter.value,
+                    isCustom: filter.isCustom,
+                    debounce: false,
+                  });
+                }}
+              />
+              <label
+                htmlFor={filter.value}
+                className="leading-none text-xs text-main2 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                {filter.label}
+              </label>
+            </li>
+          ))}
+        </div>
+      </ul>
+      <button className=" py-1 text-white ml-auto self-end mt-2  px-4 bg-main  rounded-full" onClick={reset}>
+        Reset
+      </button>
+    </div>
   );
 };
 

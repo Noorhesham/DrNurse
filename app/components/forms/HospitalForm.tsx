@@ -19,11 +19,10 @@ import { redirect, useRouter } from "next/navigation";
 import cookies from "js-cookie";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/app/context/AuthContext";
-const facebookUrlPattern = /^https?:\/\/(www|web)\.facebook\.com(\/[A-Za-z0-9._-]*)?$/;
-const twitterUrlPattern = /^https?:\/\/(www\.)?x.com(\/[A-Za-z0-9_]*)?$/;
-const instagramUrlPattern = /^https?:\/\/(www\.)?instagram.com(\/[A-Za-z0-9._]*)?$/;
-const linkedinUrlPattern = /^https?:\/\/(www\.)?linkedin.com(\/in\/[A-Za-z0-9_-]*)?$/;
-
+const facebookUrlPattern = /facebook/;
+const twitterUrlPattern = /x/;
+const instagramUrlPattern = /instagram/;
+const linkedinUrlPattern = /linkedin/;
 const hospitalSchema = z.object({
   business: z.string().min(1, "Hospital Type is required"),
   title: z.string().min(1, "Health Service Provider is required"),
@@ -43,13 +42,13 @@ const hospitalSchema = z.object({
   email: z.string().email("Invalid email format"),
   commercial_registration_number: z.string().optional(),
   social_facebook: z.string().regex(facebookUrlPattern, "Invalid Facebook URL").optional().or(z.literal("")),
-  social_twitter: z.string().regex(twitterUrlPattern, "Invalid Twitter URL").optional().or(z.literal("")),
+  social_twitter: z.string().regex(twitterUrlPattern, "Invalid X URL").optional().or(z.literal("")),
   social_instagram: z.string().regex(instagramUrlPattern, "Invalid Instagram URL").optional().or(z.literal("")),
   social_linkedin: z.string().regex(linkedinUrlPattern, "Invalid LinkedIn URL").optional().or(z.literal("")),
 
   logo: z.any().optional(),
 
-  description: z.string().min(10, "Description is too short"),
+  description: z.string().optional(),
   commercial_registration: z.any().optional(),
 });
 
@@ -200,7 +199,7 @@ const HospitalProfileSettings = ({ defaultData }: { defaultData?: any }) => {
         </FlexWrapper>
         <FlexWrapper max={false}>
           <FormInput type="number" label={t("You Founded")} name="year_founded" />
-          <FormInput type="number" label={t("Hospital Size")} optional name="company_size" />
+          <FormInput type="number" label={t("Hospital Size")} name="company_size" />
         </FlexWrapper>
         {/* Branches */}
         <MiniTitle size="md" boldness="bold" text={t("Branches")} />
@@ -272,7 +271,7 @@ const HospitalProfileSettings = ({ defaultData }: { defaultData?: any }) => {
           <FileUpload mimeTypes={["application/pdf"]} label={t("Upload Documents")} name="commercial_registration" />
         </div>
         {/* Hospital Description */}
-        <FormInput control={form.control} name="description" label={t("Description about Hospital")} area />
+        <FormInput control={form.control} name="description" optional label={t("Description about Hospital")} area />
         {/* Document Upload */}
         {/* Submit Button */}
         <div className=" w-fit">

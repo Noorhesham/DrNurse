@@ -244,15 +244,13 @@ export const FAMILYSTATUS = [
   { label: "Married", value: "married" },
   { label: "Single", value: "single" },
   { label: "Divorced", value: "divorced" },
-  { label: "Widowed", value: "widowed" },
-  { label: "Not specified", value: "" },
-
-  { label: "Other", value: "Other" },
+  { label: "Widowed", value: "widowed" },  
+  { label: "Other", value: "other" },
+  { label: "Not specified", value: " " },
 ];
 export const GENDER = [
   { label: "Male", value: "male" },
   { label: "Female", value: "female" },
-  { label: "Not specified", value: "" },
 ];
 export const WEBSITEURL = "https://dr-nurse.vercel.app";
 export const APIURL = "https://dr.r-m.dev";
