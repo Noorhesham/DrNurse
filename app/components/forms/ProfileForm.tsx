@@ -87,7 +87,6 @@ const jobSchema = z
             .optional(),
           certificate_name: z.string().min(1, "Certificate Name is required"),
           training_center: z.string().optional(),
-          career_level_id: z.union([z.string(), z.number()]),
           certificate: z.any().optional(),
         })
       )
@@ -579,7 +578,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
                     disabled={form.getValues("career_type_id") === ""}
                     loadingCareerTypes={loadingCareerTypes}
                     careerTypes={careerTypes}
-                    careerLevel={`education.${index}.career_level_id`}
+                    careerLevel={``}
                     careerSpecialty={`education.${index}.career_specialty_id`}
                     careerType="career_type_id"
                   />

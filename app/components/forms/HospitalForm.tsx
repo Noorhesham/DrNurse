@@ -87,7 +87,7 @@ const HospitalProfileSettings = ({ defaultData }: { defaultData?: any }) => {
   });
   const router = useRouter();
   const queryClient = useQueryClient();
-
+  console.log(form.formState.errors);
   const onSubmit = (data: HospitalFormValues) => {
     const formData = new FormData();
     //
@@ -120,16 +120,18 @@ const HospitalProfileSettings = ({ defaultData }: { defaultData?: any }) => {
                 }
               }
             } else if (item !== null && item !== undefined && item !== "") {
-              formData.append(`${key}[]`, item);
+              formData.append(`${key}`, item);
             }
           });
         } else if (typeof value === "object" && value !== null && !(value instanceof File)) {
           // If the value is an object, but not a file
-          for (const nestedKey in value) {
-            if (value[nestedKey] !== null && value[nestedKey] !== undefined && value[nestedKey] !== "") {
-              formData.append(`${key}[${nestedKey}]`, value[nestedKey]);
-            }
-          }
+          if (key === "logo") formData.append(`${key}[]`, value.id);
+          if (key !== "logo") formData.append(`${key}`, value);
+          // for (const nestedKey in value) {
+          //   if (value[nestedKey] !== null && value[nestedKey] !== undefined && value[nestedKey] !== "") {
+
+          //   }
+          // }
         } else {
           // Handle file or scalar values, skip if empty
           formData.append(key, value as string | Blob);

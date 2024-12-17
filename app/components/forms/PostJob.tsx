@@ -197,7 +197,7 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
               options={[
                 { value: "1", label: "yes" },
                 { value: "0", label: "no" },
-              ]}
+              ]} className=""
               label={t("Hide Salary?")}
               name="hide_salary"
             />
@@ -211,7 +211,12 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
               placeholder={t("nationality")}
               options={countries?.data.map((country: any) => ({ label: country.title, value: country.id }))}
             />
-            <FormSelect label={t("Gender")} name="gender" optional options={GENDER} />
+            <FormSelect
+              label={t("Gender")}
+              name="gender"
+              optional
+              options={[...GENDER, { label: "Not Specified", value: " " }]}
+            />
             <FormSelect label={t("Family Status")} name="family_status" options={FAMILYSTATUS} />
           </FormFlexContainer>
           {/* Benefits */}
