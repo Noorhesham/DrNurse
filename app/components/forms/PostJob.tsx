@@ -24,6 +24,7 @@ import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
 import { useGetEntity } from "@/lib/queries";
 import { useParams, useRouter } from "next/navigation";
+import VerificationStatus from "../VerficationStatus";
 // Define Zod schema
 const salaryRegex = /^[1-9]\d*$/;
 
@@ -82,6 +83,8 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
   const { id } = useParams();
   const t = useTranslations();
   const locale = useLocale();
+  const { data: company, isLoading: loadingCompany } = useGetEntity("company", `company-${id}`, id);
+
   const { data: careerTypes, isLoading: loadingCareerTypes } = useGetEntities({
     resourceName: "getEntity",
     key: "career-types",
@@ -156,155 +159,165 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
   };
   console.log(data);
   return (
-    <Form {...form}>
-      <form className="flex flex-col px-5 py-2.5 w-full items-stretch gap-2" onSubmit={form.handleSubmit(onSubmit)}>
-        <MiniTitle size="md" boldness="bold" text={defaultData?.id ? t("Edit Job") : t("postJob")} />
-        <div className=" flex flex-col gap-3 mt-3">
-          {/* Job Title and Career Details */}
-          <FormInput
-            control={form.control}
-            name="job_title"
-            label={t("Job Title")}
-            placeholder={t("Enter Job Title")}
+    <div>
+      {!loadingCompany &&
+        (company.data.verification_type === "pending" || company.data.verification_type === "re-review") && (
+          <VerificationStatus
+            message="Jobs Cannot be posted until company is verified"
+            verification_type={company.data.verification_type}
           />
-          <CareerInput
-            careerTypes={careerTypes}
-            disabled={loadingCareerTypes}
-            loadingCareerTypes={loadingCareerTypes}
-            careerType="career_type_id"
-            careerSpecialty="career_specialty_id"
-            careerLevel="career_level_id"
-          />
-          {/* Experience */}
-          <GridContainer cols={3}>
-            <FormInput control={form.control} name="experience_from" label={t("experience from")} type="number" />
-            <FormInput control={form.control} name="experience_to" label={t("experience to")} type="number" />
-          </GridContainer>
-          {/* Branch */}
-          <FormSelect
-            disabled={isLoading}
-            options={data?.data.map((branch: any) => ({ value: branch.id.toString(), label: branch.name }))}
-            label={t("Choose the Branch")}
-            name="branch_id"
-            className="mt-4"
-          />
-          {/* Salary */}
-          <FormFlexContainer title={t("Salary")}>
-            <FormSelect label={t("Currency")} name="currency" options={CURRENCY_OPTIONS} />
-            <FormInput control={form.control} name="min_salary" currency label={t("Min Salary")} type="number" />
-            <FormInput control={form.control} name="max_salary" currency label={t("Max Salary")} type="number" />
+        )}
+      <Form {...form}>
+        <form className="flex flex-col px-5 py-2.5 w-full items-stretch gap-2" onSubmit={form.handleSubmit(onSubmit)}>
+          <MiniTitle size="md" boldness="bold" text={defaultData?.id ? t("Edit Job") : t("postJob")} />
+          <div className=" flex flex-col gap-3 mt-3">
+            {/* Job Title and Career Details */}
+            <FormInput
+              control={form.control}
+              name="job_title"
+              label={t("Job Title")}
+              placeholder={t("Enter Job Title")}
+            />
+            <CareerInput
+              careerTypes={careerTypes}
+              disabled={loadingCareerTypes}
+              loadingCareerTypes={loadingCareerTypes}
+              careerType="career_type_id"
+              careerSpecialty="career_specialty_id"
+              careerLevel="career_level_id"
+            />
+            {/* Experience */}
+            <GridContainer cols={3}>
+              <FormInput control={form.control} name="experience_from" label={t("experience from")} type="number" />
+              <FormInput control={form.control} name="experience_to" label={t("experience to")} type="number" />
+            </GridContainer>
+            {/* Branch */}
             <FormSelect
-              options={[
-                { value: "1", label: "yes" },
-                { value: "0", label: "no" },
-              ]} className=""
-              label={t("Hide Salary?")}
-              name="hide_salary"
+              disabled={isLoading}
+              options={data?.data.map((branch: any) => ({ value: branch.id.toString(), label: branch.name }))}
+              label={t("Choose the Branch")}
+              name="branch_id"
+              className="mt-4"
             />
-          </FormFlexContainer>
-          {/* Personal Data */}
-          <FormFlexContainer title={t("Personal Data")}>
-            <ComboboxForm
-              disabled={loadingCountries}
-              name={"nationality_id"}
-              label={t("nationality")}
-              placeholder={t("nationality")}
-              options={countries?.data.map((country: any) => ({ label: country.title, value: country.id }))}
-            />
-            <FormSelect
-              label={t("Gender")}
-              name="gender"
-              optional
-              options={[...GENDER, { label: "Not Specified", value: " " }]}
-            />
-            <FormSelect label={t("Family Status")} name="family_status" options={FAMILYSTATUS} />
-          </FormFlexContainer>
-          {/* Benefits */}
-          <div className=" mt-5 flex flex-col">
-            <MiniTitle size="md" boldness="bold" text={t("Benefits")} />
-            <div className="">
-              {fields.map((field, index) => (
-                <div className="flex items-center gap-4 " key={field.id}>
-                  <FormInput control={form.control} name={`benefits.${index}`} placeholder={t("Add Benefit")} />
-                  <button
-                    type="button"
-                    onClick={() => remove(index)}
-                    className="rounded-xl self-center border-2 border-gray-600 p-1 my-auto"
-                  >
-                    <XIcon className="w-4 h-4 " />
-                  </button>
+            {/* Salary */}
+            <FormFlexContainer title={t("Salary")}>
+              <FormSelect label={t("Currency")} name="currency" options={CURRENCY_OPTIONS} />
+              <FormInput control={form.control} name="min_salary" currency label={t("Min Salary")} type="number" />
+              <FormInput control={form.control} name="max_salary" currency label={t("Max Salary")} type="number" />
+              <FormSelect
+                options={[
+                  { value: "1", label: "yes" },
+                  { value: "0", label: "no" },
+                ]}
+                className=""
+                label={t("Hide Salary?")}
+                name="hide_salary"
+              />
+            </FormFlexContainer>
+            {/* Personal Data */}
+            <FormFlexContainer title={t("Personal Data")}>
+              <ComboboxForm
+                disabled={loadingCountries}
+                name={"nationality_id"}
+                label={t("nationality")}
+                placeholder={t("nationality")}
+                options={countries?.data.map((country: any) => ({ label: country.title, value: country.id }))}
+              />
+              <FormSelect
+                label={t("Gender")}
+                name="gender"
+                optional={true}
+                options={[...GENDER, { label: "Not Specified", value: " " }]}
+              />
+              <FormSelect label={t("Family Status")} name="family_status" options={FAMILYSTATUS} />
+            </FormFlexContainer>
+            {/* Benefits */}
+            <div className=" mt-5 flex flex-col">
+              <MiniTitle size="md" boldness="bold" text={t("Benefits")} />
+              <div className="">
+                {fields.map((field, index) => (
+                  <div className="flex items-center gap-4 " key={field.id}>
+                    <FormInput control={form.control} name={`benefits.${index}`} placeholder={t("Add Benefit")} />
+                    <button
+                      type="button"
+                      onClick={() => remove(index)}
+                      className="rounded-xl self-center border-2 border-gray-600 p-1 my-auto"
+                    >
+                      <XIcon className="w-4 h-4 " />
+                    </button>
+                  </div>
+                ))}
+                <div className="my-4">
+                  <FunctionalButton size="sm" btnText={t("Add Benefit")} onClick={() => append("")} />
                 </div>
-              ))}
-              <div className="my-4">
-                <FunctionalButton size="sm" btnText={t("Add Benefit")} onClick={() => append("")} />
               </div>
             </div>
-          </div>
-          {/* Description & Responsibility */}
-          <MiniTitle size="md" boldness="bold" text={t("Description & Responsibility")} />
-          <FormInput
-            control={form.control}
-            label={t("Description")}
-            name="job_description"
-            placeholder={t("Description")}
-            area
-          />
-          <FormInput
-            control={form.control}
-            label={t("Responsibility")}
-            name="job_requirements"
-            placeholder={t("Responsibility")}
-            area
-          />
-          <div className=" flex flex-col bg-gray-100 mt-4 rounded-md p-5">
-            <RadioGroupForm
-              name="recipient_status"
-              options={[
-                {
-                  title: "No Send",
-                  desc: "Candidate will apply job using jobpilot & all application will show on your dashboard.",
-                  value: "no-send",
-                },
-                {
-                  title: "Daily",
-                  desc: "Candidate apply job on your website, all application on your own website.",
-                  value: "daily",
-                },
-                {
-                  title: "Weekly",
-                  desc: "Candidate apply job on your email address, and all application in your email.",
-                  value: "weekly",
-                },
-              ]}
+            {/* Description & Responsibility */}
+            <MiniTitle size="md" boldness="bold" text={t("Description & Responsibility")} />
+            <FormInput
+              control={form.control}
+              label={t("Description")}
+              name="job_description"
+              placeholder={t("Description")}
+              area
             />
-          </div>
-          <div className=" h-14">
-            <AnimatePresence>
-              {form.getValues("recipient_status") && form.getValues("recipient_status") !== "no-send" && (
-                <MotionItem
-                  nohover
-                  initial={{ opacity: 0, height: 100 }}
-                  animate={{ opacity: 1, height: 0 }}
-                  exit={{ opacity: 0, height: 100 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <FormInput control={form.control} name="recipient_email" placeholder={t("email")} />
-                </MotionItem>
-              )}
-            </AnimatePresence>
-          </div>
-          <div className=" w-fit">
-            <FunctionalButton
-              disabled={isPending}
-              onClick={form.handleSubmit(onSubmit)}
-              className=" w-fit"
-              btnText={t("postJob")}
-              size="sm"
+            <FormInput
+              control={form.control}
+              label={t("Responsibility")}
+              name="job_requirements"
+              placeholder={t("Responsibility")}
+              area
             />
-          </div>{" "}
-        </div>
-      </form>
-    </Form>
+            <div className=" flex flex-col bg-gray-100 mt-4 rounded-md p-5">
+              <RadioGroupForm
+                name="recipient_status"
+                options={[
+                  {
+                    title: "No Send",
+                    desc: "Candidate will apply job using jobpilot & all application will show on your dashboard.",
+                    value: "no-send",
+                  },
+                  {
+                    title: "Daily",
+                    desc: "Candidate apply job on your website, all application on your own website.",
+                    value: "daily",
+                  },
+                  {
+                    title: "Weekly",
+                    desc: "Candidate apply job on your email address, and all application in your email.",
+                    value: "weekly",
+                  },
+                ]}
+              />
+            </div>
+            <div className=" h-14">
+              <AnimatePresence>
+                {form.getValues("recipient_status") && form.getValues("recipient_status") !== "no-send" && (
+                  <MotionItem
+                    nohover
+                    initial={{ opacity: 0, height: 100 }}
+                    animate={{ opacity: 1, height: 0 }}
+                    exit={{ opacity: 0, height: 100 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <FormInput control={form.control} name="recipient_email" placeholder={t("email")} />
+                  </MotionItem>
+                )}
+              </AnimatePresence>
+            </div>
+            <div className=" w-fit">
+              <FunctionalButton
+                disabled={isPending}
+                onClick={form.handleSubmit(onSubmit)}
+                className=" w-fit"
+                btnText={t("postJob")}
+                size="sm"
+              />
+            </div>{" "}
+          </div>
+        </form>
+      </Form>
+    </div>
   );
 };
 

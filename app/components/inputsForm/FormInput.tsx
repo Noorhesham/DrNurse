@@ -147,7 +147,7 @@ const FormInput = ({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className={`${width || "w-full"} ${check && "flex items-center "} relative`}>
+        <FormItem className={`${width || "w-full"} ${!check&&'flex flex-col gap-3'} my-2 !space-y-0 ${check && "flex items-center "} relative`}>
           {!switchToggle && label !== "" && (
             <FormLabel className={`uppercase relative w-fit ${check && "text-nowrap mt-2"}`}>
               {" "}
@@ -253,7 +253,7 @@ const FormInput = ({
                     )}
                   </AnimatePresence>
                   {currency && (
-                    <span className=" bg-gray-300 text-gray-800 p-2 rounded-lg rounded-l-none absolute right-0 top-0">
+                    <span className=" bg-gray-300 uppercase text-gray-800 p-2 rounded-lg rounded-l-none absolute right-0 top-0">
                       {form.getValues("currency")}
                     </span>
                   )}

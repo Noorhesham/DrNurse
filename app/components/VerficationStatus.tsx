@@ -1,6 +1,6 @@
-import { FaCheckCircle, FaTimesCircle, FaQuestionCircle } from "react-icons/fa";
+import { FaCheckCircle, FaTimesCircle, FaQuestionCircle, FaDraft2Digital } from "react-icons/fa";
 
-const VerificationStatus = ({ verification_type }: { verification_type: string }) => {
+const VerificationStatus = ({ verification_type, message }: { verification_type: string; message?: string }) => {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "auto-approved":
@@ -15,6 +15,9 @@ const VerificationStatus = ({ verification_type }: { verification_type: string }
         return <FaQuestionCircle style={{ color: "blue" }} />;
       case "re-review":
         return <FaQuestionCircle style={{ color: "orange" }} />; // Re-review icon (orange)
+      case "draft":
+        return <FaDraft2Digital className=" text-blue-500 w-4 h-4" />;
+
       default:
         return null;
     }
@@ -43,9 +46,13 @@ const VerificationStatus = ({ verification_type }: { verification_type: string }
 
   return (
     <div className="flex  w-full bg-light rounded-xl py-2 px-4 my-2 items-center gap-3">
-      <h3 className="text-main2 text-nowrap font-semibold text-sm lg:text-base">
-        Account Status: {getStatusLabel(verification_type)}
-      </h3>
+      {message ? (
+        <p>{message}</p>
+      ) : (
+        <h3 className="text-main2 text-nowrap font-semibold text-sm lg:text-base">
+          Account Status: {getStatusLabel(verification_type)}
+        </h3>
+      )}
       <div>{getStatusIcon(verification_type)}</div>
     </div>
   );

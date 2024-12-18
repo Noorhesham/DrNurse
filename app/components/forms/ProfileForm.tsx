@@ -178,7 +178,11 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
   const form = useZodForm({
     schema: jobSchema,
     defaultValues: {
-      main_education: dataDefault?.main_educations?.[0] || {},
+      main_education:
+        {
+          ...dataDefault?.main_educations?.[0],
+          present: dataDefault?.main_educations?.[0]?.present === 0 ? false : true,
+        } || {},
       current_job_title: dataDefault?.current_job_title || "",
       career_type_id: dataDefault?.career_type_id || "",
       career_specialty_id: dataDefault?.career_specialty_id || "",
@@ -207,7 +211,12 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
         dataDefault?.educations.length > 0
           ? [
               ...dataDefault?.educations.map((d: any) => {
-                return { ...d, certificate: d.certificate[0], career_specialty_id: d.career_specialty_id || "" };
+                return {
+                  ...d,
+                  certificate: d.certificate[0],
+                  career_specialty_id: d.career_specialty_id || "",
+                  present: d.present === 1 ? true : false,
+                };
               }),
             ]
           : [
@@ -358,10 +367,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
       } else toast.error(res.message);
     });
   };
-  // useEffect(() => {
-  //   if (form.getValues("available") === "yes_from_custom_time" && !form.getValues("start_availability_at"))
-  //     form.setValue("start_availability_at", format(Date.now(), "yyyy-MM-dd"));
-  // }, [form, form.getValues("available")]);
+
   if (isLoading) return <Spinner />;
 
   return (
@@ -431,7 +437,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
               name="start_availability_at"
               toYear={new Date().getFullYear() + 4}
               label={t("Start From")}
-              monthsOnly
+              monthOnly
               date
             />
           )}
@@ -521,13 +527,13 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
             />
           </FlexWrapper>
           <div className="flex w-full  lg:flex-row flex-col items-center gap-4">
-            <FormInput control={form.control} monthsOnly name={`main_education.date`} label={t("FROM Date")} date />
+            <FormInput control={form.control} monthOnly name={`main_education.date`} label={t("FROM Date")} date />
             {!form.watch(`main_education.present`) && (
               <FormInput
                 control={form.control}
                 name={`main_education.date_to`}
                 optional={true}
-                monthsOnly
+                monthOnly
                 label={t("TO DATE")}
                 date
               />
@@ -593,7 +599,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
                         name={`education.${index}.date_to`}
                         label={t("TO DATE")}
                         date
-                        monthsOnly={true}
+                        monthOnly={true}
                       />
                     )}
                     <FormInput
@@ -671,7 +677,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
                 name={`previous_experience.${index}.from`}
                 label={t("Start Date")}
                 date
-                monthsOnly
+                monthOnly
               />
               {!form.watch(`previous_experience.${index}.present`) && (
                 <FormInput
@@ -680,7 +686,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
                   name={`previous_experience.${index}.to`}
                   label={t("End Date")}
                   date
-                  monthsOnly
+                  monthOnly
                 />
               )}
 

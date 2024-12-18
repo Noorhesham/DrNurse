@@ -5,6 +5,7 @@ import InfoItem from "@/app/components/InfoDoc";
 import JobCard from "@/app/components/JobCard";
 import MainProfile from "@/app/components/MainProfile";
 import Spinner from "@/app/components/Spinner";
+import VerificationStatus from "@/app/components/VerficationStatus";
 import GridContainer from "@/app/components/defaults/GridContainer";
 import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
 import MiniTitle from "@/app/components/defaults/MiniTitle";
@@ -44,13 +45,13 @@ const page = ({ params: { jobId, locale } }: { params: { jobId: string; locale: 
     address: [job?.branch?.country?.title, job?.branch?.state?.title].filter(Boolean).join(", "),
     duration: "in 7 days",
   };
-
+  console.log(job);
 
   return (
     <section>
       <div className=" bg-light ">
         <MaxWidthWrapper>
-          <MainProfile h1={true}  user={doctor}>
+          <MainProfile h1={true} user={doctor}>
             <div className="flex  items-center gap-4">
               <FunctionalButton
                 className=" rounded-2xl"
@@ -113,6 +114,14 @@ const page = ({ params: { jobId, locale } }: { params: { jobId: string; locale: 
       <MaxWidthWrapper>
         <GridContainer className=" gap-8" cols={8}>
           <div className=" col-span-2 lg:col-span-6">
+            {job.status === "draft" && (
+              <div className=" my-4">
+                <VerificationStatus
+                  verification_type={job.status}
+                  message="This is a draft job , it must be edited  or published "
+                />
+              </div>
+            )}
             <section className=" flex flex-col gap-4">
               <div className=" flex flex-col gap-1">
                 <MiniTitle boldness="bold" color=" text-main2" text="JOB DESCRIPTION" />
@@ -191,9 +200,8 @@ const page = ({ params: { jobId, locale } }: { params: { jobId: string; locale: 
             </div>
           </div>
         </GridContainer>
-        <section className="mt-5" >
-          <MiniTitle className=" mt-5" boldness="bold" 
-           color=" text-main2" text="RELATED JOBS" />
+        <section className="mt-5">
+          <MiniTitle className=" mt-5" boldness="bold" color=" text-main2" text="RELATED JOBS" />
           <div className=" grid-cols-1 grid gap-5 lg:grid-cols-2 mt-3">
             {job.related_jobs?.map((job: Job, i: number) => (
               <JobCard i={i} key={job.id} job={job} />

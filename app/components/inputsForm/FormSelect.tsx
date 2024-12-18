@@ -27,7 +27,7 @@ const FormSelect = ({
         const selected = options?.find((p) => p._id === form.getValues(name)?._id || p._id === selectedValue);
         return (
           <FormItem className={`${className || ""} relative w-full `} id={id || ""}>
-            <FormLabel className=" relative  capitalize">
+            <FormLabel className=" relative w-fit  capitalize">
               {" "}
               {!optional && <span className={`absolute -right-5 -top-[1px]  z-10   font-normal text-red-600`}>*</span>}
               {label}
