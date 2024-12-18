@@ -151,7 +151,7 @@ const page = ({ params: { jobId, locale } }: { params: { jobId: string; locale: 
                   className={`lg:max-w-4xl  text-black lg:text-base text-sm  font-medium leading-[1.7] `}
                 />
               </div>
-              {job && <Share title={job.job_title} image={job.job_image[0].file} />}
+              {job && <Share title={job.job_title} image={job.image} />}
             </section>
           </div>
           <div className="flex col-span-full lg:col-span-2 px-5 py-5 pb-10 rounded-xl flex-col gap-3  bg-light">

@@ -2,7 +2,7 @@
 import { useZodForm } from "@/app/hooks/useZodForm";
 import { useTranslations } from "next-intl";
 import React, { useEffect, useTransition } from "react";
-import { z } from "zod";
+import { optional, z } from "zod";
 import { useFieldArray } from "react-hook-form";
 import FormInput from "../inputsForm/FormInput";
 import FunctionalButton from "../FunctionalButton";
@@ -25,6 +25,7 @@ import { format } from "date-fns";
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
+import GridContainer from "../defaults/GridContainer";
 const salaryRegex = /^[1-9]\d*$/;
 const jobSchema = z
   .object({
@@ -62,7 +63,9 @@ const jobSchema = z
     license_number: z.string().optional(),
     benefits: z.array(z.string().min(1, "Benefit is required")).optional(),
     description: z.string().optional(),
-    identification_card_number: z.string().min(1, "Identification Card Number is required"),
+    identification_card_number: z.string().optional(),
+    identification_type: z.string().optional(),
+    identification_country_id: z.union([z.string().optional(), z.number().optional()]),
     main_education: z.object({
       university_name: z.string().min(1, "University Name is required"),
       country_id: z.union([z.string().min(1, "Country is required"), z.number()]),
@@ -187,7 +190,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
       career_type_id: dataDefault?.career_type_id || "",
       career_specialty_id: dataDefault?.career_specialty_id || "",
       career_level_id: dataDefault?.career_level_id || "",
-
+      identification_card_number: dataDefault?.identification_card_number || "",
       min_salary: dataDefault?.min_salary || 0,
       max_salary: dataDefault?.max_salary || 0,
       show_expected_salary: dataDefault?.show_expected_salary.toString() || 0,
@@ -206,7 +209,8 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
       practice_license: dataDefault?.practice_license?.[0] || "",
       identification_card: dataDefault?.identification_card?.[0] || "",
       resume: dataDefault?.resume[0] || "",
-      identification_card_number: dataDefault?.identification_card_number || "",
+      identification_country_id: dataDefault?.identification_country_id || "",
+      identification_type: dataDefault?.identification_type || "",
       education:
         dataDefault?.educations.length > 0
           ? [
@@ -389,13 +393,33 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
           label={t("CURRENT JOB TITLE")}
           placeholder={t("Enter Job Title")}
         />
-        <FormInput
-          control={form.control}
-          type="number"
-          name="identification_card_number"
-          label={t("IDENTIFICATION CARD NUMBER")}
-          placeholder={t("Enter Identification Card Number")}
-        />
+        <GridContainer cols={3}>
+          <FormInput
+            control={form.control}
+            type="number"
+            name="identification_card_number"
+            label={t("IDENTIFICATION CARD NUMBER")}
+            placeholder={t("Enter Identification Card Number")}
+          />
+          <FormSelect
+            options={[
+              { label: "Identification card", value: "id-card" },
+              { label: "Passport", value: "passport" },
+            ]}
+            optional
+            name="identification_type"
+            label={t("IDENTIFICATION TYPE")}
+            placeholder={t("Enter Identification TYPE")}
+          />
+          <ComboboxForm
+            optional
+            disabled={isLoading}
+            name={"identification_country_id"}
+            label={t("IDENTIFICATION COUNTRY")}
+            placeholder={t("IDENTIFICATION COUNTRY")}
+            options={countries?.data?.map((country: any) => ({ label: country.title, value: country.id }))}
+          />
+        </GridContainer>
         {/* Personal Data */}
         <FlexWrapper max={false}>
           <FormSelect label={t("FAMILY STATUS")} options={FAMILYSTATUS} name="family_status" />
