@@ -4,7 +4,9 @@ import FunctionalButton from "@/app/components/FunctionalButton";
 import InfoItem from "@/app/components/InfoDoc";
 import JobCard from "@/app/components/JobCard";
 import MainProfile from "@/app/components/MainProfile";
+import Share from "@/app/components/Share";
 import Spinner from "@/app/components/Spinner";
+import TooltipButton from "@/app/components/ToolTipButton";
 import VerificationStatus from "@/app/components/VerficationStatus";
 import GridContainer from "@/app/components/defaults/GridContainer";
 import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
@@ -59,8 +61,9 @@ const page = ({ params: { jobId, locale } }: { params: { jobId: string; locale: 
                 btnText="EDIT JOB"
                 link={`/dashboard/${job.company?.id}/edit-job/${job.id}`}
               />
-              <button
-                disabled={isPending}
+              {/* Lock Job Button */}
+              <TooltipButton
+                tooltipText={job.status === "closed" ? "Job is already closed" : "Close this job"}
                 onClick={() => {
                   startTransition(async () => {
                     const res = await Server({
@@ -73,19 +76,19 @@ const page = ({ params: { jobId, locale } }: { params: { jobId: string; locale: 
                     });
                     if (res.status) {
                       toast.success(res.message);
-                      queryClient.invalidateQueries({ queryKey: [`job-${jobId}`] });
+                      queryClient.invalidateQueries({ queryKey: [`job-${job.id}`] });
                     } else toast.error(res.message);
                   });
                 }}
-                className={`  ${
-                  job.status === "closed" ? " bg-red-500 text-gray-50" : " bg-[#D3DDEE] text-gray-800"
-                }  p-3 rounded-xl `}
-              >
-                <div className=" w-6 h-6 relative">
-                  <Image alt="lock" fill className=" object-contain" src="/lock.svg" />
-                </div>
-              </button>
-              <button
+                disabled={isPending}
+                className={job.status === "closed" ? "bg-red-500 text-gray-50" : "bg-[#D3DDEE] text-gray-800"}
+                iconSrc="/lock.svg"
+                altText="lock"
+              />
+
+              {/* Duplicate Job Button */}
+              <TooltipButton
+                tooltipText="Duplicate this job"
                 onClick={() => {
                   startTransition(async () => {
                     const res = await Server({
@@ -101,12 +104,10 @@ const page = ({ params: { jobId, locale } }: { params: { jobId: string; locale: 
                   });
                 }}
                 disabled={isPending}
-                className=" text-gray-800 bg-[#D3DDEE]  p-3 rounded-xl "
-              >
-                <div className=" w-6 h-6 relative">
-                  <Image alt="lock" fill className=" object-contain" src="/replace.svg" />
-                </div>
-              </button>
+                className="bg-[#D3DDEE] text-gray-800"
+                iconSrc="/replace.svg"
+                altText="duplicate"
+              />
             </div>
           </MainProfile>
         </MaxWidthWrapper>
@@ -150,22 +151,7 @@ const page = ({ params: { jobId, locale } }: { params: { jobId: string; locale: 
                   className={`lg:max-w-4xl  text-black lg:text-base text-sm  font-medium leading-[1.7] `}
                 />
               </div>
-              {job && (
-                <div className=" flex items-center gap-2 mt-2">
-                  <p className=" font-medium">SHARE THIS JOB</p>
-                  <div className="flex lg:flex-nowrap flex-wrap items-center gap-2">
-                    <Button className=" flex  px-4 items-center gap-2" variant={"outline"}>
-                      <FaFacebook /> FACEBOOK
-                    </Button>
-                    <Button className=" flex  px-4 items-center gap-2" variant={"outline"}>
-                      <FaXTwitter /> TWITTER
-                    </Button>
-                    <Button className=" flex  px-4 items-center gap-2" variant={"outline"}>
-                      <FaPinterest /> PINTREST
-                    </Button>
-                  </div>
-                </div>
-              )}
+              {job && <Share title={job.job_title} image={job.job_image[0].file} />}
             </section>
           </div>
           <div className="flex col-span-full lg:col-span-2 px-5 py-5 pb-10 rounded-xl flex-col gap-3  bg-light">
