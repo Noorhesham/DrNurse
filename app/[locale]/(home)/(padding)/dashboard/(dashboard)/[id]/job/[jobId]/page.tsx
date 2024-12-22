@@ -11,25 +11,17 @@ import VerificationStatus from "@/app/components/VerficationStatus";
 import GridContainer from "@/app/components/defaults/GridContainer";
 import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
 import MiniTitle from "@/app/components/defaults/MiniTitle";
-import Paragraph from "@/app/components/defaults/Paragraph";
-import { useGetEntities } from "@/app/components/inputsForm/CareerTypeInput";
 import { Server } from "@/app/main/Server";
 import { Job } from "@/app/types";
-import { Button } from "@/components/ui/button";
 import { useGetEntity } from "@/lib/queries";
 import { convertToHTML } from "@/lib/utils";
 import { PersonIcon } from "@radix-ui/react-icons";
 import { useQueryClient } from "@tanstack/react-query";
 import { formatDistanceToNow, parseISO } from "date-fns";
-import { Briefcase, CalendarIcon, DollarSign, EditIcon, LockIcon } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import React, { useTransition } from "react";
-import { FaFacebook, FaPinterest } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
+import {Briefcase, CalendarIcon, DollarSign, EditIcon,  } from "lucide-react";
+import React, { useTransition } from "react";;
 import { GoLocation } from "react-icons/go";
 import { toast } from "react-toastify";
-
 const page = ({ params: { jobId, locale } }: { params: { jobId: string; locale: string } }) => {
   const { data, isLoading } = useGetEntity("job", `job-${jobId}`, jobId);
   const queryClient = useQueryClient();

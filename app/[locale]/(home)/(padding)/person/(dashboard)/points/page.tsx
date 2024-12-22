@@ -31,6 +31,7 @@ const page = () => {
   };
   const { user2Settings, loading, userSettings } = useAuth();
   if (isLoading || !points || loading || isLoadingTerms || isLoadingPrizes || loading) return <Spinner />;
+  console.log(points);
   return (
     <section>
       <div className="flex flex-col gap-2">
@@ -89,7 +90,7 @@ const page = () => {
           </div>
         </div>
       </FlexWrapper>
-      {points > 0 ? 
+      {points.history.length > 0 ? (
         <div className=" flex flex-col gap-2 mt-10">
           <FlexWrapper max={false} className=" justify-between">
             <div className=" flex flex-col gap-2">
@@ -147,8 +148,12 @@ const page = () => {
               ))}
             </TableBody>
           </Table>
-        </div>:<div className="mt-8"><Empty text="You don't have any points yet"/></div>
-      }
+        </div>
+      ) : (
+        <div className="mt-8">
+          <Empty text="You don't have any points yet" />
+        </div>
+      )}
     </section>
   );
 };
