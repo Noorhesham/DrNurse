@@ -39,6 +39,7 @@ const VerificationStatus = ({ verification_type, message }: { verification_type:
         return "Pending";
       case "re-review":
         return "Re-review";
+      
       default:
         return "";
     }
