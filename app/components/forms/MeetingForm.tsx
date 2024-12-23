@@ -45,12 +45,12 @@ const MeetingForm = ({
 }) => {
   const searchParams = useSearchParams();
   const jobId = searchParams.get("job") || jobIdDef || "";
-  const { data: job, isLoading: jobLoading } = useGetEntity("job", `job-${jobId}`, jobId, {
+  const { data: job, isLoading: jobLoading } = useGetEntity("job", `job-${jobId || 0}`, jobId, {
     enabled: !!jobId,
   });
   const params = useParams();
   console.log(jobId);
-  const { data, isLoading } = useGetEntity("slots", `slots-${jobId}`, jobId);
+  const { data, isLoading } = useGetEntity("slots", `slots-${jobId || 0}`, jobId || "0");
 
   const defaultMeetings = data?.data
     ?.filter((meet) => meet.from_date)
@@ -176,7 +176,12 @@ const MeetingForm = ({
                 ]}
               />
               <div className="flex w-full items-center gap-1">
-                <FormInput label="MANAGER EMAIL" optional control={form.control} name={`meetings.${index}.manager_email`} />
+                <FormInput
+                  label="MANAGER EMAIL"
+                  optional
+                  control={form.control}
+                  name={`meetings.${index}.manager_email`}
+                />
                 <button
                   type="button"
                   onClick={() => {

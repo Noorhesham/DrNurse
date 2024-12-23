@@ -29,7 +29,7 @@ const page = async ({ params: { locale }, searchParams }: { params: { locale: st
             <>
               <Logo isdark={true} />
               <h1 className=" hidden">{t("success")}</h1>
-              <MiniTitle  text={t("orderCompleted")} />
+              <MiniTitle text={t("Order Completed")} />
               <Paragraph
                 size="sm"
                 description={
@@ -38,7 +38,7 @@ const page = async ({ params: { locale }, searchParams }: { params: { locale: st
               />
               <div className=" flex items-center gap-2">
                 <FunctionalButton noicon link={`/dashboard/${hospitalId}/invoices`} btnText={t("MY INVOICES")} />
-                <FunctionalButton noicon   link={`/dashboard/${hospitalId}`} btnText={t("BACK TO HOME")} />
+                <FunctionalButton noicon link={`/dashboard/${hospitalId}`} btnText={t("BACK TO HOME")} />
               </div>
             </>
           ) : (
@@ -48,9 +48,9 @@ const page = async ({ params: { locale }, searchParams }: { params: { locale: st
               <div className=" flex items-center gap-2">
                 <Link
                   className=" flex items-center gap-2 hover:underline duration-150 hover:text-main"
-                  href={"/checkout"}
+                  href={`/dashboard/${hospitalId}`}
                 >
-                  {t("returnToCheckout")}
+                  {t("Return to Hospital")}
                   <ArrowRight />
                 </Link>
               </div>

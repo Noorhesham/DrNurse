@@ -13,6 +13,8 @@ import React from "react";
 const page = async ({ params: { id } }: { params: { id: string } }) => {
   const data = await Server({ resourceName: "my-subs" });
   const invoices = await Server({ resourceName: "my-invoices" });
+  //used usage_limit
+  console.log(data);
   return (
     <div>
       <Table>
@@ -93,10 +95,19 @@ const page = async ({ params: { id } }: { params: { id: string } }) => {
                   <p className="text-main2 font-semibold">{job?.plan_json.price}</p>
                 </TableCell>
                 <TableCell className=" items-center">
-                  <p className="text-main2 font-semibold">{job?.plan_json.usage_limit}</p>
+                  {
+                    <p className=" text-main2 font-semibold">
+                      {job?.features
+                        ?.filter((f) => f.slug === "meeting")
+                        .reduce((acc, cur) => acc + cur.usage_limit, 0)}
+                    </p>
+                  }
                 </TableCell>
                 <TableCell className=" items-center">
-                  <p className="text-main2 font-semibold">{job?.plan_json.usage_limit - job?.plan_json.used}</p>
+                  <p className=" text-main2 font-semibold">
+                    {job?.features?.filter((f) => f.slug === "meeting").reduce((acc, cur) => acc + cur.usage_limit, 0) -
+                      job?.features?.filter((f) => f.slug === "meeting").reduce((acc, cur) => acc + cur.used, 0)}
+                  </p>{" "}
                 </TableCell>
               </TableRow>
             ))}

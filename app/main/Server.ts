@@ -292,7 +292,7 @@ const getURL = (
     case "my-subs":
       return { url: `${url}/sub-subscriptions/entities-operations?with=features`, method: "GET" };
     case "my-invoices":
-      return { url: `${url}/inv-invoices/entities-operations?with=plan&with=subscription`, method: "GET" };
+      return { url: `${url}/inv-invoices/entities-operations?with=features,plan_id`, method: "GET" };
     case "payment":
       return { url: `${url}/rm_payment_gateways/v1/available`, method: "GET" };
     case "subscribe":
