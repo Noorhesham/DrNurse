@@ -239,7 +239,7 @@ const getURL = (
     case "reedem":
       return { url: `${url}/redeem-requests/entities-operations/store`, method: "POST" };
     case "slots":
-      return { url: `${url}/recruitment/meetings/slots?job_id=${id}`, method: "GET" };
+      return { url: `${url}/recruitment/meetings/slots?job_id=${id}&${queryParams}`, method: "GET" };
     case "add-slot":
       return { url: `${url}/recruitment/meetings/slots`, method: "POST" };
     case "delete-slot":
@@ -367,7 +367,7 @@ export async function Server({
   try {
     // Get the URL and method from the resource name
     const { url, method: resolvedMethod } = getURL(resourceName, id, entityName, queryParams);
-    console.log(url);
+    console.log(url,hospitalId);
     // Fetch data from the server
     let requestBody;
     if (formData) requestBody = body;

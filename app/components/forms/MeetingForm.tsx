@@ -49,8 +49,8 @@ const MeetingForm = ({
     enabled: !!jobId,
   });
   const params = useParams();
-  console.log(jobId);
-  const { data, isLoading } = useGetEntity("slots", `slots-${jobId || 0}`, jobId || "0");
+  console.log(params);
+  const { data, isLoading } = useGetEntity("slots", `slots-${jobId || 0}`, jobId || "0", {}, `company_id=${params.id}`);
 
   const defaultMeetings = data?.data
     ?.filter((meet) => meet.from_date)
