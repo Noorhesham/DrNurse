@@ -32,7 +32,7 @@ const page = async ({ params: { id } }: { params: { id: string } }) => {
                 <MiniTitle boldness="bold" size="lg" color=" text-black" text={job.title} />
               </TableCell>
               <TableCell className="mr-auto md:ml-0 font-medium ">
-                <p className=" text-muted-foreground">{format(job.created_at, "dd/MM/yyyy")}</p>
+                <p className=" text-muted-foreground">{job?.created_at && format(job?.created_at, "dd/MM/yyyy")}</p>
               </TableCell>
               <TableCell className="  gap-2  font-medium ">
                 <div className="flex items-center gap-2">
@@ -45,7 +45,7 @@ const page = async ({ params: { id } }: { params: { id: string } }) => {
                 </div>
               </TableCell>
               <TableCell className="  gap-2 ">
-                <p className=" text-main2 font-semibold">{job.total}</p>
+                <p className=" text-main2 font-semibold">{job?.total}</p>
               </TableCell>
               {job.status.key === "hold" && (
                 <TableCell>
@@ -82,19 +82,21 @@ const page = async ({ params: { id } }: { params: { id: string } }) => {
             {data.data.map((job, i) => (
               <TableRow key={i}>
                 <TableCell className="font-medium">
-                  <MiniTitle boldness="bold" size="lg" color="text-black" text={job.plan_json.title} />
+                  <MiniTitle boldness="bold" size="lg" color="text-black" text={job?.plan_json.title} />
                 </TableCell>
                 <TableCell className="font-medium">
-                  <p className="text-muted-foreground">{format(job.plan_json.created_at, "dd/MM/yyyy")}</p>
+                  <p className="text-muted-foreground">
+                    {job?.plan_json?.created_at && format(job.plan_json.created_at, "dd/MM/yyyy")}
+                  </p>
                 </TableCell>
                 <TableCell className=" items-center">
-                  <p className="text-main2 font-semibold">{job.plan_json.price}</p>
+                  <p className="text-main2 font-semibold">{job?.plan_json.price}</p>
                 </TableCell>
                 <TableCell className=" items-center">
-                  <p className="text-main2 font-semibold">{job.plan_json.usage_limit}</p>
+                  <p className="text-main2 font-semibold">{job?.plan_json.usage_limit}</p>
                 </TableCell>
                 <TableCell className=" items-center">
-                  <p className="text-main2 font-semibold">{job.plan_json.usage_limit - job.plan_json.used}</p>
+                  <p className="text-main2 font-semibold">{job?.plan_json.usage_limit - job?.plan_json.used}</p>
                 </TableCell>
               </TableRow>
             ))}

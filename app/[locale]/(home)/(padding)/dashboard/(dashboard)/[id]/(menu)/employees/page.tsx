@@ -37,7 +37,7 @@ const page = async ({ searchParams }: { searchParams: any }) => {
     active_license_country: active_license_country || "",
     from_years: from_years || "",
     to_years: to_years || "",
-    sort: sort || "",
+    sort: sort || "desc",
     gender: gender || "",
   });
 

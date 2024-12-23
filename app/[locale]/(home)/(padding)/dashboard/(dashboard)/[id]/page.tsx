@@ -26,10 +26,10 @@ const page = () => {
   );
 
   const { data, isLoading } = useGetEntity("company", `company-${params.id}`, params.id || "", { enabled: !params.id });
+  console.log(overView,data);
   if (isLoading || !data || isLoadingOverView) return <Spinner />;
 
   const { title } = data.data;
-  console.log(overView);
   return (
     <>
       <MaxWidthWrapper>
@@ -64,7 +64,7 @@ const page = () => {
                     color=" text-gray-900"
                     text="Recently Posted Jobs"
                   />
-                  <TableData jobs={overView.data?.jobs||[]} />
+                  <TableData jobs={overView.data?.jobs || []} />
                 </div>
               ) : (
                 <Empty text="No Jobs Yet !" />

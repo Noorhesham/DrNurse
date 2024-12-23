@@ -43,7 +43,7 @@ const page = async ({
     active_license_country: active_license_country || "",
     from_years: from_years || "",
     to_years: to_years || "",
-    sort: sort || "",
+    sort: sort || "desc",
     gender: gender || "",
   });
   if (nationality_id) {
@@ -79,7 +79,7 @@ const page = async ({
     { "Career Specialty": career_specialties, arr: true, filter: "career_specialty_id" },
     { "Career Level": career_levelsfilter, arr: true, filter: "career_levels" },
   ];
-  
+
   return (
     <LoadingProvider>
       <Profiles
