@@ -125,8 +125,9 @@ const HospitalProfileSettings = ({ defaultData }: { defaultData?: any }) => {
           });
         } else if (typeof value === "object" && value !== null && !(value instanceof File)) {
           // If the value is an object, but not a file
-          if (key === "logo") formData.append(`${key}[]`, value.id);
+          if (key === "logo"|| key === "commercial_registration") formData.append(`${key}[]`, value.id);
           if (key !== "logo") formData.append(`${key}`, value);
+          
           // for (const nestedKey in value) {
           //   if (value[nestedKey] !== null && value[nestedKey] !== undefined && value[nestedKey] !== "") {
 
