@@ -84,7 +84,7 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
               options={[
                 {
                   href: "about-me",
-                  label: "About Me",
+                  label: "ABOUT ME",
                   content: (
                     <div
                       dangerouslySetInnerHTML={{ __html: convertToHTML(dataPage.description || "") }}
@@ -141,8 +141,8 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
                                   {experience?.career_Specialty?.title} , {experience?.career_level?.title}
                                 </p>
                                 <span className=" text-sm">
-                                  {experience && formatDate(experience.from, "dd MMM yyyy")}-
-                                  {experience.to && formatDate(experience.to, "dd MMM yyyy")}
+                                  {experience.from && formatDate(experience.from, "MMM yyyy")} -
+                                  {experience.to ? formatDate(experience.to, "MMM yyyy") : "Present"}
                                 </span>
                               </div>
                             </FlexWrapper>
@@ -158,7 +158,6 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
             />
           </div>
           <div className="flex col-span-full lg:col-span-2 px-5 py-5 pb-10 rounded-xl flex-col gap-3  bg-light">
-   
             <MiniTitle color="black" text="EMPLOYEE INFO" />
             <div className=" flex flex-col gap-5">
               <InfoItem

@@ -41,7 +41,7 @@ const page = () => {
                   <Meet meet={meet} img />
                   <div className=" flex flex-wrap lg:flex-nowrap items-center gap-3">
                     <ModalCustom
-                      content={<SelectDate jobId={meet.req_job_post_id} meeting_id={meet.id} />}
+                      content={<SelectDate person jobId={meet.req_job_post_id} meeting_id={meet.id} />}
                       btn={
                         <Button size={"lg"} className=" rounded-full">
                           SET DATE

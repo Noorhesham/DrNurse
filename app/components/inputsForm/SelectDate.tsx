@@ -25,8 +25,10 @@ const formatToLocalTime = (dateStr) => {
   return format(date, "dd/MM/yyyy hh:mmaaa");
 };
 
-const SelectDate = ({ meeting_id, jobId = "" }: { meeting_id: string; jobId: string }) => {
-  const { data, isLoading } = useGetEntity("person-slots", `person-slots-${jobId}`, jobId || "");
+const SelectDate = ({ meeting_id, jobId = "", person=false }: { meeting_id: string; jobId: string; person?: boolean }) => {
+  const { data, isLoading } = useGetEntity("person-slots", `person-slots-${jobId}`, jobId || "", {
+    nocompany: person ? true : false,
+  });
 
   const queryClient = useQueryClient();
   const [isPending, startTransition] = useTransition();
