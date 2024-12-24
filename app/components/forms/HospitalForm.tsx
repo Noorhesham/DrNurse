@@ -103,9 +103,9 @@ const HospitalProfileSettings = ({ defaultData }: { defaultData?: any }) => {
     for (const key in rest) {
       if (rest.hasOwnProperty(key)) {
         const value = rest[key as keyof typeof rest];
-        if (fileFields.includes(key) && !(value instanceof File)) {
-          continue;
-        }
+        // if (fileFields.includes(key) && !(value instanceof File)) {
+        //   continue;
+        // }
         // Check if the value is not null, undefined, or an empty string
         if (value === null || value === undefined || value === "") {
           continue; // Skip appending empty values
