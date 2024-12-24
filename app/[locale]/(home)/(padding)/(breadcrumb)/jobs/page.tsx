@@ -3,7 +3,6 @@ import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
 import { Server } from "@/app/main/Server";
 
 import JobsList from "@/app/components/Jobs";
-import { LoadingProvider } from "@/app/context/LoadingContext";
 import { WEBSITEURL } from "@/app/constants";
 
 export const generateMetadata = async () => {
@@ -81,9 +80,9 @@ const page = async ({ params: { locale }, searchParams }: { params: { locale: st
   ];
   return (
     <MaxWidthWrapper>
-      <LoadingProvider>
+    
         <JobsList query={query} filters={filters} jobs={jobs} totalPages={totalPages} />
-      </LoadingProvider>
+     
     </MaxWidthWrapper>
   );
 };

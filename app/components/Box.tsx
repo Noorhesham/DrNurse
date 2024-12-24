@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
-import { useLoading } from "../context/LoadingContext";
 import { useSetLoading } from "../hooks/useSetLoadingt";
+import { useLoading } from "../context/LoadingContext";
 
 interface Filters {
   [key: string]: string[];
@@ -17,7 +17,16 @@ const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; fi
   const [filters, setFilters] = useState<Filters>({});
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [accordionValue, setAccordionValue] = useState<string | undefined>("");
-  const { WrapperFn } = useSetLoading();
+  const [isPending, startTransition] = useTransition();
+  const { setIsLoading } = useLoading();
+  useEffect(() => {
+    setIsLoading(isPending);
+  }, [isPending]);
+  const WrapperFn = (fn: any) => {
+    startTransition(() => {
+      fn();
+    });
+  };
   // Determine if the viewport is mobile
   useEffect(() => {
     const handleResize = () => {

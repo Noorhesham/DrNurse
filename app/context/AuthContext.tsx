@@ -142,9 +142,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     };
 
-    if (queryClient) fetchData();
+    if (queryClient!==undefined) fetchData();
   }, [login, queryClient]);
-  console.log(userSettings, user2Settings, generalSettings, "after server");
+  console.log(userSettings, user2Settings, generalSettings, "after server",queryClient);
 
   const handleLogout = () => {
     setCartCount(0);

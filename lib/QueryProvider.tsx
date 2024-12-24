@@ -5,7 +5,7 @@ import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persist
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 
 const QueryProvider = ({ children }: { children: ReactNode }) => {
-  const [queryClient,setQuery] = useState(
+  const [queryClient, setQuery] = useState(
     () =>
       new QueryClient({
         defaultOptions: {
@@ -17,19 +17,26 @@ const QueryProvider = ({ children }: { children: ReactNode }) => {
         },
       })
   );
+  const [persister, setPersister] = useState<any>(null);
 
-  const persister = createSyncStoragePersister({
-    storage: global?.window?.localStorage,
-    serialize: (data) => JSON.stringify(data),
-    deserialize: (data) => {
-      try {
-        return JSON.parse(data);
-      } catch (error) {
-        console.error("Failed to deserialize persisted data:", error);
-        return {};
-      }
-    },
-  });
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.localStorage) {
+      const localStoragePersister = createSyncStoragePersister({
+        storage: window.localStorage,
+        serialize: JSON.stringify,
+        deserialize: (data) => {
+          try {
+            return JSON.parse(data);
+          } catch (error) {
+            console.error("Failed to deserialize persisted data:", error);
+            return {};
+          }
+        },
+      });
+      setPersister(localStoragePersister);
+    }
+  }, []);
+  if (!persister || !queryClient) return null; // Ensure both are ready
 
   return (
     <PersistQueryClientProvider

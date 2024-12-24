@@ -1,6 +1,5 @@
 import React from "react";
 import { Server } from "@/app/main/Server";
-import { LoadingProvider } from "@/app/context/LoadingContext";
 import Profiles from "@/app/components/Profiles";
 
 const page = async ({ searchParams }: { searchParams: any }) => {
@@ -60,6 +59,12 @@ const page = async ({ searchParams }: { searchParams: any }) => {
       queryParams.append("career_levels[]", value);
     });
   }
+  if (career_specialty_id) {
+    const careerSpecialtyArray = career_specialty_id.split(",");
+    careerSpecialtyArray.forEach((value: string) => {
+      queryParams.append("career_specialty_id[]", value);
+    });
+  }
   queryParams.append("scope", "filter");
   const data = await Server({ resourceName: "getProfiles", queryParams, cache: 0 });
   const profiles = data.data.profiles;
@@ -82,9 +87,8 @@ const page = async ({ searchParams }: { searchParams: any }) => {
   ];
   console.log(profiles.map((p) => p.name));
   return (
-    <LoadingProvider>
+
       <Profiles count={data.data.count} doctors={profiles} totalPages={totalPages} filters={filters} />
-    </LoadingProvider>
   );
 };
 

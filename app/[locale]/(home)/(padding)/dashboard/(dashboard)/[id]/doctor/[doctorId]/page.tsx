@@ -40,7 +40,7 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
         linksCustom={[
           { href: "", text: "Home" },
           { href: `/dashboard/${id}`, text: "Dashboard" },
-          { href: `/dashboard/${id}/jobs/applications/${searchPrams.get("job")}`, text: "APPLICANTS" },
+          { href: `/dashboard/${id}/jobs/applications/${searchPrams.get("job") || "0"}`, text: "APPLICANTS" },
           { href: `/dashboard/${id}/doctor/${doctorId}`, text: dataPage?.name },
         ]}
       />
@@ -103,7 +103,10 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
                             key={index}
                             edu={{
                               image: "/Vector (10).svg",
-                              name: [edu.training_center || "", edu.certificate_name || ""].filter(Boolean),
+                              name: [
+                                edu.training_center || edu.university_name || "",
+                                ` ${edu.certificate_name || ""}`,
+                              ].filter(Boolean),
                               speciality: [edu.specialty?.title || "", edu?.career_specialty?.title || ""]
                                 .filter(Boolean)
                                 .join(", "),
@@ -138,7 +141,8 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
                               />
                               <div className=" ml-auto self-end   font-medium text-gray-600">
                                 <p className=" lg:text-base text-sm  font-semibold uppercase">
-                                  {experience?.career_Specialty?.title} , {experience?.career_level?.title}
+                                  {experience?.career_specialty?.title}{" "}
+                                  {`${experience?.career_level ? `, ${experience?.career_level}` : ""}`}
                                 </p>
                                 <span className=" text-sm">
                                   {experience.from && formatDate(experience.from, "MMM yyyy")} -

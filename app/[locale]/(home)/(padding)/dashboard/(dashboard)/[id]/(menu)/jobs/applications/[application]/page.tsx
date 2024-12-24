@@ -1,6 +1,5 @@
 import React from "react";
 import { Server } from "@/app/main/Server";
-import { LoadingProvider } from "@/app/context/LoadingContext";
 import Profiles from "@/app/components/Profiles";
 
 const page = async ({
@@ -50,6 +49,12 @@ const page = async ({
     const nationalityIdsArray = Array.isArray(nationality_id) ? nationality_id : [nationality_id];
     nationalityIdsArray.forEach((id: string) => queryParams.append("nationality_id[]", id));
   }
+  if (career_specialty_id) {
+    const careerSpecialtyArray = career_specialty_id.split(",");
+    careerSpecialtyArray.forEach((value: string) => {
+      queryParams.append("career_specialty_id[]", value);
+    });
+  }
   if (current_location_id) {
     const currentLocationIdsArray = Array.isArray(current_location_id) ? current_location_id : [current_location_id];
     currentLocationIdsArray.forEach((id: string) => queryParams.append("current_location_id[]", id));
@@ -72,24 +77,22 @@ const page = async ({
   const totalPages = Math.ceil(data.data.count / 10);
   const filters = [
     { "Career Type": career_types, filter: "career_type_id" },
+    { "Career Specialty": career_specialties, arr: true, filter: "career_specialty_id" },
+    { "Career Level": career_levelsfilter, arr: true, filter: "career_levels" },
     { Availability: availavility, filter: "available" },
     { "Current Location": locations, arr: true, filter: "current_location_id" },
     { Nationality: nationalities, arr: true, filter: "nationality_id" },
     { Gender: genders, arr: true, filter: "gender" },
-    { "Career Specialty": career_specialties, arr: true, filter: "career_specialty_id" },
-    { "Career Level": career_levelsfilter, arr: true, filter: "career_levels" },
   ];
 
   return (
-    <LoadingProvider>
-      <Profiles
-        jobId={application}
-        count={data.data.count}
-        doctors={profiles}
-        totalPages={totalPages}
-        filters={filters}
-      />
-    </LoadingProvider>
+    <Profiles
+      jobId={application}
+      count={data.data.count}
+      doctors={profiles}
+      totalPages={totalPages}
+      filters={filters}
+    />
   );
 };
 

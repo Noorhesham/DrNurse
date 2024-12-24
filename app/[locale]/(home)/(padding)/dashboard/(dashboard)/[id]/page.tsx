@@ -8,14 +8,14 @@ import MiniTitle from "@/app/components/defaults/MiniTitle";
 import SideBar from "@/app/components/nav/SideBar";
 import SwiperCards from "@/app/components/SwiperCards";
 import TableData from "@/app/components/TableData";
-import React from "react";
+import React, { useEffect } from "react";
 import { useGetEntity } from "@/lib/queries";
 import Spinner from "@/app/components/Spinner";
 import { useParams } from "next/navigation";
 import Empty from "@/app/components/Empty";
 import Link from "next/link";
 import VerificationStatus from "@/app/components/VerficationStatus";
-
+import cookies from "js-cookie";
 const page = () => {
   const params = useParams();
 
@@ -26,7 +26,7 @@ const page = () => {
   );
 
   const { data, isLoading } = useGetEntity("company", `company-${params.id}`, params.id || "", { enabled: !params.id });
-  console.log(overView,data);
+  console.log(overView, data);
   if (isLoading || !data || isLoadingOverView) return <Spinner />;
 
   const { title } = data.data;

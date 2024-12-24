@@ -3,7 +3,6 @@ import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
 import { Server } from "@/app/main/Server";
 
 import JobsList from "@/app/components/Jobs";
-import { LoadingProvider } from "@/app/context/LoadingContext";
 
 const page = async ({ params: { locale }, searchParams }: { params: { locale: string }; searchParams: any }) => {
   const {
@@ -55,9 +54,7 @@ const page = async ({ params: { locale }, searchParams }: { params: { locale: st
   ];
   return (
     <div>
-      <LoadingProvider>
         <JobsList filters={filters} query={query} jobs={jobs} totalPages={totalPages} />
-      </LoadingProvider>
     </div>
   );
 };

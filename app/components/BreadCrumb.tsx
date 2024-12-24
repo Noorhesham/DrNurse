@@ -36,7 +36,11 @@ const BreadCrumb = ({ linksCustom }: { linksCustom?: { href: string; text: strin
         className="flex md:flex-row flex-col gap-2 md:items-center items-start justify-between"
         noPadding
       >
-        {dark ? <BackButton /> : <Head1 alignment="left" size="sm" text={current.text || current.replace("-", " ")} />}
+        {dark ? (
+          <BackButton />
+        ) : (
+          <Head1 alignment="left" size="sm" text={current.text || current?.replace("-", " ") || ""} />
+        )}
         <BreadcrumbList className=" ">
           {links.map((link: any, index: any) => {
             const isLast = index === links.length - 1;

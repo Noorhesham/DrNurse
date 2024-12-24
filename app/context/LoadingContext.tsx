@@ -7,7 +7,6 @@ const LoadingContext = createContext<{
   handleFilterChange: () => void;
 }>({ isLoading: false, setIsLoading: () => {}, handleFilterChange: () => {} });
 
-/*************  ✨ Codeium Command 🌟  *************/
 const LoadingProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(false);
   const handleFilterChange = () => {

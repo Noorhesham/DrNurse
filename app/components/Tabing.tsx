@@ -39,7 +39,7 @@ const Tabing = ({ defaultValue, options }: TabingProps) => {
           </Button>
         ))}
       </div>
-      <div className="overflow-hidden min-h-[20vh] md:h-[40vh] lg:min-h-[60vh] mt-8">
+      <div className="overflow-hidden h-full min-h-[20vh]  lg:min-h-[60vh] mt-8">
   <AnimatePresence mode="wait">
     {options.map(
       (option) =>

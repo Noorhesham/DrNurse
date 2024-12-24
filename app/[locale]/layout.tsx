@@ -11,6 +11,7 @@ import { getMessages, unstable_setRequestLocale } from "next-intl/server";
 import CustomIntlProvider from "../context/IntlProvider";
 import "../globals.css";
 import { WEBSITEURL } from "../constants";
+import { LoadingProvider } from "../context/LoadingContext";
 const inter = Bai_Jamjuree({ subsets: ["latin"], weight: ["400", "600", "700", "200", "300", "500"] });
 const locales = ["en", "ar"];
 export function generateStaticParams() {
@@ -77,7 +78,9 @@ export default async function RootLayout({
 
                 <ReactQueryDevtools initialIsOpen={false} />
 
-                <main className=" min-h-screen relative">{children}</main>
+                <LoadingProvider>
+                  <main className=" min-h-screen relative">{children}</main>
+                </LoadingProvider>
               </AuthProvider>
             </DeviceProvider>
           </QueryProvider>

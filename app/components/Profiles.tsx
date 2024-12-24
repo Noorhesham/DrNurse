@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import { useLoading } from "../context/LoadingContext";
 import GridContainer from "./defaults/GridContainer";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -15,7 +14,6 @@ import Filters from "./Filters";
 const Profiles = ({ doctors, totalPages, filters, count, jobId }: any) => {
   const { isLoading } = useLoading();
   const { id } = useParams();
-  console.log(doctors);
   return (
     <GridContainer className=" mt-5 gap-4" cols={9}>
       <div className="flex order-1 lg:order-0 flex-col gap-3 col-span-2 lg:col-span-6">
@@ -79,12 +77,12 @@ const Profiles = ({ doctors, totalPages, filters, count, jobId }: any) => {
           </div>
         )}
       </div>{" "}
-      <div className=" col-span-2 lg:col-span-3">
+     {<div className=" col-span-2 lg:col-span-3">
         <div className=" lg:block hidden ">
           <Filters from_years filters={filters} />
         </div>
         <FilterMobile />
-      </div>
+      </div>}
     </GridContainer>
   );
 };

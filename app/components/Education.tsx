@@ -11,7 +11,7 @@ const Education = ({ edu }: { edu: any }) => {
         <UserCard edu={true} show={false} applicant={edu} />
         <div className=" ml-auto self-end   font-medium text-gray-600">
           <p className=" lg:text-base text-sm  font-semibold uppercase">{edu.speciality}</p>
-          <span className=" text-sm">{formatDate(edu.date, "dd MMM yyyy")}</span>
+          <span className=" text-sm">{formatDate(edu.date, "MMM yyyy")}</span>
         </div>
       </FlexWrapper>
     </Container>
