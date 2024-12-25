@@ -84,6 +84,7 @@ const UpdatePersonalInfo = () => {
       setError(null);
       const updatedParams = new URLSearchParams(searchParams);
       updatedParams.delete("vefiy");
+      data.phone ? updatedParams.set("type", "phone") : updatedParams.set("type", "email");
       data.phone ? updatedParams.set("phone", phone) : updatedParams.set("email", data.email);
       data.phone ? updatedParams.set("uuid", res.phone_code_uuid) : updatedParams.set("uuid", res.email_code_uuid);
 

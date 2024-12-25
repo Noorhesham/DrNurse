@@ -12,7 +12,7 @@ import { Form } from "@/components/ui/form";
 import MiniTitle from "../defaults/MiniTitle";
 import FileUpload from "../inputsForm/FileUpload";
 import FlexWrapper from "../defaults/FlexWrapper";
-import { CURRENCY_OPTIONS, FAMILYSTATUS, GENDER } from "@/app/constants";
+import { ACTIVE_LISCNECE_COUNTRY, CURRENCY_OPTIONS, FAMILYSTATUS, GENDER } from "@/app/constants";
 import CountriesInput from "../inputsForm/CountriesInput";
 import CareerInput, { useGetEntities } from "../inputsForm/CareerTypeInput";
 import { useGetEntity } from "@/lib/queries";
@@ -461,7 +461,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
               name="start_availability_at"
               toYear={new Date().getFullYear() + 4}
               label={t("Start From")}
-              monthOnly
+              monthsOnly
               date
             />
           )}
@@ -472,18 +472,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
           <FormSelect
             label={t("Do you have an active license?")}
             name="active_license_country"
-            options={[
-              { label: "No", value: "no" },
-              { label: "Saudi Arabia", value: "SA" },
-              { label: "UAE", value: "AE" },
-              { label: "Qatar", value: "QA" },
-              { label: "Kuwait", value: "KW" },
-              { label: "Bahrain", value: "BH" },
-              { label: "United Kingdom", value: "GB" },
-              { label: "United States of America", value: "US" },
-              { label: "Canada", value: "CA" },
-              { label: "Australia", value: "AU" },
-            ]}
+            options={ACTIVE_LISCNECE_COUNTRY}
           />
           {form.watch("active_license_country") !== "no" && (
             <FormInput

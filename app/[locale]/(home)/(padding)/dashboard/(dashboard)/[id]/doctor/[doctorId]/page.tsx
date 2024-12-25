@@ -25,6 +25,7 @@ import { GoLocation, GoPeople } from "react-icons/go";
 import { DashboardIcon } from "@radix-ui/react-icons";
 import BreadCrumb from "@/app/components/BreadCrumb";
 import { useSearchParams } from "next/navigation";
+import { ACTIVE_LISCNECE_COUNTRY } from "@/app/constants";
 
 const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: string } }) => {
   const { data, isLoading } = useGetEntity("doctor", `doctor-${doctorId}`, doctorId);
@@ -166,7 +167,7 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
             <div className=" flex flex-col gap-5">
               <InfoItem
                 icon={<DashboardIcon className=" w-5 h-5" />}
-                title="Type"
+                title="TYPE"
                 description={dataPage?.career_type?.title || "Unknown"}
               />
               <InfoItem
@@ -176,13 +177,17 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
               />
               <InfoItem
                 icon={<DashboardIcon className=" w-5 h-5" />}
-                title="Level"
+                title="LEVEL"
                 description={dataPage?.career_level?.title || "Unknown"}
               />{" "}
               <InfoItem
                 icon={<LanguagesIcon className=" w-5 h-5" />}
                 title="ACTIVE LISCENCE COUNTRY"
-                description={dataPage?.active_license_country || "Unknown"}
+                description={
+                  ACTIVE_LISCNECE_COUNTRY.find((item: any) => item.value === dataPage?.active_license_country)?.label ||
+                  dataPage?.active_license_country ||
+                  "Unknown"
+                }
               />
               {dataPage.show_expected_salary === 1 && (
                 <InfoItem

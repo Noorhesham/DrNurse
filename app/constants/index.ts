@@ -244,7 +244,7 @@ export const FAMILYSTATUS = [
   { label: "Married", value: "married" },
   { label: "Single", value: "single" },
   { label: "Divorced", value: "divorced" },
-  { label: "Widowed", value: "widowed" },  
+  { label: "Widowed", value: "widowed" },
   { label: "Other", value: "other" },
   { label: "Not specified", value: " " },
 ];
@@ -254,3 +254,15 @@ export const GENDER = [
 ];
 export const WEBSITEURL = "https://dr-nurse.vercel.app";
 export const APIURL = "https://dr.r-m.dev";
+export const ACTIVE_LISCNECE_COUNTRY = [
+  { label: "No", value: "no" },
+  { label: "Saudi Arabia", value: "SA" },
+  { label: "UAE", value: "AE" },
+  { label: "Qatar", value: "QA" },
+  { label: "Kuwait", value: "KW" },
+  { label: "Bahrain", value: "BH" },
+  { label: "United Kingdom", value: "GB" },
+  { label: "United States of America", value: "US" },
+  { label: "Canada", value: "CA" },
+  { label: "Australia", value: "AU" },
+];
