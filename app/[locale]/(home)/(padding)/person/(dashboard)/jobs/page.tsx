@@ -38,6 +38,12 @@ const page = async ({ params: { locale }, searchParams }: { params: { locale: st
       queryParams.append("career_levels[]", value);
     });
   }
+  if (career_specialty_id) {
+    const careerSpecialtyArray = career_specialty_id.split(",");
+    careerSpecialtyArray.forEach((value: string) => {
+      queryParams.append("career_specialty_id[]", value);
+    });
+  }
   const data = await Server({ resourceName: "getJobs", queryParams });
   const jobs = data?.data.jobs;
   const career_types = data.data.career_types;
@@ -54,7 +60,7 @@ const page = async ({ params: { locale }, searchParams }: { params: { locale: st
   ];
   return (
     <div>
-        <JobsList filters={filters} query={query} jobs={jobs} totalPages={totalPages} />
+      <JobsList filters={filters} query={query} jobs={jobs} totalPages={totalPages} />
     </div>
   );
 };

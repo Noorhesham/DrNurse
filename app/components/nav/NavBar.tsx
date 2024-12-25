@@ -21,17 +21,20 @@ import ModalCustom from "../defaults/ModalCustom";
 import MyHospitals from "../MyHospitals";
 import { useLocale } from "next-intl";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useQueryClient } from "@tanstack/react-query";
+import useCachedQuery from "@/app/hooks/useCachedData";
 
 const NavBar = () => {
   const [isScrollingDown, setIsScrollingDown] = useState(false);
-  const [active, setIsActive] = useState(false);
   const router = useRouter();
   const [isPhone, setIsPhone] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isTopPage, setIsTopPage] = useState(true);
   const pathName = usePathname();
-  const { userSettings, handleLogout, generalSettings, loading } = useAuth();
-  const user = userSettings;
+  const queryClient = useQueryClient();
+  const { loading, data: userSettings, setData } = useCachedQuery("user_settings");
+
+  const { handleLogout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -140,7 +143,7 @@ const NavBar = () => {
     ];
   }
   const locale = useLocale();
-  console.log(pathName.replace(`/${locale}`, "/"));
+  console.log(userSettings);
   return (
     <header className=" w-full">
       <nav
@@ -202,7 +205,7 @@ const NavBar = () => {
                   <Skeleton className=" h-12 rounded-full w-[150px]" />
                   <Skeleton className=" h-12 rounded-full w-[150px]" />
                 </div>
-              ) : !user ? (
+              ) : !userSettings ? (
                 <>
                   <Link href="/login">
                     <Button
@@ -233,6 +236,7 @@ const NavBar = () => {
                         toast.success(res.message);
                         handleLogout();
                         router.refresh();
+                        setData(null);
                       }
                     }}
                     className={`text-xs  ${
@@ -243,7 +247,7 @@ const NavBar = () => {
                     LOG OUT
                   </Button>{" "}
                   {isHome ? (
-                    <Link href={user ? "/loader" : "/signup"}>
+                    <Link href={userSettings ? "/loader" : "/signup"}>
                       <Button className="  px-2 lg:px-8 rounded-full">GET STARTED</Button>
                     </Link>
                   ) : (

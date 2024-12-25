@@ -1,109 +1,32 @@
 "use client";
-import CompanyInfo from "@/app/components/CompanyInfo";
-import FunctionalButton from "@/app/components/FunctionalButton";
 import InfoItem from "@/app/components/InfoDoc";
 import JobCard from "@/app/components/JobCard";
-import MainProfile from "@/app/components/MainProfile";
+import JobHeader from "@/app/components/JobHeader";
 import Share from "@/app/components/Share";
 import Spinner from "@/app/components/Spinner";
-import TooltipButton from "@/app/components/ToolTipButton";
 import VerificationStatus from "@/app/components/VerficationStatus";
 import GridContainer from "@/app/components/defaults/GridContainer";
 import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
 import MiniTitle from "@/app/components/defaults/MiniTitle";
-import { Server } from "@/app/main/Server";
 import { Job } from "@/app/types";
 import { useGetEntity } from "@/lib/queries";
 import { convertToHTML } from "@/lib/utils";
 import { PersonIcon } from "@radix-ui/react-icons";
 import { useQueryClient } from "@tanstack/react-query";
 import { formatDistanceToNow, parseISO } from "date-fns";
-import {Briefcase, CalendarIcon, DollarSign, EditIcon,  } from "lucide-react";
-import React, { useTransition } from "react";;
+import { Briefcase, CalendarIcon, DollarSign, EditIcon } from "lucide-react";
+import React, { useTransition } from "react";
 import { GoLocation } from "react-icons/go";
 import { toast } from "react-toastify";
-const page = ({ params: { jobId, locale } }: { params: { jobId: string; locale: string } }) => {
+const page = ({ params: { jobId } }: { params: { jobId: string } }) => {
   const { data, isLoading } = useGetEntity("job", `job-${jobId}`, jobId);
-  const queryClient = useQueryClient();
-  const [isPending, startTransition] = useTransition();
   if (!data || isLoading) return <Spinner />;
   const job = data.data;
   const timeAgo = job?.created_at ? formatDistanceToNow(parseISO(job?.created_at), { addSuffix: true }) : "";
 
-  const doctor = {
-    name: job.job_title,
-    image: "/job.svg",
-    speciality: [job?.career_type?.title, job?.career_specialty?.title, job?.career_level?.title]
-      .filter(Boolean)
-      .join(", "),
-    address: [job?.branch?.country?.title, job?.branch?.state?.title].filter(Boolean).join(", "),
-    duration: "in 7 days",
-  };
-  console.log(job);
-
   return (
     <section>
-      <div className=" bg-light ">
-        <MaxWidthWrapper>
-          <MainProfile h1={true} user={doctor}>
-            <div className="flex  items-center gap-4">
-              <FunctionalButton
-                className=" rounded-2xl"
-                icon={<EditIcon className=" w-5 h-5" />}
-                btnText="EDIT JOB"
-                link={`/dashboard/${job.company?.id}/edit-job/${job.id}`}
-              />
-              {/* Lock Job Button */}
-              <TooltipButton
-                tooltipText={job.status === "closed" ? "Job is already closed" : "Close this job"}
-                onClick={() => {
-                  startTransition(async () => {
-                    const res = await Server({
-                      resourceName: "lock-job",
-                      id: job.id,
-                      body: {
-                        status: "closed",
-                        job_id: job.id,
-                      },
-                    });
-                    if (res.status) {
-                      toast.success(res.message);
-                      queryClient.invalidateQueries({ queryKey: [`job-${job.id}`] });
-                    } else toast.error(res.message);
-                  });
-                }}
-                disabled={isPending}
-                className={job.status === "closed" ? "bg-red-500 text-gray-50" : "bg-[#D3DDEE] text-gray-800"}
-                iconSrc="/lock.svg"
-                altText="lock"
-              />
-
-              {/* Duplicate Job Button */}
-              <TooltipButton
-                tooltipText="Duplicate this job"
-                onClick={() => {
-                  startTransition(async () => {
-                    const res = await Server({
-                      resourceName: "duplicate",
-                      body: {
-                        job_id: job.id,
-                      },
-                    });
-                    if (res.status) {
-                      toast.success(res.message);
-                      queryClient.invalidateQueries({ queryKey: [`job-${job.id}`] });
-                    } else toast.error(res.message);
-                  });
-                }}
-                disabled={isPending}
-                className="bg-[#D3DDEE] text-gray-800"
-                iconSrc="/replace.svg"
-                altText="duplicate"
-              />
-            </div>
-          </MainProfile>
-        </MaxWidthWrapper>
-      </div>
+      <JobHeader data={job} />
       <MaxWidthWrapper>
         <GridContainer className=" gap-8" cols={8}>
           <div className=" col-span-2 lg:col-span-6">

@@ -1,4 +1,5 @@
 "use client";
+import { useQueryClient } from "@tanstack/react-query";
 import { createContext, useContext, useState } from "react";
 
 const LoadingContext = createContext<{
@@ -9,10 +10,11 @@ const LoadingContext = createContext<{
 
 const LoadingProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const queryClient = useQueryClient();
   const handleFilterChange = () => {
     setIsLoading(true);
   };
-
+  if (!queryClient) return null;
   return (
     <LoadingContext.Provider value={{ setIsLoading, isLoading, handleFilterChange }}>
       {children}

@@ -36,12 +36,10 @@ const MeetingForm = ({
   invite,
   userId,
   jobIdDef,
-  jobTitle,
 }: {
   invite?: boolean;
   userId?: string;
   jobIdDef?: string;
-  jobTitle?: String;
 }) => {
   const searchParams = useSearchParams();
   const jobId = searchParams.get("job") || jobIdDef || "";

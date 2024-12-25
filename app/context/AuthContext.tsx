@@ -2,7 +2,7 @@
 import { createContext, use, useContext, useEffect, useLayoutEffect, useState } from "react";
 import cookies from "js-cookie";
 import { Server } from "../main/Server";
-import { QueryClient, useQueryClient } from "@tanstack/react-query";
+import { QueryClient, useIsFetching, useQueryClient } from "@tanstack/react-query";
 import { useLocalStorageState } from "../hooks/useLocalStorageState";
 import { useDevice } from "./DeviceContext";
 import { useSearchParams } from "next/navigation";
@@ -61,6 +61,7 @@ const updateFn = ({ checker, setState, key, dateKey, setDates, queryClient, stat
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const queryClient = useQueryClient();
   const { device_info } = useDevice();
+  const isFetching = useIsFetching();
   const [login, setLogin] = useState<any>(false);
   const [dates, setDates] = useLocalStorageState(
     {
@@ -142,9 +143,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     };
 
-    if (queryClient!==undefined) fetchData();
-  }, [login, queryClient]);
-  console.log(userSettings, user2Settings, generalSettings, "after server",queryClient);
+    if (queryClient !== undefined) fetchData();
+  }, [login, queryClient,]);
+  console.log(userSettings, user2Settings, generalSettings, "after server", queryClient);
 
   const handleLogout = () => {
     setCartCount(0);
@@ -163,7 +164,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUser2Settings(undefined);
     setLoading(false);
   };
-
+  console.log("AuthContext initialized:", queryClient.getQueryData(["user"]));
+  console.log("React Query cache:", queryClient.getQueryData());
+  console.log("fetching", isFetching);
   return (
     <AuthContext.Provider
       value={{

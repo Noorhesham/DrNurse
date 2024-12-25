@@ -1,5 +1,5 @@
 import { ResourceNameProps, Server } from "@/app/main/Server";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import cookies from "js-cookie";
 const useGetGeneralSettings = (needed: string[]) => {
   const { data, isLoading } = useQuery({
@@ -24,8 +24,9 @@ const useGetEntity = (
   options: { enabled?: boolean; nocompany?: boolean } = {},
   queryParams?: any
 ) => {
+  const queryClient = useQueryClient();
   const { data, isLoading } = useQuery({
-    queryKey: [key],
+    queryKey: Array.isArray(key) ? key : [key], // Ensure queryKey is always an array
     queryFn: async () =>
       await Server({
         resourceName: resourceName,
@@ -34,6 +35,9 @@ const useGetEntity = (
         nocompany: options.nocompany,
       }),
     enabled: options.enabled,
+    initialData: () => {
+      return queryClient.getQueryData([key]);
+    },
   });
 
   return { data, isLoading };

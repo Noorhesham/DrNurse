@@ -5,25 +5,28 @@ import Paragraph from "@/app/components/defaults/Paragraph";
 import MyHospitals from "@/app/components/MyHospitals";
 import Spinner from "@/app/components/Spinner";
 import { useAuth } from "@/app/context/AuthContext";
+import useCachedQuery from "@/app/hooks/useCachedData";
 import { Button } from "@/components/ui/button";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
+const isAccountOlderThan10Days = (userSettings: any) => {
+  const createdAt = new Date(userSettings.created_at);
+  const currentDate = new Date();
+  const diffInMs = currentDate.getTime() - createdAt.getTime();
+  const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+  return diffInDays > 10;
+};
 const page = () => {
-  const { userSettings, loading } = useAuth();
+  const { data: userSettings, loading } = useCachedQuery("user_settings");
+  console.log(userSettings, loading);
   const router = useRouter();
-  if (loading || !userSettings) return <Spinner />;
-  const isAccountOlderThan10Days = () => {
-    const createdAt = new Date(userSettings.created_at);
-    const currentDate = new Date();
-    const diffInMs = currentDate.getTime() - createdAt.getTime();
-    const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
-    return diffInDays > 10;
-  };
+
   useEffect(() => {
-    if (isAccountOlderThan10Days() && !userSettings?.role.includes("admin")) {
+    if (!userSettings) return;
+    if (userSettings && isAccountOlderThan10Days(userSettings) && !userSettings?.role.includes("admin")) {
       router.push("/person");
     } else if (
       userSettings.has_profile &&
@@ -34,6 +37,7 @@ const page = () => {
       router.push(`/dashboard/${userSettings.companies[0].id}`);
     }
   }, [router]);
+  if (loading || !userSettings) return <Spinner />;
 
   const HasProfile = () => {
     if (userSettings.has_profile)
@@ -73,6 +77,7 @@ const page = () => {
         />
       );
   };
+
   return (
     <section
       className=" h-screen  justify-center relative flex items-center "

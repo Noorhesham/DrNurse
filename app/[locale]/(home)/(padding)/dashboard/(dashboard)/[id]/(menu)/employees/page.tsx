@@ -85,11 +85,7 @@ const page = async ({ searchParams }: { searchParams: any }) => {
     { Nationality: nationalities, arr: true, filter: "nationality_id" },
     { Gender: genders, arr: false, filter: "gender" },
   ];
-  console.log(profiles.map((p) => p.name));
-  return (
-
-      <Profiles count={data.data.count} doctors={profiles} totalPages={totalPages} filters={filters} />
-  );
+  return <Profiles count={data.data.count} doctors={profiles} totalPages={totalPages} filters={filters} />;
 };
 
 export default page;
