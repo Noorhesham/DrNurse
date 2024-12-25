@@ -19,7 +19,8 @@ const Profiles = ({ doctors, totalPages, filters, count, jobId }: any) => {
   const { id } = useParams();
   const { data, isLoading: jobLoading } = useGetEntity("job", `job-${jobId}`, jobId, { enabled: !!jobId });
   if (!data && (jobLoading && jobId)) return <Spinner />;
-  const job = data.data;
+  const job = data?.data;
+  console.log(data)
   return (
     <>
       {jobId && job && <JobHeader job={job} />}

@@ -8,14 +8,13 @@ import MiniTitle from "@/app/components/defaults/MiniTitle";
 import SideBar from "@/app/components/nav/SideBar";
 import SwiperCards from "@/app/components/SwiperCards";
 import TableData from "@/app/components/TableData";
-import React, { useEffect } from "react";
+import React  from "react";
 import { useGetEntity } from "@/lib/queries";
 import Spinner from "@/app/components/Spinner";
 import { useParams } from "next/navigation";
 import Empty from "@/app/components/Empty";
 import Link from "next/link";
 import VerificationStatus from "@/app/components/VerficationStatus";
-import cookies from "js-cookie";
 const page = () => {
   const params = useParams();
 
@@ -75,12 +74,12 @@ const page = () => {
             <div className=" grid grid-cols-1 md:grid-cols-2 my-4 gap-5">
               <div className=" flex flex-col gap-4 bg-[#F7F9FB] px-5 py-5 rounded-lg">
                 <MiniTitle boldness="bold" text="RECENTLY MEETINGS" />
-                {overView.data.meetings.length > 0 ? (
+                {overView.data?.meetings?.length > 0 ? (
                   overView.data?.meetings.map((meet: any) => <Meet id={params.id} key={meet.id} meet={meet} />)
                 ) : (
                   <Empty text="No Meetings Yet !" />
                 )}
-                {overView.data.meetings.length > 0 && (
+                {overView.data?.meetings?.length > 0 && (
                   <Link href={`/dashboard/${params.id}/meetings`} className="underline flex items-center gap-2">
                     <span>View All Meetings</span>
                   </Link>
@@ -94,8 +93,8 @@ const page = () => {
                 />
                 <div className=" md:block hidden">
                   <GridContainer cols={3}>
-                    {overView.data.proposed_persons.length > 0 ? (
-                      overView.data.proposed_persons
+                    {overView.data?.proposed_persons?.length > 0 ? (
+                      overView.data?.proposed_persons
                         .filter((person) => person.user?.profile)
                         .map((doctor: any) => (
                           <Doctor
@@ -109,7 +108,7 @@ const page = () => {
                   </GridContainer>
                 </div>
                 <div className=" block md:hidden ">
-                  {overView.data.proposed_persons.length > 0 ? (
+                  {overView.data?.proposed_persons?.length > 0 ? (
                     <SwiperCards
                       autoplay
                       className=" w-full h-full"
