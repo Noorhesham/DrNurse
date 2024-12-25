@@ -59,6 +59,7 @@ export interface InputProps {
   area?: boolean;
   country?: boolean;
   returnFullPhone?: boolean;
+  disableOldDates?: boolean;
   countryName?: string | any;
   className?: string;
   disabled?: boolean;
@@ -95,6 +96,7 @@ const CustomForm = ({
                 <CountriesInput cityName={input.cityName} countryName={input.countryName} stateName={input.stateName} />
               ) : (
                 <FormInput
+                  disableOldDates={input?.disableOldDates}
                   noSwitch={input.noSwitch}
                   returnFullPhone={input?.returnFullPhone}
                   disabled={disabled}

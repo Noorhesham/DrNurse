@@ -74,7 +74,7 @@ const SendOffer = ({
       details: {
         job_title: defaultvals?.job_title || "",
         salary: defaultvals?.salary || 0,
-        benefits: defaultvals?.benefits || [],
+        benefits: defaultvals?.benefits || [""],
         currency: defaultvals?.currency || "usd",
         start_date: defaultvals?.start_date || "",
         address: defaultvals?.address || "",
@@ -124,12 +124,13 @@ const SendOffer = ({
       date: true,
       placeholder: t("startDatePlaceholder"),
       label: t("startdate"),
+      disableOldDates: true,
     },
   ];
   if (isLoading) return <Spinner />;
 
   return (
-    <div className=" px-5 ">
+    <div className="  ">
       {negotiation && (
         <div className=" py-2 px-4 flex items-center gap-2 rounded-xl bg-yellow-500/90 mb-2 font-semibold text-yellow-100 border-gray-50">
           <FaExclamationCircle /> {negotiation?.description}
@@ -158,20 +159,25 @@ const SendOffer = ({
             />
             <FormSelect label="Select Currency" name="details.currency" options={CURRENCY_OPTIONS} />
           </FlexWrapper>
-          {fields.map((field, index) => (
-            <div className="flex mb-5 items-center gap-4 mt-2" key={field.id}>
-              <FormInput name={`details.benefits.${index}`} placeholder={t("addBenefit")} />
-              <button
-                type="button"
-                onClick={() => remove(index)}
-                className="rounded-xl self-center border-2 border-gray-600 p-1 my-auto"
-              >
-                <XIcon className="w-4 h-4 " />
-              </button>
+          <div className=" my-4">
+            <MiniTitle text={t("Benefits")} className=" !my-4" boldness="bold" size="lg" />
+
+            {fields.map((field, index) => (
+              <div className="flex mb-5 items-center gap-4 mt-2" key={field.id}>
+                <FormInput name={`details.benefits.${index}`} placeholder={t("addBenefit")} />
+                <button
+                  type="button"
+                  onClick={() => remove(index)}
+                  className="rounded-xl self-center border-2 border-gray-600 p-1 my-auto"
+                >
+                  <XIcon className="w-4 h-4 " />
+                </button>
+              </div>
+            ))}
+
+            <div className="my-4">
+              <FunctionalButton size="sm" btnText={t("addBenefit")} onClick={() => append("")} />
             </div>
-          ))}
-          <div className="my-4">
-            <FunctionalButton size="sm" btnText={t("addBenefit")} onClick={() => append("")} />
           </div>
 
           <div className="flex flex-col gap-3">

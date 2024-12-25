@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { format, setDate } from "date-fns";
+import { format, isBefore } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
@@ -16,6 +16,7 @@ const CalendarInput = ({
   disabled,
   optional,
   monthOnly = false,
+  disableOldDates = false,
 }: {
   control: any;
   name: string;
@@ -23,9 +24,11 @@ const CalendarInput = ({
   disabled?: boolean;
   optional?: boolean;
   monthOnly?: boolean;
+  disableOldDates?: boolean;
 }) => {
   const [date, setDate] = useState<Date | null>(null);
   const [open, setOpen] = useState(false);
+
   return (
     <FormField
       control={control}
@@ -77,13 +80,14 @@ const CalendarInput = ({
                       if (monthOnly) {
                         // Automatically set the day to the 1st of the month
                         newDate = setDate(date, 1);
-                       
                       }
 
                       const formattedDate = format(date, "yyyy-MM-dd");
                       field.onChange(formattedDate);
                     }}
-                    disabled={(date) => date < new Date("1900-01-01")}
+                    disabled={
+                      (date) => disableOldDates && isBefore(date, new Date()) // Disable dates before today
+                    }
                     initialFocus
                   />
                 ) : (
@@ -98,8 +102,11 @@ const CalendarInput = ({
                       if (!date) return;
                       const formattedDate = format(date, "yyyy-MM-dd");
                       field.onChange(formattedDate);
+                      setOpen(false);
                     }}
-                    disabled={(date) => date < new Date("1900-01-01")}
+                    disabled={
+                      (date) => disableOldDates && isBefore(date, new Date()) // Disable dates before today
+                    }
                     initialFocus
                   />
                 )}

@@ -44,6 +44,7 @@ const Payment = ({ planId, invoice }: { planId: string; invoice?: boolean }) => 
         toast.success(res.message);
         router.refresh()
         if (res.url) router.push(res.url);
+        else router.push(`/dashboard/${id}/invoices`);
       } else toast.error(res.message);
     });
   };

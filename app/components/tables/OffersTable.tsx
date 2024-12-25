@@ -1,7 +1,7 @@
 import React from "react";
 import { Table, TableBody, TableHeader, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Calendar, CheckCircle, TimerIcon, XCircle } from "lucide-react";
+import { Calendar, CheckCircle, Contact, TimerIcon, XCircle } from "lucide-react";
 import ModalCustom from "../defaults/ModalCustom";
 import MeetingActions from "../forms/MeetingActions";
 import Negotiation from "../Negotiation";
@@ -9,6 +9,7 @@ import Paragraph from "../defaults/Paragraph";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import DownloadOffer from "../DownloadOffer";
 import { format } from "date-fns";
+import ContactPerson from "../Contact";
 
 interface OffersTableProps {
   offers: any[];
@@ -33,10 +34,18 @@ const OffersTable: React.FC<OffersTableProps> = ({ offers, action, person = fals
           <TableRow className="" key={i}>
             <TableCell className=" w-fit text-nowrap md:w-[30%] font-medium">
               <div className="flex flex-col items-start">
-                <h2 className="text-gray-900 text-base font-semibold">
-                  {offer.details.job_title.length > 70
-                    ? `${offer.details.job_title.slice(0, 70)}...}`
+                <h2 className="text-gray-900 text-sm font-semibold">
+                  {offer.details.job_title.length > 40
+                    ? `${offer.details.job_title.slice(0, 40)}...`
                     : offer.details.job_title}
+                  <br />
+                  {offer.user?.name.length > 70
+                    ? `To ${offer.user?.name.slice(0, 50)}...`
+                    : `To ${offer.user?.name || ""}`}
+                  <br /> {offer.company && `From `}
+                  {offer.company?.title.length > 70
+                    ? `${offer.company?.title.slice(0, 50)}...`
+                    : offer.company?.title || ""}
                 </h2>
                 <div className="flex items-center gap-3 text-muted-foreground">
                   <span>{offer.duration}</span>
@@ -45,7 +54,7 @@ const OffersTable: React.FC<OffersTableProps> = ({ offers, action, person = fals
             </TableCell>
             <TableCell className=" ml-auto text-nowrap  gap-2">
               <div className="flex items-center gap-2">
-                <div className="flex items-center gap-2">
+                <div className="flex text-sm items-center gap-2">
                   {offer.status.toLowerCase() === "accepted" || offer.status.toLowerCase() === "approved" ? (
                     <CheckCircle className="text-green-500" />
                   ) : offer.status.toLowerCase() === "rejected" ? (
@@ -107,6 +116,19 @@ const OffersTable: React.FC<OffersTableProps> = ({ offers, action, person = fals
                         <Negotiation jobOfferId={offer.id} negotiation={offer.negotiation} />
                       )
                     }
+                  />
+                )}
+                {offer.status.toLowerCase() === "approved" && (
+                  <ModalCustom
+                    btn={
+                      <Button className=" rounded-full text-sm" size={"sm"}>
+                        Call{" "}
+                        {offer.user?.name.split(" ")[0].length > 20
+                          ? `${offer.user?.name.split(" ")[0].slice(0, 20)}...`
+                          : offer.user?.name.split(" ")[0]}
+                      </Button>
+                    }
+                    content={<ContactPerson person={offer.user?.id} />}
                   />
                 )}
               </div>

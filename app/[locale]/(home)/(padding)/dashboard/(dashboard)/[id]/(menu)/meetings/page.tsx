@@ -60,7 +60,7 @@ const page = () => {
                     className={cn("w-full text-xs rounded-full bg-light text-main2 ")}
                     variant={"outline"}
                   >
-                    CONTROL AVIALABLE DATES
+                    Control Available Dates
                   </Button>
                 }
                 content={<MeetingForm />}
@@ -72,7 +72,7 @@ const page = () => {
                 className={cn("w-full rounded-full text-xs bg-light text-main2 ")}
                 variant={"outline"}
               >
-                <Link href={`/dashboard/${id}/meetings/control`}>CONTROL AVIALABLE MEETINGS</Link>
+                <Link href={`/dashboard/${id}/meetings/control`}> Control Available Meetings</Link>
               </Button>
             </TableHead>
           </TableRow>
@@ -110,10 +110,10 @@ const page = () => {
                   btn={
                     <Button
                       size={"sm"}
-                      className={cn("w-full rounded-full text-xs capitalize bg-light text-main2 ")}
+                      className={cn("w-full rounded-full text-xs  bg-light text-main2 ")}
                       variant={"outline"}
                     >
-                      AVAILABLE DATES
+                      Available Dates
                     </Button>
                   }
                   content={<MeetingForm jobTitle={job.job_title} jobIdDef={job.id} invite={false} />}
@@ -123,10 +123,10 @@ const page = () => {
               <TableCell className="text-right">
                 <Button
                   size={"sm"}
-                  className={cn("w-full rounded-full text-xs capitalize bg-light text-main2 ")}
+                  className={cn("w-full rounded-full text-xs  bg-light text-main2 ")}
                   variant={"outline"}
                 >
-                  <Link href={`/dashboard/${id}/meetings/control?jobId=${job.id}`}>Control AVAILABLE meetings</Link>
+                  <Link href={`/dashboard/${id}/meetings/control?jobId=${job.id}`}>Control Available Meetings</Link>
                 </Button>
               </TableCell>
             </TableRow>

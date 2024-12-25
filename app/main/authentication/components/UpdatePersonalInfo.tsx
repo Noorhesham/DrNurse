@@ -26,7 +26,7 @@ const UpdatePersonalInfo = () => {
   const [verify, setVerify] = useState(false);
   const personal = [
     { name: "name", placeholder: t("name") },
-    { name: "birth_day", placeholder: t("birth_day"), date: true },
+    { name: "birth_day", placeholder: t("birth_day"), date: true, optional: true },
     { name: "avatar", placeholder: t("avatar"), photo: true },
   ];
   const email = [{ name: "email", placeholder: t("email") }];
@@ -34,11 +34,7 @@ const UpdatePersonalInfo = () => {
   const searchParams = useSearchParams();
   const { setLogin, userSettings: user, loading } = useAuth();
   const [OtpError, setOtpError] = useState<string | null>(null);
-  const updateParams = (key: string, value: string) => {
-    const updatedParams = new URLSearchParams(searchParams);
-    updatedParams.set(key, value);
-    router.push(`?${updatedParams.toString()}`, { scroll: false });
-  };
+
   const updatePersonalInfro = async (data: any, setError: any) => {
     const formData = new FormData();
     Object.keys(data).forEach((key) => {
@@ -87,6 +83,7 @@ const UpdatePersonalInfo = () => {
       queryClient.invalidateQueries({ queryKey: ["my-profile"] });
       setError(null);
       const updatedParams = new URLSearchParams(searchParams);
+      updatedParams.delete("vefiy");
       data.phone ? updatedParams.set("phone", phone) : updatedParams.set("email", data.email);
       data.phone ? updatedParams.set("uuid", res.phone_code_uuid) : updatedParams.set("uuid", res.email_code_uuid);
 
@@ -197,7 +194,7 @@ const UpdatePersonalInfo = () => {
                 title={t("updatePhone")}
               />
               {searchParams.get("uuid") && searchParams.get("type") === "phone" && (
-                <InputOTPPattern 
+                <InputOTPPattern
                   verify={searchParams.get("vefiy") === "true"}
                   setServerError={setOtpError}
                   sendType=""

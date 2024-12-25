@@ -43,6 +43,7 @@ interface FormInputProps {
   area?: boolean;
   photo?: boolean;
   noimg?: boolean;
+  disableOldDates?: boolean;
   monthOnly?: boolean;
   noSwitch?: boolean;
   monthsOnly?: boolean;
@@ -77,6 +78,7 @@ const FormInput = ({
   optional = false,
   noProgress = false,
   date = false,
+  disableOldDates = false,
   rate = false,
   photo = false,
   area = false,
@@ -137,6 +139,7 @@ const FormInput = ({
             name={name || ""}
             toYear={toYear}
             control={control}
+            disableOldDates={disableOldDates}
           />
         </div>
       </Suspense>
@@ -147,7 +150,11 @@ const FormInput = ({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className={`${width || "w-full"} ${!check&&'flex flex-col gap-3'} my-2 !space-y-0 ${check && "flex items-center "} relative`}>
+        <FormItem
+          className={`${width || "w-full"} ${!check && "flex flex-col gap-3"} my-2 !space-y-0 ${
+            check && "flex items-center "
+          } relative`}
+        >
           {!switchToggle && label !== "" && (
             <FormLabel className={`uppercase relative w-fit ${check && "text-nowrap mt-2"}`}>
               {" "}

@@ -103,7 +103,8 @@ export type ResourceNameProps =
   | "download-offer"
   | "start-meet"
   | "create-verification"
-  | "verify-account";
+  | "verify-account"
+  | "contact-doctor";
 
 // Function to get the full URL from the resource name
 const getURL = (
@@ -313,6 +314,8 @@ const getURL = (
       return { url: `${url}/rm_users/${VERSION}/account_verification/create`, method: "POST" };
     case "verify-account":
       return { url: `${url}/rm_users/${VERSION}/account_verification/${id}/validate-account-code`, method: "POST" };
+    case "contact-doctor":
+      return { url: `${url}/recruitment/profiles/${id}/contacts`, method: "GET" };
     default:
       return { url, method: "GET" as MethodProps };
   }
@@ -367,7 +370,7 @@ export async function Server({
   try {
     // Get the URL and method from the resource name
     const { url, method: resolvedMethod } = getURL(resourceName, id, entityName, queryParams);
-    console.log(url,hospitalId);
+    console.log(url, hospitalId);
     // Fetch data from the server
     let requestBody;
     if (formData) requestBody = body;

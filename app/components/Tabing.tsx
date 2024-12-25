@@ -17,8 +17,11 @@ const Tabing = ({ defaultValue, options }: TabingProps) => {
     if (category && window.location.search.includes(category)) setCurrentPath(category);
     else setCurrentPath(defaultValue);
   }, [category, defaultValue]);
+
   const handleClick = (href: string) => {
-    router.push(`${window.location.pathname}?section=${href}`, { scroll: false });
+    const currentParams = new URLSearchParams(searchParams.toString());
+    currentParams.set("section", href); // Update or add the "section" parameter
+    router.push(`${window.location.pathname}?${currentParams.toString()}`, { scroll: false });
     setCurrentPath(href);
   };
   return (
@@ -40,23 +43,23 @@ const Tabing = ({ defaultValue, options }: TabingProps) => {
         ))}
       </div>
       <div className="overflow-hidden h-full min-h-[20vh]  lg:min-h-[60vh] mt-8">
-  <AnimatePresence mode="wait">
-    {options.map(
-      (option) =>
-        option.href === currentPath && (
-          <motion.div
-            key={option.href}
-            initial={{ opacity: 0,  }}
-            animate={{ opacity: 1, }}
-            exit={{ opacity: 0,  }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-          >
-            {option.content}
-          </motion.div>
-        )
-    )}
-  </AnimatePresence>
-</div>
+        <AnimatePresence mode="wait">
+          {options.map(
+            (option) =>
+              option.href === currentPath && (
+                <motion.div
+                  key={option.href}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                >
+                  {option.content}
+                </motion.div>
+              )
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 };

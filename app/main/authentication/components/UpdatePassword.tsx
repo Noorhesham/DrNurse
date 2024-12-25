@@ -6,8 +6,10 @@ import { Lock } from "lucide-react";
 import UpdateCard from "@/app/components/UpdateCard";
 import FormContainer from "@/app/components/forms/FormContainer";
 import { useTranslations } from "next-intl";
+import { DialogClose } from "@/components/ui/dialog";
 
 const UpdatePassword = () => {
+  const ref = React.useRef<HTMLButtonElement>(null);
   const t = useTranslations();
   const updatePasswordInfo = async (data: any, setError: any) => {
     const res = await Server({ resourceName: "update_password", body: data });
@@ -16,6 +18,7 @@ const UpdatePassword = () => {
     if (res) {
       toast.success(res.message);
       setError(null);
+      ref.current?.click();
     }
   };
   const updatePassword = [
@@ -34,12 +37,14 @@ const UpdatePassword = () => {
       }
       content={
         <div className=" px-5 lg:px-20 py-5">
+          <DialogClose ref={ref} />
+
           <FormContainer
+            closeAfter={true}
             submit={updatePasswordInfo}
             cancel={true}
             btnStyles={"w-full"}
             btnText={t("confirm")}
-  
             formArray={updatePassword}
             title={t("updatePassword")}
           />

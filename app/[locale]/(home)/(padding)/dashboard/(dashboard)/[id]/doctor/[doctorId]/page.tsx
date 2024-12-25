@@ -52,7 +52,7 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
               image: dataPage?.avatar,
               speciality: [
                 dataPage?.career_type?.title,
-                dataPage?.career_specialty?.title,
+                dataPage?.career_Specialty?.title || dataPage?.career_specialty?.title,
                 dataPage?.career_level?.title,
               ]
                 .filter(Boolean)
@@ -166,9 +166,24 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
             <div className=" flex flex-col gap-5">
               <InfoItem
                 icon={<DashboardIcon className=" w-5 h-5" />}
+                title="Type"
+                description={dataPage?.career_type?.title || "Unknown"}
+              />
+              <InfoItem
+                icon={<DashboardIcon className=" w-5 h-5" />}
                 title="SPECIALITY"
-                description={dataPage?.career_Specialty?.title || "Unknown"}
+                description={dataPage?.career_Specialty?.title || dataPage?.career_specialty?.title || "Unknown"}
+              />
+              <InfoItem
+                icon={<DashboardIcon className=" w-5 h-5" />}
+                title="Level"
+                description={dataPage?.career_level?.title || "Unknown"}
               />{" "}
+              <InfoItem
+                icon={<LanguagesIcon className=" w-5 h-5" />}
+                title="ACTIVE LISCENCE COUNTRY"
+                description={dataPage?.active_license_country || "Unknown"}
+              />
               {dataPage.show_expected_salary === 1 && (
                 <InfoItem
                   icon={<DollarSign className=" w-5 h-5" />}

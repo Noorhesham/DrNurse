@@ -16,6 +16,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useGetEntity } from "@/lib/queries";
 import { format, parse, set } from "date-fns";
 import FormSelect from "../inputsForm/FormSelect";
+import Paragraph from "../defaults/Paragraph";
+import LocalTime from "../LocalTime";
 
 const meetingsSchema = z.object({
   meetings: z.array(
@@ -32,15 +34,7 @@ const meetingsSchema = z.object({
   ),
 });
 
-const MeetingForm = ({
-  invite,
-  userId,
-  jobIdDef,
-}: {
-  invite?: boolean;
-  userId?: string;
-  jobIdDef?: string;
-}) => {
+const MeetingForm = ({ invite, userId, jobIdDef }: { invite?: boolean; userId?: string; jobIdDef?: string }) => {
   const searchParams = useSearchParams();
   const jobId = searchParams.get("job") || jobIdDef || "";
   const { data: job, isLoading: jobLoading } = useGetEntity("job", `job-${jobId || 0}`, jobId, {
@@ -150,79 +144,98 @@ const MeetingForm = ({
 
   const watchedFields = form.watch("meetings", fields);
   console.log(data);
+  const hasSlots = fields.length > 0;
+
   return (
     <div>
       <MiniTitle boldness="bold" color="black" text={job?.data?.job_title || ""} />
+      <Paragraph
+        description="Create time slots for others to select from. These slots are shared with all invitees for 
+        this job. Please ensure the times are in GMT. "
+      />
       <Form {...form}>
         {" "}
         <form className="mt-4 px-5  relative flex flex-col gap-5" onSubmit={form.handleSubmit(onSubmit)}>
           {watchedFields.map((field, index) => (
-            <div className="flex lg:flex-nowrap flex-wrap w-full items-center gap-5" key={index}>
-              <FormInput label="Start From" control={form.control} name={`meetings.${index}.from_date`} date />
-              <FormInput label="Time" control={form.control} name={`meetings.${index}.time_date`} type="time" />
-              <FormSelect
-                label="Duration"
-                control={form.control}
-                name={`meetings.${index}.duration`}
-                options={[
-                  { value: "00:30", label: "30 min" },
-                  { value: "01:00", label: "1 hour" },
-                  { value: "01:30", label: "1.5 hour" },
-                  { value: "02:00", label: "2 hours" },
-                  { value: "02:30", label: "2.5 hour" },
-                  { value: "03:00", label: "3 hours" },
-                ]}
-              />
-              <div className="flex w-full items-center gap-1">
+            <div className="flex flex-col gap-3" key={field.id}>
+              {" "}
+              <div className="flex lg:flex-nowrap flex-wrap w-full items-center gap-5">
                 <FormInput
-                  label="MANAGER EMAIL"
-                  optional
+                  disableOldDates
+                  label="Start From"
                   control={form.control}
-                  name={`meetings.${index}.manager_email`}
+                  name={`meetings.${index}.from_date`}
+                  date
                 />
-                <button
-                  type="button"
-                  onClick={() => {
-                    remove(index);
-                    startTransition(() => {
-                      startTransition(async () => {
-                        const res = await Server({
-                          resourceName: "delete-slot",
-                          id: field.id,
+                <FormInput label="Time" control={form.control} name={`meetings.${index}.time_date`} type="time" />
+                <FormSelect
+                  label="Duration"
+                  control={form.control}
+                  name={`meetings.${index}.duration`}
+                  options={[
+                    { value: "00:30", label: "30 min" },
+                    { value: "01:00", label: "1 hour" },
+                    { value: "01:30", label: "1.5 hour" },
+                    { value: "02:00", label: "2 hours" },
+                    { value: "02:30", label: "2.5 hour" },
+                    { value: "03:00", label: "3 hours" },
+                  ]}
+                />{" "}
+                <div className="flex w-full items-center gap-1">
+                  <FormInput
+                    label="MANAGER EMAIL"
+                    optional
+                    control={form.control}
+                    name={`meetings.${index}.manager_email`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      remove(index);
+                      startTransition(() => {
+                        startTransition(async () => {
+                          const res = await Server({
+                            resourceName: "delete-slot",
+                            id: field.id,
+                          });
+                          if (res.status) {
+                            toast.success(res.message);
+                            queryClient.invalidateQueries({ queryKey: [`slots-${jobId}`] });
+                          } else toast.error(res.message);
                         });
-                        if (res.status) {
-                          toast.success(res.message);
-                          queryClient.invalidateQueries({ queryKey: [`slots-${jobId}`] });
-                        } else toast.error(res.message);
                       });
-                    });
-                  }}
-                  className="rounded-xl self-center border-2 border-gray-600 p-1 my-auto"
-                >
-                  <XIcon className="w-4 h-4" />
-                </button>
+                    }}
+                    className="rounded-xl self-center border-2 border-gray-600 p-1 my-auto"
+                  >
+                    <XIcon className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
+              <LocalTime fromDate={field.from_date} />
             </div>
           ))}
+          {!hasSlots && <div className="text-center text-red-500">Please add at least one slot to proceed.</div>}
           <div className="flex items-center gap-3">
-            <div className="w-fit my-5">
+            <div className="flex gap-3 items-center">
               <FunctionalButton
                 size="sm"
-                btnText="ADD ANOTHER"
-                onClick={() => append({ from_date: "", time_date: "00:00", duration: "00:00" })}
+                disabled={isPending}
+                btnText="Add Slot"
+                onClick={() => append({ from_date: "", time_date: "", duration: "" })}
               />
+              {hasSlots && (
+                <FunctionalButton
+                  disabled={isPending}
+                  size="sm"
+                  btnText="Save Slots"
+                  onClick={form.handleSubmit(onSubmit)}
+                />
+              )}
             </div>
-            <FunctionalButton
-              className="w-[60%] mx-auto"
-              size="sm"
-              disabled={isPending}
-              btnText="SAVE SLOTS"
-              onClick={form.handleSubmit(onSubmit)}
-            />
           </div>
         </form>
       </Form>
-      {invite && (
+      {invite && hasSlots && (
         <FunctionalButton
           disabled={isPending}
           className="w-[60%] mt-14 ml-auto"

@@ -13,7 +13,7 @@ import { useGetEntity } from "@/lib/queries";
 import { convertToHTML } from "@/lib/utils";
 import { PersonIcon } from "@radix-ui/react-icons";
 import { formatDistanceToNow, parseISO } from "date-fns";
-import { Briefcase, CalendarIcon, DollarSign } from "lucide-react";
+import { Briefcase, CalendarIcon, DollarSign, EarthIcon } from "lucide-react";
 import React from "react";
 import { GoLocation } from "react-icons/go";
 const page = ({ params: { jobId } }: { params: { jobId: string } }) => {
@@ -21,7 +21,7 @@ const page = ({ params: { jobId } }: { params: { jobId: string } }) => {
   if (!data || isLoading) return <Spinner />;
   const job = data.data;
   const timeAgo = job?.created_at ? formatDistanceToNow(parseISO(job?.created_at), { addSuffix: true }) : "";
-
+  console.log(job);
   return (
     <section>
       <JobHeader job={job} />
@@ -74,6 +74,16 @@ const page = ({ params: { jobId } }: { params: { jobId: string } }) => {
             <div className=" flex flex-col gap-5">
               <InfoItem icon={<CalendarIcon className=" w-5 h-5" />} title="JOB POSTED" description={timeAgo} />
               <InfoItem icon={<PersonIcon className=" w-5 h-5" />} title="GENDER" description={job.gender} />
+              {job?.family_status && (
+                <InfoItem
+                  icon={<PersonIcon className=" w-5 h-5" />}
+                  title="FAMILY STATUS"
+                  description={job.family_status}
+                />
+              )}
+              {job?.nationality && (
+                <InfoItem icon={<EarthIcon className=" w-5 h-5" />} title="NATIONALITY" description={job.nationality.title} />
+              )}
               {job.hide_salary === 0 && (
                 <InfoItem
                   icon={<DollarSign className=" w-5 h-5" />}

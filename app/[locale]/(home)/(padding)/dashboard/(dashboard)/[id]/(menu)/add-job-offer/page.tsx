@@ -4,9 +4,9 @@ import React from 'react'
 
 const page = ({searchParams}: {searchParams: any}) => {
   return (
-    <MaxWidthWrapper>
+    <div>
       <SendOffer userId={searchParams.userId}/>
-    </MaxWidthWrapper>
+    </div>
   )
 }
 

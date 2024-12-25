@@ -43,15 +43,19 @@ export default function TableData({
       </TableHeader>
       <TableBody>
         {jobs?.map((job: any, i: Number) => (
-          <TableRow key={i}>
+          <TableRow key={job.id}>
             <TableCell className="font-medium text-sm md:text-base lg:w-fit w-full">
               <div className=" flex flex-col items-start">
-                <Link
-                  href={person ? `/person/job/${job.id}` : `/dashboard/${id}/job/${job.id}`}
-                  className=" text-gray-900  font-semibold"
-                >
-                  {job.job_title}
-                </Link>
+                {job.status === "draft" ? (
+                  <h2 className=" text-gray-900  font-semibold"> {job.job_title}</h2>
+                ) : (
+                  <Link
+                    href={person ? `/person/job/${job.id}` : `/dashboard/${id}/job/${job.id}`}
+                    className=" text-gray-900  font-semibold"
+                  >
+                    {job.job_title}
+                  </Link>
+                )}
                 <div className="  flex items-start gap-3 text-muted-foreground">
                   <p>{job.career_type.title}</p>
                   <span

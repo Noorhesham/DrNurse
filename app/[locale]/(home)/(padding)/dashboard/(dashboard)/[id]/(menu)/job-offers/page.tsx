@@ -18,7 +18,7 @@ const page = () => {
   const { data, isLoading } = useGetEntity("offers", `offers-${id}-${page}`, "", {}, `page=${page}&itemCount=10`);
   if (isLoading || !data)
     return (
-      <MaxWidthWrapper className="flex flex-col gap-4">
+      <MaxWidthWrapper noPadding className="flex flex-col gap-4">
         {Array.from({ length: 6 }).map((_, i) => (
           <div className="flex  gap-4  flex-col space-y-3">
             <Skeleton className={`w-full h-[125px]  rounded-xl`} />

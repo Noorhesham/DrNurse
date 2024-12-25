@@ -8,7 +8,7 @@ import Spinner from "@/app/components/Spinner";
 import { Server } from "@/app/main/Server";
 import { Button } from "@/components/ui/button";
 import { useGetEntity } from "@/lib/queries";
-import { redirect, useSearchParams } from "next/navigation";
+import { redirect, useParams, useSearchParams } from "next/navigation";
 import React, { useTransition } from "react";
 import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
@@ -22,6 +22,7 @@ const page = () => {
   const [isPending, startTransition] = useTransition();
   const queryClient = useQueryClient();
   const router = useRouter();
+  const { id } = useParams();
   const { data, isLoading } = useGetEntity("meetings", `meetings-${jobId}`, jobId || "0" || "");
   if (isLoading || !data) return <Spinner />;
   const copyToClipboard = (text: string) => {
@@ -30,7 +31,6 @@ const page = () => {
   };
   const invitations = data.data.filter((meet: any) => meet.status === "invitation");
   const meetings = data.data.filter((meet: any) => meet.status !== "invitation");
-  console.log(meetings, data);
   return (
     <section className=" flex flex-col gap-8">
       <div className=" flex flex-col gap-2">
@@ -40,14 +40,14 @@ const page = () => {
             meetings.map((meet: any) => (
               <Container>
                 <FlexWrapper max={false} className=" justify-between">
-                  <Meet meet={meet} img />
+                  <Meet id={id} meet={meet} img />
                   <div className=" flex items-center gap-3">
                     {meet.status !== "cancelled" ? (
                       <div className="flex lg:flex-nowrap flex-wrap items-center gap-2">
                         <ModalCustom
                           btn={
                             <Button size={"lg"} className=" rounded-full">
-                              CHANGE STATUS
+                              Change Status
                             </Button>
                           }
                           content={
@@ -80,7 +80,7 @@ const page = () => {
                                   size={"lg"}
                                   className=" rounded-full"
                                 >
-                                  RESCHEDULE MEETING
+                                  Reschedule Meeting
                                 </Button>{" "}
                                 <Button
                                   disabled={isPending}
@@ -97,7 +97,7 @@ const page = () => {
                                         toast.success(res.message);
 
                                         queryClient.invalidateQueries({
-                                          queryKey: [`meetings-${meet.req_job_post_id}`],
+                                          queryKey: [`meetings-${meet.req_job_post_id}`,`meetings-${jobId}`],
                                         });
                                       } else toast.error(res.message);
                                     });
@@ -106,7 +106,7 @@ const page = () => {
                                   size={"lg"}
                                   className=" rounded-full"
                                 >
-                                  CANCEL MEETING
+                                  Cancel Meeting
                                 </Button>
                               </div>
                             </div>
@@ -124,7 +124,7 @@ const page = () => {
                           size={"lg"}
                           className="self-center mr-auto bg-main2  rounded-full"
                         >
-                          START MEETING
+                          Start Meeting
                         </Button>
                         <Button
                           onClick={() => copyToClipboard(meet.zoom_meeting.start_url)}
@@ -136,7 +136,7 @@ const page = () => {
                       </div>
                     ) : (
                       <Button disabled={true} variant={"destructive"} size={"lg"} className=" rounded-full">
-                        CANCELED
+                        Cancelled
                       </Button>
                     )}
                   </div>
@@ -180,7 +180,7 @@ const page = () => {
                     size={"lg"}
                     className=" rounded-full"
                   >
-                    CANCEL INVITATION
+                    Cancel Invitation
                   </Button>
                 </FlexWrapper>
               </Container>

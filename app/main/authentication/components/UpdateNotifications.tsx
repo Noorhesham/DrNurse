@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import useFcmToken from "@/app/hooks/useFcmToken";
 import { useGetEntity } from "@/lib/queries";
 import Spinner from "@/app/components/Spinner";
+import { useQueryClient } from "@tanstack/react-query";
 const notifications = [
   { name: "active", label: "ACTIVATE", label2: "DEACTIVATE", switchToggle: true, noSwitch: false },
 ];
@@ -18,9 +19,11 @@ const UpdateNotifications = () => {
   const { device_info } = useDevice();
   const { token } = useFcmToken();
   const [notificationStatus, setNotificationStatus] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
   useEffect(() => {
     const getNotifications = async () => {
+      setLoading(true);
       const res = await Server({
         resourceName: "languageUpdate",
         body: {
@@ -58,9 +61,12 @@ const UpdateNotifications = () => {
       console.log(res, token);
     };
     if (val.active) sendVal();
-    if (res.status) toast.success(res.message);
-    else toast.error(res.message);
+    if (res.status) {
+      toast.success(res.message);
+      setNotificationStatus(val.active);
+    } else toast.error(res.message);
   };
+
   return (
     <ModalCustom
       btn={
@@ -78,7 +84,7 @@ const UpdateNotifications = () => {
         ) : (
           <div className=" px-5 lg:px-20 py-5">
             <FormContainer
-              defaultValues={notificationStatus}
+              defaultValues={{ active: notificationStatus }}
               cancel={true}
               submit={UpdateNotificationsSubmit}
               btnStyles={"w-full"}

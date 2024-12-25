@@ -18,8 +18,8 @@ const page = async () => {
       <div className=" grid lg:grid-cols-3  grid-cols-1 gap-5">
         {data.data.map((item: any) => (
           <div key={item.id} className=" flex flex-col  justify-between h-full border border-input rounded-xl">
-            <div className="  px-8 py-4 mb-auto flex items-start flex-col gap-2 ">
-              <MiniTitle text={item.title} />
+            <div className=" h-full  px-8 py-4 mb-auto flex items-start flex-col gap-2 ">
+              <MiniTitle size='lg' text={item.title} />
               <div className=" text-sm line-clamp-4 text-muted-foreground">
                 {item.description.length > 200 ? item.description.slice(0, 200) + "..." : item.description}
               </div>

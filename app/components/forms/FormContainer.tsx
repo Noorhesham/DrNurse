@@ -2,13 +2,14 @@
 import { z, ZodObject, ZodTypeAny } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import CustomForm from "./CustomForm";
 import { useTranslations } from "next-intl";
 import { toast } from "react-toastify";
 import { CheckIcon } from "lucide-react";
 import { Server } from "@/app/main/Server";
 import MotionItem from "../defaults/MotionItem";
+import { DialogClose } from "@/components/ui/dialog";
 
 const generateSchemaFromFields = (fields: any[], t: any): ZodObject<any> => {
   const schemaShape: Record<string, ZodTypeAny> = {};
@@ -92,7 +93,8 @@ interface Formcontainer {
   submit?: any;
   server?: boolean;
   children?: React.ReactNode;
-  id?: string;closeAfter?:boolean
+  id?: string;
+  closeAfter?: boolean;
 }
 
 const FormContainer: React.FC<Formcontainer> = ({
@@ -105,7 +107,8 @@ const FormContainer: React.FC<Formcontainer> = ({
   children,
   submit,
   server,
-  id,closeAfter
+  id,
+  closeAfter,
 }) => {
   const t = useTranslations("form");
 
@@ -131,7 +134,7 @@ const FormContainer: React.FC<Formcontainer> = ({
   const [serverError, setServerError] = useState<string[] | null>(null);
   const [isPending, startTransition] = useTransition();
   const [resetFormData, setResetFormData] = useState(false);
-
+  const ref = useRef<HTMLDivElement>(null);
   const onSubmit = async (data: z.infer<typeof dynamicSchema>) => {
     startTransition(async () => {
       if (server) {
@@ -151,8 +154,8 @@ const FormContainer: React.FC<Formcontainer> = ({
         }
       } else if (submit) {
         submit(data, setServerError);
-        
         setServerError(null);
+
       }
     });
   };
@@ -165,7 +168,7 @@ const FormContainer: React.FC<Formcontainer> = ({
   return (
     <div className="  w-full min-h-[20vh]">
       {!resetFormData ? (
-        <CustomForm closeAfter={closeAfter||false}
+        <CustomForm
           serverError={serverError}
           btnText={btnText || t("Submit")}
           form={form}
