@@ -22,6 +22,7 @@ const page = () => {
     {},
     `page=${page}&itemCount=10&&sort=desc`
   );
+  console.log()
   if (isLoading || !data)
     return (
       <MaxWidthWrapper className="flex flex-col gap-4">

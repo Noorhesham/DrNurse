@@ -13,7 +13,6 @@ const QueryProvider = ({ children }: { children: ReactNode }) => {
             refetchOnWindowFocus: false, // Does not refetch on window focus
             refetchOnReconnect: false,
             gcTime: Infinity,
-            staleTime: Infinity,
           },
         },
       })
@@ -56,7 +55,7 @@ const QueryProvider = ({ children }: { children: ReactNode }) => {
             localStorage.setItem("dates", JSON.stringify(dates));
           }
         });
-        console.log(queryClient.getQueryCache());
+        console.log("Initial query data for general_settings:", queryClient.getQueryData(["general_settings"]));
       }}
       onError={(error) => {
         console.error("Cache restore failed:", error);

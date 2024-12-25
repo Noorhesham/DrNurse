@@ -52,9 +52,9 @@ const jobSchema = z
       z.number(),
     ]),
     hide_salary: z.string().min(1, "Hide Salary? is required"),
-    nationality_id: z.union([z.string().min(1, "Nationality is required").optional(), z.number().optional()]),
+    nationality_id: z.union([z.string().optional(), z.number().optional()]),
     gender: z.string().optional(),
-    family_status: z.string().min(1, "Family Status is required"),
+    family_status: z.string().optional(),
     benefits: z.array(z.string().min(1, "Benefit is required")).optional(),
     job_description: z.string().min(20, "Description is too short").optional(),
     job_requirements: z.string().min(20, "Responsibility is too short").optional(),
@@ -82,7 +82,6 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
 
   const { id } = useParams();
   const t = useTranslations();
-  const locale = useLocale();
   const { data: company, isLoading: loadingCompany } = useGetEntity("company", `company-${id}`, id);
 
   const { data: careerTypes, isLoading: loadingCareerTypes } = useGetEntities({
@@ -111,7 +110,7 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
       min_salary: defaultData?.min_salary || 0,
       max_salary: defaultData?.max_salary || 0,
       hide_salary: defaultData?.hide_salary.toString() || "",
-      nationality_id: defaultData?.nationality.id || "",
+      nationality_id: defaultData?.nationality?.id || "",
       gender: defaultData?.gender || "",
       family_status: defaultData?.family_status || "",
       benefits: JSON.parse(defaultData?.benefits || "[]") || [" "],
@@ -122,7 +121,11 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
       recipient_email: defaultData?.recipient_email || "",
     },
   });
-
+  useEffect(() => {
+    if (Object.keys(form.formState.errors).length > 0) {
+      toast.error("Please fix form errors first");
+    }
+  }, [form.formState.errors]);
   const queryClient = useQueryClient();
   const { append, remove, fields } = useFieldArray({
     control: form.control,
@@ -150,7 +153,7 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
         defaultData?.id
           ? queryClient.invalidateQueries({ queryKey: [`job-${defaultData.id}`] })
           : router.push(`/dashboard/${id}/jobs`);
-        queryClient.invalidateQueries({ queryKey: [`company-overview-${id}`] });
+        queryClient.invalidateQueries({ queryKey: [`company-overview-${id}`,`company-jobs-${id}`] });
         toast.success(res.message);
       } else {
         toast.error(res.message);
@@ -217,6 +220,7 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
             {/* Personal Data */}
             <FormFlexContainer title={t("Personal Data")}>
               <ComboboxForm
+                optional
                 disabled={loadingCountries}
                 name={"nationality_id"}
                 label={t("nationality")}
@@ -229,7 +233,7 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
                 optional={true}
                 options={[...GENDER, { label: "Not Specified", value: " " }]}
               />
-              <FormSelect label={t("Family Status")} name="family_status" options={FAMILYSTATUS} />
+              <FormSelect label={t("Family Status")} name="family_status" optional options={FAMILYSTATUS} />
             </FormFlexContainer>
             {/* Benefits */}
             <div className=" mt-5 flex flex-col">
@@ -310,7 +314,7 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
                 disabled={isPending}
                 onClick={form.handleSubmit(onSubmit)}
                 className=" w-fit"
-                btnText={t("postJob")}
+                btnText={defaultData ? t("updateJob") : t("postJob")}
                 size="sm"
               />
             </div>{" "}

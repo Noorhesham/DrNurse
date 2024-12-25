@@ -12,12 +12,10 @@ import { Job } from "@/app/types";
 import { useGetEntity } from "@/lib/queries";
 import { convertToHTML } from "@/lib/utils";
 import { PersonIcon } from "@radix-ui/react-icons";
-import { useQueryClient } from "@tanstack/react-query";
 import { formatDistanceToNow, parseISO } from "date-fns";
-import { Briefcase, CalendarIcon, DollarSign, EditIcon } from "lucide-react";
-import React, { useTransition } from "react";
+import { Briefcase, CalendarIcon, DollarSign } from "lucide-react";
+import React from "react";
 import { GoLocation } from "react-icons/go";
-import { toast } from "react-toastify";
 const page = ({ params: { jobId } }: { params: { jobId: string } }) => {
   const { data, isLoading } = useGetEntity("job", `job-${jobId}`, jobId);
   if (!data || isLoading) return <Spinner />;
@@ -26,7 +24,7 @@ const page = ({ params: { jobId } }: { params: { jobId: string } }) => {
 
   return (
     <section>
-      <JobHeader data={job} />
+      <JobHeader job={job} />
       <MaxWidthWrapper>
         <GridContainer className=" gap-8" cols={8}>
           <div className=" col-span-2 lg:col-span-6">
@@ -46,7 +44,7 @@ const page = ({ params: { jobId } }: { params: { jobId: string } }) => {
                   className={`lg:max-w-4xl  text-black lg:text-base text-sm  font-medium  leading-[1.7] `}
                 />
               </div>
-              {JSON.parse(job.benefits).length > 0 && (
+              {JSON.parse(job?.benefits)?.length > 0 && (
                 <div className="flex gap-1 flex-col">
                   {<MiniTitle boldness="bold" color=" text-main2" text="JOB BENEFITS" />}
                   {JSON.parse(job.benefits).map((benefit: string, index: number) => (

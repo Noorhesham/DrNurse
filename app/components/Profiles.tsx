@@ -17,12 +17,12 @@ import JobHeader from "./JobHeader";
 const Profiles = ({ doctors, totalPages, filters, count, jobId }: any) => {
   const { isLoading } = useLoading();
   const { id } = useParams();
-  const { data, isLoading: jobLoading } = useGetEntity("job", `job-${jobId}`, jobId);
-  if (!data || jobLoading) return <Spinner />;
-
+  const { data, isLoading: jobLoading } = useGetEntity("job", `job-${jobId}`, jobId, { enabled: !!jobId });
+  if (!data && (jobLoading && jobId)) return <Spinner />;
+  const job = data.data;
   return (
     <>
-      <JobHeader data={data} />
+      {jobId && job && <JobHeader job={job} />}
       <GridContainer className=" mt-5 gap-4" cols={9}>
         <div className="flex order-1 lg:order-0 flex-col gap-3 col-span-2 lg:col-span-6">
           <div className="flex items-start lg:flex-row flex-col justify-between">

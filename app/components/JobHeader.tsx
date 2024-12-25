@@ -10,10 +10,9 @@ import { Server } from "../main/Server";
 import { toast } from "react-toastify";
 import MeetingForm from "./forms/MeetingForm";
 
-const JobHeader = ({ data }: { data: any }) => {
+const JobHeader = ({ job }: { job: any }) => {
   const [isPending, startTransition] = useTransition();
   const queryClient = useQueryClient();
-  const job = data.data;
   const doctor = {
     name: job.job_title,
     image: "/job.svg",
@@ -83,7 +82,7 @@ const JobHeader = ({ data }: { data: any }) => {
               />{" "}
             </div>
             <FunctionalButton
-              btnText="SCHEDULE MEETING"
+              btnText="SET SLOTS"
               icon={<CalendarIcon className=" w-5 h-5" />}
               content={<MeetingForm jobIdDef={job.id} invite={false} />}
             />
