@@ -24,7 +24,7 @@ const Sort = ({ options }: { options: any[] }) => {
   }, [searchParams]);
   return (
     <div className="    flex items-center justify-between gap-4">
-      <h2 className=" text-gray-500 text-sm">{t("sort")}</h2>
+      <h2 className=" text-gray-500 text-sm">{t("Sort")}</h2>
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger className=" bg-white min-w-[150px] py-1.5 px-3 rounded-xl text-sm  flex items-center gap-1">
           {selected || t("latest")}

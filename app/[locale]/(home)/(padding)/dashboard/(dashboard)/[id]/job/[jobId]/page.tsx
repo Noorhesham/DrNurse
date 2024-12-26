@@ -1,7 +1,7 @@
 "use client";
-import InfoItem from "@/app/components/InfoDoc";
 import JobCard from "@/app/components/JobCard";
 import JobHeader from "@/app/components/JobHeader";
+import JobInfo from "@/app/components/JobInfo";
 import Share from "@/app/components/Share";
 import Spinner from "@/app/components/Spinner";
 import VerificationStatus from "@/app/components/VerficationStatus";
@@ -11,11 +11,8 @@ import MiniTitle from "@/app/components/defaults/MiniTitle";
 import { Job } from "@/app/types";
 import { useGetEntity } from "@/lib/queries";
 import { convertToHTML } from "@/lib/utils";
-import { PersonIcon } from "@radix-ui/react-icons";
 import { formatDistanceToNow, parseISO } from "date-fns";
-import { Briefcase, CalendarIcon, DollarSign, EarthIcon } from "lucide-react";
 import React from "react";
-import { GoLocation } from "react-icons/go";
 const page = ({ params: { jobId } }: { params: { jobId: string } }) => {
   const { data, isLoading } = useGetEntity("job", `job-${jobId}`, jobId);
   if (!data || isLoading) return <Spinner />;
@@ -57,17 +54,19 @@ const page = ({ params: { jobId } }: { params: { jobId: string } }) => {
                   ))}
                 </div>
               )}{" "} */}
-              <div className="flex flex-col my-2 gap-1">
-              {" "}
-                <MiniTitle boldness="bold" color=" text-main2" text="JOB BENEFITS" />
-                <ul className=" text-black list-disc lg:text-base text-sm  font-medium  leading-[1.7] ">
-                  {JSON.parse(job.benefits)?.map((benefit: string) => (
-                    <li className="" key={benefit}>
-                      {benefit}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              {JSON.parse(job.benefits).length > 0 && (
+                <div className="flex flex-col my-2 gap-1">
+                  {" "}
+                  {<MiniTitle boldness="bold" color=" text-main2" text="JOB BENEFITS" />}
+                  <ul className=" text-black list-disc lg:text-base text-sm  font-medium  leading-[1.7] ">
+                    {JSON.parse(job.benefits)?.map((benefit: string) => (
+                      <li className="" key={benefit}>
+                        {benefit}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
               <div className="flex gap-1 mt-5 items-start flex-col">
                 <MiniTitle boldness="bold" color=" text-main2" text="Responsibilities" />
                 <div
@@ -78,57 +77,13 @@ const page = ({ params: { jobId } }: { params: { jobId: string } }) => {
               {job && <Share title={job.job_title} image={job.image} />}
             </section>
           </div>
-          <div className="flex col-span-full lg:col-span-2 px-5 py-5 pb-10 rounded-xl flex-col gap-3  bg-light">
-            <MiniTitle color="black" text="OVERVIEW" />
-
-            <MiniTitle color="black" text="HOSPITAL INFO" />
-            <div className=" flex flex-col gap-5">
-              <InfoItem icon={<CalendarIcon className=" w-5 h-5" />} title="JOB POSTED" description={timeAgo} />
-              <InfoItem icon={<PersonIcon className=" w-5 h-5" />} title="GENDER" description={job.gender} />
-              {job?.family_status && (
-                <InfoItem
-                  icon={<PersonIcon className=" w-5 h-5" />}
-                  title="FAMILY STATUS"
-                  description={job.family_status}
-                />
-              )}
-              {job?.nationality && (
-                <InfoItem
-                  icon={<EarthIcon className=" w-5 h-5" />}
-                  title="NATIONALITY"
-                  description={job.nationality.title}
-                />
-              )}
-              {job.hide_salary === 0 && (
-                <InfoItem
-                  icon={<DollarSign className=" w-5 h-5" />}
-                  title="SALARY EXPECTATIONS"
-                  description={`${job.min_salary} ${job.currency || "sar"} -${job.max_salary} ${
-                    job.currency || "sar"
-                  } /MONTH`}
-                />
-              )}
-              {job.branch?.country?.title && job.branch?.state?.title && (
-                <InfoItem
-                  icon={<GoLocation className=" w-5 h-5" />}
-                  title="LOCATION"
-                  description={`${job.branch?.country?.title || ""}, ${job.branch?.state?.title || ""}`}
-                />
-              )}
-
-              <InfoItem
-                icon={<Briefcase className=" w-5 h-5" />}
-                title="EXPERIENCE"
-                description={`${job.experience_from} - ${job.experience_to} Years`}
-              />
-            </div>
-          </div>
+     <JobInfo job={job} timeAgo={timeAgo}/>
         </GridContainer>
         <section className="mt-5">
           <MiniTitle className=" mt-5" boldness="bold" color=" text-main2" text="RELATED JOBS" />
           <div className=" grid-cols-1 grid gap-5 lg:grid-cols-2 mt-3">
             {job.related_jobs?.map((job: Job, i: number) => (
-              <JobCard i={i} key={job.id} job={job} />
+              <JobCard parentId={jobId} i={i} key={job.id} job={job} />
             ))}
           </div>
         </section>

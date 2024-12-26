@@ -16,7 +16,7 @@ const JobCard = ({
   job: Job;
   i: number;
   bookmarked?: boolean;
-  parentId?: boolean;
+  parentId?: string;
 }) => {
   const timeAgo = job?.created_at ? formatDistanceToNow(parseISO(job?.created_at), { addSuffix: true }) : "";
   const imageIndex = (i % 6) + 1;

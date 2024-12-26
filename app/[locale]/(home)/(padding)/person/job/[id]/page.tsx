@@ -1,8 +1,8 @@
 "use client";
 import BreadCrumb from "@/app/components/BreadCrumb";
 import FunctionalButton from "@/app/components/FunctionalButton";
-import InfoItem from "@/app/components/InfoDoc";
 import JobCard from "@/app/components/JobCard";
+import JobInfo from "@/app/components/JobInfo";
 import MainProfile from "@/app/components/MainProfile";
 import Share from "@/app/components/Share";
 import Spinner from "@/app/components/Spinner";
@@ -16,10 +16,9 @@ import { Button } from "@/components/ui/button";
 import { useGetEntity } from "@/lib/queries";
 import { convertToHTML } from "@/lib/utils";
 import { DialogClose } from "@radix-ui/react-dialog";
-import { PersonIcon } from "@radix-ui/react-icons";
 import { useQueryClient } from "@tanstack/react-query";
 import { formatDistanceToNow, parseISO } from "date-fns";
-import { Briefcase, CalendarIcon, DollarSign, EarthIcon, XCircle } from "lucide-react";
+import { XCircle } from "lucide-react";
 import Link from "next/link";
 import { useTransition } from "react";
 import { FaExclamationCircle } from "react-icons/fa";
@@ -57,7 +56,6 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
   };
   const timeAgo = job?.created_at ? formatDistanceToNow(parseISO(job?.created_at), { addSuffix: true }) : "";
 
-  console.log(job.related_jobs);
   return (
     <section className=" pt-36">
       <BreadCrumb
@@ -122,16 +120,18 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
                 dangerouslySetInnerHTML={{ __html: convertToHTML(job.job_description || "") }}
                 className={`lg:max-w-4xl  text-black lg:text-base text-sm  font-medium  leading-[1.7] `}
               />
-              <div className="flex flex-col gap-3">
-                <MiniTitle boldness="bold" color=" text-main2" text="JOB BENEFITS" />
-                <div className=" text-black lg:text-base text-sm  font-medium  leading-[1.7] ">
-                  {JSON.parse(job.benefits)?.map((benefit: string) => (
-                    <p className="" key={benefit}>
-                      {benefit}
-                    </p>
-                  ))}
+              {JSON.parse(job.benefits).length > 0 && (
+                <div className="flex flex-col gap-3">
+                  {<MiniTitle boldness="bold" color=" text-main2" text="JOB BENEFITS" />}
+                  <div className=" text-black lg:text-base text-sm  font-medium  leading-[1.7] ">
+                    {JSON.parse(job.benefits)?.map((benefit: string) => (
+                      <p className="" key={benefit}>
+                        {benefit}
+                      </p>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
               <div className="flex gap-1 mt-5 items-start flex-col">
                 <MiniTitle boldness="bold" color=" text-main2" text="Responsibilities" />
                 <div
@@ -146,42 +146,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
               )}
             </section>
           </div>
-          <div className="flex col-span-full lg:col-span-2 px-5 py-5 pb-10 rounded-xl flex-col gap-3  bg-light">
-            <MiniTitle color="black" text="OVERVIEW" />
-            <MiniTitle color="black" text="JOB INFO" />
-            <div className=" flex flex-col gap-5">
-              <InfoItem icon={<CalendarIcon className=" w-5 h-5" />} title="JOB POSTED" description={timeAgo} />
-              <InfoItem icon={<PersonIcon className=" w-5 h-5" />} title="GENDER" description={job.gender} />
-              {job?.family_status && (
-                <InfoItem
-                  icon={<PersonIcon className=" w-5 h-5" />}
-                  title="FAMILY STATUS"
-                  description={job.family_status}
-                />
-              )}
-              {job?.nationality && (
-                <InfoItem
-                  icon={<EarthIcon className=" w-5 h-5" />}
-                  title="NATIONALITY"
-                  description={job.nationality.title}
-                />
-              )}
-              {job.hide_salary === 0 && (
-                <InfoItem
-                  icon={<DollarSign className=" w-5 h-5" />}
-                  title="SALARY EXPECTATIONS"
-                  description={`${job.min_salary} ${job.currency || "sar"} -${job.max_salary} ${
-                    job.currency || "sar"
-                  } /MONTH`}
-                />
-              )}
-              <InfoItem
-                icon={<Briefcase />}
-                title="EXPERIENCE"
-                description={`${job.experience_from} - ${job.experience_to} Years `}
-              />
-            </div>
-          </div>
+          <JobInfo job={job} timeAgo={timeAgo} />
         </GridContainer>
         <section className="mt-20">
           <MiniTitle boldness="bold" color=" text-main2" text="RELATED JOBS" />

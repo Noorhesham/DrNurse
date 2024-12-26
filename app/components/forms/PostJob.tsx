@@ -25,6 +25,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useGetEntity } from "@/lib/queries";
 import { useParams, useRouter } from "next/navigation";
 import VerificationStatus from "../VerficationStatus";
+import { useFormHandler } from "@/app/hooks/useFormHandler";
 // Define Zod schema
 const salaryRegex = /^[1-9]\d*$/;
 
@@ -36,6 +37,7 @@ const jobSchema = z
     career_level_id: z.union([z.string().min(1, "Career Level is required"), z.number()]),
     experience_from: z.union([z.string().min(1, "Experience From is required"), z.number()]),
     experience_to: z.union([z.string().min(1, " Experience To is required"), z.number()]),
+    application_available_status: z.string().min(1, "Application Status is required"),
     branch_id: z.string().min(1, "Branch is required"),
     min_salary: z.union([
       z
@@ -119,6 +121,7 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
       currency: defaultData?.currency || "sar",
       recipient_status: defaultData?.recipient_status || "",
       recipient_email: defaultData?.recipient_email || "",
+      application_available_status: defaultData?.application_available_status || "",
     },
   });
   useEffect(() => {
@@ -132,39 +135,32 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
     //@ts-ignore
     name: "benefits",
   });
-  const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const { handleFormSubmit, isPending } = useFormHandler();
+  const { setError } = form;
   const onSubmit = (data: JobFormValues) => {
-    startTransition(async () => {
-      const res = defaultData?.id
-        ? await Server({
+    handleFormSubmit({
+      apiCall: Server,
+      options: defaultData
+        ? {
             resourceName: "update-job",
             body: data,
             id: defaultData?.id || "",
-          })
-        : await Server({
+          }
+        : {
             resourceName: "add-job",
             body: data,
-          });
-
-      console.log(res);
-      if (res.status) {
+          },
+      onSuccess: () => {
         defaultData?.id
           ? queryClient.invalidateQueries({ queryKey: [`job-${defaultData.id}`] })
           : router.push(`/dashboard/${id}/jobs`);
         queryClient.invalidateQueries({ queryKey: [`company-overview-${id}`, `company-jobs-${id}`] });
-        toast.success(res.message);
-      } else {
-        toast.error(res.message);
-        if (res.errors) {
-          Object.entries(res.errors).forEach(([field, messages]) => {
-            form.setError(field, {
-              type: "server",
-              message: Array.isArray(messages) ? messages[0] : messages, // Handle array or single string
-            });
-          });
-        }
-      }
+      },
+      onError: (err: any) => {
+        console.error("Failed to submit form:", err);
+      },
+      setError,
     });
   };
   console.log(data);
@@ -201,6 +197,14 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
               <FormInput control={form.control} name="experience_from" label={t("experience from")} type="number" />
               <FormInput control={form.control} name="experience_to" label={t("experience to")} type="number" />
             </GridContainer>
+            <FormSelect
+              label={t("AVAILABLITY STATUS")}
+              name="application_available_status"
+              options={[
+                { label: "Regular", value: "regular" },
+                { label: "Urgent", value: "urgent" },
+              ]}
+            />
             {/* Branch */}
             <FormSelect
               disabled={isLoading}
@@ -211,7 +215,7 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
             />
             {/* Salary */}
             <FormFlexContainer title={t("Salary")}>
-              <FormSelect label={t("Currency")} name="currency" options={CURRENCY_OPTIONS} />
+              <FormSelect label={t("CURRENCY")} name="currency" options={CURRENCY_OPTIONS} />
               <FormInput control={form.control} name="min_salary" currency label={t("Min Salary")} type="number" />
               <FormInput control={form.control} name="max_salary" currency label={t("Max Salary")} type="number" />
               <FormSelect

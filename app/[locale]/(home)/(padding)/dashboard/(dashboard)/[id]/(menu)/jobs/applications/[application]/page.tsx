@@ -9,6 +9,7 @@ const page = async ({
   searchParams: any;
   params: { application: string };
 }) => {
+  const classifications = await Server({ resourceName: "classification", cache: 1000 * 24 * 60 * 60 });
   const {
     job_title,
     career_specialty_id,
@@ -27,6 +28,7 @@ const page = async ({
     current_location_id,
     career_levels,
     gender,
+    classification_id,
   } = searchParams;
 
   const queryParams = new URLSearchParams({
@@ -44,6 +46,7 @@ const page = async ({
     to_years: to_years || "",
     sort: sort || "desc",
     gender: gender || "",
+    classification_id: classification_id || "",
   });
   if (nationality_id) {
     const nationalityIdsArray = Array.isArray(nationality_id) ? nationality_id : [nationality_id];
@@ -83,6 +86,7 @@ const page = async ({
     { "Current Location": locations, arr: true, filter: "current_location_id" },
     { Nationality: nationalities, arr: true, filter: "nationality_id" },
     { Gender: genders, arr: true, filter: "gender" },
+    { Classification: classifications.data, arr: false, filter: "classification_id" },
   ];
 
   return (

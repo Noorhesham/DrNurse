@@ -83,6 +83,8 @@ const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; fi
       // Toggle the filter on/off
       const updatedFilters = isFilterSelected
         ? currentFilters.filter((item) => item !== filterValue) // Remove the filter
+        : btn
+        ? [filterValue]
         : [...currentFilters, filterValue]; // Add the filter
 
       return {
