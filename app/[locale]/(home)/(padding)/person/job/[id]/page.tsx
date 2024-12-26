@@ -1,6 +1,7 @@
 "use client";
 import BreadCrumb from "@/app/components/BreadCrumb";
 import FunctionalButton from "@/app/components/FunctionalButton";
+import JobBenefits from "@/app/components/JobBenefits";
 import JobCard from "@/app/components/JobCard";
 import JobInfo from "@/app/components/JobInfo";
 import MainProfile from "@/app/components/MainProfile";
@@ -38,7 +39,6 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
       .filter(Boolean)
       .join(", "),
     address: job.branch?.address ? `${job.branch?.country?.title || ""}, ${job.branch?.state?.title || ""}` : "",
-    duration: "in 7 days",
   };
   const queryClient = useQueryClient();
   const handleApply = () => {
@@ -120,18 +120,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
                 dangerouslySetInnerHTML={{ __html: convertToHTML(job.job_description || "") }}
                 className={`lg:max-w-4xl  text-black lg:text-base text-sm  font-medium  leading-[1.7] `}
               />
-              {JSON.parse(job.benefits).length > 0 && (
-                <div className="flex flex-col gap-3">
-                  {<MiniTitle boldness="bold" color=" text-main2" text="JOB BENEFITS" />}
-                  <div className=" text-black lg:text-base text-sm  font-medium  leading-[1.7] ">
-                    {JSON.parse(job.benefits)?.map((benefit: string) => (
-                      <p className="" key={benefit}>
-                        {benefit}
-                      </p>
-                    ))}
-                  </div>
-                </div>
-              )}
+              <JobBenefits job={job} />
               <div className="flex gap-1 mt-5 items-start flex-col">
                 <MiniTitle boldness="bold" color=" text-main2" text="Responsibilities" />
                 <div
@@ -152,7 +141,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
           <MiniTitle boldness="bold" color=" text-main2" text="RELATED JOBS" />
           <div className=" grid-cols-1 grid gap-5 lg:grid-cols-2 mt-3">
             {job.related_jobs?.map((job: Job, i: number) => (
-              <JobCard bookmarked={job.bookmarked} i={i} key={job.id} job={job} />
+              <JobCard bookmarked={job.bookmarked} parentId={id.toString()} i={i} key={job.id} job={job} />
             ))}
           </div>
         </section>

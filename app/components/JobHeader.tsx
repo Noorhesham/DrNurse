@@ -20,7 +20,6 @@ const JobHeader = ({ job, privatejob }: { job: any; privatejob?: boolean }) => {
       .filter(Boolean)
       .join(", "),
     address: [job?.branch?.country?.title, job?.branch?.state?.title].filter(Boolean).join(", "),
-    duration: "in 7 days",
   };
   return (
     <div className=" rounded-2xl bg-light ">

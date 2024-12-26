@@ -35,7 +35,6 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
       .filter(Boolean)
       .join(", "),
     address: job.branch?.address ? `${job.branch?.country?.title || ""}, ${job.branch?.state?.title || ""}` : "",
-    duration: "in 7 days",
   };
 
   return (

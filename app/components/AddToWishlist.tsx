@@ -44,7 +44,7 @@ const AddToWishlist = ({
         if (res.status) {
           toast.success(res.message);
           queryClient.invalidateQueries({ queryKey: ["bookmarks"] });
-          queryClient.invalidateQueries({ queryKey: [`job-${parentId||""}`] });
+          queryClient.invalidateQueries({ queryKey: [`job-${parentId?.toString() || ""}`] });
           router.refresh();
         } else toast.error(res.message);
       });

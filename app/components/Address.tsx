@@ -37,7 +37,7 @@ const Address = ({ className }: { className?: String }) => {
         </Link>
       ))}
       <Link target="_blank" href={`tel:${company_contacts.phone}`}>
-        <IconWidget paragraph={`${company_contacts.phone}`} header={t("address.phone")} icon={<Phone />} />
+        <IconWidget paragraph={`${company_contacts.phone}`} header={t("address.phone")} icon={<Phone  />} />
       </Link>
       <Link href={`mailto:${company_contacts?.branches?.[0]?.co_info_email}`}>
         <IconWidget

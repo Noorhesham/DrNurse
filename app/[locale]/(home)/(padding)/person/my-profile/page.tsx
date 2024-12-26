@@ -54,7 +54,6 @@ const page = () => {
               speciality: dataPage?.current_job_title || "",
 
               address: `${dataPage?.current_location?.title}`,
-              duration: "in 7 days",
             }}
           >
             <div className="flex  justify-end  items-center gap-2">

@@ -1,4 +1,5 @@
 "use client";
+import JobBenefits from "@/app/components/JobBenefits";
 import JobCard from "@/app/components/JobCard";
 import JobHeader from "@/app/components/JobHeader";
 import JobInfo from "@/app/components/JobInfo";
@@ -41,32 +42,7 @@ const page = ({ params: { jobId } }: { params: { jobId: string } }) => {
                   className={`lg:max-w-4xl  text-black lg:text-base text-sm  font-medium  leading-[1.7] `}
                 />
               </div>
-              {/* {JSON.parse(job?.benefits)?.length > 0 && (
-                <div className="flex gap-1 flex-col">
-                  {<MiniTitle boldness="bold" color=" text-main2" text="JOB BENEFITS" />}
-                  {JSON.parse(job.benefits).map((benefit: string, index: number) => (
-                    <p
-                      key={index}
-                      className={`lg:max-w-4xl  text-black lg:text-base text-sm  font-medium  leading-[1.7] `}
-                    >
-                      {benefit}
-                    </p>
-                  ))}
-                </div>
-              )}{" "} */}
-              {JSON.parse(job.benefits).length > 0 && (
-                <div className="flex flex-col my-2 gap-1">
-                  {" "}
-                  {<MiniTitle boldness="bold" color=" text-main2" text="JOB BENEFITS" />}
-                  <ul className=" text-black list-disc lg:text-base text-sm  font-medium  leading-[1.7] ">
-                    {JSON.parse(job.benefits)?.map((benefit: string) => (
-                      <li className="" key={benefit}>
-                        {benefit}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+              <JobBenefits job={job} />
               <div className="flex gap-1 mt-5 items-start flex-col">
                 <MiniTitle boldness="bold" color=" text-main2" text="Responsibilities" />
                 <div
@@ -77,7 +53,7 @@ const page = ({ params: { jobId } }: { params: { jobId: string } }) => {
               {job && <Share title={job.job_title} image={job.image} />}
             </section>
           </div>
-     <JobInfo job={job} timeAgo={timeAgo}/>
+          <JobInfo job={job} timeAgo={timeAgo} />
         </GridContainer>
         <section className="mt-5">
           <MiniTitle className=" mt-5" boldness="bold" color=" text-main2" text="RELATED JOBS" />

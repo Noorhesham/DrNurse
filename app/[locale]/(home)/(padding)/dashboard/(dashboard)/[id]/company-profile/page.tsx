@@ -83,7 +83,7 @@ const page = () => {
               </div>
             </div>
             <MiniTitle color="black" text="HOSPITAL INFO" />
-            <VerificationStatus verification_type={userSettings?.verification_type} />
+            <VerificationStatus className="!px-0" verification_type={userSettings?.verification_type} />
 
             <div className="  flex flex-col gap-5">
               <InfoItem icon={<CalendarIcon className=" w-5 h-5" />} title="YEAR FOUNDED" description={year_founded} />

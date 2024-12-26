@@ -12,13 +12,23 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
-const isAccountOlderThan10Days = (userSettings: any) => {
-  const createdAt = new Date(userSettings.created_at);
-  const currentDate = new Date();
+const isAccountOlderThan10Days = (userSettings) => {
+  const createdAt = new Date(userSettings.created_at); // Parse ISO format date
+  const currentDate = new Date(); // Current date
+  console.log(createdAt, currentDate);
+  // Check if createdAt is valid
+  if (isNaN(createdAt.getTime())) {
+    console.error("Invalid date format:", userSettings.created_at);
+    return false;
+  }
+
   const diffInMs = currentDate.getTime() - createdAt.getTime();
   const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+
+  console.log("Days difference:", diffInDays,userSettings);
   return diffInDays > 10;
 };
+
 const page = () => {
   const { data: userSettings, loading } = useCachedQuery("user_settings");
   console.log(userSettings, loading);
@@ -26,17 +36,17 @@ const page = () => {
 
   useEffect(() => {
     if (!userSettings) return;
-    if (userSettings && isAccountOlderThan10Days(userSettings) && !userSettings?.role.includes("admin")) {
+    if (isAccountOlderThan10Days(userSettings) && !userSettings?.role.includes("admin")) {
       router.push("/person");
     } else if (
       userSettings.has_profile &&
       (userSettings.role.includes("nurse") || userSettings.role.includes("doctor"))
     ) {
       router.push("/person");
-    } else if (userSettings.role.includes("hospital") && userSettings?.companies === 1) {
+    } else if (userSettings.role.includes("hospital") && userSettings?.companies.length === 1) {
       router.push(`/dashboard/${userSettings.companies[0].id}`);
     }
-  }, [router]);
+  }, [userSettings]);
   if (loading || !userSettings) return <Spinner />;
 
   const HasProfile = () => {

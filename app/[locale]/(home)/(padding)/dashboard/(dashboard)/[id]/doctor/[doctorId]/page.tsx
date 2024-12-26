@@ -26,6 +26,7 @@ import { DashboardIcon } from "@radix-ui/react-icons";
 import BreadCrumb from "@/app/components/BreadCrumb";
 import { useSearchParams } from "next/navigation";
 import { ACTIVE_LISCNECE_COUNTRY } from "@/app/constants";
+import useCachedQuery from "@/app/hooks/useCachedData";
 
 const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: string } }) => {
   const { data, isLoading } = useGetEntity("doctor", `doctor-${doctorId}`, doctorId);
@@ -53,7 +54,6 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
               image: dataPage?.avatar,
               speciality: dataPage?.current_job_title || "",
               address: `${dataPage?.current_location?.title}`,
-              duration: "in 7 days",
             }}
           >
             <div className="flex  justify-center  items-center gap-2">
@@ -213,7 +213,7 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
               <InfoItem
                 icon={<GoLocation className=" w-6 h-6" />}
                 title="CURRENT LOCATION"
-                description={`${dataPage?.current_location?.title},${dataPage?.state?.title || ""},${
+                description={`${dataPage?.current_location?.title} , ${dataPage?.state?.title || ""} , ${
                   dataPage?.city?.title || ""
                 }`}
               />
