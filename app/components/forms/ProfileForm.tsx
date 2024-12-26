@@ -471,7 +471,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
             name="active_license_country"
             options={ACTIVE_LISCNECE_COUNTRY}
           />
-          {form.watch("active_license_country") !== "no" && (
+          {form.watch("active_license_country") !== " " && (
             <FormInput
               control={form.control}
               name="license_number"

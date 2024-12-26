@@ -17,11 +17,13 @@ const AddToWishlist = ({
   id,
   wishlistStatus,
   noshare,
+  parentId,
 }: {
   className?: string;
   id: any;
   wishlistStatus: boolean;
   noshare?: boolean;
+  parentId?: string;
 }) => {
   // const { data, isLoading } = useGetEntity("wishlistStatus", `wishlistStatus-${id}`, id);
   const { userSettings, loading } = useAuth();
@@ -42,6 +44,7 @@ const AddToWishlist = ({
         if (res.status) {
           toast.success(res.message);
           queryClient.invalidateQueries({ queryKey: ["bookmarks"] });
+          queryClient.invalidateQueries({ queryKey: [`job-${parentId||""}`] });
           router.refresh();
         } else toast.error(res.message);
       });

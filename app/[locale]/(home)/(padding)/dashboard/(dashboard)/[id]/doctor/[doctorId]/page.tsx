@@ -198,7 +198,7 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
               <InfoItem
                 icon={<HeartIcon className=" w-5 h-5" />}
                 title="FAMILY STATUS"
-                description={dataPage?.family_status || "Unknown Department"}
+                description={dataPage?.family_status || "Unknown"}
               />
               <InfoItem
                 icon={<GoPeople className=" w-5 h-5" />}

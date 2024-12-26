@@ -18,8 +18,7 @@ import { PersonIcon } from "@radix-ui/react-icons";
 import { Briefcase, DollarSign } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { FaExclamationCircle, FaFacebook, FaPinterest } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
+import { FaExclamationCircle } from "react-icons/fa";
 
 const page = ({ params: { id } }: { params: { id: string } }) => {
   const [currentUrl, setCurrentUrl] = useState<string | null>(null);
@@ -135,7 +134,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
           <MiniTitle boldness="bold" color=" text-main2" text="RELATED JOBS" />
           <div className=" grid-cols-1 grid gap-5 lg:grid-cols-2 mt-3">
             {job.related_jobs?.map((job: Job, i: number) => (
-              <JobCard i={i} key={job.id} job={job} />
+              <JobCard parentId={id} i={i} key={job.id} job={job} />
             ))}
           </div>
         </section>

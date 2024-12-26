@@ -255,7 +255,7 @@ export const GENDER = [
 export const WEBSITEURL = "https://dr-nurse.vercel.app";
 export const APIURL = "https://dr.r-m.dev";
 export const ACTIVE_LISCNECE_COUNTRY = [
-  { label: "No", value: "" },
+  { label: "No", value: " " },
   { label: "Saudi Arabia", value: "SA" },
   { label: "UAE", value: "AE" },
   { label: "Qatar", value: "QA" },

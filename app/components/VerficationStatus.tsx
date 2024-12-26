@@ -1,6 +1,14 @@
 import { FaCheckCircle, FaTimesCircle, FaQuestionCircle, FaDraft2Digital } from "react-icons/fa";
 
-const VerificationStatus = ({ verification_type, message }: { verification_type: string; message?: string }) => {
+const VerificationStatus = ({
+  verification_type,
+  message,
+  className,
+}: {
+  verification_type: string;
+  message?: string;
+  className?: string;
+}) => {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "auto-approved":
@@ -39,18 +47,18 @@ const VerificationStatus = ({ verification_type, message }: { verification_type:
         return "Pending";
       case "re-review":
         return "Re-review";
-      
+
       default:
         return "";
     }
   };
 
   return (
-    <div className="flex  w-full bg-light rounded-xl py-2 px-4 my-2 items-center gap-3">
+    <div className={` ${className} flex  w-full bg-light rounded-xl py-2 px-4 my-2 items-center gap-3`}>
       {message ? (
         <p>{message}</p>
       ) : (
-        <h3 className="text-main2 text-nowrap font-semibold text-sm lg:text-base">
+        <h3 className="text-main2  font-semibold text-sm lg:text-base">
           Account Status: {getStatusLabel(verification_type)}
         </h3>
       )}

@@ -68,7 +68,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
           { href: `/job/${id}`, text: job.job_title },
         ]}
       />
-      <JobHeader job={job} />
+      <JobHeader privatejob job={job} />
 
       <MaxWidthWrapper>
         <GridContainer className=" gap-8" cols={8}>

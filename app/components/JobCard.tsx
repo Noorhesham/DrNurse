@@ -7,7 +7,17 @@ import { Job } from "../types";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import AddToWishlist from "./AddToWishlist";
 
-const JobCard = ({ job, i, bookmarked }: { job: Job; i: number; bookmarked?: boolean }) => {
+const JobCard = ({
+  job,
+  i,
+  bookmarked,
+  parentId,
+}: {
+  job: Job;
+  i: number;
+  bookmarked?: boolean;
+  parentId?: boolean;
+}) => {
   const timeAgo = job?.created_at ? formatDistanceToNow(parseISO(job?.created_at), { addSuffix: true }) : "";
   const imageIndex = (i % 6) + 1;
   return (
@@ -49,7 +59,7 @@ const JobCard = ({ job, i, bookmarked }: { job: Job; i: number; bookmarked?: boo
               ))}
           </div>
           <div className="   ml-auto items-end md:flex-col flex-row-reverse self-end gap-2 flex">
-            <AddToWishlist wishlistStatus={bookmarked || job.bookmarked} id={job.id} />
+            <AddToWishlist parentId={parentId} wishlistStatus={bookmarked || job.bookmarked} id={job.id} />
             <p className=" text- lg:text-sm text-muted-foreground">{timeAgo}</p>
           </div>
         </div>
