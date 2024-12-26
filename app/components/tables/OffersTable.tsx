@@ -118,7 +118,7 @@ const OffersTable: React.FC<OffersTableProps> = ({ offers, action, person = fals
                     }
                   />
                 )}
-                {offer.status.toLowerCase() === "approved" && (
+                {offer.status.toLowerCase() === "approved" && offer.user?.id && (
                   <ModalCustom
                     btn={
                       <Button className=" rounded-full text-sm" size={"sm"}>

@@ -51,13 +51,8 @@ const page = () => {
             user={{
               name: dataPage?.name,
               image: dataPage?.avatar,
-              speciality: [
-                dataPage?.career_type?.title,
-                dataPage?.career_specialty?.title,
-                dataPage?.career_level?.title,
-              ]
-                .filter(Boolean)
-                .join(", "),
+              speciality: dataPage?.current_job_title || "",
+
               address: `${dataPage?.current_location?.title}`,
               duration: "in 7 days",
             }}
@@ -83,11 +78,9 @@ const page = () => {
                 {
                   href: "about-me",
                   label: "About Me",
-                  content: description ? (
-                    ""
-                  ) : (
+                  content: (
                     <div
-                      dangerouslySetInnerHTML={{ __html: convertToHTML(description || "") }}
+                      dangerouslySetInnerHTML={{ __html: convertToHTML(dataPage.description || "") }}
                       className={`lg:max-w-2xl text-black text-sm  font-medium my-2 leading-[1.7] `}
                     />
                   ),

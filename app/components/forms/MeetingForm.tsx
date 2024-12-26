@@ -1,7 +1,7 @@
 "use client";
 import { useZodForm } from "@/app/hooks/useZodForm";
 import React, { useTransition } from "react";
-import { useFieldArray } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
 import MiniTitle from "../defaults/MiniTitle";
 import { Form } from "@/components/ui/form";
@@ -18,6 +18,7 @@ import { format, parse, set } from "date-fns";
 import FormSelect from "../inputsForm/FormSelect";
 import Paragraph from "../defaults/Paragraph";
 import LocalTime from "../LocalTime";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const meetingsSchema = z.object({
   meetings: z.array(
@@ -64,12 +65,40 @@ const MeetingForm = ({ invite, userId, jobIdDef }: { invite?: boolean; userId?: 
       };
     }) || [{ from_date: "", time_date: "00:00", duration: "00:00" }];
 
-  const form = useZodForm({
-    schema: meetingsSchema,
+  const form = useForm({
+    resolver: zodResolver(meetingsSchema),
+    mode: "onChange",
     defaultValues: {
       meetings: defaultMeetings,
     },
   });
+  React.useEffect(() => {
+    if (data?.data) {
+      const defaultMeetings = data.data
+        .filter((meet: any) => meet.from_date)
+        .map((meeting: any) => {
+          let duration = "00:00";
+          if (meeting.duration) {
+            const [hours, minutes] = meeting.duration.split(":");
+            if (hours && minutes) {
+              duration = format(new Date(0, 0, 0, hours, minutes), "HH:mm");
+            }
+          }
+          const time = format(meeting.from_date, "HH:mm");
+          return {
+            ...meeting,
+            time_date: time,
+            id: meeting.id,
+            duration,
+          };
+        });
+
+      form.reset({
+        meetings:
+          defaultMeetings.length > 0 ? defaultMeetings : [{ from_date: "", time_date: "00:00", duration: "00:00" }],
+      });
+    }
+  }, [data, form]);
   console.log(form.formState.errors);
   const { append, fields, remove } = useFieldArray({
     control: form.control,
@@ -78,8 +107,6 @@ const MeetingForm = ({ invite, userId, jobIdDef }: { invite?: boolean; userId?: 
 
   const queryClient = useQueryClient();
   const [isPending, startTransition] = useTransition();
-
-  if (isLoading || !data || jobLoading) return <Spinner />;
 
   const onSubmit = (data: any) => {
     startTransition(async () => {
@@ -145,13 +172,14 @@ const MeetingForm = ({ invite, userId, jobIdDef }: { invite?: boolean; userId?: 
   const watchedFields = form.watch("meetings", fields);
   console.log(data);
   const hasSlots = fields.length > 0;
+  if (isLoading || !data || jobLoading) return <Spinner />;
 
   return (
     <div>
       <MiniTitle boldness="bold" color="black" text={job?.data?.job_title || ""} />
       <Paragraph
         description="Create time slots for others to select from. These slots are shared with all invitees for 
-        this job. Please ensure the times are in GMT. "
+          this job. Please ensure the times are in GMT. "
       />
       <Form {...form}>
         {" "}
@@ -170,7 +198,6 @@ const MeetingForm = ({ invite, userId, jobIdDef }: { invite?: boolean; userId?: 
                 <FormInput label="Time" control={form.control} name={`meetings.${index}.time_date`} type="time" />
                 <FormSelect
                   label="Duration"
-                  control={form.control}
                   name={`meetings.${index}.duration`}
                   options={[
                     { value: "00:30", label: "30 min" },
@@ -211,7 +238,7 @@ const MeetingForm = ({ invite, userId, jobIdDef }: { invite?: boolean; userId?: 
                   </button>
                 </div>
               </div>
-              <LocalTime fromDate={field.from_date} />
+              <LocalTime time={field.time_date} />
             </div>
           ))}
           {!hasSlots && <div className="text-center text-red-500">Please add at least one slot to proceed.</div>}
@@ -223,7 +250,7 @@ const MeetingForm = ({ invite, userId, jobIdDef }: { invite?: boolean; userId?: 
                 btnText="Add Slot"
                 onClick={() => append({ from_date: "", time_date: "", duration: "" })}
               />
-              {hasSlots && (
+              { (
                 <FunctionalButton
                   disabled={isPending}
                   size="sm"

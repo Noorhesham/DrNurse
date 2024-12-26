@@ -135,7 +135,6 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const onSubmit = (data: JobFormValues) => {
-    console.log("Form Submitted", data);
     startTransition(async () => {
       const res = defaultData?.id
         ? await Server({
@@ -153,10 +152,18 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
         defaultData?.id
           ? queryClient.invalidateQueries({ queryKey: [`job-${defaultData.id}`] })
           : router.push(`/dashboard/${id}/jobs`);
-        queryClient.invalidateQueries({ queryKey: [`company-overview-${id}`,`company-jobs-${id}`] });
+        queryClient.invalidateQueries({ queryKey: [`company-overview-${id}`, `company-jobs-${id}`] });
         toast.success(res.message);
       } else {
         toast.error(res.message);
+        if (res.errors) {
+          Object.entries(res.errors).forEach(([field, messages]) => {
+            form.setError(field, {
+              type: "server",
+              message: Array.isArray(messages) ? messages[0] : messages, // Handle array or single string
+            });
+          });
+        }
       }
     });
   };

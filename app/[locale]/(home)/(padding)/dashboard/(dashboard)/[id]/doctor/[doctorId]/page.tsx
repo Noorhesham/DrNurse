@@ -51,13 +51,7 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
             user={{
               name: dataPage?.name,
               image: dataPage?.avatar,
-              speciality: [
-                dataPage?.career_type?.title,
-                dataPage?.career_Specialty?.title || dataPage?.career_specialty?.title,
-                dataPage?.career_level?.title,
-              ]
-                .filter(Boolean)
-                .join(", "),
+              speciality: dataPage?.current_job_title || "",
               address: `${dataPage?.current_location?.title}`,
               duration: "in 7 days",
             }}

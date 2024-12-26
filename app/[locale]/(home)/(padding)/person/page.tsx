@@ -43,7 +43,7 @@ const Page = () => {
             </div>
           ) : (
             <section className="col-span-6">
-              <VerificationStatus verification_type={userSettings.verification_type} />
+             {userSettings?.verification_type!=="auto-approved"&&userSettings?.verification_type!=="manual-approved" && <VerificationStatus verification_type={userSettings.verification_type} />}
 
               <div className="flex mb-5 justify-between">
                 <div className="flex text-main2 font-semibold flex-col">

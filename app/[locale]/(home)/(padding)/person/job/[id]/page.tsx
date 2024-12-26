@@ -3,6 +3,7 @@ import BreadCrumb from "@/app/components/BreadCrumb";
 import FunctionalButton from "@/app/components/FunctionalButton";
 import InfoItem from "@/app/components/InfoDoc";
 import JobCard from "@/app/components/JobCard";
+import JobHeader from "@/app/components/JobHeader";
 import MainProfile from "@/app/components/MainProfile";
 import Share from "@/app/components/Share";
 import Spinner from "@/app/components/Spinner";
@@ -18,7 +19,8 @@ import { convertToHTML } from "@/lib/utils";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { PersonIcon } from "@radix-ui/react-icons";
 import { useQueryClient } from "@tanstack/react-query";
-import { Briefcase, DollarSign, XCircle } from "lucide-react";
+import { formatDistanceToNow, parseISO } from "date-fns";
+import { Briefcase, CalendarIcon, DollarSign, EarthIcon, XCircle } from "lucide-react";
 import Link from "next/link";
 import { useTransition } from "react";
 import { FaExclamationCircle } from "react-icons/fa";
@@ -54,7 +56,9 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
       else toast.error(res.message);
     });
   };
-  console.log(job.related_jobs);
+  const timeAgo = job?.created_at ? formatDistanceToNow(parseISO(job?.created_at), { addSuffix: true }) : "";
+
+  console.log(job);
   return (
     <section className=" pt-36">
       <BreadCrumb
@@ -64,52 +68,8 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
           { href: `/job/${id}`, text: job.job_title },
         ]}
       />
-      <div className=" bg-light ">
-        <MaxWidthWrapper>
-          <MainProfile h1={true} user={doctor}>
-            <div className="flex  items-center gap-2">
-              {!userSettings?.has_profile ? (
-                <FunctionalButton
-                  btnText={"APPLY FOR JOB"}
-                  icon={null}
-                  content={
-                    <div className="flex flex-col gap-5 justify-center items-center">
-                      <FaExclamationCircle size={40} className=" text-main" />
-                      <h2 className=" text-main text-lg font-semibold">SORRY !</h2>
-                      <p className=" max-w-md text-center  text-base">
-                        {" "}
-                        YOUR PROFILE IS INCOMPLETE OR NOT YET ACTIVATED. PLEASE REVIEW YOUR PROFILE TO APPLY FOR THIS
-                        JOB
-                      </p>
-                      <div className="flex  gap-2">
-                        <Link href="/person/create-profile">
-                          {" "}
-                          <Button size="sm" className="rounded-full">
-                            UPDATE PROFILE
-                          </Button>
-                        </Link>
-                        <DialogClose asChild>
-                          <Button size="sm" className="rounded-full">
-                            Close
-                          </Button>
-                        </DialogClose>
-                      </div>
-                    </div>
-                  }
-                />
-              ) : (
-                <FunctionalButton
-                  noclick={job.is_applied}
-                  disabled={isPending}
-                  btnText={job.is_applied ? "ALREADY APPLIED" : "APPLY FOR JOB"}
-                  onClick={handleApply}
-                  icon={job.is_applied ? <XCircle /> : null}
-                />
-              )}
-            </div>
-          </MainProfile>
-        </MaxWidthWrapper>
-      </div>
+      <JobHeader job={job} />
+
       <MaxWidthWrapper>
         <GridContainer className=" gap-8" cols={8}>
           <div className=" col-span-2 lg:col-span-6">
@@ -119,12 +79,16 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
                 dangerouslySetInnerHTML={{ __html: convertToHTML(job.job_description || "") }}
                 className={`lg:max-w-4xl  text-black lg:text-base text-sm  font-medium  leading-[1.7] `}
               />
-              <div className=" text-black lg:text-base text-sm  font-medium  leading-[1.7] ">
-                {JSON.parse(job.benefits)?.map((benefit: string) => (
-                  <p className="" key={benefit}>
-                    {benefit}
-                  </p>
-                ))}
+              <div className="flex flex-col my-2 gap-1">
+                {" "}
+                <MiniTitle boldness="bold" color=" text-main2" text="JOB BENEFITS" />
+                <ul className=" text-black list-disc lg:text-base text-sm  font-medium  leading-[1.7] ">
+                  {JSON.parse(job.benefits)?.map((benefit: string) => (
+                    <li className="" key={benefit}>
+                      {benefit}
+                    </li>
+                  ))}
+                </ul>
               </div>
               <div className="flex gap-1 mt-5 items-start flex-col">
                 <MiniTitle boldness="bold" color=" text-main2" text="Responsibilities" />
@@ -144,7 +108,22 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
             <MiniTitle color="black" text="OVERVIEW" />
             <MiniTitle color="black" text="JOB INFO" />
             <div className=" flex flex-col gap-5">
-              <InfoItem icon={<PersonIcon />} title="GENDER" description={job.gender} />
+              <InfoItem icon={<CalendarIcon className=" w-5 h-5" />} title="JOB POSTED" description={timeAgo} />
+              <InfoItem icon={<PersonIcon className=" w-5 h-5" />} title="GENDER" description={job.gender} />
+              {job?.family_status && (
+                <InfoItem
+                  icon={<PersonIcon className=" w-5 h-5" />}
+                  title="FAMILY STATUS"
+                  description={job.family_status}
+                />
+              )}
+              {job?.nationality && (
+                <InfoItem
+                  icon={<EarthIcon className=" w-5 h-5" />}
+                  title="NATIONALITY"
+                  description={job.nationality.title}
+                />
+              )}
               {job.hide_salary === 0 && (
                 <InfoItem
                   icon={<DollarSign className=" w-5 h-5" />}

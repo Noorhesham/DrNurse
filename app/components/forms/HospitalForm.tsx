@@ -81,7 +81,7 @@ const HospitalProfileSettings = ({ defaultData }: { defaultData?: any }) => {
     },
   });
 
-  const { append, remove, fields } = useFieldArray({
+  const { append, remove, fields,  } = useFieldArray({
     control: form.control,
     name: "branches",
   });
@@ -125,9 +125,9 @@ const HospitalProfileSettings = ({ defaultData }: { defaultData?: any }) => {
           });
         } else if (typeof value === "object" && value !== null && !(value instanceof File)) {
           // If the value is an object, but not a file
-          if (key === "logo"|| key === "commercial_registration") formData.append(`${key}[]`, value.id);
-          if (key !== "logo"&& key !== "commercial_registration") formData.append(`${key}`, value);
-          
+          if (key === "logo" || key === "commercial_registration") formData.append(`${key}[]`, value.id);
+          if (key !== "logo" && key !== "commercial_registration") formData.append(`${key}`, value);
+
           // for (const nestedKey in value) {
           //   if (value[nestedKey] !== null && value[nestedKey] !== undefined && value[nestedKey] !== "") {
 
@@ -171,6 +171,15 @@ const HospitalProfileSettings = ({ defaultData }: { defaultData?: any }) => {
         !defaultData && redirect(`/dashboard/${res.id}`);
       } else {
         toast.error(res.message);
+        if (res.errors) {
+          Object.entries(res.errors).forEach(([field, messages]) => {
+            form.setError(field, {
+              type: "server",
+              message: Array.isArray(messages) ? messages[0] : messages, // Handle array or single string
+            });
+          });
+        }
+        console.log(form.formState.errors)
       }
     });
   };
@@ -271,7 +280,12 @@ const HospitalProfileSettings = ({ defaultData }: { defaultData?: any }) => {
         <MiniTitle className=" uppercase" boldness="bold" color={"text-black"} text={t("Media")} />
         <div className=" grid grid-cols-1 md:grid-cols-2 w-full">
           <FileUpload mimeTypes={["image/*"]} label={t("Upload Logo")} name="logo" />
-          <FileUpload mimeTypes={["application/pdf"]} label={t("Upload Documents")} name="commercial_registration" />
+          <FileUpload
+            required
+            mimeTypes={["application/pdf"]}
+            label={t("Upload Documents")}
+            name="commercial_registration"
+          />
         </div>
         {/* Hospital Description */}
         <FormInput control={form.control} name="description" optional label={t("Description about Hospital")} area />

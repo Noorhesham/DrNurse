@@ -46,7 +46,6 @@ interface FormInputProps {
   disableOldDates?: boolean;
   monthOnly?: boolean;
   noSwitch?: boolean;
-  monthsOnly?: boolean;
   currency?: boolean;
 }
 export interface PhoneProps {

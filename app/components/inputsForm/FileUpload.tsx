@@ -12,6 +12,7 @@ interface FileUploadProps {
   name: string;
   multiple?: boolean;
   noicon?: boolean;
+  required?: boolean;
   mimeTypes?: string[]; // Acceptable MIME types
 }
 
@@ -20,6 +21,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
   name,
   multiple = false,
   noicon = false,
+  required,
   mimeTypes = ["image/*", "application/pdf"], // Accept images and PDFs by default
 }) => {
   const { setValue, getValues, formState, watch } = useFormContext();
@@ -67,7 +69,11 @@ const FileUpload: React.FC<FileUploadProps> = ({
 
   return (
     <div className="flex flex-col gap-2 items-start">
-      <MiniTitle size={noicon ? "sm" : "md"} text={label} />
+      <div className="flex items-start gap-1 relative">
+        <MiniTitle size={noicon ? "sm" : "md"} text={label} />
+        {required && <span className={`  z-10   font-normal text-red-600`}>*</span>}
+      </div>
+
       {noicon ? (
         <Input
           multiple={multiple}
@@ -150,6 +156,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
           </div>
         </div>
       )}
+      {formState.errors[name] && <p className="text-red-600 font-semibold text-xs">{formState.errors[name]?.message}</p>}
     </div>
   );
 };

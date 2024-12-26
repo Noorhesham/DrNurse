@@ -21,11 +21,10 @@ import { Server } from "@/app/main/Server";
 import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
 import Spinner from "../Spinner";
-import { format } from "date-fns";
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
-import { Checkbox } from "@/components/ui/checkbox";
 import GridContainer from "../defaults/GridContainer";
+import { useFormHandler } from "@/app/hooks/useFormHandler";
 const salaryRegex = /^[1-9]\d*$/;
 const jobSchema = z
   .object({
@@ -89,7 +88,7 @@ const jobSchema = z
             .transform((val) => (val === true ? 1 : 0))
             .optional(),
           certificate_name: z.string().min(1, "Certificate Name is required"),
-          training_center: z.string().optional(),
+          training_center: z.string().min(1, "Training Center is required"),
           certificate: z.any().optional(),
         })
       )
@@ -167,14 +166,12 @@ type JobFormValues = z.infer<typeof jobSchema>;
 
 const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
   console.log(dataDefault);
-  const [isPending, startTransition] = useTransition();
   const { data: countries, isLoading } = useGetEntity("countries", "countries");
   const { data: careerTypes, isLoading: loadingCareerTypes } = useGetEntities({
     resourceName: "getEntity",
     key: "career-types",
     entityName: "career-types",
   });
-  console.log(careerTypes);
 
   const t = useTranslations();
 
@@ -283,7 +280,8 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
     }
   }, [form.formState.errors]);
   const { setDates, setLogin } = useAuth();
-
+  const { handleFormSubmit, isPending } = useFormHandler();
+  const { setError } = form;
   const onSubmit = (data: JobFormValues) => {
     const formData = new FormData();
     const fileFields = ["resume", "practice_license", "identification_card", "certificate"];
@@ -349,26 +347,27 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
         }
       }
     }
-
-    startTransition(async () => {
-      const res = await Server({
+    handleFormSubmit({
+      apiCall: Server,
+      options: {
         resourceName: "add-profile",
         body: formData,
         formData: true,
-      });
-      console.log(res);
-      queryClient.invalidateQueries({ queryKey: ["my-profile"] });
-      setDates((prevDates: any) => ({
-        ...prevDates,
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["my-profile"] });
+        setDates((prevDates: any) => ({
+          ...prevDates,
 
-        last_update_date_user: "",
-      }));
-      setLogin((l) => !l);
-
-      if (res.status) {
-        toast.success(res.message);
+          last_update_date_user: "",
+        }));
+        setLogin((l) => !l);
         router.push("/person");
-      } else toast.error(res.message);
+      },
+      onError: (err: any) => {
+        console.error("Failed to submit form:", err);
+      },
+      setError,
     });
   };
 
@@ -396,7 +395,6 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
         <GridContainer cols={3}>
           <FormInput
             control={form.control}
-            type="number"
             name="identification_card_number"
             label={t("IDENTIFICATION CARD NUMBER")}
             placeholder={t("Enter Identification Card Number")}
@@ -461,7 +459,6 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
               name="start_availability_at"
               toYear={new Date().getFullYear() + 4}
               label={t("Start From")}
-              monthsOnly
               date
             />
           )}
@@ -604,7 +601,13 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
                 </FlexWrapper>{" "}
                 <FlexWrapper className=" p-2 w-full" max={false}>
                   <div className="flex flex-col lg:flex-row w-full items-center gap-4">
-                    <FormInput control={form.control} name={`education.${index}.date`} label={t("FROM Date")} date />
+                    <FormInput
+                      monthOnly
+                      control={form.control}
+                      name={`education.${index}.date`}
+                      label={t("FROM Date")}
+                      date
+                    />
                     {!form.watch(`education.${index}.present`) && (
                       <FormInput
                         control={form.control}
@@ -650,7 +653,6 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
                 certificate_name: "",
                 country_id: "",
                 training_center: "",
-                career_level_id: "",
                 date_to: "",
                 present: 0,
               })
@@ -742,7 +744,12 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div className=" col-span-1">
-            <FileUpload mimeTypes={["application/pdf"]} label={t("Upload Practice license ")} name="practice_license" />
+            <FileUpload
+              required
+              mimeTypes={["application/pdf"]}
+              label={t("Upload Practice license ")}
+              name="practice_license"
+            />
           </div>
 
           <div className=" col-span-1">

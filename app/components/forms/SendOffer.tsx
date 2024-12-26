@@ -1,7 +1,7 @@
 "use client";
 import { useZodForm } from "@/app/hooks/useZodForm";
 import { useTranslations } from "next-intl";
-import React, { useTransition } from "react";
+import React from "react";
 import { z } from "zod";
 import { useFieldArray } from "react-hook-form";
 import CustomForm from "./CustomForm";
@@ -10,19 +10,17 @@ import FunctionalButton from "../FunctionalButton";
 import { XIcon } from "lucide-react";
 import FormSelect from "../inputsForm/FormSelect";
 import MiniTitle from "../defaults/MiniTitle";
-import FormFlexContainer from "./FormFlexContainer";
 import { CURRENCY_OPTIONS } from "@/app/constants";
 import { useGetEntity } from "@/lib/queries";
 import Spinner from "../Spinner";
-import { toast } from "react-toastify";
-import { Server } from "@/app/main/Server";
-import { useQueryClient } from "@tanstack/react-query";
 import CountriesInput from "../inputsForm/CountriesInput";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import FlexWrapper from "../defaults/FlexWrapper";
 import { useParams, useRouter } from "next/navigation";
 import { FaExclamationCircle } from "react-icons/fa";
+import { useFormHandler } from "@/app/hooks/useFormHandler";
+import { Server } from "@/app/main/Server";
 const salaryRegex = /^[1-9]\d*$/;
 
 const offerSchema = z.object({
@@ -61,7 +59,6 @@ const SendOffer = ({
     enabled: defaultvals ? false : true,
   });
   const { id: companyId } = useParams();
-  const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const t = useTranslations();
   const form = useZodForm({
@@ -74,42 +71,43 @@ const SendOffer = ({
       details: {
         job_title: defaultvals?.job_title || "",
         salary: defaultvals?.salary || 0,
-        benefits: defaultvals?.benefits || [""],
+        benefits: defaultvals?.benefits || [],
         currency: defaultvals?.currency || "usd",
         start_date: defaultvals?.start_date || "",
         address: defaultvals?.address || "",
       },
     },
   });
-  const queryClient = useQueryClient();
+  const { handleFormSubmit, isPending } = useFormHandler();
+
   const { append, remove, fields } = useFieldArray({
     control: form.control,
     //@ts-ignore
     name: "details.benefits",
   });
   const id = data?.data?.user_id;
+  const { setError } = form;
+
   const onSubmit = (data: OfferFormValues) => {
-    console.log("Form Submitted", data);
-    startTransition(async () => {
-      const res = defaultvals
-        ? await Server({
+    handleFormSubmit({
+      apiCall: Server,
+      options: defaultvals
+        ? {
             resourceName: "update-offer",
             id: defaultvals.id,
             body: { ...data, user_id: userId.id, _method: "PUT" },
-          })
-        : await Server({
+          }
+        : {
             resourceName: "add-offer",
             body: { ...data, user_id: id },
-          });
-      queryClient.invalidateQueries({ queryKey: [`offers-${userId}`] });
-
-      console.log(res);
-      if (res.status) {
+          },
+      onSuccess: () => {
         router.push(`/dashboard/${companyId}/job-offers`);
-        toast.success(res.message);
-      } else {
-        toast.error(res.message);
-      }
+      },
+      onError: (err: any) => {
+        console.error("Failed to submit form:", err);
+      },
+      setError,
     });
   };
 
@@ -191,3 +189,35 @@ const SendOffer = ({
 };
 
 export default SendOffer;
+// const onSubmit = (data: OfferFormValues) => {
+//   console.log("Form Submitted", data);
+//   startTransition(async () => {
+//     const res = defaultvals
+//       ? await Server({
+//           resourceName: "update-offer",
+//           id: defaultvals.id,
+//           body: { ...data, user_id: userId.id, _method: "PUT" },
+//         })
+//       : await Server({
+//           resourceName: "add-offer",
+//           body: { ...data, user_id: id },
+//         });
+//     queryClient.invalidateQueries({ queryKey: [`offers-${userId}`] });
+
+//     console.log(res);
+//     if (res.status) {
+//       router.push(`/dashboard/${companyId}/job-offers`);
+
+//     } else {
+//       toast.error(res.message);
+//       if (res.errors) {
+//         Object.entries(res.errors).forEach(([field, messages]) => {
+//           form.setError(field, {
+//             type: "server",
+//             message: Array.isArray(messages) ? messages[0] : messages, // Handle array or single string
+//           });
+//         });
+//       }
+//     }
+//   });
+// };
