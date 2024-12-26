@@ -34,7 +34,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
   const job = data.data;
   const doctor = {
     name: job.job_title,
-    image: "/Frame 48097786 (2).svg",
+    image: "/Frame 48097786 (3).svg",
     speciality: [job?.career_type?.title, job?.career_specialty?.title, job?.career_level?.title]
       .filter(Boolean)
       .join(", "),
@@ -178,7 +178,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
               <InfoItem
                 icon={<Briefcase />}
                 title="EXPERIENCE"
-                description={`${job.experience_from} - ${job.experience_to}`}
+                description={`${job.experience_from} - ${job.experience_to} Years `}
               />
             </div>
           </div>
