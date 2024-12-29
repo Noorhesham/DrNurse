@@ -16,6 +16,8 @@ import { getYouTubeEmbedUrl } from "@/app/helpers/utils";
 import { convertToHTML } from "@/lib/utils";
 import LoaderBtn from "@/app/components/LoaderBtn";
 import { WEBSITEURL } from "@/app/constants";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 export const generateMetadata = async () => {
   const { page } = await Server({ resourceName: "home", id: "company-home" });
   return {
@@ -241,6 +243,11 @@ export default async function Home() {
                   className={`lg:max-w-2xl text-black text-sm  font-medium my-2 leading-[1.7] `}
                 />
               )}
+              <Link href={"/"}>
+                <Button size={"lg"} className="  mt-5 ">
+                  GET STARTED
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
