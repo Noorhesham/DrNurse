@@ -47,7 +47,7 @@ const page = ({ searchParams }: { searchParams: any }) => {
           )}
         </div>
       </AnimatePresence>
-      {bookmarks.length > 10 && <PaginationDemo />}
+      {/* {bookmarks.length > 10 && <PaginationDemo />} */}
     </main>
   );
 };

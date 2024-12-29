@@ -21,7 +21,7 @@ const Page = () => {
   const { data: overView, isLoading: isLoadingOverView } = useGetEntity("person-overview");
   const { data, isLoading } = useGetEntity("my-profile", "my-profile");
   const { userSettings, loading } = useAuth();
-  if (isLoading || !data || isLoadingOverView||loading) return <Spinner />;
+  if (isLoading || !data || isLoadingOverView || loading) return <Spinner />;
   const dataPage = data.data;
   console.log(overView);
   return (
@@ -43,7 +43,10 @@ const Page = () => {
             </div>
           ) : (
             <section className="col-span-6">
-             {userSettings?.verification_type!=="auto-approved"&&userSettings?.verification_type!=="manual-approved" && <VerificationStatus verification_type={userSettings.verification_type} />}
+              {userSettings?.verification_type !== "auto-approved" &&
+                userSettings?.verification_type !== "manual-approved" && (
+                  <VerificationStatus verification_type={userSettings.verification_type} />
+                )}
 
               <div className="flex mb-5 justify-between">
                 <div className="flex text-main2 font-semibold flex-col">
@@ -68,7 +71,13 @@ const Page = () => {
                   color="text-gray-900"
                   text="Recently Posted Jobs"
                 />
-                <TableData viewbtn person jobs={overView.data.recomended_jobs} />
+                <TableData
+                  viewbtn
+                  person
+                  jobs={overView.data.recomended_jobs.sort(
+                    (a: any, b: any) => new Date(b.created_at) - new Date(a.created_at)
+                  )}
+                />
               </div>
               <div className="my-5">
                 {" "}

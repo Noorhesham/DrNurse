@@ -15,6 +15,7 @@ import { format } from "date-fns";
 import { DialogClose } from "@/components/ui/dialog";
 import { Button, buttonVariants } from "@/components/ui/button";
 import FunctionalButton from "../FunctionalButton";
+import LocalTime from "../LocalTime";
 const formatToGMT = (dateStr) => {
   const date = new Date(dateStr);
   const gmtTime = utcToZonedTime(date, "Etc/UTC");
@@ -25,8 +26,8 @@ const formatToLocalTime = (dateStr) => {
   return format(date, "dd/MM/yyyy hh:mmaaa");
 };
 
-const SelectDate = ({ meeting_id, jobId = "", person=false }: { meeting_id: string; jobId: string; person?: boolean }) => {
-  const { data, isLoading } = useGetEntity("person-slots", `person-slots-${jobId}`, jobId || "", {
+const SelectDate = ({ meeting_id, jobId = "0", person=false }: { meeting_id: string; jobId: string; person?: boolean }) => {
+  const { data, isLoading } = useGetEntity("person-slots", `person-slots-${jobId}`, jobId || "0", {
     nocompany: person ? true : false,
   });
 
@@ -72,6 +73,7 @@ const SelectDate = ({ meeting_id, jobId = "", person=false }: { meeting_id: stri
               <Label className="flex justify-between w-full items-center gap-2" htmlFor={option.date}>
                 <div className="flex flex-col gap-1">
                   <h4 className="text-main2 font-semibold">{formatToLocalTime(option.from_date)}</h4>
+                  <LocalTime date={option.from_date}  />
                   <p className=" text-muted-foreground">DURATION {option.duration}</p>
                 </div>
                 <RadioGroupItem

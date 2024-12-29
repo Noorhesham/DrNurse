@@ -169,7 +169,7 @@ const FormInput = ({
                 <Textarea placeholder={"MESSAGE"} className="resize-none" {...field} />
               ) : phone && PhoneSearchComponent ? (
                 <Suspense>
-                  <PhoneSearchComponent returnFullPhone={returnFullPhone} name={name} onChange={field.onChange} />
+                  <PhoneSearchComponent disabled={disabled} returnFullPhone={returnFullPhone} name={name} onChange={field.onChange} />
                 </Suspense>
               ) : photo ? (
                 <PhotoInput noimg={noimg} value={field.value} onChange={field.onChange} />

@@ -42,7 +42,7 @@ export function InputOTPPattern({
   email?: string;
   activate?: boolean;
   revalidate?: any;
-  phone?: boolean;
+  phone?: string;
   country_key?: string;
   verify?: boolean;
   isPending2?: boolean;

@@ -103,7 +103,7 @@ const EmailUpdate = ({ user }: { user: any }) => {
           )}
         </form>
       </Form>{" "}
-      {searchParams.get("email") && (
+      {searchParams.get("email")||isVerify && (
         <div>
           <InputOTPPattern
             onSuccess={() => setVerify(false)}

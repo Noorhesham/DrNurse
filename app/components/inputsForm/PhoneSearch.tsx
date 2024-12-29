@@ -10,9 +10,10 @@ import { useLocale, useTranslations } from "next-intl";
 interface ExtendedPhoneProps extends PhoneProps {
   returnFullPhone?: boolean; // Boolean to control return format
   defaultValue?: any;
+  disabled?:boolean
 }
 
-const PhoneSearch = ({ onChange, name, returnFullPhone = true, defaultValue }: ExtendedPhoneProps) => {
+const PhoneSearch = ({ onChange, name, returnFullPhone = true, defaultValue,disabled }: ExtendedPhoneProps) => {
   const lang = useLocale();
   const form = useFormContext();
   const t = useTranslations();
@@ -25,7 +26,7 @@ const PhoneSearch = ({ onChange, name, returnFullPhone = true, defaultValue }: E
   // Combine dial code and phone number for the PhoneInput value
   const fullPhoneValue = dialCodeValue ? `${dialCodeValue}${phoneValue}` : defaultValue ? currentValue : "";
   return (
-    <PhoneInput
+    <PhoneInput disabled={disabled}
       enableSearch
       localization={lang === "ar" ? ar : undefined}
       excludeCountries={["il"]}

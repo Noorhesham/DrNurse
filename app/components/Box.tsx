@@ -135,7 +135,28 @@ const Box = ({
         <AccordionItem value="item-1">
           <AccordionTrigger>
             <h2 className="text-base font-semibold text-main2">{text}</h2>
-          </AccordionTrigger>
+          </AccordionTrigger>{" "}
+          {!btn && (
+            <div className="flex gap-2 items-center mt-2 mb-5 mr-auto">
+              <button className=" py-1 text-white  px-4 bg-main  rounded-full" onClick={() => WrapperFn(update)}>
+                Filter
+              </button>
+              {filters[filter]?.length > 0 && (
+                <button
+                  className=" py-1 text-white  px-4 bg-gray-300  rounded-full"
+                  onClick={() => {
+                    setFilters((prevFilters) => ({
+                      ...prevFilters,
+                      [filter]: [],
+                    }));
+                    WrapperFn(resetFilters);
+                  }}
+                >
+                  Reset
+                </button>
+              )}
+            </div>
+          )}
           <AccordionContent className=" max-h-[10rem] overflow-auto flex flex-col gap-2">
             <ul className="pb-3 grid   grid-cols-1 lg:grid-cols-2 gap-2 border-b border-b-gray-400">
               {!btn
@@ -178,25 +199,6 @@ const Box = ({
                     );
                   })}
             </ul>
-            {!btn && (
-              <div className="flex gap-2 items-center mt-2 ml-auto">
-                <button className=" py-1 text-white  px-4 bg-main  rounded-full" onClick={() => WrapperFn(update)}>
-                  Filter
-                </button>
-                {filters[filter]?.length > 0 && <button
-                  className=" py-1 text-white  px-4 bg-gray-300  rounded-full"
-                  onClick={() => {
-                    setFilters((prevFilters) => ({
-                      ...prevFilters,
-                      [filter]: [],
-                    }));
-                    WrapperFn(resetFilters);
-                  }}
-                >
-                  Reset
-                </button>}
-              </div>
-            )}
           </AccordionContent>
         </AccordionItem>
       </Accordion>

@@ -37,7 +37,7 @@ const PhoneUpdate = ({ user }: { user: any }) => {
   const updatedParams = new URLSearchParams(searchParams.toString());
   const form = useForm<z.infer<typeof phoneSchema>>({
     resolver: zodResolver(phoneSchema),
-    defaultValues: { phone: user?.phone || "" },
+    defaultValues: { phoneNumber: { phone: user?.phone || "", country_key: user?.country_key } },
   });
   const { handleFormSubmit, isPending } = useFormHandler();
   const { setError } = form;
@@ -60,7 +60,7 @@ const PhoneUpdate = ({ user }: { user: any }) => {
   const onSubmit = (data: z.infer<typeof phoneSchema>) => {
     const updatedData = {
       ...data,
-      country_key:  data.phoneNumber.country_key,
+      country_key: data.phoneNumber.country_key,
       phone: data.phoneNumber.phone || null,
     };
     handleFormSubmit({
@@ -111,18 +111,21 @@ const PhoneUpdate = ({ user }: { user: any }) => {
           )}
         </form>
       </Form>{" "}
-      {searchParams.get("phone") && (
-        <div>
-          <InputOTPPattern
-            onSuccess={() => setVerify(false)}
-            phone={form.getValues("phoneNumber.phone")}
-            verify={searchParams.get("vefiy") === "true"}
-            setServerError={setOtpError}
-            sendType="sms"
-            country_key={user.country_key}
-          />
-        </div>
-      )}{" "}
+      {(searchParams.get("phone") ||
+        isVerify) && (
+          <div>
+            <InputOTPPattern
+              onSuccess={() => {
+                setVerify(false);
+              }}
+              phone={form.getValues("phoneNumber.phone")}
+              verify={searchParams.get("vefiy") === "true"}
+              setServerError={setOtpError}
+              sendType="sms"
+              country_key={user.country_key}
+            />
+          </div>
+        )}{" "}
       {OtpError && <p className="text-red-500 text-center mt-3 m-auto self-center text-sm">{OtpError}</p>}
     </div>
   );

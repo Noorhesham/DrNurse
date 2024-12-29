@@ -8,6 +8,7 @@ import SateChange from "../SateChange";
 import ModalCustom from "./ModalCustom";
 import { convertToHTML } from "@/lib/utils";
 import MaxWidthWrapper from "./MaxWidthWrapper";
+import { format } from "date-fns";
 const Notification = ({
   notification,
   show,
@@ -45,6 +46,8 @@ const Notification = ({
       }
       content={
         <MaxWidthWrapper className="flex flex-col items-center">
+          <h2>{notification.name}</h2>
+          <span>{notification.speciality}</span>
           <div
             dangerouslySetInnerHTML={{ __html: convertToHTML(notification.content || "") }}
             className={`  text-center text-black lg:text-base text-sm  font-medium my-2 leading-[1.7] `}

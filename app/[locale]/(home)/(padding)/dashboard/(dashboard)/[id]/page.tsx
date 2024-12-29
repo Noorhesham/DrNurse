@@ -8,7 +8,7 @@ import MiniTitle from "@/app/components/defaults/MiniTitle";
 import SideBar from "@/app/components/nav/SideBar";
 import SwiperCards from "@/app/components/SwiperCards";
 import TableData from "@/app/components/TableData";
-import React  from "react";
+import React from "react";
 import { useGetEntity } from "@/lib/queries";
 import Spinner from "@/app/components/Spinner";
 import { useParams } from "next/navigation";
@@ -65,7 +65,12 @@ const page = () => {
                     color=" text-gray-900"
                     text="Recently Posted Jobs"
                   />
-                  <TableData jobs={overView.data?.jobs || []} />
+                  <TableData
+                    jobs={
+                      overView.data?.jobs.sort((a: any, b: any) => new Date(b.created_at) - new Date(a.created_at)) ||
+                      []
+                    }
+                  />
                 </div>
               ) : (
                 <Empty text="No Jobs Yet !" />
