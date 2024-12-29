@@ -149,7 +149,7 @@ const FormInput = ({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem
+        <FormItem 
           className={`${width || "w-full"} ${!check && "flex flex-col gap-3"} my-2 !space-y-0 ${
             check && "flex items-center "
           } relative`}
@@ -164,7 +164,7 @@ const FormInput = ({
             </FormLabel>
           )}
           <div className={`relative  w-full inline-flex items-center justify-center ${className}`}>
-            <FormControl className={`  ${switchToggle ? "" : "   duration-200"} `}>
+            <FormControl  className={`  ${switchToggle ? "" : "   duration-200"} `}>
               {area ? (
                 <Textarea placeholder={"MESSAGE"} className="resize-none" {...field} />
               ) : phone && PhoneSearchComponent ? (
@@ -210,7 +210,7 @@ const FormInput = ({
                       </div>
                     </Link>
                   )}
-                  <Input
+                  <Input disabled={disabled}
                     autoComplete={password ? "off" : "on"}
                     type={
                       type == "password" && !showPassword

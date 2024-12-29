@@ -12,13 +12,28 @@ interface Filters {
   [key: string]: string[];
 }
 
-const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; filter: string; btn?: boolean }) => {
+const Box = ({
+  text,
+  options,
+  filter,
+  btn,
+  setDelete,
+  del,
+}: {
+  text: string;
+  options?: any[];
+  filter: string;
+  btn?: boolean;
+  setDelete?: any;
+  del: any;
+}) => {
   const router = useRouter();
   const [filters, setFilters] = useState<Filters>({});
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [accordionValue, setAccordionValue] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
   const { setIsLoading } = useLoading();
+
   useEffect(() => {
     setIsLoading(isPending);
   }, [isPending]);
@@ -47,12 +62,16 @@ const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; fi
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const newFilters: Filters = {};
+
       params.forEach((value, key) => {
         newFilters[key] = value.split(",");
       });
       setFilters(newFilters);
     }
   }, []);
+  useEffect(() => {
+    if (del) resetFilters();
+  }, [del]);
 
   // Update URL when filters change
   const update = () => {
@@ -80,6 +99,7 @@ const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; fi
     setFilters((prevFilters) => {
       const currentFilters = prevFilters[filterName] || [];
       const isFilterSelected = currentFilters.includes(filterValue);
+      const isCareerType = filterName === "career_type_id";
       // Toggle the filter on/off
       const updatedFilters = isFilterSelected
         ? currentFilters.filter((item) => item !== filterValue) // Remove the filter
@@ -87,6 +107,10 @@ const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; fi
         ? [filterValue]
         : [...currentFilters, filterValue]; // Add the filter
 
+      if (isFilterSelected && isCareerType) {
+        setDelete(true);
+      }
+      // } else
       return {
         ...prevFilters,
         [filterName]: updatedFilters,
@@ -96,6 +120,7 @@ const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; fi
   const resetFilters = () => {
     const params = new URLSearchParams(window.location.search);
     params.delete(filter);
+    params.delete("career_specialty_id");
     router.push(`?${params.toString()}`, { scroll: false });
   };
   return (
@@ -158,8 +183,8 @@ const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; fi
                 <button className=" py-1 text-white  px-4 bg-main  rounded-full" onClick={() => WrapperFn(update)}>
                   Filter
                 </button>
-                <button
-                  className=" py-1 text-white  px-4 bg-main  rounded-full"
+                {filters[filter]?.length > 0 && <button
+                  className=" py-1 text-white  px-4 bg-gray-300  rounded-full"
                   onClick={() => {
                     setFilters((prevFilters) => ({
                       ...prevFilters,
@@ -169,7 +194,7 @@ const Box = ({ text, options, filter, btn }: { text: string; options?: any[]; fi
                   }}
                 >
                   Reset
-                </button>
+                </button>}
               </div>
             )}
           </AccordionContent>

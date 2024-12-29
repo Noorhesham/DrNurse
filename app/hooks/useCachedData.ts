@@ -34,7 +34,13 @@ const useCachedQuery = (key: string | string[]) => {
     fetchData();
   }, [key, queryClient]);
 
-  return { data, loading, setData };
+  const invalidateData = () => {
+    queryClient.invalidateQueries([key]);
+    console.log(queryClient.getQueryData([key]))
+    setData(queryClient.getQueryData([key]));
+    setLoading(true);
+  };
+  return { data, loading, setData, invalidateData };
 };
 
 export default useCachedQuery;

@@ -16,6 +16,8 @@ import FormContainer from "@/app/components/forms/FormContainer";
 import { useQueryClient } from "@tanstack/react-query";
 import Paragraph from "@/app/components/defaults/Paragraph";
 import { Button } from "@/components/ui/button";
+import EmailUpdate from "./EmailUpdate";
+import PhoneUpdate from "./PhoneUpdate";
 
 const UpdatePersonalInfo = () => {
   const t = useTranslations();
@@ -122,46 +124,7 @@ const UpdatePersonalInfo = () => {
             />
           </div>
         }
-        content={
-          loading ? (
-            <Skeleton />
-          ) : (
-            <div className=" px-5 lg:px-20 py-5">
-              <FormContainer
-                submit={updateEmailInfo}
-                cancel={true}
-                defaultValues={user}
-                btnStyles={"w-full"}
-                btnText={t("confirm")}
-                formArray={email}
-                title={t("updateEmail")}
-              />
-              {searchParams.get("uuid") && searchParams.get("type") === "email" && (
-                <InputOTPPattern
-                  setServerError={setOtpError}
-                  verify={searchParams.get("vefiy") === "true"}
-                  email
-                  sendType="email"
-                />
-              )}{" "}
-              {user.email_verified_at ? (
-                <p className="text-green-500 text-center mt-3 m-auto self-center text-sm">{t("EMAIL VERIFIED")}</p>
-              ) : (
-                <div className="flex flex-col gap-2">
-                  <Button
-                    size={"lg"}
-                    variant={"outline"}
-                    className=" w-fit mt-5 mx-auto rounded-full"
-                    onClick={() => verifyAccount("email")}
-                  >
-                    {t("verify")}
-                  </Button>
-                </div>
-              )}
-              {OtpError && <p className="text-red-500 text-center mt-3 m-auto self-center text-sm">{OtpError}</p>}
-            </div>
-          )
-        }
+        content={loading ? <Skeleton /> : <EmailUpdate user={user} />}
       />
       <ModalCustom
         isOpen={open}
@@ -184,42 +147,7 @@ const UpdatePersonalInfo = () => {
           loading ? (
             <Skeleton />
           ) : (
-            <div className=" px-5 lg:px-20 py-5">
-              <FormContainer
-                submit={updateEmailInfo}
-                cancel={true}
-                defaultValues={user}
-                btnStyles={"w-full"}
-                btnText={t("confirm")}
-                formArray={phone}
-                title={t("updatePhone")}
-              />
-              {searchParams.get("uuid") && searchParams.get("type") === "phone" && (
-                <InputOTPPattern
-                  verify={searchParams.get("vefiy") === "true"}
-                  setServerError={setOtpError}
-                  sendType=""
-                  phone
-                  country_key={user.country_key}
-                />
-              )}{" "}
-              {user.phone_verified_at ? (
-                <p className="text-green-500 text-center mt-3 m-auto self-center text-sm">{t("PHONE VERIFIED")}</p>
-              ) : (
-                <div className="flex flex-col gap-2">
-                  {/* <Paragraph description="choose a way to verify your phone number" /> */}
-                  <Button
-                    size={"lg"}
-                    variant={"outline"}
-                    className=" w-fit mt-5 mx-auto rounded-full"
-                    onClick={() => verifyAccount("sms")}
-                  >
-                    {t("verify")}
-                  </Button>
-                </div>
-              )}
-              {OtpError && <p className="text-red-500 text-center mt-3 m-auto self-center text-sm">{OtpError}</p>}
-            </div>
+            <PhoneUpdate user={user} />
           )
         }
       />

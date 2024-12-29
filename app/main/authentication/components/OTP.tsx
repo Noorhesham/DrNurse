@@ -17,6 +17,7 @@ import { useDevice } from "@/app/context/DeviceContext";
 
 import { useTranslations } from "next-intl";
 import FormInput from "@/app/components/inputsForm/FormInput";
+import useCachedQuery from "@/app/hooks/useCachedData";
 const TIMER_DURATION = 10;
 export function InputOTPPattern({
   handleSend,
@@ -31,21 +32,25 @@ export function InputOTPPattern({
   country_key,
   isPending2,
   verify,
+  onSuccess,
 }: {
   handleSend?: any;
   sendType: string;
   setServerError?: any;
   forgot?: boolean;
   tfa?: boolean;
-  email?: boolean;
+  email?: string;
   activate?: boolean;
   revalidate?: any;
   phone?: boolean;
   country_key?: string;
   verify?: boolean;
   isPending2?: boolean;
+  onSuccess?: any;
 }) {
   const { setLogin } = useAuth();
+  const { data, invalidateData, loading } = useCachedQuery("user_settings");
+
   const [resending, setResending] = useState(false);
   // const [timer, setTimer] = useState<number>(TIMER_DURATION);
   // const [activeTimer, setActiveTimer] = useState(true);
@@ -151,12 +156,14 @@ export function InputOTPPattern({
 
       if (!res.status) setServerError(res.message);
       if (res.status) {
-        if (res.token) cookies.set("jwt", res.token);
+        onSuccess?.();
+        invalidateData();
+        if (res.token) cookies.set("jwt", res.token, { expires: 2 });
         toast.success(res.message);
         if (!forgot) setLogin((l: boolean) => !l);
         setServerError(null);
         const updatedParams = new URLSearchParams(searchParams.toString());
-        ["username", "uuid", "level", "email", "phone"].forEach((p) => updatedParams.delete(p));
+        ["username", "uuid", "level", "email", "phone", "verify"].forEach((p) => updatedParams.delete(p));
         if (activate) return;
         if (email || phone) {
           return router.push(`?${updatedParams.toString()}`, { scroll: false });

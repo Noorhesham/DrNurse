@@ -64,8 +64,8 @@ export default function ComboboxForm({
                   </Button>
                 </FormControl>
               </PopoverTrigger>
-              <PopoverContent className="w-full min-w-[200px]">
-                <Command>
+              <PopoverContent className="w-full  !z-[99999999999] min-w-[200px]">
+                <Command className=" !z-[99999999999]">
                   <CommandInput placeholder="SEARCH ..." className="h-9" />
                   <CommandList className="overflow-y-scroll">
                     {options?.map((option: any) => (

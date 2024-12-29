@@ -20,6 +20,7 @@ const JobCard = ({
 }) => {
   const timeAgo = job?.created_at ? formatDistanceToNow(parseISO(job?.created_at), { addSuffix: true }) : "";
   const imageIndex = (i % 6) + 1;
+  console.log(job)
   return (
     <MotionItem exit={{ opacity: 0, scale: 0.3 }} className=" ">
       <div className="shadow-sm hover:bg-gradient-to-r from-light to-white  duration-150  bg-white rounded-2xl w-full gap-2   border-2 border-input px-6 md:px-10 py-3 md:py-7 flex flex-col">

@@ -9,6 +9,8 @@ interface FilterOption {
   title?: string;
 }
 const   Filters = ({ colseBtn, filters, from_years }: { colseBtn?: ReactNode; filters: any[]; from_years?: any }) => {
+  const [del, setDelete] = React.useState(false);
+  console.log(del)
   const renderFilterBoxes = () => {
     console.log(filters)
     return filters?.map((filterObj, index) => {
@@ -22,7 +24,7 @@ const   Filters = ({ colseBtn, filters, from_years }: { colseBtn?: ReactNode; fi
       if (!filterOptions || filterOptions.length === 0) return null;
 
       return (
-        <Box
+        <Box setDelete={setDelete}
           btn={!arr}
           key={index}
           filter={filterKey}

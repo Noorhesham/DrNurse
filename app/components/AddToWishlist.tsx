@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import ModalCustom from "./defaults/ModalCustom";
 import { useQueryClient } from "@tanstack/react-query";
 import Spinner from "./Spinner";
+import useCachedQuery from "../hooks/useCachedData";
 
 const AddToWishlist = ({
   className,
@@ -26,7 +27,7 @@ const AddToWishlist = ({
   parentId?: string;
 }) => {
   // const { data, isLoading } = useGetEntity("wishlistStatus", `wishlistStatus-${id}`, id);
-  const { userSettings, loading } = useAuth();
+  const { data: userSettings, loading } = useCachedQuery("user_settings");
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const queryClient = useQueryClient();
@@ -57,7 +58,7 @@ const AddToWishlist = ({
   return (
     <>
       {loading ? (
-        <button disabled={isPending || loading} className="flex items-center gap-1">
+        <button disabled={isPending || loading} className={` ${isPending && "opacity-50"} flex items-center gap-1`}>
           {!wishlistStatus ? <Bookmark /> : <Bookmark className="fill-main" />}
         </button>
       ) : userSettings ? (
@@ -66,7 +67,7 @@ const AddToWishlist = ({
           onClick={() => {
             wishlistStatus ? mutateWishlist("remove") : mutateWishlist("add");
           }}
-          className="flex items-center gap-1"
+          className={` ${isPending && "opacity-50"} flex items-center gap-1`}
         >
           {!wishlistStatus ? <Bookmark /> : <Bookmark className="fill-main" />}
         </button>

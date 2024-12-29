@@ -132,7 +132,7 @@ const Login = () => {
       const token = searchParams.get("token");
       if (token) {
         toast.success(searchParams.get("message"));
-        if (token) cookies.set("jwt", token || "");
+        if (token) cookies.set("jwt", token || "", { expires: 2 });
         setLogin((l) => !l);
         router.push(redirect || "/loader");
       }

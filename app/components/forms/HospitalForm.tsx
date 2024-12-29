@@ -49,9 +49,13 @@ const hospitalSchema = z.object({
   logo: z.any().optional(),
 
   description: z.string().optional(),
-  commercial_registration: z.any().optional(),
+  commercial_registration: z
+    .any()
+    .refine((val) => val, {
+      message: "Commercial registration is required",
+    })
+    .optional(),
 });
-
 type HospitalFormValues = z.infer<typeof hospitalSchema>;
 
 const HospitalProfileSettings = ({ defaultData }: { defaultData?: any }) => {
@@ -81,7 +85,7 @@ const HospitalProfileSettings = ({ defaultData }: { defaultData?: any }) => {
     },
   });
 
-  const { append, remove, fields,  } = useFieldArray({
+  const { append, remove, fields } = useFieldArray({
     control: form.control,
     name: "branches",
   });
@@ -179,7 +183,7 @@ const HospitalProfileSettings = ({ defaultData }: { defaultData?: any }) => {
             });
           });
         }
-        console.log(form.formState.errors)
+        console.log(form.formState.errors);
       }
     });
   };
@@ -262,10 +266,10 @@ const HospitalProfileSettings = ({ defaultData }: { defaultData?: any }) => {
               returnFullPhone={false}
               control={form.control}
               name="hospitalPhoneNumber"
-              phone
+              phone optional
               label={t("Hospital Phone Number")}
             />
-            <FormInput control={form.control} name="email" label={t("Hospital Email")} type="email" />
+            <FormInput control={form.control} optional name="email" label={t("Hospital Email")} type="email" />
           </FlexWrapper>
         </div>
         {/* Social Media */}

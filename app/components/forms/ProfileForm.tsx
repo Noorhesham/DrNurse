@@ -1,9 +1,9 @@
 "use client";
 import { useZodForm } from "@/app/hooks/useZodForm";
 import { useTranslations } from "next-intl";
-import React, { useEffect, useTransition } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import { optional, z } from "zod";
-import { useFieldArray } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import FormInput from "../inputsForm/FormInput";
 import FunctionalButton from "../FunctionalButton";
 import { MessageCircleWarningIcon, XIcon } from "lucide-react";
@@ -25,6 +25,7 @@ import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
 import GridContainer from "../defaults/GridContainer";
 import { useFormHandler } from "@/app/hooks/useFormHandler";
+import { zodResolver } from "@hookform/resolvers/zod";
 const salaryRegex = /^[1-9]\d*$/;
 const jobSchema = z
   .object({
@@ -62,9 +63,12 @@ const jobSchema = z
     license_number: z.string().optional(),
     benefits: z.array(z.string().min(1, "Benefit is required")).optional(),
     description: z.string().optional(),
-    identification_card_number: z.string().optional(),
-    identification_type: z.string().optional(),
-    identification_country_id: z.union([z.string().optional(), z.number().optional()]),
+    identification_card_number: z.string().min(1, "Identification Card Number is required"),
+    identification_type: z.string().min(1, "Identification Card Type is required"),
+    identification_country_id: z.union([
+      z.string().min(1, "Identification Card Country is required"),
+      z.number().min(1, "required"),
+    ]),
     main_education: z.object({
       university_name: z.string().min(1, "University Name is required"),
       country_id: z.union([z.string().min(1, "Country is required"), z.number()]),
@@ -112,35 +116,29 @@ const jobSchema = z
       )
       .optional(),
     currency: z.string().min(1, "Currency is required"),
-    practice_license: z.any().optional(),
+    practice_license: z.any(),
     identification_card: z.any(),
     resume: z.any(),
   })
-  .refine(
-    (data) => {
-      const minSalary = Number(data.min_salary);
-      const maxSalary = Number(data.max_salary);
-      return minSalary < maxSalary;
-    },
-    {
-      message: "Minimum salary must be less than maximum salary",
-      path: ["min_salary"],
+  .superRefine((data, ctx) => {
+    // Check if min_salary and max_salary are valid
+    if (data.min_salary >= data.max_salary) {
+      ctx.addIssue({
+        path: ["max_salary"],
+        message: "Max Salary must be greater than Min Salary",
+        code: "custom",
+      });
+
+      ctx.addIssue({
+        path: ["min_salary"],
+        message: "Min Salary must be less than Max Salary",
+        code: "custom",
+      });
     }
-  )
+  })
   .refine(
     (data) => {
-      const minSalary = Number(data.min_salary);
-      const maxSalary = Number(data.max_salary);
-      return minSalary < maxSalary;
-    },
-    {
-      message: "Minimum salary must be less than maximum salary",
-      path: ["max_salary"],
-    }
-  )
-  .refine(
-    (data) => {
-      return data.active_license_country === "no" || data.license_number;
+      return data.active_license_country === " " || data.license_number;
     },
     {
       message: "License number is required when the license country is not 'no'.",
@@ -172,17 +170,47 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
     key: "career-types",
     entityName: "career-types",
   });
+  const [location, setLocation] = useState(null);
 
+  useEffect(() => {
+    const fetchLocation = async () => {
+      try {
+        // Fetch user location using geolocation
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const { latitude, longitude } = position.coords;
+
+            // Fetch location data from an API (e.g., OpenCage, GeoDB, or similar)
+            const response = await fetch(
+              `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+            );
+            const data = await response.json();
+            console.log(data)
+            // Extract country code from API response
+            if (data && data.countryCode) {
+              setLocation(data.countryCode); // e.g., "EG", "SA", etc.
+              form.setValue('auto_location', data?.countryCode);
+            }
+          },
+          (error) => {
+            console.error("Error fetching geolocation:", error);
+          }
+        );
+      } catch (error) {
+        console.error("Error fetching location:", error);
+      }
+    };
+
+    fetchLocation();
+  }, []);
   const t = useTranslations();
-
-  const form = useZodForm({
-    schema: jobSchema,
+  const form = useForm({
+    resolver: zodResolver(jobSchema),
     defaultValues: {
-      main_education:
-        {
-          ...dataDefault?.main_educations?.[0],
-          present: dataDefault?.main_educations?.[0]?.present === 0 ? false : true,
-        } || {},
+      main_education: {
+        ...dataDefault?.main_educations?.[0],
+        present: dataDefault?.main_educations?.[0]?.present === 0 ? false : true,
+      },
       current_job_title: dataDefault?.current_job_title || "",
       career_type_id: dataDefault?.career_type_id || "",
       career_specialty_id: dataDefault?.career_specialty_id || "",
@@ -200,7 +228,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
       state_id: dataDefault?.state_id || "",
       available: dataDefault?.available || "",
       start_availability_at: dataDefault?.start_availability_at || "",
-      active_license_country: dataDefault?.active_license_country || "",
+      active_license_country: dataDefault?.active_license_country || " ",
       license_number: dataDefault?.license_number || "",
       description: dataDefault?.description || "",
       practice_license: dataDefault?.practice_license?.[0] || "",
@@ -254,8 +282,10 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
 
       currency: dataDefault?.currency || "usd",
     },
+    mode: "onChange",
   });
   console.log(form.formState.errors);
+
   const {
     append: appendEducation,
     remove: removeEducation,
@@ -370,7 +400,11 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
       setError,
     });
   };
-
+  useEffect(() => {
+    if (form.getValues("active_license_country") === " ") {
+      form.setValue("license_number", "");
+    }
+  }, [form.getValues("active_license_country")]);
   if (isLoading) return <Spinner />;
 
   return (
@@ -404,13 +438,11 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
               { label: "Identification card", value: "id-card" },
               { label: "Passport", value: "passport" },
             ]}
-            optional
             name="identification_type"
             label={t("IDENTIFICATION TYPE")}
-            placeholder={t("Enter Identification TYPE")}
+            placeholder={t("ENTER IDENTIFICATION TYPE")}
           />
           <ComboboxForm
-            optional
             disabled={isLoading}
             name={"identification_country_id"}
             label={t("IDENTIFICATION COUNTRY")}
@@ -420,7 +452,11 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
         </GridContainer>
         {/* Personal Data */}
         <FlexWrapper max={false}>
-          <FormSelect label={t("FAMILY STATUS")} options={FAMILYSTATUS} name="family_status" />
+          <FormSelect
+            label={t("FAMILY STATUS")}
+            options={FAMILYSTATUS.filter((f) => f.value !== " ")}
+            name="family_status"
+          />
           <FormSelect label={t("GENDER")} options={GENDER} name="gender" />
         </FlexWrapper>
         <ComboboxForm

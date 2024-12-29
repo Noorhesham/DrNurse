@@ -128,7 +128,7 @@ const Signup = () => {
           redirect(`/login?uuid=${res.activation_uuid}`);
         } else {
           if (res.token) {
-            cookies.set("jwt", res.token);
+            cookies.set("jwt", res.token, { expires: 2 });
             setLogin((l) => !l);
             router.push("/loader");
           } else {
@@ -158,6 +158,7 @@ const Signup = () => {
               select: true,
               options: ["doctor", "nurse", "specialist"],
               placeholder: "Select Your Job Title...",
+              optional: true,
             },
           ];
         }

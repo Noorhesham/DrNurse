@@ -3,34 +3,7 @@ import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
 import { Server } from "@/app/main/Server";
 
 import JobsList from "@/app/components/Jobs";
-import { WEBSITEURL } from "@/app/constants";
 
-export const generateMetadata = async () => {
-  return {
-    title: `Jobs`,
-    canonical: `${WEBSITEURL}/jobs`,
-    openGraph: {
-      title: "drnurse",
-      url: "/logodark.webp",
-      images: [
-        {
-          url: "/logodark.webp",
-          alt: "drnurse",
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: "drnurse",
-      images: [
-        {
-          url: "/logodark.webp",
-          title: "drnurse",
-        },
-      ],
-    },
-  };
-};
 const page = async ({ params: { locale }, searchParams }: { params: { locale: string }; searchParams: any }) => {
   const {
     experience_from,
@@ -51,6 +24,7 @@ const page = async ({ params: { locale }, searchParams }: { params: { locale: st
     career_type_id: career_type_id || "",
     career_specialty_id: career_specialty_id || "",
     search: query || "",
+    sort: "desc",
   });
   if (country_ids) {
     const countryIdsArray = country_ids.split(",");
@@ -64,6 +38,12 @@ const page = async ({ params: { locale }, searchParams }: { params: { locale: st
       queryParams.append("career_levels[]", value);
     });
   }
+  if (career_specialty_id) {
+    const careerSpecialtyArray = career_specialty_id.split(",");
+    careerSpecialtyArray.forEach((value: string) => {
+      queryParams.append("career_specialty_id[]", value);
+    });
+  }
   const data = await Server({ resourceName: "getJobs", queryParams });
   const jobs = data?.data.jobs;
   const career_types = data.data.career_types;
@@ -74,16 +54,14 @@ const page = async ({ params: { locale }, searchParams }: { params: { locale: st
   const totalPages = Math.ceil(data.data.count / 10);
   const filters = [
     { "Career Type": career_types, filter: "career_type_id" },
-    { Country: countries, arr: true, filter: "country_ids" },
     { "Career Specialty": career_specialties, arr: true, filter: "career_specialty_id" },
     { "Career Level": career_levelsfilter, arr: true, filter: "career_levels" },
+    { Country: countries, arr: true, filter: "country_ids" },
   ];
   return (
-    <MaxWidthWrapper>
-    
-        <JobsList query={query} filters={filters} jobs={jobs} totalPages={totalPages} />
-     
-    </MaxWidthWrapper>
+    <div>
+      <JobsList filters={filters} query={query} jobs={jobs} totalPages={totalPages} />
+    </div>
   );
 };
 

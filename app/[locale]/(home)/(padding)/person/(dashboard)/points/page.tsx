@@ -6,7 +6,7 @@ import Paragraph from "@/app/components/defaults/Paragraph";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PaperclipIcon } from "lucide-react";
-import React, { useTransition } from "react";
+import React, { useRef, useTransition } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import MiniTitle from "@/app/components/defaults/MiniTitle";
 import { format } from "date-fns";
@@ -20,9 +20,11 @@ import { Server } from "@/app/main/Server";
 import { toast } from "react-toastify";
 import { WEBSITEURL } from "@/app/constants";
 import Empty from "@/app/components/Empty";
+import { DialogClose } from "@/components/ui/dialog";
 
 const page = () => {
-  const { data: terms, isLoading: isLoadingTerms } = useGetEntity("home", "terms-points", "terms-and-conditions");
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const { data: terms, isLoading: isLoadingTerms } = useGetEntity("home", "terms-points", "points-terms-and-conditions");
   const { data: points, isLoading } = useGetEntity("points", "points");
   const { data: prizes, isLoading: isLoadingPrizes } = useGetEntity("prizes", "prizes");
   const handelCopy = (text: string) => {
@@ -81,7 +83,7 @@ const page = () => {
                 placeholder={`${WEBSITEURL}?referal=${userSettings.referral_code}`}
               />{" "}
               <button
-                onClick={() => handelCopy(userSettings.referral_code)}
+                onClick={() => handelCopy(`${WEBSITEURL}?referal=${userSettings.referral_code}`)}
                 className=" m-auto text-sm text-main2 font-medium "
               >
                 COPY
@@ -103,14 +105,17 @@ const page = () => {
               btnText="REDEEM NOW"
               content={
                 <MaxWidthWrapper className=" flex flex-col ">
+                  <DialogClose ref={closeRef} className=" hidden" />
                   <FormContainer
                     submit={async (data: any) => {
                       const res = await Server({
                         resourceName: "reedem",
                         body: data,
                       });
-                      if (res.status) toast.success(res.message);
-                      else toast.error(res.message);
+                      if (res.status) {
+                        toast.success(res.message);
+                        closeRef.current?.click();
+                      } else toast.error(res.message);
                     }}
                     formArray={[{ name: "prize", select: true, options: prizes.prizes.map((prize: string) => prize) }]}
                   />
@@ -128,24 +133,28 @@ const page = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {points.history.map((job, i) => (
-                <TableRow key={i}>
-                  <TableCell className="font-medium">
-                    <div className=" flex flex-col items-start">
-                      <h2 className=" text-gray-900 font-semibold">{job.title}</h2>
-                    </div>
-                  </TableCell>
+              {points.history
+                .sort((a: any, b: any) => new Date(b.created_at) - new Date(a.created_at))
+                .map((job, i) => (
+                  <TableRow key={i}>
+                    <TableCell className="font-medium">
+                      <div className=" flex flex-col items-start">
+                        <h2 className=" text-gray-900 font-semibold">{job.title}</h2>
+                      </div>
+                    </TableCell>
 
-                  <TableCell className="  gap-2 ">{format(job.created_at, "mmm dd, yyyy")}</TableCell>
-                  <TableCell
-                    className={`${job.operation !== "deposit" ? "text-red-500" : " text-main2"} font-semibold  gap-2 `}
-                  >
-                    {job.operation !== "deposit" && "-"}
-                    {job.points}
-                  </TableCell>
-                  <TableCell className=" text-main2 font-semibold  gap-2 ">{job.type}</TableCell>
-                </TableRow>
-              ))}
+                    <TableCell className="  gap-2 ">{format(job.created_at, "dd/MM/yyyy")}</TableCell>
+                    <TableCell
+                      className={`${
+                        job.operation !== "deposit" ? "text-red-500" : " text-main2"
+                      } font-semibold  gap-2 `}
+                    >
+                      {job.operation !== "deposit" && "-"}
+                      {job.points}
+                    </TableCell>
+                    <TableCell className=" text-main2 font-semibold  gap-2 ">{job.type}</TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </div>

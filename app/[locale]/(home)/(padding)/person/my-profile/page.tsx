@@ -109,6 +109,8 @@ const page = () => {
                                 .filter(Boolean)
                                 .join(", "),
                               date: (edu.date && edu?.date) || "",
+                              dateTo: (edu.date_to && edu?.date_to) || "",
+                              present: edu.present === 0 ? false : true,
                               address: edu?.country?.title || "",
                             }}
                           />
@@ -143,7 +145,7 @@ const page = () => {
                                     .filter(Boolean)
                                     .join(", ")}
                                 </p>
-                                <span className=" text-sm">
+                                <span className=" text-nowrap text-sm">
                                   {experience.from && formatDate(experience.from, "dd MMM yyyy")}-
                                   {experience.present === 1
                                     ? "Currently present"
@@ -203,7 +205,7 @@ const page = () => {
               <InfoItem
                 icon={<GoLocation className=" w-6 h-6" />}
                 title="CURRENT LOCATION"
-                description={`${dataPage?.current_location?.title},${dataPage?.state?.title || ""},${
+                description={`${dataPage?.current_location?.title} , ${dataPage?.state?.title || ""} , ${
                   dataPage?.city?.title || ""
                 }`}
               />

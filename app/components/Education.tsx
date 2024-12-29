@@ -11,8 +11,10 @@ const Education = ({ edu }: { edu: any }) => {
         <UserCard edu={true} show={false} applicant={edu} />
         <div className=" ml-auto self-end   font-medium text-gray-600">
           <p className=" lg:text-base text-sm  font-semibold uppercase">{edu.speciality}</p>
-          <span className=" text-sm">{formatDate(edu.date, "MMM yyyy")}</span>
+         <div className="flex items-center gap-2"> <span className=" text-sm">{formatDate(edu.date, "MMM yyyy")}</span>
+         {edu.dateTo && <span className=" text-sm">{formatDate(edu.dateTo, "MMM yyyy")}</span>}</div>
         </div>
+        {/* {edu.present&& <div className=" ml-auto self-end   font-medium text-green-400">PRESENT</div>} */}
       </FlexWrapper>
     </Container>
   );

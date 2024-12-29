@@ -89,7 +89,15 @@ const SideBar = ({ iconsOnly = false, person }: { iconsOnly?: boolean; person?: 
         iconsOnly ? "sticky top-0" : "lg:sticky lg:top-0"
       } lg bg-light  rounded-xl z-50 h-fit pb-5 flex-col   col-span-full lg:col-span-2  w-full gap-3`}
     >
-      <p className="lg:px-6  py-3 mt-4 text-main2 font-semibold">{!iconsOnly ? "HOSPITAL DASHBOARD" : "HDB"}</p>
+      <p className="lg:px-6  py-3 mt-4 text-main2 font-semibold">
+        {!iconsOnly && person
+          ? "PERSONAL DASHBOARD"
+          : !iconsOnly
+          ? "HOSPITAL DASHBOARD"
+          : iconsOnly && person
+          ? "PDB"
+          : "HDB"}
+      </p>
       <ul
         style={iconsOnly ? { alignItems: "center", padding: "15px" } : {}}
         className={`text-xs :text-sm items-start ${

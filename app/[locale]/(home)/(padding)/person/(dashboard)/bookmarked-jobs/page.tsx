@@ -15,7 +15,7 @@ const page = ({ searchParams }: { searchParams: any }) => {
     "",
     {},
     `with=country,city,state,careerType,careerSpecialty,careerLevel,branch&
-    page=${searchParams.page || "1"}&itemsCount=${searchParams.itemsCount || "1"}`
+    page=${searchParams.page || "1"}&itemsCount=${searchParams.itemsCount || "4"}`
   );
 
   const [bookmarks, setBookmarks] = useState<any[]>([]);
