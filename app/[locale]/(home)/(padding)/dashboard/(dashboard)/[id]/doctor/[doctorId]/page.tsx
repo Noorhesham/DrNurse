@@ -107,6 +107,8 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
                                 .join(", "),
                               date: edu.date,
                               address: edu?.country?.title || "",
+                              dateTo: (edu.date_to && edu?.date_to) || "",
+                              present: edu.present === 0 ? false : true,
                             }}
                           />
                         ))
