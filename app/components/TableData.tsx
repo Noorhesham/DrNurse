@@ -113,7 +113,7 @@ export default function TableData({
                   </Button>
                 )}
                 {viewbtn ? (
-                  <Link href={`/person/job/${job.id}`}>
+                  <Link  target="_blank" href={`/person/job/${job.id}`}>
                     <Button
                       size={"lg"}
                       className=" font-semibold bg-light text-main2 hover:bg-main2 hover:text-light duration-150"

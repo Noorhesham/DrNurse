@@ -49,7 +49,7 @@ const page = () => {
                       }
                     />{" "}
                     {meet.req_job_post_id && (
-                      <Link href={`/person/job/${meet.req_job_post_id}`}>
+                      <Link target="_blank" href={`/person/job/${meet.req_job_post_id}`}>
                         <Button size={"lg"} className="  bg-light text-main2 rounded-full" variant={"outline"}>
                           VIEW JOB
                         </Button>
@@ -173,7 +173,7 @@ const page = () => {
                         CANCELED
                       </Button>
                     )}{" "}
-                    <Link className="w-full" href={`/person/job/${meet.req_job_post_id}`}>
+                    <Link  target="_blank" className="w-full" href={`/person/job/${meet.req_job_post_id}`}>
                       {" "}
                       <Button size={"lg"} className=" w-full  bg-light  text-main2 rounded-full" variant={"outline"}>
                         VIEW JOB
