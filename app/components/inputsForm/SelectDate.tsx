@@ -64,17 +64,17 @@ const SelectDate = ({ meeting_id, jobId = "0", person=false }: { meeting_id: str
           color="text-main2"
           className=" text-center"
         /> */}
-        <Paragraph size="sm" description="Choose the time that suits you from the following appointments" />
+        <Paragraph size="sm" description="Choose the time that suits you from the following appointments (times here are in GMT time)" />
       </div>
       <RadioGroup value={selected} className="flex justify-center w-full flex-col items-center mt-2">
         {data.data.map((option: any, i: number) => (
           <Container key={i} className=" w-[80%]">
             <div>
               <Label className="flex justify-between w-full items-center gap-2" htmlFor={option.date}>
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-2">
                   <h4 className="text-main2 font-semibold">{formatToLocalTime(option.from_date)}</h4>
                   <LocalTime date={option.from_date}  />
-                  <p className=" text-muted-foreground">DURATION {option.duration}</p>
+                  {/* <p className=" text-muted-foreground">DURATION {option.duration}</p> */}
                 </div>
                 <RadioGroupItem
                   onClick={() => setSelected(option.id)}

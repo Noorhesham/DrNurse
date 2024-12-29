@@ -1,21 +1,42 @@
 import { useEffect, useState } from "react";
 
-const LocalTime = ({ time }: { time?: string }) => {
+const LocalTime = ({ time, date }: { time?: string; date?: string }) => {
   const [localTime, setLocalTime] = useState("");
 
   useEffect(() => {
-    if (time) {
-      // Get today's date
-      const today = new Date();
-      const [hours, minutes] = time.split(":").map(Number); // Extract hours and minutes from time input
+    if (time || date) {
+      let gmtDate: Date;
 
-      // Create a GMT date object for today with the provided time
-      const gmtDate = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), hours, minutes));
+      if (date && date.includes(" ")) {
+        // Handle combined date and time in "YYYY-MM-DD HH:mm:ss" format
+        const [datePart, timePart] = date.split(" ");
+        const [year, month, day] = datePart.split("-").map(Number);
+        const [hours, minutes, seconds] = timePart.split(":").map(Number);
+        gmtDate = new Date(Date.UTC(year, month - 1, day, hours, minutes, seconds));
+      } else if (date) {
+        // Handle date only
+        const [year, month, day] = date.split("-").map(Number);
+        gmtDate = new Date(Date.UTC(year, month - 1, day, 0, 0, 0));
+      } else if (time) {
+        // Handle time only
+        const today = new Date();
+        const [hours, minutes] = time.split(":").map(Number);
+        gmtDate = new Date(
+          Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), hours, minutes)
+        );
+      } else {
+        // Fallback to current date and time
+        gmtDate = new Date();
+      }
 
       // Convert GMT to local time
-      const formattedTime = gmtDate.toLocaleTimeString([], {
+      const formattedTime = gmtDate.toLocaleString([], {
+        year: date ? "numeric" : undefined,
+        month: date ? "short" : undefined,
+        day: date ? "numeric" : undefined,
         hour: "2-digit",
         minute: "2-digit",
+        second: date && date.includes(" ") ? "2-digit" : undefined,
         hour12: true,
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone, // System's local timezone
         timeZoneName: "short", // Include timezone abbreviation
@@ -23,7 +44,7 @@ const LocalTime = ({ time }: { time?: string }) => {
 
       setLocalTime(formattedTime);
     }
-  }, [time]);
+  }, [time, date]);
 
   return <p className="text-sm text-gray-500">Local Time: {localTime}</p>;
 };
