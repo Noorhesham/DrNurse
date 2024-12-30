@@ -15,7 +15,6 @@ import Spinner from "@/app/components/Spinner";
 
 import { InputOTPPattern } from "./OTP";
 
-
 const emailSchema = z.object({
   email: z.string().email("Invalid email address"),
 });
@@ -67,7 +66,6 @@ const EmailUpdate = ({ user }: { user: any }) => {
       onError: (err: any) => {
         console.error("Failed to submit form:", err);
         setOtpError(err.message);
-
       },
       setError,
     });
@@ -94,7 +92,7 @@ const EmailUpdate = ({ user }: { user: any }) => {
             )}
           </div>
 
-          {searchParams.get("email") !==form.watch("email") && !isVerify && (
+          {searchParams.get("email") !== form.watch("email") && !isVerify && (
             <div className="flex justify-center gap-2 mt-5">
               <Button disabled={isPending} type="submit" variant="outline" size="lg" className="rounded-full">
                 {isPending ? <Spinner /> : t("Update Email")}
@@ -103,7 +101,7 @@ const EmailUpdate = ({ user }: { user: any }) => {
           )}
         </form>
       </Form>{" "}
-      {searchParams.get("email")||isVerify && (
+      {(searchParams.get("email") || isVerify) && (
         <div>
           <InputOTPPattern
             onSuccess={() => setVerify(false)}
