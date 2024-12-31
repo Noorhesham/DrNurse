@@ -126,22 +126,11 @@ const jobSchema = z
     identification_card: z.any(),
     resume: z.any(),
   })
-  .superRefine((data, ctx) => {
-    // Check if min_salary and max_salary are valid
-    if (data.min_salary >= data.max_salary) {
-      ctx.addIssue({
-        path: ["max_salary"],
-        message: "Max Salary must be greater than Min Salary",
-        code: "custom",
-      });
-
-      ctx.addIssue({
-        path: ["min_salary"],
-        message: "Min Salary must be less than Max Salary",
-        code: "custom",
-      });
-    }
+  .refine((data) => +data.max_salary > +data.min_salary, {
+    message: "Max Salary must be greater than Min Salary",
+    path: ["max_salary"],
   })
+
   .refine(
     (data) => {
       return data.active_license_country === " " || data.license_number;
@@ -290,7 +279,37 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
     },
     mode: "onChange",
   });
-  console.log(form.formState.errors);
+  const { watch, clearErrors, setError } = form;
+  const minSalary = watch("min_salary");
+  const maxSalary = watch("max_salary");
+
+  useEffect(() => {
+    if (!form.getValues("min_salary") || !form.getValues("max_salary")) return;
+    clearErrors("min_salary");
+    clearErrors("max_salary");
+
+    const min = Number(minSalary);
+    const max = Number(maxSalary);
+
+    if (isNaN(min) || min < 0) {
+      setError("min_salary", {
+        type: "manual",
+        message: "Min Salary must be a valid positive number",
+      });
+    }
+    if (isNaN(max) || max < 0) {
+      setError("max_salary", {
+        type: "manual",
+        message: "Max Salary must be a valid positive number",
+      });
+    }
+    if (!isNaN(min) && !isNaN(max) && min >= max) {
+      setError("max_salary", {
+        type: "manual",
+        message: "Max Salary must be greater than Min Salary",
+      });
+    }
+  }, [minSalary, maxSalary, setError, clearErrors]);
 
   const {
     append: appendEducation,
@@ -317,7 +336,6 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
   }, [form.formState.errors]);
   const { setDates, setLogin } = useAuth();
   const { handleFormSubmit, isPending } = useFormHandler();
-  const { setError } = form;
   const onSubmit = (data: JobFormValues) => {
     const formData = new FormData();
     const fileFields = ["resume", "practice_license", "identification_card", "certificate"];
@@ -449,7 +467,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
             label={t("IDENTIFICATION TYPE")}
             placeholder={t("ENTER IDENTIFICATION TYPE")}
           />
-          <ComboboxForm 
+          <ComboboxForm
             disabled={isLoading}
             name={"identification_country_id"}
             label={t("IDENTIFICATION COUNTRY")}

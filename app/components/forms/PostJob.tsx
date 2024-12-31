@@ -77,13 +77,13 @@ const jobSchema = z
     message: "'Experience From' date must be earlier than 'Experience To' date",
     path: ["experience_to"],
   })
-  .refine((data) => Number(data.min_salary) < Number(data.max_salary), {
-    message: "'Min Salary' must be less than 'Max Salary'",
+  .refine((data) => +data.max_salary > +data.min_salary, {
+    message: "Max Salary must be greater than Min Salary",
     path: ["max_salary"],
   })
-  .refine((data) => Number(data.min_salary) < Number(data.max_salary), {
-    message: "'Max Salary' must be greater than 'Min Salary'",
-    path: ["max_salary"],
+  .refine((data) => +data.min_salary > +data.max_salary, {
+    message: "Min Salary must be less than Max Salary",
+    path: ["min_salary"],
   });
 
 type JobFormValues = z.infer<typeof jobSchema>;
@@ -133,6 +133,37 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
       application_available_status: defaultData?.application_available_status || "regular",
     },
   });
+  const { watch, clearErrors, setError } = form;
+  const minSalary = watch("min_salary");
+  const maxSalary = watch("max_salary");
+
+  useEffect(() => {
+    if (!form.getValues("min_salary") || !form.getValues("max_salary")) return;
+    clearErrors("min_salary");
+    clearErrors("max_salary");
+
+    const min = Number(minSalary);
+    const max = Number(maxSalary);
+
+    if (isNaN(min) || min < 0) {
+      setError("min_salary", {
+        type: "manual",
+        message: "Min Salary must be a valid positive number",
+      });
+    }
+    if (isNaN(max) || max < 0) {
+      setError("max_salary", {
+        type: "manual",
+        message: "Max Salary must be a valid positive number",
+      });
+    }
+    if (!isNaN(min) && !isNaN(max) && min >= max) {
+      setError("max_salary", {
+        type: "manual",
+        message: "Max Salary must be greater than Min Salary",
+      });
+    }
+  }, [minSalary, maxSalary, setError, clearErrors]);
   useEffect(() => {
     if (Object.keys(form.formState.errors).length > 0) {
       toast.error("Please fix form errors first");
@@ -146,7 +177,6 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
   });
   const router = useRouter();
   const { handleFormSubmit, isPending } = useFormHandler();
-  const { setError } = form;
   const onSubmit = (data: JobFormValues) => {
     handleFormSubmit({
       apiCall: Server,
