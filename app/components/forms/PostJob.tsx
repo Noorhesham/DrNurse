@@ -278,8 +278,10 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
                 placeholder={t("nationality")}
                 options={[
                   { label: "Not Specified", value: " " },
-
-                  ...countries?.data.map((country: any) => ({ label: country.title, value: country.id })),
+                  ...(countries?.data || []).map((country: any) => ({
+                    label: country.title,
+                    value: country.id,
+                  })),
                 ]}
               />
               <FormSelect

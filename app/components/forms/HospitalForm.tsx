@@ -84,7 +84,11 @@ const HospitalProfileSettings = ({ defaultData }: { defaultData?: any }) => {
       social_linkedin: defaultData?.social_linkedin || "",
     },
   });
-
+  useEffect(() => {
+    if (Object.keys(form.formState.errors).length > 0) {
+      toast.error("Please fix form errors first");
+    }
+  }, [form.formState.errors]);
   const { append, remove, fields } = useFieldArray({
     control: form.control,
     name: "branches",
