@@ -200,12 +200,12 @@ const MeetingForm = ({ invite, userId, jobIdDef }: { invite?: boolean; userId?: 
                   label="Duration"
                   name={`meetings.${index}.duration`}
                   options={[
-                    { value: "00:30", label: "30 min" },
-                    { value: "01:00", label: "1 hour" },
-                    { value: "01:30", label: "1.5 hour" },
-                    { value: "02:00", label: "2 hours" },
-                    { value: "02:30", label: "2.5 hour" },
-                    { value: "03:00", label: "3 hours" },
+                    { value: "00:30", label: "30 min (1 Subscription unit)" },
+                    { value: "01:00", label: "1 hour (2 Subscription unit)" },
+                    { value: "01:30", label: "1.5 hour (3 Subscription unit)" },
+                    { value: "02:00", label: "2 hours (4 Subscription unit)" },
+                    { value: "02:30", label: "2.5 hour (5 Subscription unit)" },
+                    { value: "03:00", label: "3 hours (6 Subscription unit)" },
                   ]}
                 />{" "}
                 <div className="flex w-full items-center gap-1">
