@@ -53,7 +53,6 @@ const page = async () => {
   const data = await Server({ resourceName: "home", id: "persons-home" });
 
   const page = data.page;
-  console.log(page.keywords_jobs);
   return (
     <main>
       <section className={`w-full h-screen relative bg-no-repeat bg-cover  `}>

@@ -8,7 +8,6 @@ import { Server } from "@/app/main/Server";
 const FAQPage = async () => {
   const res = await Server({ resourceName: "home", id: "faq" });
   const { questions } = res.page;
-  console.log(questions);
   return (
     <section className=" pt-32">
       <MaxWidthWrapper className="flex flex-col items-center">

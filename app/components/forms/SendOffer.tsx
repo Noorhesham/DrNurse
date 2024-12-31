@@ -87,7 +87,7 @@ const SendOffer = ({
   });
   const id = data?.data?.user_id;
   const { setError } = form;
-
+  console.log(form.formState.errors);
   const onSubmit = (data: OfferFormValues) => {
     handleFormSubmit({
       apiCall: Server,

@@ -7,7 +7,7 @@ import { GoPeople } from "react-icons/go";
 import { MailIcon, PhoneIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { format } from "date-fns";
-import { useState,  } from "react";
+import { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import ModalCustom from "@/app/components/defaults/ModalCustom";
 import FormContainer from "@/app/components/forms/FormContainer";
@@ -15,15 +15,17 @@ import FormContainer from "@/app/components/forms/FormContainer";
 import EmailUpdate from "./EmailUpdate";
 import PhoneUpdate from "./PhoneUpdate";
 
-const UpdatePersonalInfo = () => {
+const UpdatePersonalInfo = ({ avatarOnly }: { avatarOnly?: boolean }) => {
   const t = useTranslations();
   const [open, setOpen] = useState(false);
   const locale = useLocale();
-  const personal = [
-    { name: "name", placeholder: t("name") },
-    { name: "birth_day", placeholder: t("birth_day"), date: true, optional: true },
-    { name: "avatar", placeholder: t("avatar"), photo: true },
-  ];
+  const personal = avatarOnly
+    ? [{ name: "avatar", placeholder: t("avatar"), photo: true }]
+    : [
+        { name: "name", placeholder: t("name") },
+        { name: "birth_day", placeholder: t("birth_day"), date: true, optional: true },
+        { name: "avatar", placeholder: t("avatar"), photo: true },
+      ];
 
   const { setLogin, userSettings: user, loading } = useAuth();
 
@@ -45,7 +47,8 @@ const UpdatePersonalInfo = () => {
     const res = await Server({ resourceName: "update_profile", body: formData, formData: true });
 
     if (!res.status) {
-      setError(Array.isArray(res.errors) ? res.errors : res.message);
+      console.log(res);
+      // setError(Array.isArray(res.errors) ? res.errors : res.message);
       return toast.error(res.message);
     }
     toast.success(res.message);
@@ -54,7 +57,19 @@ const UpdatePersonalInfo = () => {
     setOpen(false);
   };
 
-  return (
+  return avatarOnly ? (
+    <div className=" px-5 lg:px-20 py-5">
+      <FormContainer
+        submit={updatePersonalInfro}
+        cancel={true}
+        defaultValues={user}
+        btnStyles={"w-full"}
+        btnText={t("saveChanges")}
+        formArray={personal}
+        title={t("updatePersonalInfo")}
+      />
+    </div>
+  ) : (
     <>
       <ModalCustom
         btn={
@@ -85,13 +100,7 @@ const UpdatePersonalInfo = () => {
             />
           </div>
         }
-        content={
-          loading ? (
-            <Skeleton />
-          ) : (
-            <PhoneUpdate user={user} />
-          )
-        }
+        content={loading ? <Skeleton /> : <PhoneUpdate user={user} />}
       />
       <ModalCustom
         isOpen={open}

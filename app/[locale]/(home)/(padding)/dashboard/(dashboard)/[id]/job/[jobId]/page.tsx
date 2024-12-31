@@ -19,7 +19,6 @@ const page = ({ params: { jobId } }: { params: { jobId: string } }) => {
   if (!data || isLoading) return <Spinner />;
   const job = data.data;
   const timeAgo = job?.created_at ? formatDistanceToNow(parseISO(job?.created_at), { addSuffix: true }) : "";
-  console.log(job);
   return (
     <section>
       <JobHeader job={job} />

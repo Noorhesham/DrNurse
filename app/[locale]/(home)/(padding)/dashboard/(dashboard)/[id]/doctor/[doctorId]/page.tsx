@@ -35,14 +35,18 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
 
   const dataPage = data.data;
   const education = [...dataPage?.main_education, ...dataPage?.education];
-  console.log(data);
   return (
     <section>
       <BreadCrumb
         linksCustom={[
           { href: "", text: "Home" },
           { href: `/dashboard/${id}`, text: "Dashboard" },
-          { href: `/dashboard/${id}/jobs/applications/${searchPrams.get("job") || "0"}`, text: "APPLICANTS" },
+          {
+            href: searchPrams.get("job")
+              ? `/dashboard/${id}/jobs/applications/${searchPrams.get("job") || "0"}`
+              : `/dashboard/${id}/employees`,
+            text: searchPrams.get("job") ? "APPLICANTS" : "EMPLOYEES",
+          },
           { href: `/dashboard/${id}/doctor/${doctorId}`, text: dataPage?.name },
         ]}
       />

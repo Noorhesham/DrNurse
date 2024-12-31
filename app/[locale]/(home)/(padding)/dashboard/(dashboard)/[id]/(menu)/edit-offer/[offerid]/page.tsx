@@ -20,7 +20,6 @@ const page = ({ params: { offerid, id } }: { params: { offerid: string; id: stri
     }
   }, []);
   if (isLoading || !data || isLoadingCompany || !companyData) return <Spinner />;
-  console.log(data);
 
   return (
     <div>

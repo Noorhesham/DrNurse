@@ -109,7 +109,6 @@ const EmailUpdate = ({ user }: { user: any }) => {
             verify={searchParams.get("vefiy") === "true"}
             setServerError={setOtpError}
             sendType="email"
-            phone
             country_key={user.country_key}
           />
         </div>

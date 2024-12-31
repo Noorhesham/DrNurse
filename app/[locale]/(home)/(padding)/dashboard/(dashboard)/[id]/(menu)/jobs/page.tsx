@@ -38,7 +38,6 @@ const page = () => {
       </MaxWidthWrapper>
     );
   const totalPages = Math.ceil(data.count / 9);
-  console.log(data);
   return (
     <div className="">
       <div className=" flex items-center justify-between mb-3">

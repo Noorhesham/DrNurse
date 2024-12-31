@@ -24,7 +24,6 @@ const page = async ({ params }: { params: { locale: string; id: string } }) => {
   const item: any = data.item;
   const { main_gallery, title, content } = item;
   const contentHTML = content ? convertToHTML(content) : "";
-  console.log(data.main_gallery);
   return (
     <section className="  min-h-screen  ">
       <div className="pt-36 ">

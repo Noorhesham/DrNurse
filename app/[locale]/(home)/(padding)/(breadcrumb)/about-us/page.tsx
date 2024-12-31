@@ -43,7 +43,6 @@ export const generateMetadata = async () => {
 const page = async () => {
   const data = await Server({ resourceName: "about-us" });
   const page = data.page;
-  console.log(page);
   return (
     <div>
       <FindDoctor

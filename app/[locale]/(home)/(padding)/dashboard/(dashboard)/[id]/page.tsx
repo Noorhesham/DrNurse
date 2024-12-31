@@ -25,7 +25,6 @@ const page = () => {
   );
 
   const { data, isLoading } = useGetEntity("company", `company-${params.id}`, params.id || "", { enabled: !params.id });
-  console.log(overView, data);
   if (isLoading || !data || isLoadingOverView) return <Spinner />;
 
   const { title } = data.data;

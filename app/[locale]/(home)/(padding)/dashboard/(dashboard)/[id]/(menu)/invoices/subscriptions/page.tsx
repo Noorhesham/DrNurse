@@ -12,7 +12,6 @@ import React from "react";
 
 const page = async () => {
   const data = await Server({ resourceName: "subs", cache: 0 });
-  console.log(data.data[0].features);
   return (
     <MaxWidthWrapper>
       <div className=" grid lg:grid-cols-3  grid-cols-1 gap-5">

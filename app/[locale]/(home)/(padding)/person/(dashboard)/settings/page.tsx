@@ -9,7 +9,7 @@ import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
 
 const page = () => {
   return (
-    <MaxWidthWrapper>
+    <MaxWidthWrapper noPadding>
       <div className="z-10 flex flex-col mx-auto justify-center flex-wrap lg:grid gap-4  lg:grid-cols-3">
         <UpdatePassword />
         <UpdateNotifications />

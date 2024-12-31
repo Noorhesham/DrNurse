@@ -7,7 +7,7 @@ import MainProfile from "@/app/components/MainProfile";
 import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
 import MiniTitle from "@/app/components/defaults/MiniTitle";
 
-import { CalendarIcon, EditIcon, GraduationCap, GraduationCapIcon } from "lucide-react";
+import { CalendarIcon, EditIcon, GraduationCapIcon } from "lucide-react";
 import React from "react";
 import { useParams } from "next/navigation";
 import { useGetEntity } from "@/lib/queries";
@@ -20,8 +20,7 @@ import { useAuth } from "@/app/context/AuthContext";
 const page = () => {
   const { id } = useParams();
   const { data, isLoading } = useGetEntity("company", `company-${id}`, `${id}`);
-  const { userSettings, loading } = useAuth();
-  if (isLoading || !data || loading) return <Spinner />;
+  if (isLoading || !data) return <Spinner />;
   const {
     title,
     description,
@@ -32,13 +31,13 @@ const page = () => {
     branches_count,
     logo,
     business,
+    verification_type,
   } = data.data;
   const hospital = {
     name: title,
     image: logo?.[0]?.file || "/nanana.svg",
     address: business,
   };
-  console.log(data);
   return (
     <section>
       <div className=" bg-light ">
@@ -83,7 +82,7 @@ const page = () => {
               </div>
             </div>
             <MiniTitle color="black" text="HOSPITAL INFO" />
-            <VerificationStatus className="!px-0" verification_type={userSettings?.verification_type} />
+            <VerificationStatus className="!px-0" verification_type={verification_type} />
 
             <div className="  flex flex-col gap-5">
               <InfoItem icon={<CalendarIcon className=" w-5 h-5" />} title="YEAR FOUNDED" description={year_founded} />

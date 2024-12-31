@@ -6,6 +6,7 @@ import { QueryClient, useQueryClient } from "@tanstack/react-query";
 import { useLocalStorageState } from "../hooks/useLocalStorageState";
 import { useDevice } from "./DeviceContext";
 import { useSearchParams } from "next/navigation";
+import useFcmToken from "../hooks/useFcmToken";
 interface AuthContextType {
   generalSettings: any;
   userSettings: any;
@@ -74,7 +75,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [generalSettings, setGeneralSettings] = useState<any>();
   const [userSettings, setUserSettings] = useState<any>();
   const [user2Settings, setUser2Settings] = useState<any>();
-
+  const { unsubscribeFromNotifications } = useFcmToken();
   const [cartCount, setCartCount] = useLocalStorageState(0, "cartCount");
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
@@ -151,6 +152,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUser2Settings(queryClient.getQueryData(["user2_settings"]));
   }, [queryClient]);
   const handleLogout = () => {
+    unsubscribeFromNotifications();
     setCartCount(0);
     setLoading(true);
     cookies.remove("jwt");

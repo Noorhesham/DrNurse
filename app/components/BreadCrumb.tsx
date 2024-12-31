@@ -47,7 +47,7 @@ const BreadCrumb = ({ linksCustom }: { linksCustom?: { href: string; text: strin
             return (
               <div className="flex items-center" key={index}>
                 <BreadcrumbItem>
-                  <BreadcrumbLink
+                  <Link 
                     className={`${
                       global?.window?.location.pathname === `/${link}`
                         ? " text-main  hover:text-blue-400 duration-150"
@@ -66,7 +66,7 @@ const BreadCrumb = ({ linksCustom }: { linksCustom?: { href: string; text: strin
                       : link === ""
                       ? "HOME"
                       : link.replace("-", "  ").toLowerCase()}
-                  </BreadcrumbLink>
+                  </Link>
                 </BreadcrumbItem>
                 {!isLast && <BreadcrumbSeparator />}
               </div>

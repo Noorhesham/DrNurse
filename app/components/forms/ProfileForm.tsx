@@ -26,6 +26,7 @@ import { useRouter } from "next/navigation";
 import GridContainer from "../defaults/GridContainer";
 import { useFormHandler } from "@/app/hooks/useFormHandler";
 import { zodResolver } from "@hookform/resolvers/zod";
+import UpdatePersonalInfo from "@/app/main/authentication/components/UpdatePersonalInfo";
 const salaryRegex = /^[1-9]\d*$/;
 const jobSchema = z
   .object({
@@ -185,11 +186,11 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
               `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
             );
             const data = await response.json();
-            console.log(data)
+            console.log(data);
             // Extract country code from API response
             if (data && data.countryCode) {
               setLocation(data.countryCode); // e.g., "EG", "SA", etc.
-              form.setValue('auto_location', data?.countryCode);
+              form.setValue("auto_location", data?.countryCode);
             }
           },
           (error) => {
@@ -409,6 +410,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
 
   return (
     <Form {...form}>
+      <UpdatePersonalInfo avatarOnly />
       <form className="flex flex-col px-5 py-2.5 w-full items-stretch gap-4" onSubmit={form.handleSubmit(onSubmit)}>
         <MiniTitle form size="md" boldness="bold" text={t("ProfileForm")} />
         {/* Career Details */}

@@ -15,7 +15,7 @@ const JobHeader = ({ job, privatejob }: { job: any; privatejob?: boolean }) => {
   const queryClient = useQueryClient();
   const doctor = {
     name: job.job_title,
-    image: "/job.svg",
+    image: "/Frame 48097786 (3).svg",
     speciality: [job?.career_type?.title, job?.career_specialty?.title, job?.career_level?.title]
       .filter(Boolean)
       .join(", "),
@@ -84,6 +84,7 @@ const JobHeader = ({ job, privatejob }: { job: any; privatejob?: boolean }) => {
               {!privatejob && (
                 <FunctionalButton
                   btnText="SET SLOTS"
+                  className=" !rounded-2xl"
                   icon={<CalendarIcon className=" w-5 h-5" />}
                   content={<MeetingForm jobIdDef={job.id} invite={false} />}
                 />

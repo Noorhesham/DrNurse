@@ -17,15 +17,21 @@ const ContactPerson = ({ person }: { person: any }) => {
     <MaxWidthWrapper className=" flex flex-col gap-5">
       <MiniTitle text={`Contact Info For ${data.data.name}`} />
 
-      <Link target="_blank" href={`tel:${data.data.phone}`}>
-        <IconWidget paragraph={`${data.data.phone}`} header={"Phone"} icon={<Phone />} />
+      <Link target="_blank" href={`tel:+${data.data.country_key}${data.data.phone}`}>
+        <IconWidget
+          paragraph={`+${data.data?.country_key || ""} ${data.data.phone}`}
+          header={"Phone"}
+          icon={<Phone />}
+        />
       </Link>
       <Link href={`mailto:${data.data.email}`}>
         <IconWidget paragraph={data.data.email} header={"Email"} icon={<FaMailBulk className=" text-main" />} />
       </Link>
-      <Link target="_blank" className=" text-main2 underline" href={data.data?.resume?.[0]?.file}>
-        View Resume
-      </Link>
+      {data.data?.resume.length > 0 && (
+        <Link target="_blank" className=" text-main2 underline" href={data.data?.resume?.[0]?.file}>
+          View Resume
+        </Link>
+      )}
     </MaxWidthWrapper>
   );
 };

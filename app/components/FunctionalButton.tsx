@@ -76,7 +76,10 @@ const FunctionalButton = ({
   ) : (
     <ModalCustom
       btn={
-        <Button size="lg" className="relative flex items-cetner gap-2 bg-main2 text-gray-50 hover:bg-main2/80">
+        <Button
+          size="lg"
+          className={` ${className} relative flex items-center gap-2 bg-main2 text-gray-50 hover:bg-main2/80`}
+        >
           {icon ? icon : <PlusCircle className=" w-5 h-5" />}
           {btnText}
         </Button>

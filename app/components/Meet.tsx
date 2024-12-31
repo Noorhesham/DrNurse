@@ -51,7 +51,7 @@ const Meet = ({ cancel, img, meet, id }: { cancel?: boolean; img?: boolean; meet
         </div>
         <div className=" flex flex-col ">
           <p className=" text-xs text-muted-foreground">
-            GTM : {meet.slot ? formatToGMT(meet.slot.from_date) : formatToGMT(meet.created_at)}
+          GMT : {meet.slot ? formatToGMT(meet.slot.from_date) : formatToGMT(meet.created_at)}
           </p>
           <p className=" text-xs text-muted-foreground">
             Your local time : {meet.slot ? formatToLocalTime(meet.slot.from_date) : formatToLocalTime(meet.created_at)}

@@ -31,6 +31,7 @@ const page = () => {
   };
   const invitations = data.data.filter((meet: any) => meet.status === "invitation");
   const meetings = data.data.filter((meet: any) => meet.status !== "invitation");
+  console.log(meetings)
   return (
     <section className=" flex flex-col gap-8">
       <div className=" flex flex-col gap-2">
@@ -71,7 +72,7 @@ const page = () => {
                                         toast.success(res.message);
 
                                         queryClient.invalidateQueries({
-                                          queryKey: [`meetings-${meet.req_job_post_id}`],
+                                          queryKey: [`meetings-${jobId}`],
                                         });
                                       } else toast.error(res.message);
                                     });
@@ -97,7 +98,7 @@ const page = () => {
                                         toast.success(res.message);
 
                                         queryClient.invalidateQueries({
-                                          queryKey: [`meetings-${meet.req_job_post_id}`,`meetings-${jobId}`],
+                                          queryKey: [`meetings-${jobId}`],
                                         });
                                       } else toast.error(res.message);
                                     });

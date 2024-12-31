@@ -155,7 +155,6 @@ const FormContainer: React.FC<Formcontainer> = ({
       } else if (submit) {
         submit(data, setServerError);
         setServerError(null);
-
       }
     });
   };
@@ -173,7 +172,6 @@ const FormContainer: React.FC<Formcontainer> = ({
           btnText={btnText || t("Submit")}
           form={form}
           isPending={isPending}
-          cancel={cancel}
           title={title || ""}
           btnStyles={btnStyles || "w-[40%] mr-auto "}
           inputs={formArray}

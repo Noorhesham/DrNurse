@@ -121,7 +121,7 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
       min_salary: defaultData?.min_salary || 0,
       max_salary: defaultData?.max_salary || 0,
       hide_salary: defaultData?.hide_salary.toString() || "",
-      nationality_id: defaultData?.nationality?.id || "",
+      nationality_id: defaultData?.nationality?.id || " ",
       gender: defaultData?.gender || "",
       family_status: defaultData?.family_status || "",
       benefits: JSON.parse(defaultData?.benefits || "[]") || [" "],

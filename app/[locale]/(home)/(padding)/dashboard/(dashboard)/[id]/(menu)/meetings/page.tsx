@@ -42,7 +42,6 @@ const page = () => {
         ))}
       </MaxWidthWrapper>
     );
-  console.log(data);
   const totalPages = Math.ceil(data.count / 9);
 
   return (

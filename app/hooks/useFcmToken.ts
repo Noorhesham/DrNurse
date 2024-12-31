@@ -39,7 +39,20 @@ const useFcmToken = () => {
   const [token, setToken] = useState<string | null>(null); // State to store the FCM token.
   const retryLoadToken = useRef(0); // Ref to keep track of retry attempts.
   const isLoading = useRef(false); // Ref to keep track if a token fetch is currently in progress.
+  const listenerRegistered = useRef(false);
+  const unsubscribeFromNotifications = async () => {
+    const m = await messaging();
+    if (!m) return;
 
+    // Unregister service worker listeners
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      registrations.forEach((registration) => {
+        registration.unregister();
+      });
+    });
+
+    setToken(null); // Reset token
+  };
   const loadToken = async () => {
     // Step 4: Prevent multiple fetches if already fetched or in progress.
     if (isLoading.current) return;
@@ -93,11 +106,12 @@ const useFcmToken = () => {
   useEffect(() => {
     const setupListener = async () => {
       if (!token) return; // Exit if no token is available.
+      if (listenerRegistered.current) return; // Avoid duplicate listeners
 
       console.log(`onMessage registered with token ${token}`);
       const m = await messaging();
       if (!m) return;
-
+      listenerRegistered.current = true;
       // Step 9: Register a listener for incoming FCM messages.
       const unsubscribe = onMessage(m, (payload) => {
         console.log(Notification.permission);
@@ -162,10 +176,13 @@ const useFcmToken = () => {
     });
 
     // Step 11: Cleanup the listener when the component unmounts.
-    return () => unsubscribe?.();
+    return () => {
+      listenerRegistered.current = false; // Reset on unmount
+      unsubscribe?.();
+    };
   }, [token, router]);
 
-  return { token, notificationPermissionStatus }; // Return the token and permission status.
+  return { token, notificationPermissionStatus, unsubscribeFromNotifications }; // Return the token and permission status.
 };
 
 export default useFcmToken;
