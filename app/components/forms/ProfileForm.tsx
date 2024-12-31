@@ -117,7 +117,12 @@ const jobSchema = z
       )
       .optional(),
     currency: z.string().min(1, "Currency is required"),
-    practice_license: z.any(),
+    practice_license: z
+      .any()
+      .refine((val) => val, {
+        message: "Commercial registration is required",
+      })
+      .optional(),
     identification_card: z.any(),
     resume: z.any(),
   })
@@ -444,7 +449,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
             label={t("IDENTIFICATION TYPE")}
             placeholder={t("ENTER IDENTIFICATION TYPE")}
           />
-          <ComboboxForm
+          <ComboboxForm 
             disabled={isLoading}
             name={"identification_country_id"}
             label={t("IDENTIFICATION COUNTRY")}

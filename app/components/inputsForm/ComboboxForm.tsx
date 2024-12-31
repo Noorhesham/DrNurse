@@ -37,7 +37,7 @@ export default function ComboboxForm({
         control={form.control}
         name={name}
         render={({ field }) => (
-          <FormItem className={`relative !space-y-0  flex flex-col gap-3 w-full`}>
+          <FormItem className={`relative   flex flex-col gap-3 w-full`}>
             {label && (
               <FormLabel className="uppercase w-fit relative">
                 {" "}
