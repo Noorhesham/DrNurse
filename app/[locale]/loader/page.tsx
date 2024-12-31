@@ -25,7 +25,7 @@ const isAccountOlderThan10Days = (userSettings) => {
   const diffInMs = currentDate.getTime() - createdAt.getTime();
   const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
 
-  console.log("Days difference:", diffInDays,userSettings);
+  console.log("Days difference:", diffInDays, userSettings);
   return diffInDays > 10;
 };
 
@@ -36,7 +36,11 @@ const page = () => {
 
   useEffect(() => {
     if (!userSettings) return;
-    if (isAccountOlderThan10Days(userSettings) && !userSettings?.role.includes("admin")) {
+    if (
+      isAccountOlderThan10Days(userSettings) &&
+      !userSettings?.role.includes("admin") &&
+      !userSettings?.role.includes("hospital")
+    ) {
       router.push("/person");
     } else if (
       userSettings.has_profile &&
