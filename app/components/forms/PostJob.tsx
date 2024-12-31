@@ -7,7 +7,7 @@ import { z } from "zod";
 import { useFieldArray } from "react-hook-form";
 import FormInput from "../inputsForm/FormInput";
 import FunctionalButton from "../FunctionalButton";
-import { XIcon } from "lucide-react";
+import { PlusCircle, PlusIcon, XIcon } from "lucide-react";
 import FormSelect from "../inputsForm/FormSelect";
 import { Form } from "@/components/ui/form";
 import MiniTitle from "../defaults/MiniTitle";
@@ -26,6 +26,7 @@ import { useGetEntity } from "@/lib/queries";
 import { useParams, useRouter } from "next/navigation";
 import VerificationStatus from "../VerficationStatus";
 import { useFormHandler } from "@/app/hooks/useFormHandler";
+import { UpdateIcon } from "@radix-ui/react-icons";
 // Define Zod schema
 const salaryRegex = /^[1-9]\d*$/;
 
@@ -58,8 +59,16 @@ const jobSchema = z
     gender: z.string().optional(),
     family_status: z.string().optional(),
     benefits: z.array(z.string().min(1, "Benefit is required")).optional(),
-    job_description: z.string().min(20, "Description is too short").optional(),
-    job_requirements: z.string().min(20, "Responsibility is too short").optional(),
+    job_description: z
+      .string()
+      .min(20, "Description is too short")
+      .max(4000, { message: "Description is too long" })
+      .optional(),
+    job_requirements: z
+      .string()
+      .min(20, "Responsibility is too short")
+      .max(4000, { message: "Responsibility  is too long" })
+      .optional(),
     recipient_status: z.string().optional(),
     recipient_email: z.string().optional(),
     currency: z.string(),
@@ -121,7 +130,7 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
       currency: defaultData?.currency || "sar",
       recipient_status: defaultData?.recipient_status || "",
       recipient_email: defaultData?.recipient_email || "",
-      application_available_status: defaultData?.application_available_status || "",
+      application_available_status: defaultData?.application_available_status || "regular",
     },
   });
   useEffect(() => {
@@ -200,6 +209,7 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
             <FormSelect
               label={t("AVAILABLITY STATUS")}
               name="application_available_status"
+              defaultValue={"regular"}
               options={[
                 { label: "Regular", value: "regular" },
                 { label: "Urgent", value: "urgent" },
@@ -236,7 +246,11 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
                 name={"nationality_id"}
                 label={t("nationality")}
                 placeholder={t("nationality")}
-                options={countries?.data.map((country: any) => ({ label: country.title, value: country.id }))}
+                options={[
+                  { label: "Not Specified", value: " " },
+
+                  ...countries?.data.map((country: any) => ({ label: country.title, value: country.id })),
+                ]}
               />
               <FormSelect
                 label={t("Gender")}
@@ -320,12 +334,13 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
                 )}
               </AnimatePresence>
             </div>
-            <div className=" w-fit">
+            <div className=" mt-5 w-fit">
               <FunctionalButton
+                icon={defaultData ? <UpdateIcon /> : <PlusCircle />}
                 disabled={isPending}
                 onClick={form.handleSubmit(onSubmit)}
-                className=" w-fit"
-                btnText={defaultData ? t("updateJob") : t("postJob")}
+                className="  capitalize w-fit"
+                btnText={defaultData ? t("update Job") : t("post Job")}
                 size="sm"
               />
             </div>{" "}

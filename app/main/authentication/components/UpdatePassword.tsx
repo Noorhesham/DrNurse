@@ -14,7 +14,7 @@ const UpdatePassword = () => {
   const updatePasswordInfo = async (data: any, setError: any) => {
     const res = await Server({ resourceName: "update_password", body: data });
     console.log(res);
-    if (!res.status) setError(res.errors || res.message)();
+    if (!res.status) setError(res.errors.password || res.message)();
     if (res) {
       toast.success(res.message);
       setError(null);

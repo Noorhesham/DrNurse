@@ -171,7 +171,6 @@ const Box = ({
                         name={filter}
                         id={option}
                         checked={filters[filter]?.includes(option.id.toString()) || false}
-                        onChange={() => handleFilter(option.id.toString(), filter)}
                       />
                       <label className="text-main2 text-xs" htmlFor={option.name}>
                         {option.name}

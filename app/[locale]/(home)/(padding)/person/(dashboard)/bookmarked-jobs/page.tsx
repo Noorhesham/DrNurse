@@ -11,11 +11,11 @@ import Empty from "@/app/components/Empty";
 const page = ({ searchParams }: { searchParams: any }) => {
   const { data, isLoading } = useGetEntity(
     "bookmarks",
-    "bookmarks",
+    `bookmarks-${searchParams.page}`,
     "",
     {},
     `with=country,city,state,careerType,careerSpecialty,careerLevel,branch&
-    page=${searchParams.page || "1"}&itemsCount=${searchParams.itemsCount || "4"}`
+    page=${searchParams.page || "1"}&itemsCount=${searchParams.itemsCount || "10"}`
   );
 
   const [bookmarks, setBookmarks] = useState<any[]>([]);
@@ -25,6 +25,7 @@ const page = ({ searchParams }: { searchParams: any }) => {
   }, [data]);
 
   if (!data || isLoading) return <Spinner />;
+  const totalPages = Math.ceil(data.count / 9);
 
   return (
     <main className="flex flex-col gap-3 col-span-2 lg:col-span-5">
@@ -47,7 +48,7 @@ const page = ({ searchParams }: { searchParams: any }) => {
           )}
         </div>
       </AnimatePresence>
-      {/* {bookmarks.length > 10 && <PaginationDemo />} */}
+      {totalPages > 1 && <PaginationDemo totalPages={totalPages} />}
     </main>
   );
 };

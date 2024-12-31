@@ -42,7 +42,9 @@ const OffersTable: React.FC<OffersTableProps> = ({ offers, action, person = fals
                     ? `${offer.details.job_title.slice(0, 40)}...`
                     : offer.details.job_title}
                   <br />
-                  {offer.user?.name.length > 70
+                  {!offer.user?.name
+                    ? ""
+                    : offer.user?.name.length > 70
                     ? `To ${offer.user?.name.slice(0, 50)}...`
                     : `To ${offer.user?.name || ""}`}
                   <br /> {offer.company && `From `}

@@ -10,8 +10,8 @@ const JobInfo = ({ job, timeAgo }: { job: any; timeAgo: string }) => {
     <div className="flex col-span-full lg:col-span-2 px-5 py-5 pb-10 rounded-xl flex-col gap-3  bg-light">
       <MiniTitle color="black" text="JOB INFO" />
       <div className=" flex flex-col gap-5">
-        <InfoItem icon={<CalendarIcon className=" w-5 h-5" />} title="JOB POSTED" description={timeAgo} />
-        <InfoItem icon={<PersonIcon className=" w-5 h-5" />} title="GENDER" description={job.gender} />
+        {timeAgo && <InfoItem icon={<CalendarIcon className=" w-5 h-5" />} title="JOB POSTED" description={timeAgo} />}
+        {job.gender && <InfoItem icon={<PersonIcon className=" w-5 h-5" />} title="GENDER" description={job.gender} />}
         {job?.family_status && (
           <InfoItem icon={<PersonIcon className=" w-5 h-5" />} title="FAMILY STATUS" description={job.family_status} />
         )}
@@ -27,11 +27,13 @@ const JobInfo = ({ job, timeAgo }: { job: any; timeAgo: string }) => {
             } /MONTH`}
           />
         )}
-        <InfoItem
-          icon={<Briefcase />}
-          title="EXPERIENCE"
-          description={`${job.experience_from} - ${job.experience_to} Years `}
-        />{" "}
+        {
+          <InfoItem
+            icon={<Briefcase />}
+            title="EXPERIENCE"
+            description={`${job.experience_from} - ${job.experience_to} Years `}
+          />
+        }
         {job.branch?.country?.title && job.branch?.state?.title && (
           <InfoItem
             icon={<GoLocation className=" w-5 h-5" />}
