@@ -53,7 +53,7 @@ const OffersTable: React.FC<OffersTableProps> = ({ offers, action, person = fals
                       : offer.details.job_title}
                     <br />
                     {offer.user?.name && (
-                      <Link href={`/dashboard/${id}/doctor/${offer.user?.id}`}>
+                      <Link href={`/dashboard/${id}/doctor/${offer.user?.profile?.id}`}>
                         To {offer.user?.name.length > 40 ? `${offer.user?.name.slice(0, 40)}...` : offer.user?.name}
                       </Link>
                     )}

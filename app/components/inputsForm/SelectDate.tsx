@@ -27,9 +27,7 @@ const formatToLocalTime = (dateStr) => {
 };
 
 const SelectDate = ({ meeting_id, jobId = "0", person=false }: { meeting_id: string; jobId: string; person?: boolean }) => {
-  const { data, isLoading } = useGetEntity("person-slots", `person-slots-${jobId}`, jobId || "0", {
-    nocompany: person ? true : false,
-  });
+  const { data, isLoading } = useGetEntity("person-slots", `person-slots-${jobId}`, jobId || "0");
 
   const queryClient = useQueryClient();
   const [isPending, startTransition] = useTransition();
