@@ -9,6 +9,7 @@ import ModalCustom from "./ModalCustom";
 import { convertToHTML } from "@/lib/utils";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import { format } from "date-fns";
+import MiniTitle from "./MiniTitle";
 const Notification = ({
   notification,
   show,
@@ -26,7 +27,7 @@ const Notification = ({
   return (
     <ModalCustom
       btn={
-        <Container className=" hover:bg-gradient-to-r from-light to-white   duration-150">
+        <Container className="content-text hover:bg-gradient-to-r from-light to-white   duration-150">
           <div className={` flex  justify-between flex-row  gap-5 items-center sm:justify-between`}>
             <UserCard notification={true} applicant={notification} show={show} />
             <div className=" flex items-center gap-3">
@@ -46,7 +47,7 @@ const Notification = ({
       }
       content={
         <MaxWidthWrapper className="flex flex-col items-center">
-          <h2>{notification.name}</h2>
+          <MiniTitle size="lg" boldness="bold" color=" text-main2" text={notification.name} />
           <span>{notification.speciality}</span>
           <div
             dangerouslySetInnerHTML={{ __html: convertToHTML(notification.content || "") }}
