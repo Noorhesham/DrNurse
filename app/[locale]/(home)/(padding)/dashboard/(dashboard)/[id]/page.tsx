@@ -26,7 +26,7 @@ const page = () => {
 
   const { data, isLoading } = useGetEntity("company", `company-${params.id}`, params.id || "", { enabled: !params.id });
   if (isLoading || !data || isLoadingOverView) return <Spinner />;
-
+  if (!data.data?.title) return <Empty text="Company not Created" />;
   const { title } = data.data;
   return (
     <>
