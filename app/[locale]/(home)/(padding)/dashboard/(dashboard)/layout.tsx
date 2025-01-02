@@ -32,7 +32,7 @@ export default function RootLayout({
         <BreadCrumb
           linksCustom={[
             { href: "", text: "Home" },
-            ...(params.id ? [{ href: `/dashboard/${data?.data?.id}`, text: data.data.title }] : []),
+            ...(params.id ? [{ href: `/dashboard/${data?.data?.id}`, text: data?.data?.title||"" }] : []),
             ...(lastSegment !== `${params.id}` ? [{ href: pathname, text: formattedLastSegment }] : []),
           ]}
         />
