@@ -181,6 +181,11 @@ const HospitalProfileSettings = ({ defaultData }: { defaultData?: any }) => {
         toast.error(res.message);
         if (res.errors) {
           Object.entries(res.errors).forEach(([field, messages]) => {
+            if (field === "phone")
+              return form.setError("hospitalPhoneNumber", {
+                type: "server",
+                message: Array.isArray(messages) ? messages[0] : messages, // Handle array or single string
+              });
             form.setError(field, {
               type: "server",
               message: Array.isArray(messages) ? messages[0] : messages, // Handle array or single string
@@ -270,7 +275,8 @@ const HospitalProfileSettings = ({ defaultData }: { defaultData?: any }) => {
               returnFullPhone={false}
               control={form.control}
               name="hospitalPhoneNumber"
-              phone optional
+              phone
+              optional
               label={t("Hospital Phone Number")}
             />
             <FormInput control={form.control} optional name="email" label={t("Hospital Email")} type="email" />
