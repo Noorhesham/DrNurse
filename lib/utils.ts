@@ -42,7 +42,6 @@ type MetadataProps = {
   type?: string; // Default to "article" for blog pages
 };
 
-
 export function generateMetadataCustom({
   title,
   description,
@@ -76,4 +75,17 @@ export function generateMetadataCustom({
       images: [image],
     },
   };
+}
+export function convertCurrency(amount: number, fromCurrency: string, toCurrency: string, rates: any[]) {
+  if (!rates[fromCurrency] || !rates[toCurrency]) {
+    throw new Error("Invalid currency provided.");
+  }
+
+  // Convert the amount from the source currency to USD
+  const amountInUSD = amount / rates[fromCurrency];
+
+  // Convert the amount from USD to the target currency
+  const convertedAmount = amountInUSD * rates[toCurrency];
+
+  return convertedAmount;
 }

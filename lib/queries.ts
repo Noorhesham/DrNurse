@@ -21,7 +21,7 @@ const useGetEntity = (
   resourceName: ResourceNameProps,
   key?: any,
   id?: string,
-  options: { enabled?: boolean; nocompany?: boolean } = {},
+  options: { enabled?: boolean; nocompany?: boolean; cache: number } = {},
   queryParams?: any
 ) => {
   const { data, isLoading } = useQuery({
@@ -32,6 +32,7 @@ const useGetEntity = (
         id: id,
         queryParams,
         nocompany: options.nocompany,
+        cache: options.cache,
       }),
     enabled: options.enabled,
   });

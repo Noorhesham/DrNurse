@@ -1,21 +1,28 @@
+"use client";
 import FunctionalButton from "@/app/components/FunctionalButton";
 import Payment from "@/app/components/Payment";
+import Spinner from "@/app/components/Spinner";
 import MiniTitle from "@/app/components/defaults/MiniTitle";
 import ModalCustom from "@/app/components/defaults/ModalCustom";
+import useCachedQuery from "@/app/hooks/useCachedData";
 import { Server } from "@/app/main/Server";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useGetEntity } from "@/lib/queries";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CheckCircle, XCircle } from "lucide-react";
 import React from "react";
 import { MdPending } from "react-icons/md";
 
-const page = async ({ params: { id } }: { params: { id: string } }) => {
-  const data = await Server({ resourceName: "my-subs" });
-  const invoices = await Server({ resourceName: "my-invoices" });
+const page = ({ params: { id } }: { params: { id: string } }) => {
+  const { data, isLoading } = useGetEntity("my-subs", "my-subs");
+  const { data: invoices, isLoading: invoicesLoading } = useGetEntity("my-invoices", "my-invoices");
+  const { data: generalSettings, loading } = useCachedQuery("general_settings");
+  if (isLoading || !data || invoicesLoading || !invoices || loading) return <Spinner />;
+
   //used usage_limit
-  console.log(data.data.map(d=>d.plan_json));
+  console.log(data.data);
   return (
     <div>
       <Table>
@@ -52,7 +59,9 @@ const page = async ({ params: { id } }: { params: { id: string } }) => {
                   </div>
                 </TableCell>
                 <TableCell className="  gap-2 ">
-                  <p className=" text-main2 font-semibold">{job?.total}</p>
+                  <p className=" text-main2 font-semibold">
+                    {job?.total} {job?.currency?.code}
+                  </p>
                 </TableCell>
                 {job.status.value === "Auto Created" && (
                   <TableCell>
@@ -89,36 +98,44 @@ const page = async ({ params: { id } }: { params: { id: string } }) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.data.map((job, i) => (
-              <TableRow key={i}>
-                <TableCell className="font-medium">
-                  <MiniTitle boldness="bold" size="lg" color="text-black" text={job?.plan_json.title} />
-                </TableCell>
-                <TableCell className="font-medium">
-                  <p className="text-muted-foreground">
-                    {job?.plan_json?.created_at && format(job.plan_json.created_at, "dd/MM/yyyy")}
-                  </p>
-                </TableCell>
-                <TableCell className=" items-center">
-                  <p className="text-main2 font-semibold">{job?.plan_json.price}</p>
-                </TableCell>
-                <TableCell className=" items-center">
-                  {
-                    <p className=" text-main2 font-semibold">
-                      {job?.features
-                        ?.filter((f) => f.slug === "meeting")
-                        .reduce((acc, cur) => acc + cur.usage_limit, 0)}
+            {data.data.map((job, i) => {
+              const availableMeetings =
+                job?.features?.filter((f) => f.slug === "meeting").reduce((acc, cur) => acc + cur.usage_limit, 0) -
+                job?.features?.filter((f) => f.slug === "meeting").reduce((acc, cur) => acc + cur.used, 0);
+              return (
+                <TableRow key={i}>
+                  <TableCell className="font-medium">
+                    <MiniTitle boldness="bold" size="sm" color="text-black" text={job?.plan_json.title} />
+                  </TableCell>
+                  <TableCell className="font-medium">
+                    <p className="text-muted-foreground">
+                      {job?.plan_json?.created_at && format(job.plan_json.created_at, "dd/MM/yyyy")}-{" "}
+                      {job?.expire_at && format(job?.expire_at, "dd/MM/yyyy")}
                     </p>
-                  }
-                </TableCell>
-                <TableCell className=" items-center">
-                  <p className=" text-main2 font-semibold">
-                    {job?.features?.filter((f) => f.slug === "meeting").reduce((acc, cur) => acc + cur.usage_limit, 0) -
-                      job?.features?.filter((f) => f.slug === "meeting").reduce((acc, cur) => acc + cur.used, 0)}
-                  </p>{" "}
-                </TableCell>
-              </TableRow>
-            ))}
+                    {availableMeetings === 0 ||
+                      (new Date(job?.expire_at) < new Date() && (
+                        <span className="text-red-500 text-xs">Subscription expired</span>
+                      ))}
+                  </TableCell>
+                  <TableCell className=" flex gap-1 items-center">
+                    <p className="text-main2 font-semibold">{job?.plan_json.price}</p>{" "}
+                    {generalSettings.default_currency.code}
+                  </TableCell>
+                  <TableCell className=" items-center">
+                    {
+                      <p className=" text-main2 font-semibold">
+                        {job?.features
+                          ?.filter((f) => f.slug === "meeting")
+                          .reduce((acc, cur) => acc + cur.usage_limit, 0)}
+                      </p>
+                    }
+                  </TableCell>
+                  <TableCell className=" items-center">
+                    <p className=" text-main2 font-semibold">{availableMeetings}</p>{" "}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </div>
