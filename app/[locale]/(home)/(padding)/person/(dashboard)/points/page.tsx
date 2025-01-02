@@ -24,7 +24,11 @@ import { DialogClose } from "@/components/ui/dialog";
 
 const page = () => {
   const closeRef = useRef<HTMLButtonElement>(null);
-  const { data: terms, isLoading: isLoadingTerms } = useGetEntity("home", "terms-points", "points-terms-and-conditions");
+  const { data: terms, isLoading: isLoadingTerms } = useGetEntity(
+    "home",
+    "terms-points",
+    "points-terms-and-conditions"
+  );
   const { data: points, isLoading } = useGetEntity("points", "points");
   const { data: prizes, isLoading: isLoadingPrizes } = useGetEntity("prizes", "prizes");
   const handelCopy = (text: string) => {
@@ -33,7 +37,7 @@ const page = () => {
   };
   const { user2Settings, loading, userSettings } = useAuth();
   if (isLoading || !points || loading || isLoadingTerms || isLoadingPrizes || loading) return <Spinner />;
-  console.log(points);
+  console.log(terms);
   return (
     <section>
       <div className="flex flex-col gap-2">
@@ -53,9 +57,9 @@ const page = () => {
             }
           />
         </FlexWrapper>
-        <Paragraph
-          full
-          description="About program I am pleased to reach out to you today to offer a job opportunity as a Surgical Nurse with us. Given your experience and outstanding skills in the field About program I am pleased to reach out to you today to offer a job opportunity as a Surgical Nurse with us. Given your experience and outstanding skills in the fields"
+        <div
+          dangerouslySetInnerHTML={{ __html: convertToHTML(terms.page.content || "") }}
+          className={` text-black lg:text-base text-sm  font-medium my-2 leading-[1.7] `}
         />
       </div>
       <FlexWrapper max={false} className=" mt-10 justify-between">

@@ -26,15 +26,17 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
   return (
     <div>
       <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className=" text-main2 ">INVOICE NAME</TableHead>
-            <TableHead className=" text-main2 ">DATE</TableHead>
-            <TableHead className=" text-main2 ">STATUS</TableHead>
-            <TableHead className=" text-main2 ">INVOICE VALUE</TableHead>
-            <TableHead className=" text-main2 "> ACTIONS</TableHead>
-          </TableRow>
-        </TableHeader>
+        {invoices.data.length > 0 && (
+          <TableHeader>
+            <TableRow>
+              <TableHead className=" text-main2 ">INVOICE NAME</TableHead>
+              <TableHead className=" text-main2 ">DATE</TableHead>
+              <TableHead className=" text-main2 ">STATUS</TableHead>
+              <TableHead className=" text-main2 ">INVOICE VALUE</TableHead>
+              <TableHead className=" text-main2 "> ACTIONS</TableHead>
+            </TableRow>
+          </TableHeader>
+        )}
         <TableBody>
           {invoices.data
             .filter((invoic) => invoic.status.key !== "auto_waiting_for_payment")
@@ -88,15 +90,17 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
           <FunctionalButton link={`/dashboard/${id}/invoices/subscriptions`} btnText="Add Subscription" />
         </div>
         <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className=" text-main2 ">Subscription type</TableHead>
-              <TableHead className=" text-main2 ">Subscription Date</TableHead>
-              <TableHead className=" text-main2 ">Subscription value</TableHead>
-              <TableHead className=" text-main2 ">Total number of meetings </TableHead>
-              <TableHead className=" text-main2 ">Number of meetings available</TableHead>
-            </TableRow>
-          </TableHeader>
+          {data.data.length > 0 && (
+            <TableHeader>
+              <TableRow>
+                <TableHead className=" text-main2 ">Subscription type</TableHead>
+                <TableHead className=" text-main2 ">Subscription Date</TableHead>
+                <TableHead className=" text-main2 ">Subscription value</TableHead>
+                <TableHead className=" text-main2 ">Total number of meetings </TableHead>
+                <TableHead className=" text-main2 ">Number of meetings available</TableHead>
+              </TableRow>
+            </TableHeader>
+          )}
           <TableBody>
             {data.data.map((job, i) => {
               const availableMeetings =
