@@ -1,5 +1,6 @@
 "use client";
 import BreadCrumb from "@/app/components/BreadCrumb";
+import Empty from "@/app/components/Empty";
 import FunctionalButton from "@/app/components/FunctionalButton";
 import JobBenefits from "@/app/components/JobBenefits";
 import JobCard from "@/app/components/JobCard";
@@ -55,7 +56,12 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
     });
   };
   const timeAgo = job?.created_at ? formatDistanceToNow(parseISO(job?.created_at), { addSuffix: true }) : "";
-
+  if (job.status === "draft")
+    return (
+      <div className=" pt-36">
+        <Empty text="This is a draft job , it must be edited  or published" />
+      </div>
+    );
   return (
     <section className=" pt-36">
       <BreadCrumb

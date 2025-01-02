@@ -81,10 +81,7 @@ const jobSchema = z
     message: "Max Salary must be greater than Min Salary",
     path: ["max_salary"],
   })
-  .refine((data) => +data.min_salary > +data.max_salary, {
-    message: "Min Salary must be less than Max Salary",
-    path: ["min_salary"],
-  });
+
 
 type JobFormValues = z.infer<typeof jobSchema>;
 
