@@ -31,13 +31,13 @@ const page = () => {
   );
   const { data: points, isLoading } = useGetEntity("points", "points");
   const { data: prizes, isLoading: isLoadingPrizes } = useGetEntity("prizes", "prizes");
+  const { data: termsConditionsgeneral, isLoading: isLoadingTermsConditions } = useGetEntity("home", "terms-points1", "drs-terms-and-conditions");
   const handelCopy = (text: string) => {
     navigator.clipboard.writeText(text);
     toast.success("copied");
   };
   const { user2Settings, loading, userSettings } = useAuth();
-  if (isLoading || !points || loading || isLoadingTerms || isLoadingPrizes || loading) return <Spinner />;
-  console.log(terms);
+  if (isLoading || !points || loading || isLoadingTerms || isLoadingPrizes || loading|| isLoadingTermsConditions) return <Spinner />;
   return (
     <section>
       <div className="flex flex-col gap-2">
@@ -50,7 +50,7 @@ const page = () => {
               <MaxWidthWrapper className=" flex flex-col items-center gap-3">
                 <MiniTitle boldness="bold" text="Conditions for the points system" color="text-main2" />
                 <div
-                  dangerouslySetInnerHTML={{ __html: convertToHTML(terms.page.content || "") }}
+                  dangerouslySetInnerHTML={{ __html: convertToHTML(termsConditionsgeneral.page.content || "") }}
                   className={` text-black lg:text-base text-sm  font-medium my-2 leading-[1.7] `}
                 />
               </MaxWidthWrapper>
