@@ -28,11 +28,11 @@ export default function RootLayout({
   return (
     <section id="portal" className="pt-36  flex flex-col-reverse portalele">
       <div className="  relative">{children}</div>
-      {!pathname.includes("doctor") && !pathname.includes("edit-offer") && (
+      {!pathname.includes("doctor") && !pathname.includes("edit-offer") && data?.data?.title && (
         <BreadCrumb
           linksCustom={[
             { href: "", text: "Home" },
-            ...(params.id ? [{ href: `/dashboard/${data?.data?.id}`, text: data?.data?.title||"" }] : []),
+            ...(params.id ? [{ href: `/dashboard/${data?.data?.id}`, text: data?.data?.title || "" }] : []),
             ...(lastSegment !== `${params.id}` ? [{ href: pathname, text: formattedLastSegment }] : []),
           ]}
         />
