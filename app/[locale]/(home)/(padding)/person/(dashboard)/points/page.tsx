@@ -31,13 +31,18 @@ const page = () => {
   );
   const { data: points, isLoading } = useGetEntity("points", "points");
   const { data: prizes, isLoading: isLoadingPrizes } = useGetEntity("prizes", "prizes");
-  const { data: termsConditionsgeneral, isLoading: isLoadingTermsConditions } = useGetEntity("home", "terms-points1", "drs-terms-and-conditions");
+  const { data: termsConditionsgeneral, isLoading: isLoadingTermsConditions } = useGetEntity(
+    "home",
+    "terms-points1",
+    "drs-terms-and-conditions"
+  );
   const handelCopy = (text: string) => {
     navigator.clipboard.writeText(text);
     toast.success("copied");
   };
   const { user2Settings, loading, userSettings } = useAuth();
-  if (isLoading || !points || loading || isLoadingTerms || isLoadingPrizes || loading|| isLoadingTermsConditions) return <Spinner />;
+  if (isLoading || !points || loading || isLoadingTerms || isLoadingPrizes || loading || isLoadingTermsConditions)
+    return <Spinner />;
   return (
     <section>
       <div className="flex flex-col gap-2">
