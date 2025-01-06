@@ -20,9 +20,7 @@ const nextConfig = {
     ],
     unoptimized: true,
   },
-  experimental: {
-    missingSuspenseWithCSRBailout: false,
-  },
+
   reactStrictMode: false,
 };
 

@@ -156,6 +156,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setCartCount(0);
     setLoading(true);
     cookies.remove("jwt");
+    cookies.remove("notificationToken");
     queryClient.removeQueries({ queryKey: ["user_settings"] });
     queryClient.removeQueries({ queryKey: ["user2_settings"] });
     queryClient.removeQueries({ queryKey: ["my-profile"] });
