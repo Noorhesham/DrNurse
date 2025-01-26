@@ -50,7 +50,7 @@ const Meet = ({ cancel, img, meet, id }: { cancel?: boolean; img?: boolean; meet
             />
             {meet?.company && <h2 className="text-black font-semibold text-base">{meet.company.title}</h2>}
             {meet?.invited && (
-              <Link href={`/dashboard/${id}/doctor/${meet.invited.profile.id}`} className="text-gray-600">
+              <Link href={`/dashboard/${id}/doctor/${meet?.invited?.profile?.id}`} className="text-gray-600">
                 {meet.invited.name}
               </Link>
             )}

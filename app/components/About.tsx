@@ -38,9 +38,9 @@ const About = ({
                   src={service.service_list_image[0]?.file}
                 />
               </div>
-              <Head1 className=" mt-4" size="sm" text={service.service_list_main_title} />
+              <Head1 className=" mt-4" size="sm" text={service?.service_list_main_title} />
               <div
-                dangerouslySetInnerHTML={{ __html: convertToHTML(service.service_list_content) }}
+                dangerouslySetInnerHTML={{ __html: convertToHTML(service?.service_list_content) }}
                 className={`lg:max-w-2xl text-black text-sm  font-medium my-2 leading-[1.7] `}
               />
             </MotionItem>

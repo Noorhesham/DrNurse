@@ -39,6 +39,7 @@ export const useFormHandler = () => {
           onSuccess?.(res);
         } else {
           toast.error(res.message);
+
           if (res.errors) {
             Object.entries(res.errors).forEach(([field, messages]) => {
               setError?.(field, {
