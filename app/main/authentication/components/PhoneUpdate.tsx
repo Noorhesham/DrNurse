@@ -52,7 +52,7 @@ const PhoneUpdate = ({ user }: { user: any }) => {
       },
       onError: (err: any) => {
         console.error("Failed to submit form:", err);
-        setOtpError(err);
+        setOtpError(err.message);
       },
       setError,
     });

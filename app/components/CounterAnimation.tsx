@@ -15,6 +15,7 @@ const CounterAnimation = ({
   const ref = useRef<HTMLHeadingElement>(null);
   const isInView = useInView(ref, { once: true });
   useIsomorphicLayoutEffect(() => {
+    
     if (!ref.current) return;
     if (!isInView) return;
     ref.current.textContent = String(from);

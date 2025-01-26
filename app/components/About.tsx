@@ -35,7 +35,7 @@ const About = ({
                   alt="image"
                   fill
                   className="object-cover object-top w-full h-full "
-                  src={service.service_list_image[0].file}
+                  src={service.service_list_image[0]?.file}
                 />
               </div>
               <Head1 className=" mt-4" size="sm" text={service.service_list_main_title} />

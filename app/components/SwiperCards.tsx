@@ -9,7 +9,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import cookies from "js-cookie";
 import { useTranslations } from "next-intl";
-import { Autoplay } from "swiper/modules"; // Correct import for Autoplay
+  import { Autoplay } from "swiper/modules"; // Correct import for Autoplay
 
 const SwiperCards = ({
   items,
