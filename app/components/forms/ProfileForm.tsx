@@ -158,7 +158,6 @@ const replaceUndefinedOrNull = (obj: any): any => {
 type JobFormValues = z.infer<typeof jobSchema>;
 
 const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
-  console.log(dataDefault);
   const { data: countries, isLoading } = useGetEntity("countries", "countries");
   const { data: careerTypes, isLoading: loadingCareerTypes } = useGetEntities({
     resourceName: "getEntity",
@@ -180,7 +179,6 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
               `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
             );
             const data = await response.json();
-            console.log(data);
             // Extract country code from API response
             if (data && data.countryCode) {
               setLocation(data.countryCode); // e.g., "EG", "SA", etc.
@@ -340,7 +338,6 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
     const formData = new FormData();
     const fileFields = ["resume", "practice_license", "identification_card", "certificate"];
     const sanitizedData = replaceUndefinedOrNull(data);
-    console.log(data);
     if (sanitizedData.available !== "yes_from_custom_time") {
       delete sanitizedData.start_availability_at;
     }
@@ -365,7 +362,6 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
           value.forEach((item, index) => {
             if (typeof item === "object" && item !== null) {
               for (const nestedKey in item) {
-                console.log(item);
                 // if (item[nestedKey] === null) {
                 //   return (item[nestedKey] = "");
                 // }
