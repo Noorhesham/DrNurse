@@ -322,98 +322,98 @@ const getURL = (
 };
 
 // Server Request Function
-export async function Server({
-  resourceName,
-  id,
-  method,
-  body,
-  headers,
-  noHeaders = false,
-  cache = 0,
-  formData = false,
-  entityName,
-  queryParams,
-  nocompany,
-}: {
-  resourceName: ResourceNameProps;
-  id?: string;
-  method?: MethodProps;
-  body?: any;
-  headers?: any;
-  noHeaders?: boolean;
-  cache?: number;
-  formData?: boolean;
-  entityName?: string;
-  queryParams?: URLSearchParams | string;
-  nocompany?: boolean;
-}) {
-  // Get the token and device info from cookies
-  const jwt = cookies().get("jwt")?.value;
-  const deviceId = cookies().get("device_info")?.value || "{}";
-  const hospitalId = cookies().get("hospitalId")?.value;
-  const lang = cookies().get("NEXT_LOCALE")?.value || "en";
-  // Set up headers
-  const combinedHeaders: { [key: string]: string } = {
-    ...headers,
-  };
+  export async function Server({
+    resourceName,
+    id,
+    method,
+    body,
+    headers,
+    noHeaders = false,
+    cache = 0,
+    formData = false,
+    entityName,
+    queryParams,
+    nocompany,
+  }: {
+    resourceName: ResourceNameProps;
+    id?: string;
+    method?: MethodProps;
+    body?: any;
+    headers?: any;
+    noHeaders?: boolean;
+    cache?: number;
+    formData?: boolean;
+    entityName?: string;
+    queryParams?: URLSearchParams | string;
+    nocompany?: boolean;
+  }) {
+    // Get the token and device info from cookies
+    const jwt = cookies().get("jwt")?.value;
+    const deviceId = cookies().get("device_info")?.value || "{}";
+    const hospitalId = cookies().get("hospitalId")?.value;
+    const lang = cookies().get("NEXT_LOCALE")?.value || "en";
+    // Set up headers
+    const combinedHeaders: { [key: string]: string } = {
+      ...headers,
+    };
 
-  if (jwt && jwt !== "undefined" && !noHeaders) {
-    combinedHeaders.Authorization = `Bearer ${jwt}`;
-  }
-  if (deviceId) {
-    combinedHeaders["device-unique-id"] = JSON.parse(deviceId).device_unique_id;
-  }
-  if (hospitalId && !nocompany) {
-    combinedHeaders["company-id"] = hospitalId;
-  }
-  combinedHeaders["lang"] = lang;
-  try {
-    // Get the URL and method from the resource name
-    const { url, method: resolvedMethod } = getURL(resourceName, id, entityName, queryParams);
-    console.log(url, hospitalId);
-    // Fetch data from the server
-    let requestBody;
-    if (formData) requestBody = body;
-    else {
-      requestBody = body ? JSON.stringify(body) : undefined;
-      combinedHeaders["Content-Type"] = "application/json";
+    if (jwt && jwt !== "undefined" && !noHeaders) {
+      combinedHeaders.Authorization = `Bearer ${jwt}`;
     }
-    const response = await fetch(url, {
-      method: method || resolvedMethod,
-      headers: combinedHeaders,
-      body: requestBody,
-      next: {
-        revalidate: cache ? cache : 0,
-        tags: cache ? [`${resourceName}-${queryParams}`] : [],
-      },
-    });
-    // if (!response.ok) throw new Error(`Error: ${response.status}`);
-    const contentType = response.headers.get("Content-Type");
-    if (contentType && contentType.includes("application/pdf")) {
-      const arrayBuffer = await response.arrayBuffer();
-      const base64Data = Buffer.from(arrayBuffer).toString("base64");
+    if (deviceId) {
+      combinedHeaders["device-unique-id"] = JSON.parse(deviceId).device_unique_id;
+    }
+    if (hospitalId && !nocompany) {
+      combinedHeaders["company-id"] = hospitalId;
+    }
+    combinedHeaders["lang"] = lang;
+    try {
+      // Get the URL and method from the resource name
+      const { url, method: resolvedMethod } = getURL(resourceName, id, entityName, queryParams);
+      console.log(url, hospitalId);
+      // Fetch data from the server
+      let requestBody;
+      if (formData) requestBody = body;
+      else {
+        requestBody = body ? JSON.stringify(body) : undefined;
+        combinedHeaders["Content-Type"] = "application/json";
+      }
+      const response = await fetch(url, {
+        method: method || resolvedMethod,
+        headers: combinedHeaders,
+        body: requestBody,
+        next: {
+          revalidate: cache ? cache : 0,
+          tags: cache ? [`${resourceName}-${queryParams}`] : [],
+        },
+      });
+      // if (!response.ok) throw new Error(`Error: ${response.status}`);
+      const contentType = response.headers.get("Content-Type");
+      if (contentType && contentType.includes("application/pdf")) {
+        const arrayBuffer = await response.arrayBuffer();
+        const base64Data = Buffer.from(arrayBuffer).toString("base64");
 
-      return { base64Data };
-    }
-    const data = await response.json();
-    if (
-      data.message === "Device token mismatch" ||
-      data.message === "Login again please" ||
-      data.message === "تسجيل الدخول مرة أخرى من فضلك" ||
-      response.status === 401
-    ) {
-      redirect("/login?error=true");
-    }
+        return { base64Data };
+      }
+      const data = await response.json();
+      if (
+        data.message === "Device token mismatch" ||
+        data.message === "Login again please" ||
+        data.message === "تسجيل الدخول مرة أخرى من فضلك" ||
+        response.status === 401
+      ) {
+        redirect("/login?error=true");
+      }
 
-    return data;
-  } catch (error: any) {
-    console.log("Server request error:", error);
-    if (isRedirectError(error)) {
-      throw error;
+      return data;
+    } catch (error: any) {
+      console.log("Server request error:", error);
+      if (isRedirectError(error)) {
+        throw error;
+      }
+      if (error.message === "Device token mismatch" || error.message === "Login again please" || error.status === 401) {
+        redirect("/login?error=true");
+      }
+      throw new Error(`Error: ${error.message}`);
     }
-    if (error.message === "Device token mismatch" || error.message === "Login again please" || error.status === 401) {
-      redirect("/login?error=true");
-    }
-    throw new Error(`Error: ${error.message}`);
   }
-}

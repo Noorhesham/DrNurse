@@ -11,7 +11,7 @@ const page = () => {
   const { userSettings, loading } = useAuth();
   const router = useRouter();
   if (isLoading || !data || loading) return <Spinner />;
-  if (!userSettings?.has_profile) return router.push("/person/create-profile");
+  // if (!userSettings?.has_profile) return router.push("/person/create-profile");
 
   return (
     <div>
