@@ -73,7 +73,12 @@ const Socials = ({
 
     if (href !== "") {
       return (
-        <Link target="_blank" key={key} href={href} className={"flex items-center p-1.5 rounded-full text-lg bg-main"}>
+        <Link
+          target="_blank"
+          key={key}
+          href={href || ""}
+          className={"flex items-center p-1.5 rounded-full text-lg bg-main"}
+        >
           <Icon />
         </Link>
       );
