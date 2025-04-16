@@ -1,0 +1,35 @@
+/* ملف product.module.css */
+.product {
+  display: flex;
+  flex-direction: column;
+}
+
+/* تطبيق قواعد عالمية على العناصر الموجودة داخل العنصر الذي يحمل الكلاس .product */
+.product :global(ul) {
+  list-style: decimal;
+}
+
+.product :global(b) {
+  font-weight: bold;
+}
+.product :global(h3) {
+  @apply  text-xl lg:text-2xl;
+}
+.product :global(h2) {
+  @apply  text-2xl lg:text-3xl !my-2;
+}
+.product :global(strong) {
+  @apply font-bold text-lg;
+}
+.product :global(h3),
+.product :global(h2),
+.product :global(strong) {
+  font-weight: 600;
+  color: #0d3b6f;
+}
+
+/* باقي القواعد المحلية */
+.content {
+  display: flex;
+  flex-direction: column;
+}

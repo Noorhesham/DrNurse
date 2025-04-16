@@ -1,0 +1,4 @@
+h2,
+h3 {
+  @apply capitalize mb-4 text-4xl text-main2 text-left font-semibold max-w-5xl font-[600];
+}
