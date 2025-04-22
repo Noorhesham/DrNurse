@@ -131,6 +131,7 @@ const SearchBox = ({
         router.push(userSettings ? `/person/job/${jobs[selectedResult].id}` : `/job/${jobs[selectedResult].id}`);
     }
   };
+  const href = !userSettings ? "/login" : jobs?.length > 1 ? `/jobs?query=${encodeURIComponent(query)}` : "/jobs";
   return (
     <div ref={containerRef} className={`${className || " md:w-[80%]"} w-full relative flex flex-col gap-4  `}>
       <AnimatePresence>
@@ -161,14 +162,14 @@ const SearchBox = ({
                     </div>
                   </Link>
                 ) : (
-                  <button
+                  <Link
+                    href={"/login"}
                     className=" hover:bg-gray-100 rounded-xl py-2 text-base px-4 duration-150 w-full flex items-center gap-2"
-                    disabled
                   >
                     <div className=" flex flex-col">
                       <h2 className=" text-blackline-clamp-1 font-medium rounded-xl">{item.job_title}</h2>
                     </div>
-                  </button>
+                  </Link>
                 )
               )
             ) : (
@@ -204,7 +205,7 @@ const SearchBox = ({
           />
         </div>
         {btn && (
-          <Link href={jobs?.length > 1 ? `/jobs?query=${query}` : "/jobs"}>
+          <Link href={href}>
             <Button className="  text-center m-auto  lg:flex hidden" size={"lg"}>
               SEARCH MY JOB
             </Button>

@@ -88,6 +88,11 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
             <MiniTitle color="black" text="EMPLOYEE INFO" />
             <div className=" flex flex-col gap-5">
               <InfoItem
+                icon={<CalendarIcon className=" w-5 h-5" />}
+                title="AVAILABILITY"
+                description={dataPage?.available ? dataPage.start_availability_at : "Not Available"}
+              />
+              <InfoItem
                 icon={<DashboardIcon className=" w-5 h-5" />}
                 title="TYPE"
                 description={dataPage?.career_type?.title || "Unknown"}

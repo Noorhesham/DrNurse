@@ -19,8 +19,8 @@ const JobsFooter = () => {
           {general_settings?.latest_jobs?.map((job: any) => (
             <Link
               className="lg:border-none  w-fit pb-2"
-              href={user_settings ? `/person/job/${job.id}` : `/job/${job.id}`}
-              target="_blank"
+              href={user_settings ? `/person/job/${job.id}` : `/login`}
+              target={!user_settings?._id ? "_self" : "_blank"}
               key={job.id}
             >
               {job.job_title}

@@ -65,7 +65,7 @@ const Profiles = ({ doctors, totalPages, filters, count, jobId }: any) => {
                   name: doc.name,
                   image: doc.avatar,
                   speciality:
-                    doc.job_title ||
+                    doc.current_job_title ||
                     [doc?.career_type?.title, doc?.career_specialty?.title, doc?.career_level?.title]
                       .filter(Boolean)
                       .join(", "),

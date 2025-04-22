@@ -8,7 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 const DownloadButtons = () => {
   const { generalSettings, loading } = useAuth();
   if (loading) return <Skeleton />;
-  const { app_store, play_store } = generalSettings.store_url;
+  const { app_store, play_store } = generalSettings.store_url||{};
   return (
     <>
       <Link href={`${app_store}`} target="_blank" className="  w-40  lg:w-full h-20 relative">
