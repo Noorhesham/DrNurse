@@ -77,7 +77,7 @@ const page = () => {
             </div>
             <div className=" grid grid-cols-1 md:grid-cols-2 my-4 gap-5">
               <div className=" flex flex-col gap-4 bg-[#F7F9FB] px-5 py-5 rounded-lg">
-                <MiniTitle boldness="bold" text="RECENTLY MEETINGS" />
+                <MiniTitle boldness="bold" text="RECENT MEETINGS" />
                 {overView.data?.meetings?.length > 0 ? (
                   overView.data?.meetings.map((meet: any) => <Meet id={params.id} key={meet.id} meet={meet} />)
                 ) : (

@@ -76,7 +76,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
                           PAY INVOICE
                         </Button>
                       }
-                      content={<Payment planId={job.id} invoice={true} />}
+                      content={<Payment job={job} planId={job.id} invoice={true} />}
                     />
                   </TableCell>
                 )}

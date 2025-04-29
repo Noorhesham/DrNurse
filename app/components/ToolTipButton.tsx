@@ -28,7 +28,7 @@ const TooltipButton: React.FC<TooltipButtonProps> = ({
           <button
             onClick={onClick}
             disabled={disabled}
-            className={`p-3 rounded-xl ${className} ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+            className={`p-3 rounded-xl ${className} uppercase ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
           >
             <div className="w-6 h-6 relative">
               <Image alt={altText} fill className="object-contain" src={iconSrc} />

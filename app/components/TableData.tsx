@@ -48,16 +48,14 @@ export default function TableData({
             <TableRow key={job.id}>
               <TableCell className="font-medium text-sm md:text-base lg:w-fit w-full">
                 <div className=" flex flex-col items-start">
-                  {job.status === "draft" ? (
-                    <h2 className=" text-gray-900  font-semibold"> {job.job_title}</h2>
-                  ) : (
+                  {
                     <Link
                       href={person ? `/person/job/${job.id}` : `/dashboard/${id}/job/${job.id}`}
                       className=" text-gray-900  font-semibold"
                     >
                       {job.job_title}
                     </Link>
-                  )}
+                  }
                   <div className="   flex items-start gap-3 text-muted-foreground">
                     <p>{job.career_type.title}</p>
                     <span
@@ -111,7 +109,7 @@ export default function TableData({
                       size={"lg"}
                       className=" font-semibold bg-light text-main2 hover:bg-main2 hover:text-light duration-150"
                     >
-                      <Link href={`/dashboard/${id}/jobs/applications/${job.id}`}>VIEW APPLICATIONS</Link>
+                      <Link href={`/dashboard/${id}/jobs/applications/${job.id}?page=1`}>VIEW APPLICATIONS</Link>
                     </Button>
                   )}
                   {viewbtn ? (

@@ -32,6 +32,7 @@ const Actions = ({
 }) => {
   const [isPending, startTransition] = useTransition();
   const queryClient = useQueryClient();
+  const router = useRouter();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -66,6 +67,8 @@ const Actions = ({
                   });
                   if (res.status) {
                     toast.success(res.message);
+                    router.push(`/dashboard/${id}/edit-job/${res.new_job_id}`);
+
                     queryClient.invalidateQueries({ queryKey: [`job-${jobId}`, `company-${id}`] });
                   } else toast.error(res.message);
                 });

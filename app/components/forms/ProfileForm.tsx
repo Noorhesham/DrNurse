@@ -337,7 +337,11 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
   });
   useEffect(() => {
     if (Object.keys(form.formState.errors).length > 0) {
-      toast.error("Please fix form errors first");
+      toast.error(
+        Object.values(form.formState.errors)
+          .map((error) => error.message)
+          .join(", ")
+      );
     }
   }, [form.formState.errors]);
   const { setDates, setLogin } = useAuth();
@@ -694,7 +698,12 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
                   </div>
                 </FlexWrapper>
                 <div className="flex gap-2 px-3 py-2 items-center">
-                  <FormInput optional type="file" label={t("Upload certificate")} name={`education.${index}.certificate`} />
+                  <FormInput
+                    optional
+                    type="file"
+                    label={t("Upload certificate")}
+                    name={`education.${index}.certificate`}
+                  />
                   <button
                     className=" border-2  rounded-lg p-1   mt-6   border-gray-800 justify-end"
                     type="button"

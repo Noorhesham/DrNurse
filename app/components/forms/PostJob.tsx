@@ -80,8 +80,7 @@ const jobSchema = z
   .refine((data) => +data.max_salary > +data.min_salary, {
     message: "Max Salary must be greater than Min Salary",
     path: ["max_salary"],
-  })
-
+  });
 
 type JobFormValues = z.infer<typeof jobSchema>;
 
@@ -163,7 +162,11 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
   }, [minSalary, maxSalary, setError, clearErrors]);
   useEffect(() => {
     if (Object.keys(form.formState.errors).length > 0) {
-      toast.error("Please fix form errors first");
+      toast.error(
+        Object.values(form.formState.errors)
+          .map((error) => error.message)
+          .join(", ")
+      );
     }
   }, [form.formState.errors]);
   const queryClient = useQueryClient();
@@ -246,7 +249,7 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
             <FormSelect
               disabled={isLoading}
               options={data?.data.map((branch: any) => ({ value: branch.id.toString(), label: branch.name }))}
-              label={t("Choose the Branch")}
+              label={t("CHOOSE THE BRANCH")}
               name="branch_id"
               className="mt-4"
             />
@@ -261,7 +264,7 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
                   { value: "0", label: "no" },
                 ]}
                 className=""
-                label={t("Hide Salary?")}
+                label={t("HIDE SALARy?")}
                 name="hide_salary"
               />
             </FormFlexContainer>
@@ -275,7 +278,7 @@ const PostJob = ({ defaultData }: { defaultData?: any }) => {
                 placeholder={t("nationality")}
                 options={[
                   { label: "Not Specified", value: " " },
-                  ...(countries?.data || []).map((country: any) => ({
+                  ...(countries?.data || []).reverse().map((country: any) => ({
                     label: country.title,
                     value: country.id,
                   })),

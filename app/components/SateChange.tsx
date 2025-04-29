@@ -36,17 +36,17 @@ const SateChange = ({ size, jobId, defaultValue }: { size?: string; jobId?: numb
       <SelectTrigger
         className={`w-[180px] ${
           size === "sm" && "py-1 px-2"
-        } text-sm rounded-2xl text-center placeholder:text-center placeholder:text-sm  bg-main2 text-gray-50`}
+        } text-sm rounded-2xl text-center uppercase placeholder:text-center placeholder:text-sm  bg-main2 text-gray-50`}
       >
         <SelectValue
-          className=" mx-auto text-center placeholder:text-center text-xs md:text-sm "
+          className=" mx-auto text-center uppercase placeholder:text-center text-xs md:text-sm "
           placeholder="CHANGE STATE"
         />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
           {data?.data?.map((item: { id: number | string; name: string }) => (
-            <SelectItem key={item.id} value={item.id}>
+            <SelectItem   className=" uppercase" key={item.id} value={item.id}>
               {item.name}
             </SelectItem>
           ))}

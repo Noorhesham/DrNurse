@@ -11,10 +11,20 @@ const JobInfo = ({ job, timeAgo }: { job: any; timeAgo: string }) => {
       <MiniTitle color="black" text="JOB INFO" />
       <div className=" flex flex-col gap-5">
         {timeAgo && <InfoItem icon={<CalendarIcon className=" w-5 h-5" />} title="JOB POSTED" description={timeAgo} />}
-        {job.gender && <InfoItem icon={<PersonIcon className=" w-5 h-5" />} title="GENDER" description={job.gender} />}
-        {job?.family_status && (
-          <InfoItem icon={<PersonIcon className=" w-5 h-5" />} title="FAMILY STATUS" description={job.family_status} />
-        )}
+        {
+          <InfoItem
+            icon={<PersonIcon className=" w-5 h-5" />}
+            title="GENDER"
+            description={job.gender || "NOT SPECIFIED"}
+          />
+        }
+        {
+          <InfoItem
+            icon={<PersonIcon className=" w-5 h-5" />}
+            title="FAMILY STATUS"
+            description={job.family_status || "NOT SPECIFIED"}
+          />
+        }
         {job?.nationality && (
           <InfoItem icon={<EarthIcon className=" w-5 h-5" />} title="NATIONALITY" description={job.nationality.title} />
         )}{" "}
@@ -41,6 +51,13 @@ const JobInfo = ({ job, timeAgo }: { job: any; timeAgo: string }) => {
             description={`${job.branch?.country?.title || ""}, ${job.branch?.state?.title || ""} , ${
               job.branch?.city?.title || ""
             }`}
+          />
+        )}
+        {job.company_id && (
+          <InfoItem
+            icon={<EarthIcon className=" w-5 h-5" />}
+            title="COMPANY ID"
+            description={job.company_id || "NOT SPECIFIED"}
           />
         )}
       </div>

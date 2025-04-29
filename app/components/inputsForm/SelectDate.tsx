@@ -44,7 +44,7 @@ const SelectDate = ({
     {
       nocompany: person === true,
     },
-    `job_id=${jobId||"0"}&company_id=${companyId}`
+    `job_id=${jobId || "0"}&company_id=${companyId}`
   );
 
   const queryClient = useQueryClient();
@@ -64,7 +64,7 @@ const SelectDate = ({
       });
       console.log(res);
       if (res?.status) {
-        toast.success(res.message);
+        toast.success(res.message, {});
         queryCLient.invalidateQueries({ queryKey: [`person-meetings`] });
       } else toast.error(res.message);
     });

@@ -9,9 +9,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Server } from "../main/Server";
 import { toast } from "react-toastify";
 import MeetingForm from "./forms/MeetingForm";
+import { useRouter } from "next/navigation";
 
 const JobHeader = ({ job, privatejob }: { job: any; privatejob?: boolean }) => {
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
   const queryClient = useQueryClient();
   const doctor = {
     name: job.job_title,
@@ -43,7 +45,7 @@ const JobHeader = ({ job, privatejob }: { job: any; privatejob?: boolean }) => {
                         resourceName: "lock-job",
                         id: job.id,
                         body: {
-                          status: "closed",
+                          status: job.status === "closed" ? "publish" : "closed",
                           job_id: job.id,
                         },
                       });
@@ -71,6 +73,8 @@ const JobHeader = ({ job, privatejob }: { job: any; privatejob?: boolean }) => {
                       });
                       if (res.status) {
                         toast.success(res.message);
+                        console.log(res);
+                        router.push(`/dashboard/${job.company?.id}/edit-job/${res.new_job_id}`);
                         queryClient.invalidateQueries({ queryKey: [`job-${job.id}`] });
                       } else toast.error(res.message);
                     });

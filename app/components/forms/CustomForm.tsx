@@ -114,7 +114,7 @@ const CustomForm = ({
           </div>
           {children}
           <div className={cn("flex gap-2 mt-5 items-center", { "self-center w-full lg:w-[60%]": cancel })}>
-            <div className={`${btnStyles} flex-1 flex items-center flex-col`}>
+            <div className={`${btnStyles}  flex-1 flex items-center flex-col`}>
               {link && linkText && <MyLink link={link} text={linkText} />}
               {
                 <div className=" w-full">

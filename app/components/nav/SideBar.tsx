@@ -30,7 +30,7 @@ const SideBar = ({ iconsOnly = false, person }: { iconsOnly?: boolean; person?: 
     // Conditionally add "Find a Employee" when not a person
     ...(person
       ? []
-      : [{ link: appendId(`${origin}/employees`), text: "Find a Employee", icon: <Users className={iconsStyles} /> }]),
+      : [{ link: appendId(`${origin}/employees`), text: "FIND AN EMPLOYEE", icon: <Users className={iconsStyles} /> }]),
 
     // Jobs section: Different for person and non-person
     {

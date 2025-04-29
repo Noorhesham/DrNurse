@@ -1,6 +1,5 @@
 "use client";
-import AboutDoctor from "@/app/components/AboutDoctor";
-import Education from "@/app/components/Education";
+
 import MeetingForm from "@/app/components/forms/MeetingForm";
 import FunctionalButton from "@/app/components/FunctionalButton";
 import GridContainer from "@/app/components/defaults/GridContainer";
@@ -8,25 +7,18 @@ import InfoItem from "@/app/components/InfoDoc";
 import MainProfile from "@/app/components/MainProfile";
 import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
 import MiniTitle from "@/app/components/defaults/MiniTitle";
-import Paragraph from "@/app/components/defaults/Paragraph";
-import SateChange from "@/app/components/SateChange";
-import Tabing from "@/app/components/Tabing";
+
 import { Briefcase, CalendarIcon, DollarSign, HeartIcon, LanguagesIcon } from "lucide-react";
 import React from "react";
-import { Server } from "@/app/main/Server";
+
 import { useGetEntity } from "@/lib/queries";
 import Spinner from "@/app/components/Spinner";
-import { convertToHTML } from "@/lib/utils";
-import { formatDate } from "date-fns";
-import UserCard from "@/app/components/UserCard";
-import FlexWrapper from "@/app/components/defaults/FlexWrapper";
-import Container from "@/app/components/Container";
+
 import { GoLocation, GoPeople } from "react-icons/go";
 import { DashboardIcon } from "@radix-ui/react-icons";
 import BreadCrumb from "@/app/components/BreadCrumb";
 import { useSearchParams } from "next/navigation";
 import { ACTIVE_LISCNECE_COUNTRY } from "@/app/constants";
-import useCachedQuery from "@/app/hooks/useCachedData";
 import AboutPerson from "@/app/components/AboutPerson";
 
 const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: string } }) => {
@@ -70,7 +62,7 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
                 content={<MeetingForm userId={dataPage?.user_id} invite={true} />}
               />
               <FunctionalButton
-                btnText="SEND INITIAL OFFER"
+                btnText="SEND JOB OFFER"
                 icon={<Briefcase className=" w-5 h-5" />}
                 link={`/dashboard/${id}/add-job-offer?userId=${dataPage?.id}`}
               />

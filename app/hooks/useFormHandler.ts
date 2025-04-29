@@ -52,7 +52,7 @@ export const useFormHandler = () => {
         }
       } catch (error) {
         console.error("Error during form submission:", error);
-        toast.error("An unexpected error occurred.");
+        toast.error(error||error.message || "An error occurred");
         onError?.(error);
       } finally {
         // Invalidate queries after completion

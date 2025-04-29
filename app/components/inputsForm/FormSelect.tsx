@@ -27,15 +27,15 @@ const FormSelect = ({
         const selected = options?.find((p) => p._id === form.getValues(name)?._id || p._id === selectedValue);
         return (
           <FormItem className={`${className || ""} relative w-full `} id={id || ""}>
-            <FormLabel className=" relative w-fit  capitalize">
+            <FormLabel className=" relative w-fit  !uppercase">
               {" "}
               {!optional && <span className={`absolute -right-5 -top-[1px]  z-10   font-normal text-red-600`}>*</span>}
-              {label}
+              <span className=" uppercase">{label}</span>
             </FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
                 <SelectTrigger className=" capitalize shadow-sm">
-                  <SelectValue placeholder={placeholder || "SELECT"}>{selected && selected.name}</SelectValue>
+                  <SelectValue className="capitalize" placeholder={placeholder || "SELECT"}>{selected && selected.name}</SelectValue>
                 </SelectTrigger>
               </FormControl>
               <SelectContent>

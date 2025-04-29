@@ -29,7 +29,7 @@ const page = ({ params: { jobId } }: { params: { jobId: string } }) => {
               <div className=" my-4">
                 <VerificationStatus
                   verification_type={job.status}
-                  message="This is a draft job , it must be edited  or published "
+                  message="This is a copied job , it must be edited  or published "
                 />
               </div>
             )}

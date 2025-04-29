@@ -89,7 +89,11 @@ const HospitalProfileSettings = ({ defaultData }: { defaultData?: any }) => {
   });
   useEffect(() => {
     if (Object.keys(form.formState.errors).length > 0) {
-      toast.error("Please fix form errors first");
+      toast.error(
+        Object.values(form.formState.errors)
+          .map((error) => error.message)
+          .join(", ")
+      );
     }
   }, [form.formState.errors]);
   const { append, remove, fields } = useFieldArray({

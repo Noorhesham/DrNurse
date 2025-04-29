@@ -1,4 +1,4 @@
-import { FaCheckCircle, FaTimesCircle, FaQuestionCircle, FaDraft2Digital } from "react-icons/fa";
+import { FaCheckCircle, FaTimesCircle, FaQuestionCircle, FaDraft2Digital, FaCopy } from "react-icons/fa";
 
 const VerificationStatus = ({
   verification_type,
@@ -24,7 +24,7 @@ const VerificationStatus = ({
       case "re-review":
         return <FaQuestionCircle style={{ color: "orange" }} />; // Re-review icon (orange)
       case "draft":
-        return <FaDraft2Digital className=" text-blue-500 w-4 h-4" />;
+        return <FaCopy className=" text-blue-500 w-4 h-4" />;
 
       default:
         return null;

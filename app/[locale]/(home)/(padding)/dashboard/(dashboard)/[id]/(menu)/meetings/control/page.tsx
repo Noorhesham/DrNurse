@@ -31,7 +31,7 @@ const page = () => {
   };
   const invitations = data.data.filter((meet: any) => meet.status === "invitation");
   const meetings = data.data.filter((meet: any) => meet.status !== "invitation");
-  console.log(meetings)
+  console.log(meetings);
   return (
     <section className=" flex flex-col gap-8">
       <div className=" flex flex-col gap-2">
@@ -45,88 +45,94 @@ const page = () => {
                   <div className=" flex items-center gap-3">
                     {meet.status !== "cancelled" ? (
                       <div className="flex lg:flex-nowrap flex-wrap items-center gap-2">
-                        <ModalCustom
-                          btn={
-                            <Button size={"lg"} className=" rounded-full">
-                              Change Status
-                            </Button>
-                          }
-                          content={
-                            <div className="flex flex-col items-center justify-center gap-2">
-                              <Paragraph
-                                description={"DETERMINE WHETHER YOU WANT TO DISABLED OR RESCHEDULE THE MEETING"}
-                              />
-                              <div className="flex items-center justify-center gap-5">
-                                <Button
-                                  disabled={isPending}
-                                  onClick={() => {
-                                    startTransition(async () => {
-                                      const res = await Server({
-                                        resourceName: "cancelInvite",
-                                        body: {
-                                          meeting_id: meet.id,
-                                          cancelled: false,
-                                        },
-                                      });
-                                      if (res.status) {
-                                        toast.success(res.message);
+                        {meet.status !== "completed" && (
+                          <ModalCustom
+                            btn={
+                              <Button size={"lg"} className=" rounded-full">
+                                Change Status
+                              </Button>
+                            }
+                            content={
+                              <div className="flex flex-col items-center justify-center gap-2">
+                                <Paragraph
+                                  description={"DETERMINE WHETHER YOU WANT TO DISABLED OR RESCHEDULE THE MEETING"}
+                                />
+                                {
+                                  <div className="flex items-center justify-center gap-5">
+                                    <Button
+                                      disabled={isPending}
+                                      onClick={() => {
+                                        startTransition(async () => {
+                                          const res = await Server({
+                                            resourceName: "cancelInvite",
+                                            body: {
+                                              meeting_id: meet.id,
+                                              cancelled: false,
+                                            },
+                                          });
+                                          if (res.status) {
+                                            toast.success(res.message);
 
-                                        queryClient.invalidateQueries({
-                                          queryKey: [`meetings-${jobId}`],
+                                            queryClient.invalidateQueries({
+                                              queryKey: [`meetings-${jobId}`],
+                                            });
+                                          } else toast.error(res.message);
                                         });
-                                      } else toast.error(res.message);
-                                    });
-                                  }}
-                                  variant={"destructive"}
-                                  size={"lg"}
-                                  className=" rounded-full"
-                                >
-                                  Reschedule Meeting
-                                </Button>{" "}
-                                <Button
-                                  disabled={isPending}
-                                  onClick={() => {
-                                    startTransition(async () => {
-                                      const res = await Server({
-                                        resourceName: "cancelInvite",
-                                        body: {
-                                          meeting_id: meet.id,
-                                          cancelled: true,
-                                        },
-                                      });
-                                      if (res.status) {
-                                        toast.success(res.message);
+                                      }}
+                                      variant={"destructive"}
+                                      size={"lg"}
+                                      className=" rounded-full"
+                                    >
+                                      Reschedule Meeting
+                                    </Button>{" "}
+                                    <Button
+                                      disabled={isPending}
+                                      onClick={() => {
+                                        startTransition(async () => {
+                                          const res = await Server({
+                                            resourceName: "cancelInvite",
+                                            body: {
+                                              meeting_id: meet.id,
+                                              cancelled: true,
+                                            },
+                                          });
+                                          if (res.status) {
+                                            toast.success(res.message);
 
-                                        queryClient.invalidateQueries({
-                                          queryKey: [`meetings-${jobId}`],
+                                            queryClient.invalidateQueries({
+                                              queryKey: [`meetings-${jobId}`],
+                                            });
+                                          } else toast.error(res.message);
                                         });
-                                      } else toast.error(res.message);
-                                    });
-                                  }}
-                                  variant={"destructive"}
-                                  size={"lg"}
-                                  className=" rounded-full"
-                                >
-                                  Cancel Meeting
-                                </Button>
+                                      }}
+                                      variant={"destructive"}
+                                      size={"lg"}
+                                      className=" rounded-full"
+                                    >
+                                      Cancel Meeting
+                                    </Button>
+                                  </div>
+                                }
                               </div>
-                            </div>
-                          }
-                        />
-                        <Button
-                          disabled={isPending}
-                          onClick={async () => {
-                            startTransition(async () => {
-                              const res = await Server({ resourceName: "start-meet", id: meet.id });
-                              console.log(res);
-                              router.push(res.start_url);
-                            });
-                          }}
-                          size={"lg"}
-                          className="self-center mr-auto bg-main2  rounded-full"
-                        >
-                          Start Meeting
-                        </Button>
+                            }
+                          />
+                        )}
+                        {
+                          <Button
+                            disabled={isPending || meet.status === "completed"}
+                            onClick={async () => {
+                              startTransition(async () => {
+                                const res = await Server({ resourceName: "start-meet", id: meet.id });
+                                console.log(res);
+                                window.open(res?.start_url, "_blank");
+                              });
+                            }}
+                            size={"lg"}
+                            className="self-center mr-auto bg-main2  rounded-full"
+                          >
+                            {meet.status === "completed" ? "Completed" : "Start Meeting"}
+                          </Button>
+                        }
                         <Button
                           onClick={() => copyToClipboard(meet.zoom_meeting.start_url)}
                           size={"lg"}

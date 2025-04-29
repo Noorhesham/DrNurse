@@ -161,7 +161,9 @@ const MeetingForm = ({ invite, userId, jobIdDef }: { invite?: boolean; userId?: 
       });
       console.log(res);
       if (res.status) {
-        toast.success(res.message);
+        toast.success(res.message, {
+          autoClose: 1000,
+        });
         queryClient.invalidateQueries({ queryKey: [`slots-${jobId}`] });
       } else {
         toast.error(res.message);
@@ -250,14 +252,14 @@ const MeetingForm = ({ invite, userId, jobIdDef }: { invite?: boolean; userId?: 
                 btnText="Add Slot"
                 onClick={() => append({ from_date: "", time_date: "", duration: "" })}
               />
-              { (
+              {
                 <FunctionalButton
                   disabled={isPending}
                   size="sm"
                   btnText="Save Slots"
                   onClick={form.handleSubmit(onSubmit)}
                 />
-              )}
+              }
             </div>
           </div>
         </form>

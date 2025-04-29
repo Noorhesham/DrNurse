@@ -70,7 +70,7 @@ const page = () => {
       <FlexWrapper max={false} className=" mt-10 justify-between">
         <div className=" flex w-full items-center   gap-1">
           <div className=" flex  w-full flex-col gap-2">
-            <Label>Invite a friend</Label>
+            <Label className=" uppercase">Invite a friend</Label>
             <div className=" flex items-center gap-2 justify-between">
               <Input disabled className={` bg-white shadow-sm w-full `} placeholder={userSettings.referral_code} />
               <button
@@ -84,7 +84,7 @@ const page = () => {
         </div>
         <div className=" flex items-center  w-full gap-1">
           <div className=" flex  w-full  flex-col gap-2">
-            <Label>Invite a friend</Label>{" "}
+            <Label className=" uppercase">Invite a friend</Label>{" "}
             <div className=" flex items-center gap-2 justify-between">
               <Input
                 disabled
@@ -113,9 +113,12 @@ const page = () => {
               icon={<PaperclipIcon className="w-5 h-5" />}
               btnText="REDEEM NOW"
               content={
-                <MaxWidthWrapper className=" flex flex-col ">
+                <MaxWidthWrapper className=" flex  items-center flex-col ">
+                  {" "}
+                  <h2 className=" font-semibold text-xl lg:text-3xl text-main2">Redeem now</h2>
                   <DialogClose ref={closeRef} className=" hidden" />
                   <FormContainer
+                  btnStyles=" !absolute left-1/2 -translate-x-1/2 w-fit !mx-auto !self-center"
                     submit={async (data: any) => {
                       const res = await Server({
                         resourceName: "reedem",
@@ -126,14 +129,21 @@ const page = () => {
                         closeRef.current?.click();
                       } else toast.error(res.message);
                     }}
-                    formArray={[{ name: "prize", select: true, options: prizes.prizes.map((prize: string) => prize) }]}
+                    formArray={[
+                      {
+                        name: "prize",
+                        select: true,
+                        options: prizes.prizes.map((prize: string) => prize),
+                        label: "SELECT PRIZE",
+                      },
+                    ]}
                   />
                 </MaxWidthWrapper>
               }
             />
           </FlexWrapper>
           <Table className=" mt-2">
-            <TableHeader className=" bg-light">
+            <TableHeader className=" uppercase bg-light">
               <TableRow>
                 <TableHead className="w-[35%]">Title</TableHead>
                 <TableHead>Redeem Date</TableHead>
@@ -161,7 +171,7 @@ const page = () => {
                       {job.operation !== "deposit" && "-"}
                       {job.points}
                     </TableCell>
-                    <TableCell className=" text-main2 font-semibold  gap-2 ">{job.type}</TableCell>
+                    <TableCell className=" text-main2 font-semibold  uppercase gap-2 ">{job.type}</TableCell>
                   </TableRow>
                 ))}
             </TableBody>
