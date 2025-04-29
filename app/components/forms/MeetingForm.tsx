@@ -5,7 +5,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
 import MiniTitle from "../defaults/MiniTitle";
 import { Form } from "@/components/ui/form";
-import { MessageCircleIcon, XIcon } from "lucide-react";
+import { MessageCircleIcon, MessageCircleWarningIcon, XIcon } from "lucide-react";
 import FunctionalButton from "../FunctionalButton";
 import FormInput from "../inputsForm/FormInput";
 import { useParams, useSearchParams } from "next/navigation";
@@ -161,8 +161,8 @@ const MeetingForm = ({ invite, userId, jobIdDef }: { invite?: boolean; userId?: 
       });
       console.log(res);
       if (res.status) {
-        toast.success(res.message, {
-          autoClose: 1000,
+        toast.info(res.message, {
+          autoClose: res.message.length > 10 ? 8000 : 3500,
         });
         queryClient.invalidateQueries({ queryKey: [`slots-${jobId}`] });
       } else {
@@ -182,7 +182,11 @@ const MeetingForm = ({ invite, userId, jobIdDef }: { invite?: boolean; userId?: 
       <Paragraph
         description="Create time slots for others to select from. These slots are shared with all invitees for 
           this job. Please ensure the times are in GMT. "
-      />
+      />{" "}
+      <p className="text-red-500 mb-4 text-sm font-semibold flex gap-1 items-center">
+        <MessageCircleWarningIcon />
+        You have to subscribe to a plan to add appointments
+      </p>
       <Form {...form}>
         {" "}
         <form className="mt-4 px-5  relative flex flex-col gap-5" onSubmit={form.handleSubmit(onSubmit)}>

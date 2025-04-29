@@ -55,7 +55,7 @@ const CompanyInfo = ({ hospital, job }: { hospital?: any; job?: any }) => {
           <InfoItem icon={<GoPeople className=" w-5 h-5" />} title="COMPANY SIZE" description={company_size} />
           <InfoItem
             icon={<GraduationCapIcon className=" w-5 h-5" />}
-            title="branches count"
+            title="BRANCHES COUNT"
             description={branches_count}
           />
         </div>

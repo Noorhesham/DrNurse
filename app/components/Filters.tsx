@@ -19,7 +19,7 @@ const Filters = ({ colseBtn, filters, from_years }: { colseBtn?: ReactNode; filt
   const router = useRouter();
   const [del, setDelete] = useState(false);
   const [filtersState, setFiltersState] = useState<FiltersType>({});
-
+  const [isFirst, setIsFirst] = useState(true);
   // Initialize filters from URL on mount
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -31,7 +31,11 @@ const Filters = ({ colseBtn, filters, from_years }: { colseBtn?: ReactNode; filt
       setFiltersState(newFilters);
     }
   }, []);
-
+  useEffect(() => {
+    setTimeout(() => {
+      setIsFirst(false);
+    }, 1000);
+  }, []);
   // Update URL when filters change
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -41,7 +45,7 @@ const Filters = ({ colseBtn, filters, from_years }: { colseBtn?: ReactNode; filt
           params.set(key, values.join(","));
         }
       });
-      params.set("page", "1");
+      !isFirst && params.set("page", "1");
       router.push(`?${params.toString()}`, { scroll: false });
     }
   }, [filtersState]);

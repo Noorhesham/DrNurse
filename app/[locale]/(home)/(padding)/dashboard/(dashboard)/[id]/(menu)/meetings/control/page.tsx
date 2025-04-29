@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import ModalCustom from "@/app/components/defaults/ModalCustom";
 import Paragraph from "@/app/components/defaults/Paragraph";
 import Link from "next/link";
+import CancelInvitation from "@/app/components/CancelInvitation";
 const page = () => {
   const searchParams = useSearchParams();
   const jobId = searchParams.get("jobId") || "0";
@@ -38,10 +39,15 @@ const page = () => {
         <MiniTitle text="MEETINGS" />
         <div className=" flex flex-col gap-3 mt-4">
           {meetings.length > 0 ? (
-            meetings.map((meet: any) => (
-              <Container>
+            meetings.map((meet: any, i: number) => (
+              <Container className=" flex items-start lg:items-center gap-2 lg:gap-3">
+                <div className="flex items-center justify-center w-7  h-7  rounded-full bg-main2 text-gray-50">
+                  {i + 1}
+                </div>
                 <FlexWrapper max={false} className=" justify-between">
-                  <Meet id={id} meet={meet} img />
+                  <div className="flex items-center">
+                    <Meet id={id} meet={meet} img />
+                  </div>
                   <div className=" flex items-center gap-3">
                     {meet.status !== "cancelled" ? (
                       <div className="flex lg:flex-nowrap flex-wrap items-center gap-2">
@@ -81,7 +87,7 @@ const page = () => {
                                       }}
                                       variant={"destructive"}
                                       size={"lg"}
-                                      className=" rounded-full"
+                                      className=" uppercase rounded-full"
                                     >
                                       Reschedule Meeting
                                     </Button>{" "}
@@ -107,7 +113,7 @@ const page = () => {
                                       }}
                                       variant={"destructive"}
                                       size={"lg"}
-                                      className=" rounded-full"
+                                      className="uppercase rounded-full"
                                     >
                                       Cancel Meeting
                                     </Button>
@@ -162,33 +168,7 @@ const page = () => {
             invitations.map((meet: any) => (
               <Container>
                 <FlexWrapper max={false} className=" justify-between">
-                  <Meet meet={meet} img />{" "}
-                  <Button
-                    disabled={isPending}
-                    onClick={() => {
-                      startTransition(async () => {
-                        const res = await Server({
-                          resourceName: "cancelInvite",
-                          body: {
-                            meeting_id: meet.id,
-                            cancelled: true,
-                          },
-                        });
-                        if (res.status) {
-                          toast.success(res.message);
-                          router.refresh();
-                          queryClient.invalidateQueries({
-                            queryKey: ["person-slots", `person-meetings`, `meetings-${jobId}`],
-                          });
-                        } else toast.error(res.message);
-                      });
-                    }}
-                    variant={"destructive"}
-                    size={"lg"}
-                    className=" rounded-full"
-                  >
-                    Cancel Invitation
-                  </Button>
+                  <Meet meet={meet} img /> <CancelInvitation meet={meet} jobId={jobId} />
                 </FlexWrapper>
               </Container>
             ))

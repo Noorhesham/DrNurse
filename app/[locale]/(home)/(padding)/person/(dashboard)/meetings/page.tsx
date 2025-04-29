@@ -41,7 +41,14 @@ const page = () => {
                   <Meet meet={meet} img />
                   <div className=" flex flex-wrap lg:flex-nowrap items-center gap-3">
                     <ModalCustom
-                      content={<SelectDate companyId={meet.company_id} person jobId={meet.req_job_post_id} meeting_id={meet.id} />}
+                      content={
+                        <SelectDate
+                          companyId={meet.company_id}
+                          person meet={meet}
+                          jobId={meet.req_job_post_id}
+                          meeting_id={meet.id}
+                        />
+                      }
                       btn={
                         <Button size={"lg"} className=" rounded-full">
                           SET DATE
@@ -62,7 +69,10 @@ const page = () => {
                             user={{
                               name: meet.company?.title,
                               image: meet.company_logo?.[0]?.file || "/nanana.svg",
-                              address: meet.company?.business,
+                              address:
+                                meet.company?.branches?.length > 0
+                                  ? `${meet.company?.branches?.[0].country?.title}, ${meet.company?.branches?.[0].city?.title}`
+                                  : "",
                             }}
                           />
                           <CompanyInfo hospital={meet.company} />
@@ -131,7 +141,7 @@ const page = () => {
                                 }}
                                 variant={"destructive"}
                                 size={"lg"}
-                                className=" rounded-full"
+                                className="uppercase rounded-full"
                               >
                                 RESCHEDULE MEETING
                               </Button>{" "}
@@ -173,12 +183,12 @@ const page = () => {
                         CANCELED
                       </Button>
                     )}{" "}
-                    <Link  target="_blank" className="w-full" href={`/person/job/${meet.req_job_post_id}`}>
+                   {meet.req_job_post_id&& <Link target="_blank" className="w-full" href={`/person/job/${meet.req_job_post_id}`}>
                       {" "}
                       <Button size={"lg"} className=" w-full  bg-light  text-main2 rounded-full" variant={"outline"}>
                         VIEW JOB
                       </Button>
-                    </Link>
+                    </Link>}
                     {meet.company && (
                       <ModalCustom
                         content={

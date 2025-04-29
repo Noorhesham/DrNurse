@@ -20,6 +20,7 @@ import BreadCrumb from "@/app/components/BreadCrumb";
 import { useSearchParams } from "next/navigation";
 import { ACTIVE_LISCNECE_COUNTRY } from "@/app/constants";
 import AboutPerson from "@/app/components/AboutPerson";
+import { FaExclamationCircle } from "react-icons/fa";
 
 const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: string } }) => {
   const { data, isLoading } = useGetEntity("doctor", `doctor-${doctorId}`, doctorId);
@@ -29,7 +30,7 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
   const dataPage = data.data;
   const education = [...dataPage?.main_education, ...dataPage?.education];
   console.log(education, dataPage);
-
+  const applieedTo = searchPrams.get("appliedto");
   return (
     <section>
       <BreadCrumb
@@ -49,7 +50,7 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
         <MaxWidthWrapper>
           <MainProfile
             user={{
-              name: dataPage?.name,
+              name: `${dataPage?.name}`,
               image: dataPage?.avatar,
               speciality: dataPage?.current_job_title || "",
               address: `${dataPage?.current_location?.title}`,
@@ -71,7 +72,12 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
         </MaxWidthWrapper>
       </div>
       <MaxWidthWrapper>
-        <GridContainer className=" gap-8" cols={8}>
+        {applieedTo && (
+          <div className=" py-2 px-4 flex items-center gap-2 rounded-xl bg-blue-500/90 mb-2 font-semibold text-white border-gray-50">
+            <FaExclamationCircle /> {applieedTo ? `(APPLIED TO ${applieedTo} JOB )` : ""}
+          </div>
+        )}{" "}
+        <GridContainer className=" mt-3  gap-8" cols={8}>
           <div className=" col-span-2 lg:col-span-6">
             {" "}
             <AboutPerson dataPage={dataPage} education={education} />

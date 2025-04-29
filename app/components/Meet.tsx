@@ -19,7 +19,6 @@ const formatToLocalTime = (gmtDate: string | Date) => {
   });
 };
 
-
 const Meet = ({ cancel, img, meet, id }: { cancel?: boolean; img?: boolean; meet: any; id?: string }) => {
   if (!meet) return null;
 
@@ -42,16 +41,17 @@ const Meet = ({ cancel, img, meet, id }: { cancel?: boolean; img?: boolean; meet
             </div>
           )}
           <div className="mb-[0.5px]">
-            <MiniTitle
-              boldness="extraBold"
-              size="md"
-              color=" text-black"
-              text={meet.req_job_post?.job_title || meet.invited?.name}
-            />
+            {meet.req_job_post?.job_title && (
+              <MiniTitle boldness="extraBold" size="md" color=" text-black" text={meet.req_job_post?.job_title} />
+            )}
             {meet?.company && <h2 className="text-black font-semibold text-base">{meet.company.title}</h2>}
             {meet?.invited && (
-              <Link href={`/dashboard/${id}/doctor/${meet?.invited?.profile?.id}`} className="text-gray-600">
-                {meet.invited.name}
+              <Link
+                href={`/dashboard/${id}/doctor/${meet?.invited?.profile?.id}?appliedto=${meet?.req_job_post?.job_title}`}
+                className="text-black font-semibold text-base"
+              >
+                {" "}
+                {meet.invited.name} 
               </Link>
             )}
           </div>
