@@ -244,19 +244,7 @@ const ProfileForm = ({ data: dataDefault }: { dataDefault?: any }) => {
                 };
               }),
             ]
-          : [
-              {
-                certificate_name: "",
-                training_center: "",
-                country_id: "",
-                career_level_id: "",
-                career_specialty_id: "",
-                date: "",
-                date_to: "",
-                present: 0,
-                certificate: "",
-              },
-            ],
+          : [],
       previous_experience:
         dataDefault?.previous_experiences?.length > 0
           ? dataDefault.previous_experiences.map((ex) => ({

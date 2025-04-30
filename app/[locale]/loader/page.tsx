@@ -39,17 +39,20 @@ const page = () => {
     if (
       isAccountOlderThan10Days(userSettings) &&
       !userSettings?.role.includes("admin") &&
-      !userSettings?.role.includes("hospital")
+      !userSettings?.role.includes("hospital") &&
+      userSettings?.companies.length === 0
     ) {
       router.push("/person");
     } else if (
       userSettings.has_profile &&
-      (userSettings.role.includes("nurse") || userSettings.role.includes("doctor"))
+      (userSettings.role.includes("nurse") || userSettings.role.includes("doctor")) &&
+      userSettings?.companies.length === 0
     ) {
       router.push("/person");
-    } else if (userSettings.role.includes("hospital") && userSettings?.companies.length === 1) {
-      router.push(`/dashboard/${userSettings.companies[0].id}`);
     }
+    // } else if (userSettings.role.includes("hospital") && userSettings?.companies.length === 1) {
+    //   router.push(`/dashboard/${userSettings.companies[0].id}`);
+    // }
   }, [userSettings]);
   if (loading || !userSettings) return <Spinner />;
 
@@ -94,7 +97,7 @@ const page = () => {
 
   return (
     <section
-      className=" h-screen  justify-center relative flex items-center "
+      className=" h-screen  justify-center gap-10 w-full relative flex items-center "
       style={{
         backgroundImage: "url(/loader.jpg)",
         backgroundSize: "cover",
@@ -107,7 +110,7 @@ const page = () => {
         <Spinner className=" absolute  z-10 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 " />
       ) : (
         userSettings.role.includes("admin") && (
-          <div className="flex  w-full justify-center  items-center gap-5">
+          <div className="flex  w-full justify-center  items-center gap-10">
             <ModalCustom
               btn={
                 <Button size="lg" className=" px-8  rounded-full">
@@ -126,7 +129,8 @@ const page = () => {
       )}
       {(userSettings.role.includes("nurse") ||
         userSettings.role.includes("doctor") ||
-        userSettings.role.includes("specialist")) && <>{HasProfile()}</>}
+        userSettings.role.includes("specialist")) &&
+        !userSettings.companies.length && <>{HasProfile()}</>}
       {userSettings.role.includes("hospital") && !userSettings.role.includes("admin") && (
         <ModalCustom
           isOpen={true}

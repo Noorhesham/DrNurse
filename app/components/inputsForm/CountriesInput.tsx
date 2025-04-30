@@ -67,7 +67,7 @@ const CountriesInput = ({
           name={countryName}
           label={t("countryLabel")}
           placeholder={t("selectCountry")}
-          options={countries?.data?.reverse().map((country: any) => ({ label: country.title, value: country.id }))}
+          options={countries?.data?.map((country: any) => ({ label: country.title, value: country.id }))}
         />
       }
       {selectedCountryCode && (
@@ -77,7 +77,7 @@ const CountriesInput = ({
           name={stateName}
           label={t("stateLabel")}
           placeholder={t("selectState")}
-          options={states?.data?.reverse().map((country: any) => ({ label: country.title, value: country.id }))}
+          options={states?.data?.map((country: any) => ({ label: country.title, value: country.id }))}
         />
       )}
       {selectedStateCode && cityName && (
@@ -87,7 +87,7 @@ const CountriesInput = ({
           name={cityName}
           label={t("cityLabel")}
           placeholder={t("selectCity")}
-          options={cities?.data?.reverse().map((country: any) => ({ label: country.title, value: country.id }))}
+          options={cities?.data?.map((country: any) => ({ label: country.title, value: country.id }))}
         />
       )}
     </FlexWrapper>
