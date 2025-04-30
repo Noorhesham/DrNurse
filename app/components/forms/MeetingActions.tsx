@@ -9,6 +9,7 @@ import Spinner from "../Spinner";
 import { Server } from "@/app/main/Server";
 import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
+import { DialogClose } from "@/components/ui/dialog";
 const MeetingActions = ({ offerId }: { offerId: string }) => {
   const { data, isLoading } = useGetEntities({
     resourceName: "getEntity",
@@ -73,29 +74,31 @@ const MeetingActions = ({ offerId }: { offerId: string }) => {
           </RadioGroup>
         </div>
       </div>
-      <Button
-        disabled={isPending}
-        onClick={() => {
-          startTransition(async () => {
-            const res = await Server({
-              resourceName: "negotiate",
-              body: {
-                negotiation_id: negotiation,
-                job_offer_id: offerId,
-              },
+      <DialogClose>
+        <Button
+          disabled={isPending}
+          onClick={() => {
+            startTransition(async () => {
+              const res = await Server({
+                resourceName: "negotiate",
+                body: {
+                  negotiation_id: negotiation,
+                  job_offer_id: offerId,
+                },
+              });
+              console.log(res);
+              if (res.status) {
+                toast.success(res.message);
+                QueryClient.invalidateQueries({ queryKey: ["offers"] });
+              } else toast.error(res.message);
             });
-            console.log(res);
-            if (res.status) {
-              toast.success(res.message);
-              QueryClient.invalidateQueries({ queryKey: ["offers"] });
-            } else toast.error(res.message);
-          });
-        }}
-        className=" w-full lg:w-[30%]"
-        size="lg"
-      >
-        SEND
-      </Button>
+          }}
+          className=" w-full lg:w-[30%]"
+          size="lg"
+        >
+          SEND
+        </Button>
+      </DialogClose>
     </div>
   );
 };

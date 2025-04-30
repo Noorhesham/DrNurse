@@ -51,17 +51,19 @@ const Meet = ({ cancel, img, meet, id }: { cancel?: boolean; img?: boolean; meet
                 className="text-black font-semibold text-base"
               >
                 {" "}
-                {meet.invited.name} 
+                {meet.invited.name}
               </Link>
             )}
           </div>
         </div>
-        <div className="flex  mt-2 flex-col">
-          <p className="text-sm text-gray-500 text-muted-foreground">
-            GMT : {meet.slot ? formatToLocalTime(meet.slot.from_date) : formatToLocalTime(meet.created_at)}
-          </p>
-          <LocalTime date={meet.slot?.from_date} />
-        </div>
+        {(meet.slot !== null || meet.updated_at) && (
+          <div className="flex  mt-2 flex-col">
+            <p className="text-sm text-gray-500 text-muted-foreground">
+              GMT : {meet.slot ? formatToLocalTime(meet.slot.from_date) : formatToLocalTime(meet.updated_at)}
+            </p>
+            <LocalTime date={meet.slot?.from_date} />
+          </div>
+        )}
       </div>
 
       {cancel && (

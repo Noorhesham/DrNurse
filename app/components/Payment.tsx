@@ -53,24 +53,26 @@ const Payment = ({ planId, invoice, job }: { planId: string; invoice?: boolean; 
   };
   return (
     <div className="flex flex-col mt-5 items-center gap-5">
-      <MaxWidthWrapper noPadding className="flex justify-between w-full items-center">
-        <h2 className=" text-gray-900  font-semibold">{job?.title}</h2>{" "}
-        <span
-          className={`list-disc relative ml-3 mr-2 after:-left-2 after:top-1/2 after:-translate-y-1/2 after:absolute 
+      {job && (
+        <MaxWidthWrapper noPadding className="flex justify-between w-full items-center">
+          <h2 className=" text-gray-900  font-semibold">{job?.title}</h2>{" "}
+          <span
+            className={`list-disc relative ml-3 mr-2 after:-left-2 after:top-1/2 after:-translate-y-1/2 after:absolute 
                           after:w-1.5 
                           after:h-1.5 after:rounded-full ${
-                            job.status === "publish"
+                            job?.status === "publish"
                               ? "after:bg-green-500"
-                              : job.status === "draft"
+                              : job?.status === "draft"
                               ? "after:bg-blue-500"
-                              : job.status === "closed"
+                              : job?.status === "closed"
                               ? "after:bg-red-500"
                               : " after:bg-yellow-400"
                           }`}
-        >
-          {format(job.created_at, "dd/MM/yyyy")}
-        </span>
-      </MaxWidthWrapper>
+          >
+            {job?.created_at && format(job?.created_at, "dd/MM/yyyy")}
+          </span>
+        </MaxWidthWrapper>
+      )}
       <MiniTitle text="Select Payment Method" />
       <GridContainer cols={3}>
         {" "}

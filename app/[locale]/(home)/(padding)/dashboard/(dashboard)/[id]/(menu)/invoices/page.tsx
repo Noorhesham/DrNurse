@@ -28,7 +28,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
       <Table>
         {invoices.data.length > 0 && (
           <TableHeader>
-            <TableRow>
+            <TableRow className=" uppercase">
               <TableHead className=" text-main2 ">INVOICE NAME</TableHead>
               <TableHead className=" text-main2 ">DATE</TableHead>
               <TableHead className=" text-main2 ">STATUS</TableHead>
@@ -87,7 +87,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
       <div className=" flex flex-col gap-4 mt-10">
         <div className=" justify-between flex flex-wrap sm:flex-nowrap w-full">
           <MiniTitle boldness="bold" size="sm" color=" text-main2" text="SUBSCRIPTIONS" />
-          <FunctionalButton link={`/dashboard/${id}/invoices/subscriptions`} btnText="Add Subscription" />
+          <FunctionalButton className=" uppercase" link={`/dashboard/${id}/invoices/subscriptions`} btnText="Add Subscription" />
         </div>
         <Table>
           {data.data.length > 0 && (

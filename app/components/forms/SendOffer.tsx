@@ -1,7 +1,7 @@
 "use client";
 import { useZodForm } from "@/app/hooks/useZodForm";
 import { useTranslations } from "next-intl";
-import React from "react";
+import React, { useEffect } from "react";
 import { z } from "zod";
 import { useFieldArray } from "react-hook-form";
 import CustomForm from "./CustomForm";
@@ -17,7 +17,7 @@ import CountriesInput from "../inputsForm/CountriesInput";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import FlexWrapper from "../defaults/FlexWrapper";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { FaExclamationCircle } from "react-icons/fa";
 import { useFormHandler } from "@/app/hooks/useFormHandler";
 import { Server } from "@/app/main/Server";
@@ -35,12 +35,12 @@ const offerSchema = z.object({
         .string()
         .regex(salaryRegex, "Min Salary must be a positive number and cannot start with 0")
         .min(1, "Salary is required"),
-      z.number(),
+      z.number().min(1, "Salary is required"),
     ]),
     benefits: z.array(z.string().min(1, "Benefit is required")).optional(),
     currency: z.union([z.string().min(1, "Currency is required"), z.number()]),
     start_date: z.string().min(1, "Start Date is required"),
-    address: z.string().optional(),
+    address: z.string().min(1, "Address is required"),
   }),
 });
 
@@ -58,13 +58,22 @@ const SendOffer = ({
   const { data, isLoading } = useGetEntity("doctor", `doctor-${userId}`, userId, {
     enabled: defaultvals ? false : true,
   });
+  const searchParams = useSearchParams();
+  const jobId = searchParams.get("jobId");
+
+  searchParams.forEach((param) => {
+    console.log(param);
+  });
+  const { data: job, isLoading: isJobLoading } = useGetEntity("job", `job-${jobId}`, jobId, {
+    enabled: !!jobId, // Only fetch if jobId exists
+  });
   const { id: companyId } = useParams();
   const router = useRouter();
   const t = useTranslations();
   const form = useZodForm({
     schema: offerSchema,
     defaultValues: {
-      employeeName: data?.data?.name || userId.name || "",
+      employeeName: data?.data?.name || userId?.name || "",
       country_id: defaultvals?.country_id || "",
       city_id: defaultvals?.city_id || "",
       state_id: defaultvals?.state_id || "",
@@ -72,14 +81,21 @@ const SendOffer = ({
         job_title: defaultvals?.job_title || "",
         salary: defaultvals?.salary || 0,
         benefits: defaultvals?.benefits || [],
-        currency: defaultvals?.currency || "usd",
+        currency: defaultvals?.currency || "",
         start_date: defaultvals?.start_date || "",
         address: defaultvals?.address || "",
       },
     },
   });
   const { handleFormSubmit, isPending } = useFormHandler();
-
+  useEffect(() => {
+    console.log("Job data:", job);
+    if (job?.data?.job_title) {
+      form.setValue("details.job_title", job?.data?.job_title, {
+        shouldValidate: true,
+      });
+    }
+  }, [job, form]);
   const { append, remove, fields } = useFieldArray({
     control: form.control,
     //@ts-ignore
@@ -116,6 +132,7 @@ const SendOffer = ({
       name: "details.job_title",
       placeholder: t("jobtitle"),
       label: t("jobtitle"),
+      required: true,
     },
     {
       name: "details.start_date",
@@ -123,6 +140,7 @@ const SendOffer = ({
       placeholder: t("startDatePlaceholder"),
       label: t("startdate"),
       disableOldDates: true,
+      required: true,
     },
   ];
   if (isLoading) return <Spinner />;

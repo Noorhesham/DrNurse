@@ -26,11 +26,12 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
   const { data, isLoading } = useGetEntity("doctor", `doctor-${doctorId}`, doctorId);
   const searchPrams = useSearchParams();
   if (isLoading || !data) return <Spinner />;
-
+  const jobId = searchPrams.get("job");
   const dataPage = data.data;
   const education = [...dataPage?.main_education, ...dataPage?.education];
   console.log(education, dataPage);
   const applieedTo = searchPrams.get("appliedto");
+
   return (
     <section>
       <BreadCrumb
@@ -65,7 +66,9 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
               <FunctionalButton
                 btnText="SEND JOB OFFER"
                 icon={<Briefcase className=" w-5 h-5" />}
-                link={`/dashboard/${id}/add-job-offer?userId=${dataPage?.id}`}
+                link={`/dashboard/${id}/add-job-offer?userId=${encodeURIComponent(
+                  dataPage?.id || ""
+                )}&jobId=${encodeURIComponent(jobId || "")}`}
               />
             </div>
           </MainProfile>

@@ -44,7 +44,8 @@ const page = () => {
                       content={
                         <SelectDate
                           companyId={meet.company_id}
-                          person meet={meet}
+                          person
+                          meet={meet}
                           jobId={meet.req_job_post_id}
                           meeting_id={meet.id}
                         />
@@ -102,7 +103,7 @@ const page = () => {
                 <FlexWrapper max={false} className=" justify-between">
                   <Meet meet={meet} img />{" "}
                   <div className=" md:grid grid-cols-2 flex-wrap items-center gap-3">
-                    {meet.zoom_meeting && (
+                    {meet.zoom_meeting&& meet.status !== "completed" && (
                       <Link className="self-center w-full " target="_blank" href={meet.zoom_meeting.join_url}>
                         <Button size={"lg"} className=" w-full rounded-full">
                           JOIN MEETING
@@ -173,7 +174,7 @@ const page = () => {
                           </div>
                         }
                       />
-                    ) : (
+                    ) : meet.status !== "completed" ? (
                       <Button
                         disabled={true}
                         variant={"destructive"}
@@ -182,13 +183,17 @@ const page = () => {
                       >
                         CANCELED
                       </Button>
-                    )}{" "}
-                   {meet.req_job_post_id&& <Link target="_blank" className="w-full" href={`/person/job/${meet.req_job_post_id}`}>
-                      {" "}
-                      <Button size={"lg"} className=" w-full  bg-light  text-main2 rounded-full" variant={"outline"}>
-                        VIEW JOB
-                      </Button>
-                    </Link>}
+                    ) : (
+                      ""
+                    )}
+                    {meet.req_job_post_id && (
+                      <Link target="_blank" className="w-full" href={`/person/job/${meet.req_job_post_id}`}>
+                        {" "}
+                        <Button size={"lg"} className=" w-full  bg-light  text-main2 rounded-full" variant={"outline"}>
+                          VIEW JOB
+                        </Button>
+                      </Link>
+                    )}
                     {meet.company && (
                       <ModalCustom
                         content={

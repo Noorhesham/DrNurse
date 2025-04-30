@@ -21,10 +21,18 @@ const formatToGMT = (dateStr) => {
   const gmtTime = utcToZonedTime(date, "Etc/UTC");
   return format(gmtTime, "dd/MM/yyyy hh:mmaaa");
 };
-const formatToLocalTime = (dateStr) => {
-  const date = new Date(dateStr);
-  return format(date, "dd/MM/yyyy hh:mmaaa");
+const formatToLocalTime = (gmtDate: string | Date) => {
+  const localDate = new Date(gmtDate);
+  return localDate.toLocaleString("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
 };
+
 
 const SelectDate = ({
   meeting_id,

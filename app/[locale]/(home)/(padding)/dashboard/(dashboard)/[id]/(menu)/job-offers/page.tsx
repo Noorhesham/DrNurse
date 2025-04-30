@@ -9,6 +9,7 @@ import { useGetEntity } from "@/lib/queries";
 import OffersTable from "@/app/components/tables/OffersTable";
 import { Skeleton } from "@/components/ui/skeleton";
 import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
+import Link from "next/link";
 
 const page = () => {
   const searchaParams = useSearchParams();
@@ -37,8 +38,9 @@ const page = () => {
     <div className=" flex flex-col gap-4">
       <div className=" flex md:flex-row flex-col gap-4 items-start justify-between">
         <MiniTitle boldness="bold" size="lg" className="   uppercase" text="RECENTLY POSTED JOB OFFERS" />
+        <FunctionalButton btnText="ADD JOB OFFER" link={`/dashboard/${id}/add-job-offer`} />
       </div>
-      <OffersTable action={false} offers={jobs} />
+      {jobs.length > 0 && <OffersTable action={false} offers={jobs} />}
       {totalPages > 1 && (
         <div className="flex flex-col gap-3 col-span-2 lg:col-span-6">
           <PaginationDemo totalPages={totalPages} />

@@ -21,23 +21,21 @@ const LocalTime = ({ time, date }: { time?: string; date?: string }) => {
         // Handle time only
         const today = new Date();
         const [hours, minutes] = time.split(":").map(Number);
-        gmtDate = new Date(
-          Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), hours, minutes)
-        );
+        gmtDate = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), hours, minutes));
       } else {
         // Fallback to current date and time
         gmtDate = new Date();
       }
 
       // Convert GMT to local time
-      const formattedTime = gmtDate.toLocaleString([], {
-        year: date ? "numeric" : undefined,
-        month: date ? "short" : undefined,
-        day: date ? "numeric" : undefined,
+      const formattedTime = gmtDate.toLocaleString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
         hour: "2-digit",
         minute: "2-digit",
-        second: date && date.includes(" ") ? "2-digit" : undefined,
         hour12: true,
+        second: date && date.includes(" ") ? "2-digit" : undefined,
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone, // System's local timezone
         timeZoneName: "short", // Include timezone abbreviation
       });
