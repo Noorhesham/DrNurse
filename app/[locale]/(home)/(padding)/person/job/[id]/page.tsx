@@ -40,7 +40,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
     speciality: [job?.career_type?.title, job?.career_specialty?.title, job?.career_level?.title]
       .filter(Boolean)
       .join(", "),
-    address: job.branch?.address ? `${job.branch?.country?.title || ""}, ${job.branch?.state?.title || ""}` : "",
+    address: job.branch ? `${job.branch?.country?.title || ""}, ${job.branch?.state?.title || ""}` : "",
   };
   const queryClient = useQueryClient();
   const handleApply = () => {

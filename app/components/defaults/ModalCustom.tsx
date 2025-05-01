@@ -27,6 +27,7 @@ const ModalCustom = ({
   isPending,
   btnStyles,
   form,
+  preventClose = false,
 }: {
   btn: React.ReactNode;
   content: React.ReactNode;
@@ -40,11 +41,20 @@ const ModalCustom = ({
   isPending?: boolean;
   btnStyles?: boolean;
   form?: boolean;
+  preventClose?: boolean;
 }) => {
   const [open, setOpen] = React.useState(isOpen || false);
   const t = useTranslations();
+
+  const handleOpenChange = (newOpenState: boolean) => {
+    // Only allow state change if not preventing close or if opening the modal
+    if (!preventClose || newOpenState === true) {
+      setOpen(newOpenState);
+    }
+  };
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>{btn}</DialogTrigger>
       <DialogContent
         aria-describedby={desc ? "modal-description" : undefined}
@@ -70,11 +80,12 @@ const ModalCustom = ({
           <DialogFooter className="pb-10 flex items-center sm:flex-col">
             <div className="flex gap-2 items-center">
               {functionalbtn && functionalbtn}
-              <DialogClose className="mx-auto flex items-center gap-5">
+              <DialogClose className="mx-auto flex items-center gap-5" disabled={preventClose}>
                 {cancelBtn && (
                   <Button
                     type="button"
                     className="text-xs flex-grow mr-auto self-end mx-0 hover:bg-main2 hover:text-white rounded-full flex items-center gap-2 px-6 border border-main2 bg-white text-main2"
+                    disabled={preventClose}
                   >
                     {t("cancel")}
                   </Button>

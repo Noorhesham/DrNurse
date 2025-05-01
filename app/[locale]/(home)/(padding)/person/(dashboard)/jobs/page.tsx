@@ -11,7 +11,7 @@ const page = async ({ params: { locale }, searchParams }: { params: { locale: st
     career_type_id,
     country_ids,
     page,
-    sort,
+    sort = "desc",
     career_specialty_id,
     career_levels,
     query,
@@ -60,7 +60,7 @@ const page = async ({ params: { locale }, searchParams }: { params: { locale: st
   ];
   return (
     <div>
-      <JobsList filters={filters} query={query} jobs={jobs} totalPages={totalPages} />
+      <JobsList filters={filters} query={query} total={data.data.count} jobs={jobs} totalPages={totalPages} />
     </div>
   );
 };

@@ -21,6 +21,8 @@ import { useSearchParams } from "next/navigation";
 import { ACTIVE_LISCNECE_COUNTRY } from "@/app/constants";
 import AboutPerson from "@/app/components/AboutPerson";
 import { FaExclamationCircle } from "react-icons/fa";
+import { isPast } from "date-fns";
+import { parseISO } from "date-fns";
 
 const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: string } }) => {
   const { data, isLoading } = useGetEntity("doctor", `doctor-${doctorId}`, doctorId);
@@ -91,7 +93,13 @@ const page = ({ params: { doctorId, id } }: { params: { doctorId: string; id: st
               <InfoItem
                 icon={<CalendarIcon className=" w-5 h-5" />}
                 title="AVAILABILITY"
-                description={dataPage?.available ? dataPage.start_availability_at : "Not Available"}
+                description={
+                  dataPage?.available !== "no"
+                    ? isPast(parseISO(dataPage.start_availability_at))
+                      ? "Available Now"
+                      : dataPage.start_availability_at
+                    : "Not Available"
+                }
               />
               <InfoItem
                 icon={<DashboardIcon className=" w-5 h-5" />}

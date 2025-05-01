@@ -101,7 +101,7 @@ const OffersTable: React.FC<OffersTableProps> = ({ offers, action, person = fals
                       ) : daysLeft > 0 ? (
                         <span className="flex text-xs items-center gap-2">
                           <Calendar className=" lg:block hidden w-6 h-6" />
-                          {format(new Date(offer.created_at), "dd-MM-yyyy")} Must be approved  {daysLeft} day
+                          {format(new Date(offer.created_at), "dd-MM-yyyy")} Must be approved {daysLeft} day
                           {daysLeft > 1 ? "s" : ""} In Advance.
                         </span>
                       ) : (
@@ -141,11 +141,17 @@ const OffersTable: React.FC<OffersTableProps> = ({ offers, action, person = fals
                                 <h3 className=" text-xl lg:text-2xl uppercase text-main2 font-semibold mt-4">
                                   Negotiation DETAILS
                                 </h3>
-                                <Paragraph
-                                  className=" text-center m-auto"
-                                  size="lg"
-                                  description={offer.negotiation.description}
-                                />
+                                {offer.negotiation.length > 0 ? (
+                                  offer.negotiation.map((negotiation: any) => (
+                                    <Negotiation jobOfferId={offer.id} negotiation={negotiation} />
+                                  ))
+                                ) : (
+                                  <Paragraph
+                                    className=" text-center m-auto"
+                                    size="lg"
+                                    description={offer.negotiation.description}
+                                  />
+                                )}
                               </div>
                             ) : (
                               <Negotiation jobOfferId={offer.id} negotiation={offer.negotiation} />

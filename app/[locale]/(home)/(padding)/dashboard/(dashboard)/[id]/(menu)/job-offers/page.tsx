@@ -10,6 +10,7 @@ import OffersTable from "@/app/components/tables/OffersTable";
 import { Skeleton } from "@/components/ui/skeleton";
 import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
 import Link from "next/link";
+import Paragraph from "@/app/components/defaults/Paragraph";
 
 const page = () => {
   const searchaParams = useSearchParams();
@@ -34,13 +35,20 @@ const page = () => {
 
   const jobs = data?.data;
   const totalPages = Math.ceil(data.count / 9);
+  console.log(data);
   return (
     <div className=" flex flex-col gap-4">
       <div className=" flex md:flex-row flex-col gap-4 items-start justify-between">
         <MiniTitle boldness="bold" size="lg" className="   uppercase" text="RECENTLY POSTED JOB OFFERS" />
         <FunctionalButton btnText="ADD JOB OFFER" link={`/dashboard/${id}/add-job-offer`} />
       </div>
-      {jobs.length > 0 && <OffersTable action={false} offers={jobs} />}
+      {jobs.length > 0 ? (
+        <OffersTable action={false} offers={jobs} />
+      ) : (
+        <div className="flex flex-col gap-3 col-span-2 lg:col-span-6">
+          <Paragraph size="lg" description="No job offers found" />
+        </div>
+      )}
       {totalPages > 1 && (
         <div className="flex flex-col gap-3 col-span-2 lg:col-span-6">
           <PaginationDemo totalPages={totalPages} />

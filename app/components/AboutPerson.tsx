@@ -89,12 +89,12 @@ const AboutPerson = ({
                             address: experience?.country?.title,
                           }}
                         />
-                        <div className=" mx-auto self-end !text-center  font-medium text-gray-600">
-                          <p className=" lg:text-base text-sm  font-semibold uppercase">
+                        <div className=" mx-auto self-end   font-medium text-gray-600">
+                          <p className=" lg:text-base  text-sm text-nowrap  font-semibold uppercase">
                             {experience?.career_specialty?.title}{" "}
                             {`${experience?.career_level ? `, ${experience?.career_level}` : ""}`}
                           </p>
-                          <span className=" text-sm">
+                          <span className=" text-sm text-nowrap">
                             {experience.from && formatDate(experience.from, "MMM yyyy")} -
                             {experience.to ? formatDate(experience.to, "MMM yyyy") : "Present"}
                           </span>
