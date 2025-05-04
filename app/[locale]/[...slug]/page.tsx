@@ -8,6 +8,9 @@ import Footer from "../../components/Footer";
 import MaxWidthWrapper from "@/app/components/defaults/MaxWidthWrapper";
 import NavBar from "@/app/components/nav/NavBar";
 
+// Force dynamic rendering to handle cookies
+export const dynamic = "force-dynamic";
+
 // Add this validation function
 const isValidSlug = (slug: string) => {
   const invalidExtensions = [".css", ".js", ".map", ".json", ".png", ".jpg"];
